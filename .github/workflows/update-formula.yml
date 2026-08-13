@@ -20,18 +20,40 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Every ${{ }} in this job is routed through an env: var rather than
+      # spliced directly into a run: body. Actions expands ${{ }} before bash
+      # ever parses the script, so a spliced value's quotes, $(...) and
+      # backticks arrive as live shell syntax; as an env var the same bytes
+      # are only ever data. Both version sources here are untrusted:
+      # client_payload crosses a repo boundary (the private repo's
+      # dispatch-homebrew job forwards a human-typed string), and a
+      # workflow_dispatch input has no format constraint at all. This job
+      # holds contents:write + actions:write on the public tap's main branch.
       - name: Determine version
         id: version
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+          DISPATCH_VERSION: ${{ github.event.client_payload.version }}
         run: |
-          if [ -n "${{ github.event.inputs.version }}" ]; then
-            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          if [ -n "$INPUT_VERSION" ]; then
+            VERSION="$INPUT_VERSION"
           else
-            echo "version=${{ github.event.client_payload.version }}" >> "$GITHUB_OUTPUT"
+            VERSION="$DISPATCH_VERSION"
           fi
+          # Validate here, before any later step spends time or writes
+          # anything: this value goes on to build a registry URL, three sed
+          # replacements against Ruby source, a commit message and a
+          # workflow dispatch.
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+            echo "::error::version '$VERSION' is not a valid semver-ish string"
+            exit 1
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Wait for npm package availability
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
-          VERSION="${{ steps.version.outputs.version }}"
           PKGS="@testmuai/rook \
                 @testmuai/rook-node-darwin-arm64 \
                 @testmuai/rook-node-linux-x64"
@@ -56,8 +78,9 @@ jobs:
 
       - name: Compute tarball sha256
         id: tarball
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
-          VERSION="${{ steps.version.outputs.version }}"
           TARBALL_URL="https://registry.npmjs.org/@testmuai/rook/-/rook-${VERSION}.tgz"
           curl -fsSL "$TARBALL_URL" -o rook.tgz
           SHA256=$(sha256sum rook.tgz | awk '{print $1}')
@@ -65,10 +88,11 @@ jobs:
           echo "sha256=${SHA256}" >> "$GITHUB_OUTPUT"
 
       - name: Update formula
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          TARBALL_URL: ${{ steps.tarball.outputs.tarball-url }}
+          SHA256: ${{ steps.tarball.outputs.sha256 }}
         run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          TARBALL_URL="${{ steps.tarball.outputs.tarball-url }}"
-          SHA256="${{ steps.tarball.outputs.sha256 }}"
           FORMULA="Formula/rook.rb"
 
           sed -i "s|^  url \".*\"|  url \"${TARBALL_URL}\"|" "$FORMULA"
@@ -85,10 +109,18 @@ jobs:
               f.write(new)
           PY
 
+      # Nothing between the transform above and the push below inspects what
+      # the transform produced. Without this, a bad substitution ships broken
+      # Ruby to the tap's main branch and every `brew install` fails until a
+      # human notices.
+      - name: Validate the patched formula is still valid Ruby
+        run: ruby -c Formula/rook.rb
+
       - name: Commit and push
         id: commit
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
-          VERSION="${{ steps.version.outputs.version }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add Formula/rook.rb
@@ -104,7 +136,8 @@ jobs:
         if: steps.commit.outputs.committed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           gh workflow run "Build bottles" \
             --ref main \
-            -f version="${{ steps.version.outputs.version }}"
+            -f version="${VERSION}"

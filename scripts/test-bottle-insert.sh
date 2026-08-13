@@ -229,7 +229,7 @@ check "(b) new root_url reflects the bumped version" \
 
 check "(b) stale root_url from the old version is gone" \
       "(b) stale root_url from the old version is still present" \
-      absent "download/v0.1.0" "$CASE_B/Formula/rook.rb"
+      absent "download/rook-0.1.0" "$CASE_B/Formula/rook.rb"
 
 check "(b) stale fake sha256 (arm64_sequoia, old '1111...') is gone" \
       "(b) stale fake sha256 (arm64_sequoia, old '1111...') survived" \

@@ -8,6 +8,11 @@
 # lines the sed/python transform in .github/workflows/update-formula.yml
 # actually touches, plus enough real structure (depends_on/install/test) to
 # prove the strip regex doesn't eat anything past the stanza's `end`.
+#
+# The stale root_url below is in the `rook-<version>` shape the real
+# generator emits (build-bottles.yml's Python transform), not a `v<version>`
+# one — build-bottles.yml's stale-bottle-block guard greps for exactly that
+# shape, so a fixture in any other format makes that guard's tests vacuous.
 
 require "json"
 
@@ -20,7 +25,7 @@ class Rook < Formula
   version "0.1.0"
 
   bottle do
-    root_url "https://github.com/LambdaTest/rook/releases/download/v0.1.0"
+    root_url "https://github.com/LambdaTest/rook/releases/download/rook-0.1.0"
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "1111111111111111111111111111111111111111111111111111111111111111"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "2222222222222222222222222222222222222222222222222222222222222222"
   end

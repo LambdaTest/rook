@@ -6,12 +6,17 @@
 #
 # This does NOT hand-maintain a copy of that logic. It extracts the real
 # step's shell body live from the workflow file (stripping the YAML block
-# indentation the same way GitHub Actions does, then dropping only the 4
-# `${{ ... }}`-driven variable assignments, which don't parse outside
-# Actions) and runs the untouched remainder — the 3 sed substitutions plus
-# the python heredoc — against fixture formulas. If someone edits the real
-# transform, this test exercises the edit; there is nothing here to fall
-# out of sync.
+# indentation the same way GitHub Actions does, then dropping only the
+# `FORMULA=` assignment so the fixture path can be injected) and runs the
+# untouched remainder — the 3 sed substitutions plus the python heredoc —
+# against fixture formulas. If someone edits the real transform, this test
+# exercises the edit; there is nothing here to fall out of sync.
+#
+# VERSION/TARBALL_URL/SHA256 are supplied to the extracted body through the
+# environment, which is exactly how the real step receives them: they are
+# `env:` entries, not `${{ }}` spliced into the shell body. The extraction
+# asserts that below — a re-introduced splice is a shell-injection
+# regression, not a cosmetic one, and must fail this harness loudly.
 #
 # macOS ships BSD sed, whose `-i` needs a backup-suffix argument the real
 # workflow's `-i` invocations don't pass (GNU sed, as used by the
@@ -47,19 +52,32 @@ if [ ! -f "$WORKFLOW" ]; then
 fi
 
 # --- Extract the exact "Update formula" step body from the real workflow ---
+# Dedents by the run: block's own first-line indent and stops at the first
+# line indented less than that, so trailing YAML (the next step, or a
+# comment above it) can't leak into the extracted script.
 extract_transform() {
   awk '
-    /- name: Update formula/ { capture=1; next }
-    capture && /run: \|/ { inrun=1; next }
-    capture && inrun && /^      - name:/ { exit }
-    capture && inrun { print }
-  ' "$WORKFLOW" | sed 's/^          //' | grep -vE '^(VERSION|TARBALL_URL|SHA256|FORMULA)="'
+    /- name: Update formula/ { instep=1; next }
+    instep && /run: \|/ { inrun=1; next }
+    inrun {
+      if ($0 ~ /^[[:space:]]*$/) { print ""; next }
+      match($0, /^ */); ind = RLENGTH
+      if (base == 0) base = ind
+      if (ind < base) exit
+      print substr($0, base + 1)
+    }
+  ' "$WORKFLOW" | grep -vE '^FORMULA="'
 }
 
 TRANSFORM="$(extract_transform)"
 
 if [ -z "$TRANSFORM" ]; then
   echo "FATAL: could not extract the 'Update formula' step from $WORKFLOW — did the step name or run block move?" >&2
+  exit 2
+fi
+# shellcheck disable=SC2016  # the literal two-brace Actions sigil is the point
+if echo "$TRANSFORM" | grep -qF -- '${{'; then
+  echo "FATAL: the 'Update formula' run: body contains a \${{ ... }} expression. Actions expands those before bash parses the script, so the value's quotes/\$()/backticks become live shell syntax — route it through the step's env: block and reference \"\$VAR\" instead." >&2
   exit 2
 fi
 if ! echo "$TRANSFORM" | grep -q 'sed -i.*url'; then

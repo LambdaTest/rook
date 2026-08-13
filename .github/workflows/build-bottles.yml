@@ -26,12 +26,26 @@ jobs:
         with:
           ref: main
 
+      # INPUT_VERSION is routed through env: rather than spliced into the
+      # shell body. Actions expands ${{ }} before bash parses the script, so
+      # a spliced value's quotes, $(...) and backticks would run as shell
+      # syntax — and they would run BEFORE the drift comparison below, which
+      # therefore protects nothing against a hostile input.
       - name: Resolve version
         id: read
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
         run: |
           FORMULA_VERSION=$(grep '^  version' Formula/rook.rb | awk -F'"' '{print $2}')
-          if [ -n "${{ inputs.version }}" ]; then
-            VERSION="${{ inputs.version }}"
+          if [ -n "$INPUT_VERSION" ]; then
+            # Check the shape before the equality check, so a malformed input
+            # fails saying what is wrong with it rather than just "!= what is
+            # on main".
+            if ! [[ "$INPUT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+              echo "::error::version '${INPUT_VERSION}' is not a valid semver-ish string"
+              exit 1
+            fi
+            VERSION="$INPUT_VERSION"
             if [ "$VERSION" != "$FORMULA_VERSION" ]; then
               echo "::error::inputs.version=${VERSION} but Formula/rook.rb on main is ${FORMULA_VERSION}."
               exit 1
@@ -40,9 +54,16 @@ jobs:
             VERSION="$FORMULA_VERSION"
           fi
 
+          # The prerelease suffix is part of the version: matching only
+          # `rook-<x.y.z>` reduces a root_url of rook-0.2.0-beta.1 to
+          # rook-0.2.0, which then fails the comparison against the correct
+          # current version and reports a stale bottle block that isn't
+          # stale. `grep -Fxv` compares the whole line literally, so a
+          # version containing regex metacharacters can't match loosely
+          # either.
           STALE_ROOT=$(grep -E '^[[:space:]]*root_url[[:space:]]+"' Formula/rook.rb \
-            | grep -oE 'rook-[0-9]+\.[0-9]+\.[0-9]+' \
-            | grep -v "^rook-${VERSION}$" | head -1 || true)
+            | grep -oE 'rook-[0-9]+\.[0-9]+\.[0-9]+[A-Za-z0-9.+-]*' \
+            | grep -Fxv "rook-${VERSION}" | head -1 || true)
           if [ -n "$STALE_ROOT" ]; then
             echo "::error::Formula has a stale bottle block referencing ${STALE_ROOT} but version is ${VERSION}."
             exit 1
@@ -67,30 +88,6 @@ jobs:
 
       - uses: Homebrew/actions/setup-homebrew@b35a29a0f83ee8b8ca07b219fc8db3d7bb88ab49  # 2026.08.10.2
 
-      - name: Determine bottle label
-        id: label
-        shell: bash
-        run: |
-          if [ "$RUNNER_OS" = "Linux" ]; then
-            LABEL="x86_64_linux"
-          else
-            ARCH=$(uname -m)
-            MAJOR=$(sw_vers -productVersion | cut -d. -f1)
-            case "$MAJOR" in
-              13) NAME=ventura ;;
-              14) NAME=sonoma ;;
-              15) NAME=sequoia ;;
-              16|26) NAME=tahoe ;;
-              *)  NAME="macos${MAJOR}" ;;
-            esac
-            if [ "$ARCH" = "arm64" ]; then
-              LABEL="arm64_${NAME}"
-            else
-              LABEL="${NAME}"
-            fi
-          fi
-          echo "label=${LABEL}" >> "$GITHUB_OUTPUT"
-
       - name: Tap self into Homebrew
         run: |
           TAP_DIR="$(brew --repository)/Library/Taps/lambdatest/rook"
@@ -108,8 +105,8 @@ jobs:
         env:
           HOMEBREW_NO_AUTO_UPDATE: "1"
           HOMEBREW_NO_SANDBOX_LINUX: "1"
+          VERSION: ${{ needs.guard.outputs.version }}
         run: |
-          VERSION="${{ needs.guard.outputs.version }}"
           ROOT_URL="https://github.com/LambdaTest/rook/releases/download/rook-${VERSION}"
 
           brew install --build-bottle lambdatest/rook/rook
@@ -184,9 +181,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Re-verify formula version hasn't drifted since guard
+        env:
+          EXPECTED: ${{ needs.guard.outputs.version }}
         run: |
           CURRENT=$(grep '^  version' Formula/rook.rb | awk -F'"' '{print $2}')
-          EXPECTED="${{ needs.guard.outputs.version }}"
           if [ "$CURRENT" != "$EXPECTED" ]; then
             echo "::error::Formula version drifted during build: guard saw ${EXPECTED}, main is now ${CURRENT}."
             exit 1
@@ -200,14 +198,23 @@ jobs:
       - name: Create or update release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.guard.outputs.version }}
         run: |
-          VERSION="${{ needs.guard.outputs.version }}"
           TAG="rook-${VERSION}"
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release upload "$TAG" bottles/*.bottle.tar.gz --clobber
           else
+            # --latest=false: this repo carries two tag namespaces. The curl
+            # installer's releases are tagged v<version> and install.sh
+            # resolves them through /releases/latest when no --version is
+            # given; these bottle releases are tagged rook-<version> and are
+            # only ever fetched by their direct asset URL (the formula's
+            # root_url). Without this flag `gh release create` marks the
+            # bottle release "latest", so the default `curl … | bash` install
+            # would resolve against a rook-<version> tag instead.
             gh release create "$TAG" bottles/*.bottle.tar.gz \
               --title "$TAG" \
+              --latest=false \
               --notes "Homebrew bottles for rook ${VERSION}"
           fi
 
@@ -252,6 +259,9 @@ jobs:
           with open("Formula/rook.rb") as f:
               src = f.read()
           src = re.sub(r"  bottle do\n(?:.*\n)*?  end\n+", "", src)
+          # Coupled to Formula/rook.rb's field order: the block is anchored to
+          # the `version "..."` line, which that file's own comment says must
+          # not be reordered (doing so also moves this insertion point).
           src, n = re.subn(r'(  version "[^"]+"\n)\n*', r"\1\n" + block + "\n", src, count=1)
           if n != 1:
               sys.exit("Could not locate version line for bottle block insertion")
@@ -259,7 +269,15 @@ jobs:
               f.write(src)
           PY
 
+      # The step above rewrites Ruby source and the step below pushes it to
+      # the tap's main branch. Without this check in between, a bad insertion
+      # breaks `brew install` for every user of the tap until a human notices.
+      - name: Validate the patched formula is still valid Ruby
+        run: ruby -c Formula/rook.rb
+
       - name: Commit bottle block
+        env:
+          VERSION: ${{ needs.guard.outputs.version }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -267,13 +285,14 @@ jobs:
           if git diff --cached --quiet; then
             exit 0
           fi
-          git commit -m "Add bottle block for rook ${{ needs.guard.outputs.version }}"
+          git commit -m "Add bottle block for rook ${VERSION}"
           git push origin main
 
       - name: Trigger brew smoke test
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.guard.outputs.version }}
         run: |
           gh workflow run "brew-smoke" \
             --ref main \
-            -f expected-version="${{ needs.guard.outputs.version }}"
+            -f expected-version="${VERSION}"
