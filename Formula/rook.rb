@@ -7,6 +7,20 @@ class Rook < Formula
   desc "Agent assurance from the terminal"
   homepage "https://github.com/LambdaTest/rook"
   url "https://registry.npmjs.org/@testmuai/rook/-/rook-0.1.0.tgz"
+  # KNOWN, DELIBERATE: `brew style` reports FormulaAudit/ComponentsOrder here
+  # ("version should be put before sha256"). Do NOT reorder these lines and do
+  # NOT run `brew style --fix` on them. The release pipeline is anchored to
+  # this layout: .github/workflows/build-bottles.yml inserts the `bottle do`
+  # block immediately after the `version "..."` line, and update-formula.yml's
+  # three `sed -i` substitutions anchor on `^  url "`, `^  sha256 "` and
+  # `^  version "`. Reordering without re-deriving those anchors silently
+  # breaks bottle publishing, and it does not even buy a clean run — the same
+  # cop then reports on the bottle block's position instead. A scoped
+  # `# rubocop:disable` is not an option either: Homebrew's own config enables
+  # Style/DisableCopsWithinSourceCodeDirective for `**/Formula/**/*.rb`
+  # ("Don't allow cops to be disabled in casks and formulae"), so the
+  # directive is itself an offense. The shipping lambdatest/homebrew-kane tap
+  # carries this identical offense on the identical lines.
   sha256 "REPLACE_ON_FIRST_RELEASE" # patched by update-formula.yml (Task 9)
   license "Apache-2.0"
   version "0.1.0"
@@ -14,8 +28,15 @@ class Rook < Formula
   depends_on "node"
 
   def install
-    args = std_npm_args.reject { |arg| arg == "--build-from-source" }
-    system "npm", "install", *args
+    # `.reject` drops --build-from-source, which brew injects unconditionally
+    # (Library/Homebrew/language/node.rb) and which would force a node-gyp
+    # compile instead of using the prebuilt — same as homebrew-kane does.
+    # Kept inline rather than via a local: FormulaAudit/StdNpmArgs matches on
+    # the `system` call's own source text, so hoisting it into `args` reads as
+    # "npm install without std_npm_args" to the cop and flags a false positive
+    # that cannot be suppressed in a formula (Homebrew forbids
+    # `# rubocop:disable` under **/Formula/**/*.rb).
+    system "npm", "install", *std_npm_args.reject { |arg| arg == "--build-from-source" }
 
     node_pkg =
       if OS.mac?
@@ -36,7 +57,7 @@ class Rook < Formula
     end
 
     binary = pkg_dir/"node_modules/#{node_pkg}/bin/node"
-    complete = lambda { binary.exist? && binary.size > 1_000_000 }
+    complete = -> { binary.exist? && binary.size > 1_000_000 }
 
     cd pkg_dir do
       [0, 15, 45].each do |backoff|
@@ -54,7 +75,13 @@ class Rook < Formula
       chmod 0755, binary
     else
       msg = "#{node_pkg}@#{node_pkg_version} did not install a usable bundled Node runtime"
-      if ENV["CI"] || ENV["HOMEBREW_BUILD_BOTTLE"]
+      # ENV.build_bottle? is Homebrew's real API for this (there is no
+      # HOMEBREW_BUILD_BOTTLE environment variable — zero hits in the
+      # Homebrew source). ENV["CI"] still covers CI, which Homebrew does
+      # not clear; build_bottle? is what makes a maintainer's local
+      # `brew install --build-bottle` hard-fail here too, rather than
+      # silently degrading to the opoo path and bottling a node-less tree.
+      if ENV["CI"] || ENV.build_bottle?
         odie msg
       else
         opoo "#{msg}. rook is installed but will fall back to system Node — " \
@@ -84,7 +111,7 @@ class Rook < Formula
       end
     node_root = libexec/"lib/node_modules/@testmuai/rook/node_modules/#{node_pkg}"
     binary = node_root/"bin/node"
-    assert_predicate binary, :exist?, "bundled node binary missing"
+    assert_path_exists binary, "bundled node binary missing"
     assert_predicate binary, :executable?, "bundled node binary not executable — install-time chmod missed"
     pin = JSON.parse((node_root/"package.json").read)["nodeRuntimeVersion"]
     refute_nil pin, "node package carries no nodeRuntimeVersion stamp"
