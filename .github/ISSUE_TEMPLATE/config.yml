@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/LambdaTest/rook/blob/main/SECURITY.md
+    about: Do not open a public issue. Email security@testmuai.com.
+  - name: TestMu AI documentation
+    url: https://www.testmuai.com/support/docs/
+    about: Product documentation and guides.

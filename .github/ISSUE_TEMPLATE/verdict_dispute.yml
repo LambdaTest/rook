@@ -1,0 +1,62 @@
+name: A verdict you disagree with
+description: rook passed something it should have failed, or failed something it should not have
+labels: ["verdict"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        These are the most useful reports we get and the least likely to be
+        filed. Grading is where rook either earns its keep or does not.
+
+        Please redact anything confidential — we need the shape of the
+        disagreement, not your data.
+
+  - type: dropdown
+    id: direction
+    attributes:
+      label: Which way was it wrong
+      options:
+        - It passed, and it should have failed
+        - It failed, and it should have passed
+        - It said "Unable to Verify", and it could have checked
+        - It marked the run flaky, or missed that it was
+    validations:
+      required: true
+
+  - type: textarea
+    id: criterion
+    attributes:
+      label: The criterion
+      description: The acceptance criterion as rook stated it, and the verdict it returned.
+      render: text
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: The evidence rook quoted
+      description: What it cited to justify the verdict.
+      render: text
+
+  - type: textarea
+    id: truth
+    attributes:
+      label: What was actually true, and how you know
+      description: >
+        The part that matters. If rook could have checked this, say where it
+        would have had to look — a file, a tool call, a record.
+    validations:
+      required: true
+
+  - type: input
+    id: ids
+    attributes:
+      label: Run id and scenario id
+
+  - type: input
+    id: version
+    attributes:
+      label: rook version
+    validations:
+      required: true
