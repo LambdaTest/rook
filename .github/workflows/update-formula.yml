@@ -1,0 +1,143 @@
+name: Update Homebrew Formula
+
+on:
+  repository_dispatch:
+    types: [formula-update]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to update the formula to (e.g. 0.1.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Every ${{ }} in this job is routed through an env: var rather than
+      # spliced directly into a run: body. Actions expands ${{ }} before bash
+      # ever parses the script, so a spliced value's quotes, $(...) and
+      # backticks arrive as live shell syntax; as an env var the same bytes
+      # are only ever data. Both version sources here are untrusted:
+      # client_payload crosses a repo boundary (the private repo's
+      # dispatch-homebrew job forwards a human-typed string), and a
+      # workflow_dispatch input has no format constraint at all. This job
+      # holds contents:write + actions:write on the public tap's main branch.
+      - name: Determine version
+        id: version
+        env:
+          INPUT_VERSION: ${{ github.event.inputs.version }}
+          DISPATCH_VERSION: ${{ github.event.client_payload.version }}
+        run: |
+          if [ -n "$INPUT_VERSION" ]; then
+            VERSION="$INPUT_VERSION"
+          else
+            VERSION="$DISPATCH_VERSION"
+          fi
+          # Validate here, before any later step spends time or writes
+          # anything: this value goes on to build a registry URL, three sed
+          # replacements against Ruby source, a commit message and a
+          # workflow dispatch.
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+            echo "::error::version '$VERSION' is not a valid semver-ish string"
+            exit 1
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for npm package availability
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          PKGS="@testmuai/rook \
+                @testmuai/rook-node-darwin-arm64 \
+                @testmuai/rook-node-linux-x64"
+          for PKG in $PKGS; do
+            echo "Waiting for ${PKG}@${VERSION} on npmjs.com..."
+            FOUND=""
+            for i in $(seq 1 24); do
+              STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+                "https://registry.npmjs.org/${PKG}/${VERSION}")
+              if [ "$STATUS" = "200" ]; then
+                FOUND="yes"
+                break
+              fi
+              echo "  attempt ${i}/24 — HTTP ${STATUS}, retrying in 5s..."
+              sleep 5
+            done
+            if [ -z "$FOUND" ]; then
+              echo "ERROR: ${PKG}@${VERSION} not visible on npmjs.com after 2m"
+              exit 1
+            fi
+          done
+
+      - name: Compute tarball sha256
+        id: tarball
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          TARBALL_URL="https://registry.npmjs.org/@testmuai/rook/-/rook-${VERSION}.tgz"
+          curl -fsSL "$TARBALL_URL" -o rook.tgz
+          SHA256=$(sha256sum rook.tgz | awk '{print $1}')
+          echo "tarball-url=${TARBALL_URL}" >> "$GITHUB_OUTPUT"
+          echo "sha256=${SHA256}" >> "$GITHUB_OUTPUT"
+
+      - name: Update formula
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+          TARBALL_URL: ${{ steps.tarball.outputs.tarball-url }}
+          SHA256: ${{ steps.tarball.outputs.sha256 }}
+        run: |
+          FORMULA="Formula/rook.rb"
+
+          sed -i "s|^  url \".*\"|  url \"${TARBALL_URL}\"|" "$FORMULA"
+          sed -i "s|^  sha256 \".*\"|  sha256 \"${SHA256}\"|" "$FORMULA"
+          sed -i "s|^  version \".*\"|  version \"${VERSION}\"|" "$FORMULA"
+
+          python3 - "$FORMULA" <<'PY'
+          import re, sys
+          path = sys.argv[1]
+          with open(path) as f:
+              src = f.read()
+          new = re.sub(r"  bottle do\n(?:.*\n)*?  end\n+", "", src)
+          with open(path, "w") as f:
+              f.write(new)
+          PY
+
+      # Nothing between the transform above and the push below inspects what
+      # the transform produced. Without this, a bad substitution ships broken
+      # Ruby to the tap's main branch and every `brew install` fails until a
+      # human notices.
+      - name: Validate the patched formula is still valid Ruby
+        run: ruby -c Formula/rook.rb
+
+      - name: Commit and push
+        id: commit
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/rook.rb
+          if git diff --cached --quiet; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "Update rook to ${VERSION}"
+          git push
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger Build bottles for the new version
+        if: steps.commit.outputs.committed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh workflow run "Build bottles" \
+            --ref main \
+            -f version="${VERSION}"

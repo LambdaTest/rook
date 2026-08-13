@@ -58,9 +58,28 @@ What a run gives you:
 
 ## Install
 
-Not yet published. When the first release lands, this section carries a one-line installer and per-platform archives for macOS, Linux and Windows on both x64 and arm64.
+Three ways, on macOS and Linux, x64 and arm64. Each one carries its own Node runtime, so none of them needs Node installed.
 
-Until then, [open an issue](https://github.com/LambdaTest/rook/issues/new/choose) if you would like to be told when it does.
+**Homebrew**
+
+```
+brew tap LambdaTest/rook https://github.com/LambdaTest/rook.git
+brew install rook
+```
+
+**Shell installer** — downloads the archive matching your platform, verifies its checksum, and links `rook` into `~/.local/bin`. Pass `--dir` to put it somewhere else, or `--version X.Y.Z` to pin one.
+
+```
+curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | bash
+```
+
+**npm** — if you would rather manage it with your other global CLIs.
+
+```
+npm install -g @testmuai/rook
+```
+
+Nothing is published yet: these land with the first tag, and until then every one of them will 404. [Open an issue](https://github.com/LambdaTest/rook/issues/new/choose) if you would like to be told when that happens.
 
 ## Five minutes
 

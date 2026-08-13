@@ -1,0 +1,38 @@
+name: test-scripts
+
+# The five harnesses under scripts/ extract the real sed/Python/bash logic
+# live out of the committed workflow files and install.sh and run it, so
+# they only stay honest if something runs them. Before this, they ran when
+# a human remembered to.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  scripts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      # ubuntu-latest ships GNU sed, so test-formula-patch.sh's gsed
+      # fallback (for BSD sed on macOS) is simply unused here.
+      - name: Run the script harnesses
+        run: |
+          shopt -s nullglob
+          harnesses=(scripts/test-*.sh)
+          # A glob that quietly matches nothing is a green run that checked
+          # nothing. There are 5 harnesses; fewer means one was renamed or
+          # deleted, and that should be a red run, not a silent gap.
+          if [ "${#harnesses[@]}" -lt 5 ]; then
+            echo "::error::expected at least 5 harnesses matching scripts/test-*.sh, found ${#harnesses[@]}"
+            exit 1
+          fi
+          for t in "${harnesses[@]}"; do
+            echo "::group::$t"
+            bash "$t"
+            echo "::endgroup::"
+          done

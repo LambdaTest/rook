@@ -1,0 +1,57 @@
+name: brew-smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected-version:
+        required: true
+        type: string
+
+# Neither job touches the GitHub API — they tap over https and run brew. An
+# empty permissions block keeps the job token from inheriting whatever the
+# repo/org default happens to be on a public repo.
+permissions: {}
+
+jobs:
+  macos-arm:
+    runs-on: macos-14
+    timeout-minutes: 10
+    steps:
+      # No setup-homebrew here: GitHub's macOS runner images ship Homebrew
+      # preinstalled. The Linux job below does need it.
+      - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
+      - run: brew install lambdatest/rook/rook
+      # EXPECTED_VERSION comes in through env: rather than being spliced into
+      # the shell body. Actions expands ${{ }} before bash parses the script,
+      # so a spliced value would be live shell syntax inside the `case`
+      # pattern below — `x"*) ;; *) <cmd> ;; esac #` closes the pattern list
+      # early and runs <cmd>. As an env var it is only ever data.
+      - name: Check installed version
+        env:
+          EXPECTED_VERSION: ${{ inputs.expected-version }}
+        run: |
+          OUT="$(rook --version)"
+          case "$OUT" in
+            *"$EXPECTED_VERSION"*) ;;
+            *) echo "::error::got '$OUT'"; exit 1 ;;
+          esac
+
+  linux-x64:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # Homebrew is NOT preinstalled on the ubuntu-latest runner image —
+      # without this the job fails at `brew: command not found`. Pinned to
+      # the same commit as build-bottles.yml; keep the two in step.
+      - uses: Homebrew/actions/setup-homebrew@b35a29a0f83ee8b8ca07b219fc8db3d7bb88ab49 # 2026.08.10.2
+      - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
+      - run: brew install lambdatest/rook/rook
+      - name: Check installed version
+        env:
+          EXPECTED_VERSION: ${{ inputs.expected-version }}
+        run: |
+          OUT="$(rook --version)"
+          case "$OUT" in
+            *"$EXPECTED_VERSION"*) ;;
+            *) echo "::error::got '$OUT'"; exit 1 ;;
+          esac
