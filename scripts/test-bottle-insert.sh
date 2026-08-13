@@ -90,7 +90,14 @@ run_transform() {
   ( cd "$dir" && VERSION="$version" bash -c "$TRANSFORM" )
 }
 
-sha_of() { shasum -a 256 "$1" | awk '{print $1}'; }
+# Independent of the transform's own hashing: whichever tool the host has.
+# (macOS ships shasum; the ubuntu-latest runner this now also runs on ships
+# sha256sum, and shasum only via perl.)
+if command -v sha256sum >/dev/null 2>&1; then
+  sha_of() { sha256sum "$1" | awk '{print $1}'; }
+else
+  sha_of() { shasum -a 256 "$1" | awk '{print $1}'; }
+fi
 # absent PATTERN FILE: succeeds (exit 0) iff PATTERN is NOT present in FILE
 # (fixed-string match) — used with check() to assert something was cleaned
 # up, since check() treats a 0 exit as PASS.
