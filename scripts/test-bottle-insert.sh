@@ -104,22 +104,34 @@ label_order_in() {
 
 # =============================================================================
 # Case A: no existing bottle block (scripts/fixtures/rook-formula-no-bottle.rb)
-# — 4 labels: 2 arm64 macOS names at different macos_rank values, one bare
-# (intel) macOS name, and linux, specifically to exercise the sort_key's
-# "macOS newest-first by macos_rank, then linux last" ordering with more
-# than one macOS label, not just one of each group.
+# — 5 labels chosen so the correct macos_rank order is NOT the same as plain
+# alphabetical order of the label strings. This matters: because arm64_*
+# labels all start with "a" and x86_64_linux starts with "x", the *group*
+# boundaries (arm64 macOS < bare/intel macOS < linux) happen to fall out of
+# plain alphabetical sorting too, for any label set — that part alone can't
+# tell sort_key apart from `sorted(shas.keys())` with no key at all. What
+# CAN tell them apart is the order *within* a group, where macos_rank and
+# alphabetical order of the codename disagree:
+#   - arm64_sequoia (rank 1), arm64_monterey (rank 4), arm64_bigsur (not in
+#     macos_rank -> falls to the `.get(name, 99)` fallback, so it must sort
+#     LAST within the arm64 group despite "bigsur" being alphabetically
+#     FIRST of the three) — this also exercises the unrecognized-codename
+#     fallback branch, not just the known ranks.
+#   - tahoe (rank 0, bare/intel-group) and x86_64_linux (always last).
+# Correct order: arm64_sequoia, arm64_monterey, arm64_bigsur, tahoe,
+# x86_64_linux. Plain alphabetical order of these exact 5 strings is
+# arm64_bigsur, arm64_monterey, arm64_sequoia, tahoe, x86_64_linux — a
+# different order (first and third swapped) — so a test that only checked
+# "does the output order match X" with an alphabetically-coincident X could
+# pass even with sort_key's key= dropped entirely. This label set can't.
 # =============================================================================
 CASE_A="$WORKDIR/case-a"
 mkdir -p "$CASE_A/Formula" "$CASE_A/bottles"
 cp "$FIXTURES/rook-formula-no-bottle.rb" "$CASE_A/Formula/rook.rb"
 
 VERSION_A="0.1.0"
-# tahoe (rank 0) and ventura (rank 3): both arm64, so both must sort ahead
-# of the bare/intel "sonoma" (rank 2, non-arm64 group) and of linux
-# (always last) — and tahoe must sort ahead of ventura within the arm64
-# group (lower rank = newer = first).
-declare -a LABELS_A=(arm64_tahoe arm64_ventura sonoma x86_64_linux)
-declare -a EXPECTED_ORDER_A=(arm64_tahoe arm64_ventura sonoma x86_64_linux)
+declare -a LABELS_A=(arm64_sequoia arm64_monterey arm64_bigsur tahoe x86_64_linux)
+declare -a EXPECTED_ORDER_A=(arm64_sequoia arm64_monterey arm64_bigsur tahoe x86_64_linux)
 for label in "${LABELS_A[@]}"; do
   printf 'bottle-content-%s\n' "$label" > "$CASE_A/bottles/rook-${VERSION_A}.${label}.bottle.tar.gz"
 done
@@ -145,7 +157,7 @@ check "(a) one sha256 line per label (${#LABELS_A[@]})" \
 
 ACTUAL_ORDER_A="$(label_order_in "$CASE_A/Formula/rook.rb" | tr '\n' ',' )"
 EXPECTED_ORDER_A_STR="$(IFS=,; echo "${EXPECTED_ORDER_A[*]}"),"
-check "(a) sort order is macOS newest-first (arm64_tahoe, arm64_ventura), then intel macOS (sonoma), then linux last: $ACTUAL_ORDER_A" \
+check "(a) sort order matches macos_rank, not plain alphabetical (sequoia, monterey, then fallback-ranked bigsur; then intel tahoe; then linux last): $ACTUAL_ORDER_A" \
       "(a) sort order wrong: got [$ACTUAL_ORDER_A], expected [$EXPECTED_ORDER_A_STR]" \
       [ "$ACTUAL_ORDER_A" = "$EXPECTED_ORDER_A_STR" ]
 
@@ -217,7 +229,7 @@ check "(b) new root_url reflects the bumped version" \
 
 check "(b) stale root_url from the old version is gone" \
       "(b) stale root_url from the old version is still present" \
-      absent "download/rook-0.1.0" "$CASE_B/Formula/rook.rb"
+      absent "download/v0.1.0" "$CASE_B/Formula/rook.rb"
 
 check "(b) stale fake sha256 (arm64_sequoia, old '1111...') is gone" \
       "(b) stale fake sha256 (arm64_sequoia, old '1111...') survived" \
