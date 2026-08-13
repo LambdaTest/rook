@@ -1,0 +1,110 @@
+name: Update Homebrew Formula
+
+on:
+  repository_dispatch:
+    types: [formula-update]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to update the formula to (e.g. 0.1.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=${{ github.event.client_payload.version }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Wait for npm package availability
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          PKGS="@testmuai/rook \
+                @testmuai/rook-node-darwin-arm64 \
+                @testmuai/rook-node-linux-x64"
+          for PKG in $PKGS; do
+            echo "Waiting for ${PKG}@${VERSION} on npmjs.com..."
+            FOUND=""
+            for i in $(seq 1 24); do
+              STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+                "https://registry.npmjs.org/${PKG}/${VERSION}")
+              if [ "$STATUS" = "200" ]; then
+                FOUND="yes"
+                break
+              fi
+              echo "  attempt ${i}/24 — HTTP ${STATUS}, retrying in 5s..."
+              sleep 5
+            done
+            if [ -z "$FOUND" ]; then
+              echo "ERROR: ${PKG}@${VERSION} not visible on npmjs.com after 2m"
+              exit 1
+            fi
+          done
+
+      - name: Compute tarball sha256
+        id: tarball
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TARBALL_URL="https://registry.npmjs.org/@testmuai/rook/-/rook-${VERSION}.tgz"
+          curl -fsSL "$TARBALL_URL" -o rook.tgz
+          SHA256=$(sha256sum rook.tgz | awk '{print $1}')
+          echo "tarball-url=${TARBALL_URL}" >> "$GITHUB_OUTPUT"
+          echo "sha256=${SHA256}" >> "$GITHUB_OUTPUT"
+
+      - name: Update formula
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TARBALL_URL="${{ steps.tarball.outputs.tarball-url }}"
+          SHA256="${{ steps.tarball.outputs.sha256 }}"
+          FORMULA="Formula/rook.rb"
+
+          sed -i "s|^  url \".*\"|  url \"${TARBALL_URL}\"|" "$FORMULA"
+          sed -i "s|^  sha256 \".*\"|  sha256 \"${SHA256}\"|" "$FORMULA"
+          sed -i "s|^  version \".*\"|  version \"${VERSION}\"|" "$FORMULA"
+
+          python3 - "$FORMULA" <<'PY'
+          import re, sys
+          path = sys.argv[1]
+          with open(path) as f:
+              src = f.read()
+          new = re.sub(r"  bottle do\n(?:.*\n)*?  end\n+", "", src)
+          with open(path, "w") as f:
+              f.write(new)
+          PY
+
+      - name: Commit and push
+        id: commit
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/rook.rb
+          if git diff --cached --quiet; then
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "Update rook to ${VERSION}"
+          git push
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger Build bottles for the new version
+        if: steps.commit.outputs.committed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run "Build bottles" \
+            --ref main \
+            -f version="${{ steps.version.outputs.version }}"
