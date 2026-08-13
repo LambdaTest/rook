@@ -53,6 +53,12 @@ check() {
   shift 2
   if "$@"; then pass "$ok_msg"; else fail "$fail_msg"; fi
 }
+# contains NEEDLE HAYSTACK / lacks NEEDLE HAYSTACK: substring predicates in
+# command form (check() takes a command, not an inline pipeline). `lacks`
+# is a whole-string negation — NOT `grep -v`, which is per-line and would
+# pass on any multi-line output that has one clean line in it.
+contains() { printf '%s' "$2" | grep -qiF -- "$1"; }
+lacks() { ! contains "$1" "$2"; }
 
 if [ ! -f "$INSTALL_SH" ]; then
   echo "FATAL: $INSTALL_SH not found" >&2
@@ -258,6 +264,151 @@ check "(c) bin/rook still resolves correctly after a re-install" \
 check "(c) re-install did not nest a copy inside itself (cp -R into an existing dir)" \
       "(c) re-install nested a copy inside the target dir — found ${TARGET_DIR_A}/package (the tarball's internal dir name leaking through, meaning cp -R copied INTO the existing target instead of replacing it)" \
       [ ! -e "${TARGET_DIR_A}/package" ]
+
+# =============================================================================
+# Case D: a sidecar whose digest is valid but belongs to a DIFFERENT file.
+#
+# `sha256sum -c` / `shasum -c` hash whatever path is written *inside* the
+# checksum file, which comes from the same (untrusted) download as the
+# tarball. A sidecar reading
+#
+#     e3b0c442...b855  /dev/null
+#
+# is a legitimate, correct checksum line — that is genuinely the sha256 of
+# an empty file, a constant on every machine — so `-c` reports
+# "/dev/null: OK" and exits 0 while the tarball is never hashed at all.
+#
+# Both sub-cases below serve the SAME (hostile, non-release) tarball; the
+# only difference is the sidecar's filename field. D-control uses an honest
+# sidecar and must install — proving the tarball is otherwise perfectly
+# installable, so D-decoy's abort is attributable to the checksum binding
+# and not to some incidental defect in the fixture.
+# =============================================================================
+HOSTILE_STAGE="$WORKDIR/stage-hostile"
+HOSTILE_ROOT="$HOSTILE_STAGE/package"
+mkdir -p "$HOSTILE_ROOT/bin" "$HOSTILE_ROOT/lib/node_modules/@testmuai/rook"
+cat >"$HOSTILE_ROOT/bin/rook" <<EOF
+#!/usr/bin/env bash
+# Stands in for a substituted release payload: same shape as the real
+# asset (so it extracts and installs fine), different content.
+echo "SUBSTITUTED-PAYLOAD"
+EOF
+chmod +x "$HOSTILE_ROOT/bin/rook"
+echo '{"name":"@testmuai/rook","version":"9.9.9-fixture"}' \
+  >"$HOSTILE_ROOT/lib/node_modules/@testmuai/rook/package.json"
+
+# D-control: hostile tarball + an HONEST sidecar for it -> must install.
+FIXTURE_DIR_D0="$WORKDIR/fixtures-hostile-honest-sidecar"
+mkdir -p "$FIXTURE_DIR_D0"
+tar -C "$HOSTILE_STAGE" -czf "$FIXTURE_DIR_D0/$ASSET" "package"
+( cd "$FIXTURE_DIR_D0" && checksum_of "$ASSET" >"$CHECKSUM_ASSET" )
+
+HOME_D0="$WORKDIR/home-d0"
+DIR_D0="$WORKDIR/bin-d0"
+mkdir -p "$HOME_D0" "$DIR_D0"
+INSTALL_OUT_D0="$(
+  env -i HOME="$HOME_D0" PATH="$STUB_BIN:/usr/bin:/bin:/usr/sbin:/sbin" \
+    ROOK_TEST_FIXTURE_DIR="$FIXTURE_DIR_D0" \
+    bash "$INSTALL_SH" --version "$VERSION" --dir "$DIR_D0" 2>&1
+)"
+RC_D0=$?
+
+check "(d-control) same tarball with an honest sidecar installs (exit 0)" \
+      "(d-control) the control install failed ($RC_D0) — Case D's abort would not be attributable to the sidecar. output:
+$INSTALL_OUT_D0" \
+      [ "$RC_D0" -eq 0 ]
+
+RUN_OUT_D0="$("${DIR_D0}/rook" 2>&1 || true)"
+check "(d-control) the control install really did place the substituted payload" \
+      "(d-control) the control install did not place the substituted payload — got: $RUN_OUT_D0" \
+      [ "$RUN_OUT_D0" = "SUBSTITUTED-PAYLOAD" ]
+
+# D-decoy: same tarball, sidecar pointing at /dev/null -> must abort.
+FIXTURE_DIR_D1="$WORKDIR/fixtures-decoy-sidecar"
+mkdir -p "$FIXTURE_DIR_D1"
+cp "$FIXTURE_DIR_D0/$ASSET" "$FIXTURE_DIR_D1/$ASSET"
+echo "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  /dev/null" \
+  >"$FIXTURE_DIR_D1/$CHECKSUM_ASSET"
+
+HOME_D1="$WORKDIR/home-d1"
+DIR_D1="$WORKDIR/bin-d1"
+mkdir -p "$HOME_D1" "$DIR_D1"
+INSTALL_OUT_D1="$(
+  env -i HOME="$HOME_D1" PATH="$STUB_BIN:/usr/bin:/bin:/usr/sbin:/sbin" \
+    ROOK_TEST_FIXTURE_DIR="$FIXTURE_DIR_D1" \
+    bash "$INSTALL_SH" --version "$VERSION" --dir "$DIR_D1" 2>&1
+)"
+RC_D1=$?
+
+check "(d) a sidecar naming a decoy file (/dev/null) aborts the install" \
+      "(d) a sidecar naming /dev/null did NOT abort the install (exit $RC_D1) — the checksum is being verified against the sidecar's own filename field, not the downloaded tarball! output:
+$INSTALL_OUT_D1" \
+      [ "$RC_D1" -ne 0 ]
+
+check "(d) the decoy-sidecar failure names a checksum mismatch, not a bash error" \
+      "(d) the decoy-sidecar failure message doesn't name a checksum mismatch — got: $INSTALL_OUT_D1" \
+      contains "checksum mismatch" "$INSTALL_OUT_D1"
+
+check "(d) no install tree was created after a decoy-sidecar failure" \
+      "(d) an install tree was created at ${HOME_D1}/.testmuai/rook-${VERSION} despite the decoy sidecar" \
+      [ ! -e "${HOME_D1}/.testmuai/rook-${VERSION}" ]
+
+check "(d) no symlink was created after a decoy-sidecar failure" \
+      "(d) a symlink was created at ${DIR_D1}/rook despite the decoy sidecar" \
+      [ ! -e "${DIR_D1}/rook" ]
+
+# A sidecar with no digest line at all, and one with several, are both
+# unusable — neither may be silently reduced to "close enough". The
+# no-digest shape is not hypothetical: macOS 26's /sbin/sha256sum
+# ("sha256sum (Darwin) 1.0") answers `-c` on a sidecar whose every line is
+# malformed with `WARNING: 1 line is improperly formatted` and **exit 0**,
+# so a truncated or error-page sidecar used to verify clean.
+for shape in empty multi; do
+  FIXTURE_DIR_E="$WORKDIR/fixtures-sidecar-$shape"
+  mkdir -p "$FIXTURE_DIR_E"
+  cp "$FIXTURE_DIR/$ASSET" "$FIXTURE_DIR_E/$ASSET"
+  if [ "$shape" = "empty" ]; then
+    printf 'not a checksum file at all\n' >"$FIXTURE_DIR_E/$CHECKSUM_ASSET"
+  else
+    { checksum_of "$FIXTURE_DIR/$ASSET" | awk '{print $1 "  a.tar.gz"}'
+      checksum_of "$FIXTURE_DIR/$ASSET" | awk '{print $1 "  b.tar.gz"}'
+    } >"$FIXTURE_DIR_E/$CHECKSUM_ASSET"
+  fi
+  HOME_E="$WORKDIR/home-e-$shape"
+  DIR_E="$WORKDIR/bin-e-$shape"
+  mkdir -p "$HOME_E" "$DIR_E"
+  INSTALL_OUT_E="$(
+    env -i HOME="$HOME_E" PATH="$STUB_BIN:/usr/bin:/bin:/usr/sbin:/sbin" \
+      ROOK_TEST_FIXTURE_DIR="$FIXTURE_DIR_E" \
+      bash "$INSTALL_SH" --version "$VERSION" --dir "$DIR_E" 2>&1
+  )"
+  RC_E=$?
+  check "(e/$shape) a sidecar without exactly one digest aborts the install" \
+        "(e/$shape) a sidecar without exactly one digest did not abort (exit $RC_E) — output:
+$INSTALL_OUT_E" \
+        [ "$RC_E" -ne 0 ]
+done
+
+# =============================================================================
+# Case F: --version / --dir as the very last argument must produce a usage
+# message, not `line N: $2: unbound variable` (F14).
+# =============================================================================
+for flag in --version --dir; do
+  OUT_F="$(
+    env -i HOME="$WORKDIR/home-f" PATH="$STUB_BIN:/usr/bin:/bin:/usr/sbin:/sbin" \
+      bash "$INSTALL_SH" "$flag" 2>&1
+  )"
+  RC_F=$?
+  check "(f) trailing '$flag' exits nonzero" \
+        "(f) trailing '$flag' exited 0" \
+        [ "$RC_F" -ne 0 ]
+  check "(f) trailing '$flag' prints a usage message" \
+        "(f) trailing '$flag' did not print usage — got: $OUT_F" \
+        contains "Usage: install.sh" "$OUT_F"
+  check "(f) trailing '$flag' does not leak a bash 'unbound variable' error" \
+        "(f) trailing '$flag' leaked a raw bash error — got: $OUT_F" \
+        lacks "unbound variable" "$OUT_F"
+done
 
 # =============================================================================
 # Structural check: install.sh's actual logic never references `node`

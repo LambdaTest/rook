@@ -21,12 +21,28 @@ REPO="LambdaTest/rook"
 INSTALL_DIR="${HOME}/.local/bin"
 VERSION=""
 
+usage() { echo "Usage: install.sh [--version X.Y.Z] [--dir /path/to/bin]"; }
+
+# missing_value FLAG: called when a value-taking flag is the last argument.
+# Without this, `$2` under `set -u` aborts with a raw "line N: $2: unbound
+# variable" — correct (fails closed) but a bash-internals leak rather than
+# an error a user can act on.
+missing_value() {
+  echo "Error: $1 requires a value." >&2
+  usage >&2
+  exit 1
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --version) VERSION="$2"; shift 2 ;;
-    --dir)     INSTALL_DIR="$2"; shift 2 ;;
+    --version)
+      [[ $# -ge 2 ]] || missing_value "$1"
+      VERSION="$2"; shift 2 ;;
+    --dir)
+      [[ $# -ge 2 ]] || missing_value "$1"
+      INSTALL_DIR="$2"; shift 2 ;;
     --help)
-      echo "Usage: install.sh [--version X.Y.Z] [--dir /path/to/bin]"
+      usage
       exit 0
       ;;
     *) echo "Unknown option: $1" >&2; exit 1 ;;
@@ -39,8 +55,15 @@ resolve_version() {
     return
   fi
   local latest
+  # `sed -n ... p` (print only on a match), NOT a bare `s///`: a plain
+  # substitution passes a non-matching line through UNCHANGED, so a
+  # `tag_name` that isn't a `v<version>` tag — e.g. the `rook-<version>`
+  # tag build-bottles.yml publishes bottles under — would make $latest the
+  # whole raw JSON line, sail past the `-z` guard below, and fail much
+  # later as a confusing 404 on a garbage download URL. With `-n`+`p` a
+  # non-match produces empty output and the guard does its job.
   latest=$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" \
-    | grep '"tag_name"' | sed -E 's/.*"v([^"]+)".*/\1/')
+    | grep '"tag_name"' | sed -n -E 's/.*"tag_name": *"v([^"]+)".*/\1/p')
   if [[ -z "$latest" ]]; then
     echo "Error: Could not determine latest version" >&2
     exit 1
@@ -93,20 +116,56 @@ detect_platform() {
   echo "${os_tag}-${arch_tag}"
 }
 
-# verify_checksum DIR FILE: runs FILE (a `sha256sum -c`-format checksum
-# file) against the files in DIR. Picks the tool by presence (`command
-# -v`), not by "try sha256sum and fall back to shasum on any nonzero exit"
-# — that pattern (a) trips shellcheck SC2015 and (b) can't tell "tool
-# missing" apart from "checksum genuinely failed", which matters less here
-# only because either cause already aborts the install either way, but the
-# presence-check version says so unambiguously.
-verify_checksum() {
-  local dir="$1" file="$2"
+# sha256_of FILE: prints FILE's sha256 as a bare lowercase hex digest.
+# Picks the tool by presence (`command -v`), not by "try sha256sum and fall
+# back to shasum on any nonzero exit" — that pattern (a) trips shellcheck
+# SC2015 and (b) can't tell "tool missing" apart from "hashing genuinely
+# failed".
+sha256_of() {
   if command -v sha256sum >/dev/null 2>&1; then
-    ( cd "$dir" && sha256sum -c "$file" )
+    sha256sum "$1" | awk '{print $1}'
   else
-    ( cd "$dir" && shasum -a 256 -c "$file" )
+    shasum -a 256 "$1" | awk '{print $1}'
   fi
+}
+
+# verify_checksum FILE SIDECAR: verifies that FILE — the artifact actually
+# downloaded, at its known local path — hashes to the digest published in
+# SIDECAR.
+#
+# Deliberately NOT `sha256sum -c SIDECAR`: that delegates the choice of
+# what gets hashed to the *filename recorded inside the sidecar*, which is
+# attacker-controlled content from the same download. A sidecar reading
+# `e3b0c442...b855  /dev/null` verifies clean under `-c` (that IS the
+# sha256 of an empty file) while the tarball is never hashed at all — the
+# check passes and the payload is unverified. So the digest is parsed out
+# of the sidecar and compared against a digest this script computes itself,
+# for the path it chose; the sidecar's filename field is ignored entirely.
+#
+# The sidecar must contain exactly one line of the `sha256sum` output shape
+# (64 hex chars, then end-of-line or whitespace + a filename). Zero or
+# several is a corrupt/unexpected file and aborts rather than picking one.
+verify_checksum() {
+  local file="$1" sidecar="$2" expected actual digest_count
+
+  expected=$(sed -n -E 's/^([0-9a-fA-F]{64})([[:space:]].*)?$/\1/p' "$sidecar" \
+    | tr '[:upper:]' '[:lower:]')
+  digest_count=$(printf '%s' "$expected" | grep -c . || true)
+  if [[ "$digest_count" -ne 1 ]]; then
+    echo "Error: ${sidecar##*/} does not contain exactly one sha256 digest (found ${digest_count})." >&2
+    echo "Refusing to install from an unverifiable download." >&2
+    return 1
+  fi
+
+  actual=$(sha256_of "$file")
+  if [[ "$expected" != "$actual" ]]; then
+    echo "Error: checksum mismatch for ${file##*/}" >&2
+    echo "  published: ${expected}" >&2
+    echo "  actual:    ${actual}" >&2
+    return 1
+  fi
+
+  echo "${file##*/}: OK (sha256 ${actual})"
 }
 
 main() {
@@ -143,7 +202,7 @@ main() {
 
   echo "Verifying checksum..."
   curl -fsSL -o "${tmp_dir}/${checksum_asset}" "$checksum_url"
-  verify_checksum "$tmp_dir" "$checksum_asset"
+  verify_checksum "${tmp_dir}/${asset}" "${tmp_dir}/${checksum_asset}"
 
   mkdir -p "$INSTALL_DIR"
 
