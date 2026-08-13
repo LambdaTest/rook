@@ -206,8 +206,8 @@ check "(b) exactly one bottle block present after re-run (not two)" \
       "(b) bottle block count is not exactly 1 — strip-then-reinsert left duplicates" \
       [ "$(grep -c '^  bottle do$' "$CASE_B/Formula/rook.rb")" -eq 1 ]
 
-check "(b) exactly one bottle-block terminator (single 'end' consumed by the block, none leaked)" \
-      "(b) bottle-block sha256 line count doesn't match the new label count — old block's lines may have survived" \
+check "(b) sha256 line count matches only the new labels (${#LABELS_B[@]}) — old block's lines did not survive alongside the new ones" \
+      "(b) sha256 line count doesn't match the new label count — old block's lines may have leaked through alongside the new ones" \
       [ "$(grep -c '^    sha256 cellar:' "$CASE_B/Formula/rook.rb")" -eq "${#LABELS_B[@]}" ]
 
 check "(b) new root_url reflects the bumped version" \
