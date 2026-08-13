@@ -31,6 +31,15 @@ trap 'rm -rf "$WORKDIR"' EXIT
 FAIL=0
 pass() { echo "PASS: $1"; }
 fail() { echo "FAIL: $1"; FAIL=1; }
+# check <ok-message> <fail-message> <command...>: explicit if/else rather
+# than `cmd && pass || fail`, which shellcheck (rightly, SC2015) flags —
+# `fail` would also run if `pass` itself ever failed, since A && B || C is
+# not if-then-else.
+check() {
+  local ok_msg="$1" fail_msg="$2"
+  shift 2
+  if "$@"; then pass "$ok_msg"; else fail "$fail_msg"; fi
+}
 
 if [ ! -f "$WORKFLOW" ]; then
   echo "FATAL: $WORKFLOW not found" >&2
@@ -88,15 +97,15 @@ WITH_BOTTLE="$WORKDIR/with-bottle.rb"
 cp "$FIXTURES/rook-formula-with-bottle.rb" "$WITH_BOTTLE"
 run_transform "$WITH_BOTTLE" "$VERSION" "$TARBALL_URL" "$SHA256"
 
-grep -qF "url \"$TARBALL_URL\"" "$WITH_BOTTLE" \
-  && pass "(a) url replaced (with-bottle fixture)" \
-  || fail "(a) url NOT replaced (with-bottle fixture)"
-grep -qF "sha256 \"$SHA256\"" "$WITH_BOTTLE" \
-  && pass "(a) sha256 replaced (with-bottle fixture)" \
-  || fail "(a) sha256 NOT replaced (with-bottle fixture)"
-grep -qF "version \"$VERSION\"" "$WITH_BOTTLE" \
-  && pass "(a) version replaced (with-bottle fixture)" \
-  || fail "(a) version NOT replaced (with-bottle fixture)"
+check "(a) url replaced (with-bottle fixture)" \
+      "(a) url NOT replaced (with-bottle fixture)" \
+      grep -qF "url \"$TARBALL_URL\"" "$WITH_BOTTLE"
+check "(a) sha256 replaced (with-bottle fixture)" \
+      "(a) sha256 NOT replaced (with-bottle fixture)" \
+      grep -qF "sha256 \"$SHA256\"" "$WITH_BOTTLE"
+check "(a) version replaced (with-bottle fixture)" \
+      "(a) version NOT replaced (with-bottle fixture)" \
+      grep -qF "version \"$VERSION\"" "$WITH_BOTTLE"
 # Anchored to match exactly what the python regex targets (a line that is
 # precisely "  bottle do") — a loose substring check would also match the
 # words "bottle do" inside this fixture's own descriptive comments above,
@@ -106,9 +115,9 @@ if grep -qE '^  bottle do$' "$WITH_BOTTLE"; then
 else
   pass "(b) stale bottle block stripped"
 fi
-grep -qF 'depends_on "node"' "$WITH_BOTTLE" \
-  && pass "(b) content after the bottle block survived the strip" \
-  || fail "(b) the strip regex ate content past the bottle block's 'end'"
+check "(b) content after the bottle block survived the strip" \
+      "(b) the strip regex ate content past the bottle block's 'end'" \
+      grep -qF 'depends_on "node"' "$WITH_BOTTLE"
 
 # --- Case B: fixture with NO bottle block — must come out otherwise identical
 NO_BOTTLE="$WORKDIR/no-bottle.rb"
@@ -116,15 +125,15 @@ cp "$FIXTURES/rook-formula-no-bottle.rb" "$WORKDIR/no-bottle.orig.rb"
 cp "$FIXTURES/rook-formula-no-bottle.rb" "$NO_BOTTLE"
 run_transform "$NO_BOTTLE" "$VERSION" "$TARBALL_URL" "$SHA256"
 
-grep -qF "url \"$TARBALL_URL\"" "$NO_BOTTLE" \
-  && pass "(c) url replaced (no-bottle fixture)" \
-  || fail "(c) url NOT replaced (no-bottle fixture)"
-grep -qF "sha256 \"$SHA256\"" "$NO_BOTTLE" \
-  && pass "(c) sha256 replaced (no-bottle fixture)" \
-  || fail "(c) sha256 NOT replaced (no-bottle fixture)"
-grep -qF "version \"$VERSION\"" "$NO_BOTTLE" \
-  && pass "(c) version replaced (no-bottle fixture)" \
-  || fail "(c) version NOT replaced (no-bottle fixture)"
+check "(c) url replaced (no-bottle fixture)" \
+      "(c) url NOT replaced (no-bottle fixture)" \
+      grep -qF "url \"$TARBALL_URL\"" "$NO_BOTTLE"
+check "(c) sha256 replaced (no-bottle fixture)" \
+      "(c) sha256 NOT replaced (no-bottle fixture)" \
+      grep -qF "sha256 \"$SHA256\"" "$NO_BOTTLE"
+check "(c) version replaced (no-bottle fixture)" \
+      "(c) version NOT replaced (no-bottle fixture)" \
+      grep -qF "version \"$VERSION\"" "$NO_BOTTLE"
 
 # Diff against the pre-patch original, excluding nothing: only the 3 patched
 # lines may differ. 3 changed lines => 6 diff lines (3 "<" + 3 ">"). Any
