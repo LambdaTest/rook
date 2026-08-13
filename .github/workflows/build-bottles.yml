@@ -259,10 +259,13 @@ jobs:
           with open("Formula/rook.rb") as f:
               src = f.read()
           src = re.sub(r"  bottle do\n(?:.*\n)*?  end\n+", "", src)
-          # Coupled to Formula/rook.rb's field order: the block is anchored to
-          # the `version "..."` line, which that file's own comment says must
+          # Coupled to Formula/rook.rb's field order: the block goes directly
+          # after that file's version line, which its own comment says must
           # not be reordered (doing so also moves this insertion point).
-          src, n = re.subn(r'(  version "[^"]+"\n)\n*', r"\1\n" + block + "\n", src, count=1)
+          # `[^"\n]` rather than `[^"]`: Python's negated class matches
+          # newlines, so the looser form can start on a comment that merely
+          # mentions the anchor and run to a closing quote lines away.
+          src, n = re.subn(r'(  version "[^"\n]+"\n)\n*', r"\1\n" + block + "\n", src, count=1)
           if n != 1:
               sys.exit("Could not locate version line for bottle block insertion")
           with open("Formula/rook.rb", "w") as f:

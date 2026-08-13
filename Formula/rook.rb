@@ -7,20 +7,20 @@ class Rook < Formula
   desc "Agent assurance from the terminal"
   homepage "https://github.com/LambdaTest/rook"
   url "https://registry.npmjs.org/@testmuai/rook/-/rook-0.1.0.tgz"
-  # KNOWN, DELIBERATE: `brew style` reports FormulaAudit/ComponentsOrder here
-  # ("version should be put before sha256"). Do NOT reorder these lines and do
-  # NOT run `brew style --fix` on them. The release pipeline is anchored to
-  # this layout: .github/workflows/build-bottles.yml inserts the `bottle do`
-  # block immediately after the `version "..."` line, and update-formula.yml's
-  # three `sed -i` substitutions anchor on `^  url "`, `^  sha256 "` and
-  # `^  version "`. Reordering without re-deriving those anchors silently
-  # breaks bottle publishing, and it does not even buy a clean run — the same
-  # cop then reports on the bottle block's position instead. A scoped
-  # `# rubocop:disable` is not an option either: Homebrew's own config enables
-  # Style/DisableCopsWithinSourceCodeDirective for `**/Formula/**/*.rb`
-  # ("Don't allow cops to be disabled in casks and formulae"), so the
-  # directive is itself an offense. The shipping lambdatest/homebrew-kane tap
-  # carries this identical offense on the identical lines.
+  # KNOWN, DELIBERATE: brew style reports FormulaAudit/ComponentsOrder on the
+  # version line below (it wants version before sha256). Do NOT reorder these
+  # three lines, and do NOT run `brew style --fix` on them. The release
+  # pipeline is anchored to this layout: build-bottles.yml inserts the bottle
+  # block directly after the version line, and update-formula.yml patches
+  # url/sha256/version with three start-of-line-anchored sed substitutions.
+  # Reordering without re-deriving those anchors silently breaks bottle
+  # publishing, and it does not even buy a clean run — the same cop then
+  # reports on the bottle block's position instead. A scoped
+  # `rubocop:disable` is not available either: Homebrew's own config enables
+  # Style/DisableCopsWithinSourceCodeDirective over every formula ("Don't
+  # allow cops to be disabled in casks and formulae"), so the directive is
+  # itself an offense. The shipping lambdatest/homebrew-kane tap carries this
+  # same offense on the same lines.
   sha256 "REPLACE_ON_FIRST_RELEASE" # patched by update-formula.yml (Task 9)
   license "Apache-2.0"
   version "0.1.0"

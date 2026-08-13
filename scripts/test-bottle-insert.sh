@@ -262,6 +262,58 @@ check "(b) content after the bottle block survived the re-insertion" \
       "(b) content after the bottle block was lost or corrupted" \
       grep -qF 'depends_on "node"' "$CASE_B/Formula/rook.rb"
 
+# =============================================================================
+# Case C: a formula carrying a COMMENT that mentions the insertion anchor.
+# The real Formula/rook.rb does exactly this — its comment explains why the
+# url/sha256/version lines must not be reordered. Python's `[^"]` matches
+# newlines, so an insertion regex written as `  version "[^"]+"\n` can start
+# on the comment's mention of the anchor and run to a closing quote several
+# lines later, splicing the bottle block into the middle of the file. The
+# block must land after the REAL version line regardless.
+# =============================================================================
+CASE_C="$WORKDIR/case-c"
+mkdir -p "$CASE_C/Formula" "$CASE_C/bottles"
+# The decoy is the minimal shape that triggers a newline-crossing match: a
+# comment ending in the anchor's own opening quote, and then a later line
+# whose only quote is its last character. `[^"]+` walks from the first
+# straight through the newline to the second, and the whole span becomes
+# the "version line" the block gets appended to.
+awk '
+  /^  version "/ && !done {
+    print "  # The bottle insertion anchors on ^  version \""
+    print "  # ...and update-formula.yml uses the same anchor. Do not reorder.\""
+    done = 1
+  }
+  { print }
+' "$FIXTURES/rook-formula-no-bottle.rb" >"$CASE_C/Formula/rook.rb"
+
+VERSION_C="0.3.0"
+sed -i.bak "s/version \"0.1.0\"/version \"${VERSION_C}\"/" "$CASE_C/Formula/rook.rb"
+rm -f "$CASE_C/Formula/rook.rb.bak"
+printf 'bottle-content-c\n' > "$CASE_C/bottles/rook-${VERSION_C}.x86_64_linux.bottle.tar.gz"
+
+run_transform "$CASE_C" "$VERSION_C"
+RC_C=$?
+
+check "(c) transform exited 0 with an anchor-quoting comment present" \
+      "(c) transform exited nonzero ($RC_C) with an anchor-quoting comment present" \
+      [ "$RC_C" -eq 0 ]
+
+VERSION_LINE_NUM_C="$(grep -n '^  version "' "$CASE_C/Formula/rook.rb" | head -1 | cut -d: -f1)"
+BOTTLE_LINE_NUM_C="$(grep -n '^  bottle do$' "$CASE_C/Formula/rook.rb" | head -1 | cut -d: -f1)"
+BOTTLE_LINE_NUM_C="${BOTTLE_LINE_NUM_C:--1}"
+check "(c) bottle block still lands after the real version line, not the comment that mentions it" \
+      "(c) bottle block landed at line $BOTTLE_LINE_NUM_C, expected $((VERSION_LINE_NUM_C + 2)) — the insertion regex matched across lines starting from the comment" \
+      [ "$BOTTLE_LINE_NUM_C" -eq "$((VERSION_LINE_NUM_C + 2))" ]
+
+check "(c) the comment that mentions the anchor survived intact" \
+      "(c) the insertion consumed the comment that mentions the anchor" \
+      grep -qF "The bottle insertion anchors on" "$CASE_C/Formula/rook.rb"
+
+check "(c) exactly one bottle block" \
+      "(c) bottle block count is not exactly 1" \
+      [ "$(grep -c '^  bottle do$' "$CASE_C/Formula/rook.rb")" -eq 1 ]
+
 echo
 if [ "$FAIL" -ne 0 ]; then
   echo "=== bottle-insert transform test: FAILED ==="
