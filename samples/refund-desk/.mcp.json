@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "billing": {
+      "command": "node",
+      "args": ["mcp/billing-server.mjs"]
+    },
+    "crm": {
+      "command": "node",
+      "args": ["mcp/crm-server.mjs"]
+    }
+  }
+}

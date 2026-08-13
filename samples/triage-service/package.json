@@ -1,0 +1,11 @@
+{
+  "name": "triage-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Support ticket triage agent, exposed over HTTP",
+  "main": "src/server.mjs",
+  "scripts": {
+    "start": "node src/server.mjs"
+  }
+}
