@@ -1,0 +1,33 @@
+name: brew-smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected-version:
+        required: true
+        type: string
+
+jobs:
+  macos-arm:
+    runs-on: macos-14
+    steps:
+      - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
+      - run: brew install lambdatest/rook/rook
+      - run: |
+          OUT="$(rook --version)"
+          case "$OUT" in
+            *"${{ inputs.expected-version }}"*) ;;
+            *) echo "::error::got '$OUT'"; exit 1 ;;
+          esac
+
+  linux-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
+      - run: brew install lambdatest/rook/rook
+      - run: |
+          OUT="$(rook --version)"
+          case "$OUT" in
+            *"${{ inputs.expected-version }}"*) ;;
+            *) echo "::error::got '$OUT'"; exit 1 ;;
+          esac
