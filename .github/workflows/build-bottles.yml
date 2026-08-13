@@ -38,20 +38,29 @@ jobs:
         run: |
           FORMULA_VERSION=$(grep '^  version' Formula/rook.rb | awk -F'"' '{print $2}')
           if [ -n "$INPUT_VERSION" ]; then
-            # Check the shape before the equality check, so a malformed input
-            # fails saying what is wrong with it rather than just "!= what is
-            # on main".
-            if ! [[ "$INPUT_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
-              echo "::error::version '${INPUT_VERSION}' is not a valid semver-ish string"
-              exit 1
-            fi
             VERSION="$INPUT_VERSION"
-            if [ "$VERSION" != "$FORMULA_VERSION" ]; then
-              echo "::error::inputs.version=${VERSION} but Formula/rook.rb on main is ${FORMULA_VERSION}."
-              exit 1
-            fi
           else
             VERSION="$FORMULA_VERSION"
+          fi
+
+          # Validate whichever source it came from, and before either
+          # comparison below or GITHUB_OUTPUT: this value goes on to name a
+          # release tag, glob artifacts, generate Ruby, author a commit and
+          # dispatch another workflow. Validating only the inputs.version
+          # branch would leave the formula-derived one — a hand edit to
+          # Formula/rook.rb on main — driving all of that unchecked. Running
+          # it after resolution also means a malformed input says what is
+          # wrong with it rather than only "!= what is on main".
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+            echo "::error::version '${VERSION}' is not a valid semver-ish string"
+            exit 1
+          fi
+
+          # Only reachable from the input branch — the else branch above
+          # assigns FORMULA_VERSION, which makes this trivially equal.
+          if [ "$VERSION" != "$FORMULA_VERSION" ]; then
+            echo "::error::inputs.version=${VERSION} but Formula/rook.rb on main is ${FORMULA_VERSION}."
+            exit 1
           fi
 
           # The prerelease suffix is part of the version: matching only
@@ -262,10 +271,14 @@ jobs:
           # Coupled to Formula/rook.rb's field order: the block goes directly
           # after that file's version line, which its own comment says must
           # not be reordered (doing so also moves this insertion point).
-          # `[^"\n]` rather than `[^"]`: Python's negated class matches
-          # newlines, so the looser form can start on a comment that merely
-          # mentions the anchor and run to a closing quote lines away.
-          src, n = re.subn(r'(  version "[^"\n]+"\n)\n*', r"\1\n" + block + "\n", src, count=1)
+          # Both guards on this pattern are load-bearing, and neither implies
+          # the other. `(?m)^` pins the match to the start of a line, so a
+          # comment that mentions the anchor mid-line ( # see  version "x" )
+          # is not a candidate. `[^"\n]` stops the class from crossing
+          # newlines — Python's negated classes match them — so a match that
+          # does start at a line's beginning cannot run on to a closing quote
+          # several lines below.
+          src, n = re.subn(r'(?m)^(  version "[^"\n]+"\n)\n*', r"\1\n" + block + "\n", src, count=1)
           if n != 1:
               sys.exit("Could not locate version line for bottle block insertion")
           with open("Formula/rook.rb", "w") as f:

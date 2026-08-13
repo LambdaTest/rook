@@ -270,6 +270,23 @@ check "(b) content after the bottle block survived the re-insertion" \
 # on the comment's mention of the anchor and run to a closing quote several
 # lines later, splicing the bottle block into the middle of the file. The
 # block must land after the REAL version line regardless.
+#
+# Scope, measured rather than assumed (all four regex variants were run
+# against both this case and case D):
+#
+#   regex                              case C   case D
+#   (  version "[^"]+"\n)              FAIL     FAIL     <- the pre-fix form
+#   (  version "[^"\n]+"\n)            pass     FAIL
+#   (?m)^(  version "[^"]+"\n)         pass     pass
+#   (?m)^(  version "[^"\n]+"\n)       pass     pass     <- current
+#
+# So this case is a true regression test against the pre-fix form, but once
+# `(?m)^` is in place it no longer isolates the character-class guard:
+# anchoring alone satisfies it. For the class guard specifically it is
+# CHARACTERISATION, not regression. The guard is kept anyway — it costs
+# nothing and covers a line that does start with the anchor but carries no
+# closing quote — and the case that would isolate it needs a formula whose
+# Ruby is already unparseable, which the `ruby -c` step now blocks upstream.
 # =============================================================================
 CASE_C="$WORKDIR/case-c"
 mkdir -p "$CASE_C/Formula" "$CASE_C/bottles"
@@ -313,6 +330,58 @@ check "(c) the comment that mentions the anchor survived intact" \
 check "(c) exactly one bottle block" \
       "(c) bottle block count is not exactly 1" \
       [ "$(grep -c '^  bottle do$' "$CASE_C/Formula/rook.rb")" -eq 1 ]
+
+# =============================================================================
+# Case D: a decoy that is complete WITHIN ONE LINE — a comment carrying a
+# whole `version "..."` that happens to end at the line's closing quote.
+#
+# Distinct from case (c), and neither guard catches both: (c) needs the
+# character class to stop at newlines, (d) needs the match pinned to the
+# start of a line. A pattern with only the first guard still matches this
+# decoy mid-line and appends the bottle block to the comment instead of to
+# the real version line — which, since the comment sits above it, drops the
+# block into the middle of the formula header.
+# =============================================================================
+CASE_D="$WORKDIR/case-d"
+mkdir -p "$CASE_D/Formula" "$CASE_D/bottles"
+awk '
+  /^  version "/ && !done {
+    print "  # Decoy: the release notes still say  version \"0.0.9\""
+    done = 1
+  }
+  { print }
+' "$FIXTURES/rook-formula-no-bottle.rb" >"$CASE_D/Formula/rook.rb"
+
+VERSION_D="0.4.0"
+sed -i.bak "s/^  version \"0.1.0\"/  version \"${VERSION_D}\"/" "$CASE_D/Formula/rook.rb"
+rm -f "$CASE_D/Formula/rook.rb.bak"
+printf 'bottle-content-d\n' > "$CASE_D/bottles/rook-${VERSION_D}.x86_64_linux.bottle.tar.gz"
+
+run_transform "$CASE_D" "$VERSION_D"
+RC_D=$?
+
+check "(d) transform exited 0 with a same-line version decoy present" \
+      "(d) transform exited nonzero ($RC_D) with a same-line version decoy present" \
+      [ "$RC_D" -eq 0 ]
+
+VERSION_LINE_NUM_D="$(grep -n '^  version "' "$CASE_D/Formula/rook.rb" | head -1 | cut -d: -f1)"
+BOTTLE_LINE_NUM_D="$(grep -n '^  bottle do$' "$CASE_D/Formula/rook.rb" | head -1 | cut -d: -f1)"
+BOTTLE_LINE_NUM_D="${BOTTLE_LINE_NUM_D:--1}"
+check "(d) bottle block lands after the real version line, not after a comment containing one" \
+      "(d) bottle block landed at line $BOTTLE_LINE_NUM_D, expected $((VERSION_LINE_NUM_D + 2)) — the insertion regex matched a version string that was not at the start of a line" \
+      [ "$BOTTLE_LINE_NUM_D" -eq "$((VERSION_LINE_NUM_D + 2))" ]
+
+check "(d) the decoy comment survived intact" \
+      "(d) the insertion consumed the decoy comment" \
+      grep -qF 'Decoy: the release notes still say' "$CASE_D/Formula/rook.rb"
+
+check "(d) the block's root_url carries the real version, not the decoy's" \
+      "(d) root_url does not carry the real version" \
+      grep -qF "download/rook-${VERSION_D}" "$CASE_D/Formula/rook.rb"
+
+check "(d) exactly one bottle block" \
+      "(d) bottle block count is not exactly 1" \
+      [ "$(grep -c '^  bottle do$' "$CASE_D/Formula/rook.rb")" -eq 1 ]
 
 echo
 if [ "$FAIL" -ne 0 ]; then

@@ -119,13 +119,26 @@ splice() {
   printf '%s' "$body"
 }
 
-# GitHub runs `run:` bodies with `bash --noprofile --norc -eo pipefail`.
-# Reproduce that exactly — `-e` and `pipefail` change which failures abort.
+# GitHub's default shell for a `run:` step that does not set `shell:` — as
+# none of these do — is `bash -e {0}`. pipefail is NOT on by default; it is
+# only added when a step opts in with `shell: bash`. So `-e` alone is what
+# these bodies really run under, and that is what is reproduced here.
+# (--noprofile --norc are ours: they keep the run from picking up a
+# developer's BASH_ENV, and change nothing about how the body behaves.)
+#
+# The distinction matters for the guard's STALE_ROOT pipeline, whose
+# trailing `|| true` is what makes it safe either way; these cases were run
+# under both settings and behave identically.
+# ROOK_TEST_SHELL_OPTS overrides the options, so the "identical under both"
+# claim above can be re-checked rather than taken on trust:
+#   ROOK_TEST_SHELL_OPTS="-eo pipefail" scripts/test-workflow-injection.sh
+read -r -a SHELL_OPTS <<<"${ROOK_TEST_SHELL_OPTS:--e}"
+
 run_step() { # run_step CWD SCRIPT [VAR=VAL ...]
   local cwd="$1" script="$2"
   shift 2
   ( cd "$cwd" && env "$@" GITHUB_OUTPUT="$WORKDIR/github_output" \
-      bash --noprofile --norc -eo pipefail -c "$script" ) 2>&1
+      bash --noprofile --norc "${SHELL_OPTS[@]}" -c "$script" ) 2>&1
 }
 
 MARK="$WORKDIR/PWNED"
@@ -300,6 +313,29 @@ check "(4/bb) an input that disagrees with the formula is rejected" \
 check "(4/bb) the drift rejection says so" \
       "(4/bb) the drift rejection didn't name the formula version — $OUT" \
       contains "but Formula/rook.rb on main is" "$OUT"
+
+# The formula-derived path is validated too. Resolving the version from
+# Formula/rook.rb rather than from inputs.version must not skip the shape
+# check: a hand edit to main would otherwise drive the tag name, the
+# artifact glob, the generated Ruby, a commit and a workflow dispatch
+# unchecked. (Before this was fixed, the same body answered a formula
+# reading `version "not-semver"` with exit 0 and version=not-semver.)
+BADFORM="$WORKDIR/guard-malformed"
+mkdir -p "$BADFORM/Formula"
+sed -e 's/version "0\.1\.0"/version "not-semver"/' \
+    "$FIXTURES/rook-formula-no-bottle.rb" >"$BADFORM/Formula/rook.rb"
+: >"$WORKDIR/github_output"
+OUT="$(run_step "$BADFORM" "$BB_BODY" INPUT_VERSION="")"
+RC=$?
+check "(4/bb) a malformed version in the formula is rejected, not just a malformed input" \
+      "(4/bb) the formula-derived path skipped validation (exit $RC) — output: $OUT" \
+      [ "$RC" -ne 0 ]
+check "(4/bb) that rejection names the version as the problem" \
+      "(4/bb) the formula-derived rejection didn't name the version — $OUT" \
+      contains "not a valid semver-ish string" "$OUT"
+check "(4/bb) the malformed version never reaches GITHUB_OUTPUT" \
+      "(4/bb) the malformed version was published to GITHUB_OUTPUT: $(cat "$WORKDIR/github_output")" \
+      [ ! -s "$WORKDIR/github_output" ]
 
 # F12: a prerelease re-run. The stale-root guard used to match only
 # `rook-<x.y.z>`, so a root_url of rook-0.2.0-beta.1 was read as
