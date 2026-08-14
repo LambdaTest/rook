@@ -21,7 +21,7 @@ class Rook < Formula
   # allow cops to be disabled in casks and formulae"), so the directive is
   # itself an offense. The shipping lambdatest/homebrew-kane tap carries this
   # same offense on the same lines.
-  sha256 "REPLACE_ON_FIRST_RELEASE" # patched by update-formula.yml (Task 9)
+  sha256 "219a3dcd966948e9cc16fe39d2088e6b573def2097a664b7aafedccb1b6ad8ff" # patched by update-formula.yml (Task 9)
   license "Apache-2.0"
   version "0.1.0"
 
