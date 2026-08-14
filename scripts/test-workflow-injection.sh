@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Regression test for shell injection through the version inputs of the
-# three release workflows — .github/workflows/update-formula.yml,
-# build-bottles.yml and brew-smoke.yml — and for what those steps do with
-# a version value once it is safely inert data.
+# four release workflows — .github/workflows/update-formula.yml,
+# build-bottles.yml, brew-smoke.yml and brew-smoke-intel.yml — and for what
+# those steps do with a version value once it is safely inert data.
 #
 # Why this exists. GitHub Actions expands `${{ ... }}` into the run: script
 # BEFORE bash ever parses it. A value spliced straight into a run: body
@@ -14,13 +14,16 @@
 # build-bottles.yml takes one from workflow_dispatch and splices it into
 # its guard job BEFORE the guard's own drift comparison can run;
 # brew-smoke.yml puts one inside a `case` pattern, which a payload can
-# close early. The fix, uniformly, is to route the value through the step's
+# close early, and (as of the brew-smoke hardening) also compares one
+# against Formula/rook.rb's own version in its guard job before the matrix
+# runs; brew-smoke-intel.yml repeats that same guard-shaped comparison
+# inline. The fix, uniformly, is to route the value through the step's
 # `env:` block and reference "$VAR" in the body.
 #
 # What this harness checks, in the same "extract the real thing, never
-# hand-copy it" discipline as its three sibling scripts:
+# hand-copy it" discipline as its sibling scripts:
 #
-#   1. A structural invariant over ALL of the run: bodies in ALL three
+#   1. A structural invariant over ALL of the run: bodies in ALL four
 #      files: not one of them may contain a `${{ ... }}` expression. This
 #      is the check that catches a re-introduced splice at a site nobody
 #      thought to write a case for.
@@ -58,7 +61,7 @@ check() {
 }
 contains() { printf '%s' "$2" | grep -qF -- "$1"; }
 
-for f in update-formula.yml build-bottles.yml brew-smoke.yml; do
+for f in update-formula.yml build-bottles.yml brew-smoke.yml brew-smoke-intel.yml; do
   if [ ! -f "$WF/$f" ]; then
     echo "FATAL: $WF/$f not found" >&2
     exit 2
@@ -170,7 +173,7 @@ payload() {
 # 1. Structural invariant: no ${{ }} anywhere inside any run: body
 # =============================================================================
 SPLICES=""
-for f in update-formula.yml build-bottles.yml brew-smoke.yml; do
+for f in update-formula.yml build-bottles.yml brew-smoke.yml brew-smoke-intel.yml; do
   # shellcheck disable=SC2016  # the literal Actions sigil is what we hunt for
   hits="$(run_body_lines "$WF/$f" | grep -F -- '${{' || true)"
   if [ -n "$hits" ]; then
@@ -181,7 +184,7 @@ if [ -n "$SPLICES" ]; then
   fail "(1) a run: body contains a \${{ ... }} expression — Actions expands those before bash parses the script, so the value becomes live shell syntax. Route it through the step's env: block:
 $SPLICES"
 else
-  pass "(1) no run: body in any of the 3 workflows contains a \${{ ... }} expression"
+  pass "(1) no run: body in any of the 4 workflows contains a \${{ ... }} expression"
 fi
 
 # Sanity-check the scanner itself against a synthetic offender: a scanner
@@ -426,6 +429,70 @@ RC=$?
 check "(4/bs) the matching version passes the check" \
       "(4/bs) the matching version failed the check (exit $RC) — $OUT" \
       [ "$RC" -eq 0 ]
+
+# =============================================================================
+# 2/3. brew-smoke.yml — guard job / "Verify expected version matches
+# Formula/rook.rb on main". brew-smoke-intel.yml carries an inline copy of
+# the same comparison shape (env-routed EXPECTED_VERSION vs. a value read
+# out of Formula/rook.rb) — covered structurally by check (1) above rather
+# than duplicated here, since the injection surface (one [ "$X" != "$Y" ]
+# comparison, no other use of the value) is identical.
+# =============================================================================
+GUARD_BODY="$(step_body "$WF/brew-smoke.yml" "Verify expected version matches Formula/rook.rb on main")"
+if ! contains "EXPECTED_VERSION" "$GUARD_BODY"; then
+  echo "FATAL: could not extract the guard job's version-check step from brew-smoke.yml (or it no longer reads EXPECTED_VERSION)" >&2
+  exit 2
+fi
+
+GUARD_BS="$WORKDIR/guard-bs"
+mkdir -p "$GUARD_BS/Formula"
+cp "$FIXTURES/rook-formula-no-bottle.rb" "$GUARD_BS/Formula/rook.rb"
+
+# Unlike brew-smoke.yml's substring `case` check, this step does an exact
+# string comparison against the fixture's "0.1.0" — every payload,
+# including empty/blank, is a legitimate non-match here, so none are
+# skipped.
+for key in "${PAYLOAD_KEYS[@]}"; do
+  p="$(payload "$key")"
+  reset_marker
+  OUT="$(run_step "$GUARD_BS" "$GUARD_BODY" EXPECTED_VERSION="$p")"
+  RC=$?
+  check "(2/gbs/$key) hostile value executed nothing" \
+        "(2/gbs/$key) THE PAYLOAD RAN — brew-smoke.yml's guard job executed an injected command. output:
+$OUT" \
+        marker_absent
+  check "(2/gbs/$key) hostile value rejected as a version mismatch (exit $RC)" \
+        "(2/gbs/$key) hostile value was accepted (exit $RC) — output:
+$OUT" \
+        [ "$RC" -ne 0 ]
+done
+
+for key in cmdsub backtick; do
+  p="$(payload "$key")"
+  reset_marker
+  VULN="$(splice "$GUARD_BODY" EXPECTED_VERSION "$p")"
+  run_step "$GUARD_BS" "$VULN" >/dev/null 2>&1
+  check "(3/gbs/$key) positive control: the pre-fix spliced form DOES execute the payload" \
+        "(3/gbs/$key) positive control failed — the payload did not run even when spliced, so case (2/gbs/$key) proves nothing" \
+        [ -e "$MARK" ]
+done
+reset_marker
+
+: >"$WORKDIR/github_output"
+OUT="$(run_step "$GUARD_BS" "$GUARD_BODY" EXPECTED_VERSION="0.1.0")"
+check "(4/gbs) the matching version passes and is published" \
+      "(4/gbs) the matching version did not pass or publish — $OUT / $(cat "$WORKDIR/github_output")" \
+      contains "version=0.1.0" "$(cat "$WORKDIR/github_output")"
+
+: >"$WORKDIR/github_output"
+OUT="$(run_step "$GUARD_BS" "$GUARD_BODY" EXPECTED_VERSION="0.2.0")"
+RC=$?
+check "(4/gbs) a drifted version is rejected" \
+      "(4/gbs) a drifted version was NOT rejected (exit $RC) — $OUT" \
+      [ "$RC" -ne 0 ]
+check "(4/gbs) the drift rejection names the formula version" \
+      "(4/gbs) the drift rejection didn't name the formula version — $OUT" \
+      contains "but Formula/rook.rb on main is" "$OUT"
 
 echo
 if [ "$FAIL" -ne 0 ]; then

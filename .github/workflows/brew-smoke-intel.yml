@@ -1,0 +1,100 @@
+name: brew-smoke (Intel)
+
+# Best-effort validation of `brew install lambdatest/rook/rook` on real
+# Intel x86_64 macOS. Kept OUT of brew-smoke.yml's auto-triggered matrix,
+# and dispatched manually (or scheduled) instead.
+#
+# Why a separate workflow: GitHub's Intel macOS runner queue routinely
+# starves (30+ min typical, sometimes hours). build-bottles.yml's publish
+# job auto-dispatches brew-smoke.yml right after a release; putting Intel
+# validation in that same matrix would hold the post-publish signal "in
+# progress" indefinitely waiting on a runner that may not show up for
+# hours. `continue-on-error: true` doesn't help — it only masks a job that
+# ran and failed, not one still queued waiting for allocation.
+#
+# rook does not publish a bottle for darwin-x64 at all (build-bottles.yml's
+# matrix only builds macos-14/arm64 and ubuntu-latest) — every Intel Mac
+# install is a source build, exercising Formula/rook.rb's `def install`
+# platform-detection branch (Hardware::CPU.intel? on macOS) that neither of
+# brew-smoke.yml's two jobs ever reaches.
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected-version:
+        description: "Version to validate (e.g. 0.1.0). REQUIRED — this workflow refuses to run without an explicit pin."
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: brew-smoke-intel-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  darwin-x64:
+    runs-on: macos-15-intel
+    # Caps the job once a runner allocates. Doesn't help with queue
+    # starvation itself (GHA queue time before allocation is unbounded) —
+    # limits damage if a runner does pick this up and then hangs.
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # Same drift check as brew-smoke.yml's guard job, and the same
+      # env:-routing reason: EXPECTED_VERSION is untrusted (workflow_dispatch
+      # input) and must never be spliced into a run: body.
+      - name: Verify expected version matches Formula/rook.rb on main
+        env:
+          EXPECTED_VERSION: ${{ inputs.expected-version }}
+        run: |
+          FORMULA_VERSION=$(grep '^  version' Formula/rook.rb | awk -F'"' '{print $2}')
+          if [ "$EXPECTED_VERSION" != "$FORMULA_VERSION" ]; then
+            echo "::error::version mismatch: dispatched with expected-version=${EXPECTED_VERSION}, but Formula/rook.rb on main is ${FORMULA_VERSION}. Re-dispatch with the current version once main settles."
+            exit 1
+          fi
+
+      - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
+
+      - name: Install rook
+        # set -o pipefail: see the identical comment in brew-smoke.yml —
+        # without it this line's exit status is tee's, never brew
+        # install's, under GHA's default `bash -e {0}` (no pipefail).
+        run: |
+          set -o pipefail
+          brew install lambdatest/rook/rook 2>&1 | tee install.log
+
+      - name: Assert a source build was taken, not a bottle
+        run: |
+          if grep -q "Pouring rook-" install.log; then
+            echo "::warning::a bottle was poured on Intel macOS — unexpected, since build-bottles.yml does not build a darwin-x64 bottle. Investigate whether one now exists before treating this as fine."
+          else
+            echo "source-build path taken, as expected on Intel"
+          fi
+
+      - name: Check installed version
+        env:
+          EXPECTED_VERSION: ${{ inputs.expected-version }}
+        run: |
+          OUT="$(rook --version)"
+          case "$OUT" in
+            *"$EXPECTED_VERSION"*) ;;
+            *) echo "::error::got '$OUT'"; exit 1 ;;
+          esac
+
+      # Same rationale as brew-smoke.yml: reuses Formula/rook.rb's own
+      # `test do` block rather than re-deriving the bundled-binary path
+      # logic here a third time.
+      - name: brew test (bundled runtime binary + version pin)
+        run: brew test lambdatest/rook/rook
+
+      - name: Upload install log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: install-log-darwin-x64
+          path: install.log
+          if-no-files-found: ignore
