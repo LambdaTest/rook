@@ -50,31 +50,75 @@ jobs:
           fi
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
+      # @testmuai/rook itself is published at $VERSION (the CLI's own
+      # semver). The @testmuai/rook-node-* runtime packages are NOT — they
+      # version independently, pinned to a Node.js release via
+      # scripts/ci/node-runtime.json in the private repo (e.g. "24.19.0"),
+      # unrelated to rook's own "0.1.0". A prior version of this step polled
+      # all three packages under $VERSION — on every real release, the two
+      # rook-node-* checks would 404 forever and this job would fail after a
+      # silent 2-minute timeout, well after npm/curl/changelog already
+      # shipped, and Homebrew would never actually get updated.
+      #
+      # Fix: wait for @testmuai/rook@$VERSION first, then read the real
+      # runtime version out of ITS OWN published package.json.
+      # cli-release-public.yml's publish-npm job sets
+      # optionalDependencies["@testmuai/rook-node-<tag>"] to the exact
+      # runtime version for all 5 platform tags, unconditionally, on every
+      # publish — the same field Formula/rook.rb's own install logic already
+      # reads to resolve the bundled runtime, so this is the same source of
+      # truth, not a second one to keep in sync. Deriving it here (rather
+      # than threading it through the private repo's dispatch payload) works
+      # identically for both repository_dispatch and workflow_dispatch
+      # triggers, with no second manual input needed.
       - name: Wait for npm package availability
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          PKGS="@testmuai/rook \
-                @testmuai/rook-node-darwin-arm64 \
-                @testmuai/rook-node-linux-x64"
-          for PKG in $PKGS; do
-            echo "Waiting for ${PKG}@${VERSION} on npmjs.com..."
-            FOUND=""
-            for i in $(seq 1 24); do
-              STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-                "https://registry.npmjs.org/${PKG}/${VERSION}")
+          # RETRY_COUNT/RETRY_SLEEP are overridable only so a test harness
+          # can exercise the "never becomes available" branch in seconds
+          # instead of the real 2-minute budget. GitHub Actions never sets
+          # these, so production always gets the real values.
+          RETRY_COUNT="${RETRY_COUNT:-24}"
+          RETRY_SLEEP="${RETRY_SLEEP:-5}"
+
+          wait_for_pkg() {
+            local pkg="$1" ver="$2"
+            echo "Waiting for ${pkg}@${ver} on npmjs.com..."
+            for i in $(seq 1 "$RETRY_COUNT"); do
+              # --max-time + the || fallback: a single stalled/failed
+              # connection should cost one poll attempt, same as an
+              # ordinary HTTP 404 does, not the entire retry budget under
+              # `set -e` aborting the step outright. The fallback
+              # reassigns STATUS rather than appending to it — curl's -w
+              # output is already captured by the time curl exits
+              # nonzero, so `|| echo "000"` here would leave STATUS as
+              # "000000" instead of "000".
+              STATUS=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" \
+                "https://registry.npmjs.org/${pkg}/${ver}") || STATUS="000"
               if [ "$STATUS" = "200" ]; then
-                FOUND="yes"
-                break
+                return 0
               fi
-              echo "  attempt ${i}/24 — HTTP ${STATUS}, retrying in 5s..."
-              sleep 5
+              echo "  attempt ${i}/${RETRY_COUNT} — HTTP ${STATUS}, retrying in ${RETRY_SLEEP}s..."
+              sleep "$RETRY_SLEEP"
             done
-            if [ -z "$FOUND" ]; then
-              echo "ERROR: ${PKG}@${VERSION} not visible on npmjs.com after 2m"
-              exit 1
-            fi
-          done
+            echo "ERROR: ${pkg}@${ver} not visible on npmjs.com after ${RETRY_COUNT} attempts"
+            return 1
+          }
+
+          wait_for_pkg "@testmuai/rook" "$VERSION" || exit 1
+
+          PKG_META=$(curl -fsSL --max-time 10 "https://registry.npmjs.org/@testmuai/rook/${VERSION}")
+          RUNTIME_VERSION=$(printf '%s' "$PKG_META" \
+            | jq -r '.optionalDependencies["@testmuai/rook-node-darwin-arm64"] // empty')
+          if ! [[ "$RUNTIME_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::could not resolve a valid runtime version from @testmuai/rook@${VERSION}'s optionalDependencies (got '${RUNTIME_VERSION}')"
+            exit 1
+          fi
+          echo "Resolved runtime version: ${RUNTIME_VERSION}"
+
+          wait_for_pkg "@testmuai/rook-node-darwin-arm64" "$RUNTIME_VERSION" || exit 1
+          wait_for_pkg "@testmuai/rook-node-linux-x64" "$RUNTIME_VERSION" || exit 1
 
       - name: Compute tarball sha256
         id: tarball
