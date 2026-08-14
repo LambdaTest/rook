@@ -4,8 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       expected-version:
+        description: "Version to validate (e.g. 0.1.0). REQUIRED — this workflow refuses to run without an explicit pin."
         required: true
         type: string
+
+# Serializes concurrent dispatches so two overlapping releases can't produce
+# interleaved, confusing runs against a shared main.
+concurrency:
+  group: brew-smoke-${{ github.ref }}
+  cancel-in-progress: false
 
 # Neither job touches the GitHub API — they tap over https and run brew. An
 # empty permissions block keeps the job token from inheriting whatever the
@@ -13,22 +20,81 @@ on:
 permissions: {}
 
 jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      # EXPECTED_VERSION comes in through env: rather than being spliced
+      # into the shell body — same discipline as every other step in this
+      # pipeline that handles an attacker-shaped value.
+      #
+      # Why this exists: build-bottles.yml's publish job dispatches this
+      # workflow right after pushing the bottle-block commit, carrying the
+      # exact version it just built. If a second release dispatch landed in
+      # between (or a human re-ran update-formula.yml), main could have
+      # moved past that version by the time this job actually starts.
+      # Failing here — before spending ~10 minutes installing on two
+      # platforms — turns a confusing "wrong version installed" failure
+      # deep in the matrix into an immediate, clear one.
+      - name: Verify expected version matches Formula/rook.rb on main
+        id: check
+        env:
+          EXPECTED_VERSION: ${{ inputs.expected-version }}
+        run: |
+          FORMULA_VERSION=$(grep '^  version' Formula/rook.rb | awk -F'"' '{print $2}')
+          if [ "$EXPECTED_VERSION" != "$FORMULA_VERSION" ]; then
+            echo "::error::version mismatch: dispatched with expected-version=${EXPECTED_VERSION}, but Formula/rook.rb on main is ${FORMULA_VERSION}."
+            echo "This is often a benign race: another release advanced main between the dispatch that queued this run and this job actually starting."
+            echo "Re-dispatch brew-smoke with expected-version=${FORMULA_VERSION} once main settles."
+            exit 1
+          fi
+          echo "version=${EXPECTED_VERSION}" >> "$GITHUB_OUTPUT"
+
   macos-arm:
+    needs: guard
     runs-on: macos-14
     timeout-minutes: 10
     steps:
       # No setup-homebrew here: GitHub's macOS runner images ship Homebrew
       # preinstalled. The Linux job below does need it.
       - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
-      - run: brew install lambdatest/rook/rook
-      # EXPECTED_VERSION comes in through env: rather than being spliced into
-      # the shell body. Actions expands ${{ }} before bash parses the script,
-      # so a spliced value would be live shell syntax inside the `case`
-      # pattern below — `x"*) ;; *) <cmd> ;; esac #` closes the pattern list
-      # early and runs <cmd>. As an env var it is only ever data.
+
+      - name: Install rook
+        # set -o pipefail: GHA's default shell for a step with no explicit
+        # shell: is `bash -e {0}` — pipefail is NOT on by default. Without
+        # it, this line's exit status is tee's, never brew install's, so a
+        # failure after the bottle pours (a caveat-rendering error, a link
+        # failure) would go undetected by every check below: the bottle
+        # marker is already in install.log, `rook --version` still works,
+        # and the job goes green despite brew install having exited
+        # nonzero.
+        run: |
+          set -o pipefail
+          brew install lambdatest/rook/rook 2>&1 | tee install.log
+
+      # Bottled on this platform (build-bottles.yml's matrix includes
+      # macos-14) — a source build here means the bottle either failed to
+      # publish or Homebrew's platform-tag matching regressed.
+      - name: Assert a bottle was poured, not built from source
+        run: |
+          if ! grep -q "Pouring rook-" install.log; then
+            echo "::error::expected a bottle pour on macos-14 (arm64) but got a source build. Bottle publish or platform-tag matching may have regressed."
+            exit 1
+          fi
+
+      # EXPECTED_VERSION comes in through env: for the same reason as the
+      # guard job above: a spliced value would be live shell syntax inside
+      # the `case` pattern below — `x"*) ;; *) <cmd> ;; esac #` closes the
+      # pattern list early and runs <cmd>. As an env var it is only data.
       - name: Check installed version
         env:
-          EXPECTED_VERSION: ${{ inputs.expected-version }}
+          EXPECTED_VERSION: ${{ needs.guard.outputs.version }}
         run: |
           OUT="$(rook --version)"
           case "$OUT" in
@@ -36,7 +102,28 @@ jobs:
             *) echo "::error::got '$OUT'"; exit 1 ;;
           esac
 
+      # Runs Formula/rook.rb's own `test do` block: bundled node binary
+      # exists, is executable (a plain --version pass doesn't catch a
+      # missed install-time chmod — rook's launcher only needs the binary
+      # to be present to attempt a spawn, not to succeed), and the bundled
+      # binary's own --version matches the exact nodeRuntimeVersion pin.
+      # Calling brew test here instead of re-deriving that path logic in
+      # bash keeps the platform-package-name mapping in def install as the
+      # only copy, rather than adding a second one here that could drift
+      # from it silently.
+      - name: brew test (bundled runtime binary + version pin)
+        run: brew test lambdatest/rook/rook
+
+      - name: Upload install log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: install-log-macos-arm
+          path: install.log
+          if-no-files-found: ignore
+
   linux-x64:
+    needs: guard
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -45,13 +132,44 @@ jobs:
       # the same commit as build-bottles.yml; keep the two in step.
       - uses: Homebrew/actions/setup-homebrew@b35a29a0f83ee8b8ca07b219fc8db3d7bb88ab49 # 2026.08.10.2
       - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
-      - run: brew install lambdatest/rook/rook
+
+      - name: Install rook
+        # set -o pipefail: GHA's default shell for a step with no explicit
+        # shell: is `bash -e {0}` — pipefail is NOT on by default. Without
+        # it, this line's exit status is tee's, never brew install's, so a
+        # failure after the bottle pours (a caveat-rendering error, a link
+        # failure) would go undetected by every check below: the bottle
+        # marker is already in install.log, `rook --version` still works,
+        # and the job goes green despite brew install having exited
+        # nonzero.
+        run: |
+          set -o pipefail
+          brew install lambdatest/rook/rook 2>&1 | tee install.log
+
+      - name: Assert a bottle was poured, not built from source
+        run: |
+          if ! grep -q "Pouring rook-" install.log; then
+            echo "::error::expected a bottle pour on ubuntu-latest (x86_64_linux) but got a source build. Bottle publish or platform-tag matching may have regressed."
+            exit 1
+          fi
+
       - name: Check installed version
         env:
-          EXPECTED_VERSION: ${{ inputs.expected-version }}
+          EXPECTED_VERSION: ${{ needs.guard.outputs.version }}
         run: |
           OUT="$(rook --version)"
           case "$OUT" in
             *"$EXPECTED_VERSION"*) ;;
             *) echo "::error::got '$OUT'"; exit 1 ;;
           esac
+
+      - name: brew test (bundled runtime binary + version pin)
+        run: brew test lambdatest/rook/rook
+
+      - name: Upload install log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: install-log-linux-x64
+          path: install.log
+          if-no-files-found: ignore
