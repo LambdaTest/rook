@@ -6,7 +6,7 @@
 ![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20Windows-brightgreen)
 [![Issues](https://img.shields.io/github/issues/LambdaTest/rook)](https://github.com/LambdaTest/rook/issues)
 
-> **Status: pre-alpha, and there are no public releases yet.** This repository is where they will land — binaries per OS and architecture, release notes, sample agents, and the issue tracker. Watch it or open an issue; installation instructions go live with the first tag.
+> **Status: pre-alpha.** `0.1.0` is published — see [Install](#install). Expect sharp edges, and expect the surface to move.
 
 ---
 
@@ -34,7 +34,7 @@ $ rook
 
   /explore .    read the codebase — find the agents and what they do
   /generate     scenarios: functional · non-functional · adversarial
-  /profile set  how to invoke it — paste a curl, or give a command
+  /profile add  how to invoke it — paste a curl, or give a command
   /run          execute them, 3 at a time
   /ui           verdicts, evidence and trends, in a browser
 ```
@@ -79,7 +79,7 @@ curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | b
 npm install -g @testmuai/rook
 ```
 
-Nothing is published yet: these land with the first tag, and until then every one of them will 404. [Open an issue](https://github.com/LambdaTest/rook/issues/new/choose) if you would like to be told when that happens.
+`0.1.0` is the current release. [Open an issue](https://github.com/LambdaTest/rook/issues/new/choose) if any of these does not work on your platform.
 
 ## Five minutes
 
@@ -95,7 +95,7 @@ Once installed, from inside a project that contains an agent:
 
   14 scenarios · 9 functional · 2 non-functional · 3 adversarial
 
-› /profile set
+› /profile add
 
   How is this agent invoked?  paste a curl · command · http · mcp
 › curl http://127.0.0.1:9110/v1/triage -H 'content-type: application/json' -d '{"input":"look at T-1043"}'
@@ -124,7 +124,7 @@ You do not have to run the commands in order. Ask for a later step and `rook` pl
 | `/explore` | read the codebase — find agents and what they do |
 | `/agent` | list agents, switch the active one |
 | `/generate` | write scenarios for the active agent |
-| `/profile` | how to invoke it — `set` (paste a curl), `test`, `show` |
+| `/profile` | how to invoke it — `add` (paste a curl), `use`, `test`, `show` |
 | `/run` | execute scenarios against the live agent |
 | `/ui` | the browser view — runs, evidence, trends |
 | `/scenarios` | list, exclude, include, delete |

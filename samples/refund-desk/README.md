@@ -24,9 +24,8 @@ rook
 ```
 /explore .
 /generate
-/profile set        →  command
+/profile add        →  command
                     →  claude -p "{{goal}}"
-/profile test
 /run
 ```
 

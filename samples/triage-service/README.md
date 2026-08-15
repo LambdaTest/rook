@@ -37,12 +37,11 @@ rook
 ```
 /explore .
 /generate
-/profile set        →  paste the curl above
-/profile test
+/profile add        →  paste the curl above
 /run
 ```
 
-`/profile set` will find `input` as the field the scenario goes in, and set
+`/profile add` will find `input` as the field the scenario goes in, and set
 `$.output` as where the reply lives.
 
 ## What is worth testing here
