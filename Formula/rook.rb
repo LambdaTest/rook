@@ -25,6 +25,12 @@ class Rook < Formula
   license "Apache-2.0"
   version "0.1.0"
 
+  bottle do
+    root_url "https://github.com/LambdaTest/rook/releases/download/rook-0.1.0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma: "da12326abeabefb7b371da49a9ac8611fc2c976632ef1e542448ea2e7438ee7f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "a8a22dae199e78a68daa8a619a1210e881009675fb5400c292bf092d836190e3"
+  end
+
   depends_on "node"
 
   def install
