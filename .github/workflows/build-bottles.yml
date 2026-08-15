@@ -99,7 +99,23 @@ jobs:
 
       - name: Tap self into Homebrew
         run: |
-          TAP_DIR="$(brew --repository)/Library/Taps/lambdatest/rook"
+          # Homebrew resolves the short name "lambdatest/rook" to the local
+          # directory Taps/lambdatest/homebrew-rook regardless of the actual
+          # remote repo's name — the "homebrew-" prefix is mandatory on disk,
+          # not just a remote-naming convention (confirmed directly against
+          # a real failed run: `brew install --build-bottle lambdatest/rook/
+          # rook` fell through to auto-tap and its own clone attempt targeted
+          # exactly ".../Taps/lambdatest/homebrew-rook", not ".../rook").
+          # Symlinking to the unprefixed path here left it invisible to that
+          # resolution, so `brew install` never found this self-tap: it fell
+          # through to a real network clone of the default remote URL,
+          # https://github.com/lambdatest/homebrew-rook — a repo that
+          # doesn't exist, since this tap's actual source, per D3, is
+          # LambdaTest/rook itself, only ever reached by explicit URL
+          # (brew-smoke.yml's `brew tap lambdatest/rook https://github.com/
+          # LambdaTest/rook.git`). That auto-tap attempt then failed on
+          # `terminal prompts disabled`, breaking both bottle-build jobs.
+          TAP_DIR="$(brew --repository)/Library/Taps/lambdatest/homebrew-rook"
           rm -rf "$TAP_DIR"
           mkdir -p "$(dirname "$TAP_DIR")"
           ln -snf "$GITHUB_WORKSPACE" "$TAP_DIR"
