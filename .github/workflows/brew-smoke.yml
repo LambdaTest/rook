@@ -65,6 +65,20 @@ jobs:
       # preinstalled. The Linux job below does need it.
       - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
 
+      # `brew deps` (without --include-build) only lists required/
+      # recommended deps, so this fails if node is ever unscoped from
+      # `:build` again. Checks the resolved deps rather than before/after
+      # install, since runner images can already carry Homebrew's node for
+      # unrelated reasons.
+      - name: Assert node is not a resolved runtime dependency of the bottle
+        run: |
+          DEPS="$(brew deps lambdatest/rook/rook)"
+          if echo "$DEPS" | grep -qx node; then
+            echo "::error::lambdatest/rook/rook resolves 'node' as a runtime dependency — Formula/rook.rb's 'depends_on \"node\"' needs '=> :build'."
+            echo "$DEPS"
+            exit 1
+          fi
+
       - name: Install rook
         # set -o pipefail: GHA's default shell for a step with no explicit
         # shell: is `bash -e {0}` — pipefail is NOT on by default. Without
@@ -132,6 +146,16 @@ jobs:
       # the same commit as build-bottles.yml; keep the two in step.
       - uses: Homebrew/actions/setup-homebrew@b35a29a0f83ee8b8ca07b219fc8db3d7bb88ab49 # 2026.08.10.2
       - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
+
+      # See the identical step in macos-arm above.
+      - name: Assert node is not a resolved runtime dependency of the bottle
+        run: |
+          DEPS="$(brew deps lambdatest/rook/rook)"
+          if echo "$DEPS" | grep -qx node; then
+            echo "::error::lambdatest/rook/rook resolves 'node' as a runtime dependency — Formula/rook.rb's 'depends_on \"node\"' needs '=> :build'."
+            echo "$DEPS"
+            exit 1
+          fi
 
       - name: Install rook
         # set -o pipefail: GHA's default shell for a step with no explicit

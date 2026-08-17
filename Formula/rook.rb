@@ -31,7 +31,11 @@ class Rook < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux: "a8a22dae199e78a68daa8a619a1210e881009675fb5400c292bf092d836190e3"
   end
 
-  depends_on "node"
+  # node/npm are only used inside `def install` below, which never runs on
+  # a bottle pour — only when building from source. `:build` keeps a
+  # bottle install from also pulling in Homebrew's own Node, since rook
+  # ships and runs on its own bundled runtime (see caveats below).
+  depends_on "node" => :build
 
   def install
     # `.reject` drops --build-from-source, which brew injects unconditionally

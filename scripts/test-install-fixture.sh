@@ -390,6 +390,33 @@ $INSTALL_OUT_E" \
 done
 
 # =============================================================================
+# Case G: the documented public command, `curl -fsSL ... | bash`, pipes
+# install.sh into bash on stdin instead of executing a named file — the
+# one invocation shape none of the other cases exercise (they all run
+# `bash "$INSTALL_SH" ...`, where BASH_SOURCE[0] is always set).
+# `bash -s --` lets the piped script still receive --version/--dir.
+# =============================================================================
+HOME_G="$WORKDIR/home-g"
+DIR_G="$WORKDIR/bin-g"
+mkdir -p "$HOME_G" "$DIR_G"
+INSTALL_OUT_G="$(
+  env -i HOME="$HOME_G" PATH="$STUB_BIN:/usr/bin:/bin:/usr/sbin:/sbin" \
+    ROOK_TEST_FIXTURE_DIR="$FIXTURE_DIR" \
+    bash -s -- --version "$VERSION" --dir "$DIR_G" <"$INSTALL_SH" 2>&1
+)"
+RC_G=$?
+check "(g) piped \`bash < install.sh\` exits 0" \
+      "(g) piped \`bash < install.sh\` exited nonzero ($RC_G) — output:
+$INSTALL_OUT_G" \
+      [ "$RC_G" -eq 0 ]
+check "(g) piped install does not leak the BASH_SOURCE unbound-variable crash" \
+      "(g) piped install leaked the BASH_SOURCE crash — got: $INSTALL_OUT_G" \
+      lacks "unbound variable" "$INSTALL_OUT_G"
+check "(g) piped install actually installed the binary" \
+      "(g) piped install reported success but $DIR_G/rook is missing" \
+      [ -x "$DIR_G/rook" ]
+
+# =============================================================================
 # Case F: --version / --dir as the very last argument must produce a usage
 # message, not `line N: $2: unbound variable` (F14).
 # =============================================================================

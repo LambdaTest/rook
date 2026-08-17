@@ -239,9 +239,16 @@ main() {
   echo "Run 'rook --version' to verify."
 }
 
-# Only run main when executed directly (`bash install.sh` / `./install.sh`)
-# — not when sourced, e.g. by a test harness that wants to call
-# detect_platform() directly without triggering a real network install.
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+# Only run main when executed directly (`bash install.sh`, `./install.sh`,
+# or the public `curl ... | bash` pipe) — not when sourced, e.g. by a test
+# harness calling detect_platform() directly.
+#
+# `${BASH_SOURCE[0]:-$0}`: under `set -u`, a piped script has no
+# BASH_SOURCE entry, so indexing it directly is an unbound-variable error
+# that broke `curl ... | bash` on every run. Falling back to `$0` (which
+# bash sets to "bash" when piped) keeps the comparison true for that case;
+# an empty-string fallback would stop the crash but then silently skip
+# main too, since "" never equals "bash".
+if [[ "${BASH_SOURCE[0]:-$0}" == "${0}" ]]; then
   main "$@"
 fi
