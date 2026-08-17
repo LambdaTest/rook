@@ -31,20 +31,18 @@ class Rook < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux: "a8a22dae199e78a68daa8a619a1210e881009675fb5400c292bf092d836190e3"
   end
 
-  # NOT :build-only, despite npm/node only being invoked inside `def
-  # install` below. This dependency is load-bearing at a second layer:
-  # Homebrew's own Cleaner#rewrite_shebangs (utils/shebang.rb,
-  # language/node.rb) automatically rewrites this package's published
-  # `#!/usr/bin/env node` launcher shebang to the absolute path of a
-  # *:required* Node dependency — silently skipped for :build-scoped ones
-  # (`formula.deps.select(&:required?)`). Without a :required node dep,
-  # the shebang stays as `env node`, which works ONLY if some node is on
-  # PATH at runtime; scoping this to :build (tried and reverted — see
-  # git history) leaves a bottle pour with no working interpreter at all
-  # on a machine with no system Node. Tracked as a real gap, not fixed
-  # here: the caveats text below currently overstates how self-contained
-  # this is.
-  depends_on "node"
+  # :build, safely this time. node/npm are only invoked inside `def
+  # install` below. A previous attempt at this same scoping (reverted —
+  # see git history) broke real installs: the npm-published launcher's
+  # `#!/usr/bin/env node` shebang only gets rewritten to a working
+  # absolute node path by Homebrew's own Cleaner#rewrite_shebangs when
+  # `node` is a *required* dependency, and without that rewrite `env
+  # node` has nothing to resolve on a machine with no system Node. `def
+  # install` below now installs its own `#!/bin/sh` launcher instead of
+  # that npm shim in the success path, so nothing in the installed tree
+  # has a node-shebang left for Homebrew to rewrite (or fail to) — see
+  # the comment there.
+  depends_on "node" => :build
 
   def install
     # `.reject` drops --build-from-source, which brew injects unconditionally
@@ -92,6 +90,35 @@ class Rook < Formula
 
     if complete.call
       chmod 0755, binary
+
+      # Replace npm's installed launcher (a symlink to the published
+      # package's bin/rook.cjs — a JS trampoline whose `#!/usr/bin/env
+      # node` shebang needs *some* node just to bootstrap, before it
+      # re-execs into this same bundled binary anyway) with a plain shell
+      # script that execs the bundled binary directly. `exec` replaces
+      # the shell's own process image, so signals land on the bundled
+      # node process natively — no manual SIGINT/SIGTERM/SIGHUP relay
+      # needed, unlike the JS trampoline's spawn()-based approach, which
+      # forwards signals to a genuine child process specifically because
+      # it doesn't have this option.
+      #
+      # Absolute paths baked into an installed script are ordinary,
+      # relocatable Homebrew practice (any formula that writes a wrapper
+      # referencing `#{libexec}` does the same) — not something specific
+      # to this fix.
+      #
+      # Deliberately only in this success branch: the opoo fallback below
+      # bottles a tree with no working bundled binary, where npm's
+      # original trampoline — which falls back to whatever system Node
+      # is present — is exactly the right behavior, not this.
+      entry = pkg_dir/"dist/cli.js"
+      launcher = libexec/"bin/rook"
+      launcher.unlink if launcher.exist? || launcher.symlink?
+      launcher.write <<~SH
+        #!/bin/sh
+        exec "#{binary}" "#{entry}" "$@"
+      SH
+      chmod 0755, launcher
     else
       msg = "#{node_pkg}@#{node_pkg_version} did not install a usable bundled Node runtime"
       # ENV.build_bottle? is Homebrew's real API for this (there is no
@@ -135,5 +162,14 @@ class Rook < Formula
     pin = JSON.parse((node_root/"package.json").read)["nodeRuntimeVersion"]
     refute_nil pin, "node package carries no nodeRuntimeVersion stamp"
     assert_equal "v#{pin}", shell_output("#{binary} --version").strip
+
+    # Structural guard on the actual mechanism, not just its outcome: the
+    # `rook --version` call above already proves the launcher works, but
+    # not that it's independent of Homebrew's own `node`. A regression
+    # here (e.g. `bin.install_symlink` picking up npm's original
+    # `env node`-shebang trampoline again) would only surface on a
+    # machine with no system Node — this catches it on every machine.
+    shebang = (libexec/"bin/rook").readlines.first.to_s
+    refute_match(/node/, shebang, "launcher shells out through node again")
   end
 end
