@@ -65,22 +65,23 @@ jobs:
       # preinstalled. The Linux job below does need it.
       - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
 
-      # node MUST stay a required (non-:build) dependency — see the long
-      # comment on Formula/rook.rb's `depends_on "node"`. Scoping it to
-      # :build looks like the obvious fix for the extra-Node-install
-      # complaint, but it silently disables Homebrew's own
-      # Cleaner#rewrite_shebangs, which only repoints this package's
-      # `env node` launcher shebang at a *required* Node dependency.
-      # Without that rewrite the bottle has no working interpreter at all
-      # on a machine with no system Node — worse than the original
-      # complaint. `brew deps` (without --include-build) only lists
-      # required/recommended deps, so this catches that regression before
-      # a real install does.
-      - name: Assert node is still a required (non-build) dependency
+      # node must stay :build-only. def install now writes its own
+      # #!/bin/sh launcher that execs the bundled node binary directly
+      # (see Formula/rook.rb), instead of relying on npm's published
+      # `env node`-shebang trampoline plus Homebrew's shebang-rewrite —
+      # so nothing in the installed tree needs a *required* node
+      # dependency to resolve at runtime anymore. `brew deps` (without
+      # --include-build) only lists required/recommended deps, so this
+      # fails if node is ever unscoped from :build again. The structural
+      # check that the launcher itself doesn't reference node is in the
+      # formula's own `test do` block, run later in this job via `brew
+      # test` — this step only covers the dependency declaration.
+      - name: Assert node is not a resolved runtime dependency of the bottle
         run: |
           DEPS="$(brew deps lambdatest/rook/rook)"
-          if ! echo "$DEPS" | grep -qx node; then
-            echo "::error::lambdatest/rook/rook no longer resolves 'node' as a required dependency. This looks like a fix for the extra-Node-install complaint, but it disables Homebrew's shebang rewrite for this package's npm-published launcher and breaks the bottle on a machine with no system Node. See the comment on Formula/rook.rb's depends_on line before changing this."
+          if echo "$DEPS" | grep -qx node; then
+            echo "::error::lambdatest/rook/rook resolves 'node' as a runtime dependency — Formula/rook.rb's 'depends_on \"node\"' should be '=> :build' now that def install writes its own launcher. See the comment on that line."
+            echo "$DEPS"
             exit 1
           fi
 
@@ -153,11 +154,12 @@ jobs:
       - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
 
       # See the identical step in macos-arm above.
-      - name: Assert node is still a required (non-build) dependency
+      - name: Assert node is not a resolved runtime dependency of the bottle
         run: |
           DEPS="$(brew deps lambdatest/rook/rook)"
-          if ! echo "$DEPS" | grep -qx node; then
-            echo "::error::lambdatest/rook/rook no longer resolves 'node' as a required dependency. This looks like a fix for the extra-Node-install complaint, but it disables Homebrew's shebang rewrite for this package's npm-published launcher and breaks the bottle on a machine with no system Node. See the comment on Formula/rook.rb's depends_on line before changing this."
+          if echo "$DEPS" | grep -qx node; then
+            echo "::error::lambdatest/rook/rook resolves 'node' as a runtime dependency — Formula/rook.rb's 'depends_on \"node\"' should be '=> :build' now that def install writes its own launcher. See the comment on that line."
+            echo "$DEPS"
             exit 1
           fi
 
