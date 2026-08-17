@@ -390,6 +390,39 @@ $INSTALL_OUT_E" \
 done
 
 # =============================================================================
+# Case G: the actual documented public command — `curl -fsSL ... | bash` —
+# pipes install.sh's content into bash on stdin rather than executing a
+# named file. Every other case in this harness runs `bash "$INSTALL_SH"
+# ...`, where BASH_SOURCE[0] is always the real filename; piped execution
+# is the one shape none of them exercise, and it is the one real users
+# actually run (#498). Under `set -u`, a piped script leaves BASH_SOURCE
+# with zero elements, so the direct-execution guard's old
+# `"${BASH_SOURCE[0]}" == "${0}"` check died on an unbound-variable error
+# before main() ever ran — install exited nonzero having downloaded
+# nothing, with no useful message. `bash -s --` is what lets a piped
+# script still receive --version/--dir the same way argv would.
+# =============================================================================
+HOME_G="$WORKDIR/home-g"
+DIR_G="$WORKDIR/bin-g"
+mkdir -p "$HOME_G" "$DIR_G"
+INSTALL_OUT_G="$(
+  env -i HOME="$HOME_G" PATH="$STUB_BIN:/usr/bin:/bin:/usr/sbin:/sbin" \
+    ROOK_TEST_FIXTURE_DIR="$FIXTURE_DIR" \
+    bash -s -- --version "$VERSION" --dir "$DIR_G" <"$INSTALL_SH" 2>&1
+)"
+RC_G=$?
+check "(g) piped \`bash < install.sh\` exits 0" \
+      "(g) piped \`bash < install.sh\` exited nonzero ($RC_G) — output:
+$INSTALL_OUT_G" \
+      [ "$RC_G" -eq 0 ]
+check "(g) piped install does not leak the BASH_SOURCE unbound-variable crash" \
+      "(g) piped install leaked the BASH_SOURCE crash — got: $INSTALL_OUT_G" \
+      lacks "unbound variable" "$INSTALL_OUT_G"
+check "(g) piped install actually installed the binary" \
+      "(g) piped install reported success but $DIR_G/rook is missing" \
+      [ -x "$DIR_G/rook" ]
+
+# =============================================================================
 # Case F: --version / --dir as the very last argument must produce a usage
 # message, not `line N: $2: unbound variable` (F14).
 # =============================================================================
