@@ -239,23 +239,16 @@ main() {
   echo "Run 'rook --version' to verify."
 }
 
-# Only run main when executed directly (`bash install.sh` / `./install.sh`,
-# including the public `curl ... | bash` pipe) — not when sourced, e.g. by
-# a test harness that wants to call detect_platform() directly without
-# triggering a real network install.
+# Only run main when executed directly (`bash install.sh`, `./install.sh`,
+# or the public `curl ... | bash` pipe) — not when sourced, e.g. by a test
+# harness calling detect_platform() directly.
 #
-# `${BASH_SOURCE[0]:-$0}` rather than a bare `${BASH_SOURCE[0]}`: under
-# `set -u`, a script read from a pipe (no source file at all) leaves
-# BASH_SOURCE with zero elements, so referencing index 0 directly is an
-# unbound-variable error that aborts before this line ever runs a
-# comparison — the documented `curl -fsSL ... | bash` command hits this
-# unconditionally. Falling back to `$0` (which bash sets to "bash" for a
-# piped script) makes the comparison trivially true for that case, so
-# main still runs. A plain `${BASH_SOURCE[0]:-}` fallback (empty string)
-# would dodge the crash but then never match `$0`, silently skipping main
-# and exiting 0 having installed nothing. Sourcing is unaffected either
-# way: BASH_SOURCE[0] is always set to the real filename when a file is
-# sourced, so the fallback never triggers there. See #498.
+# `${BASH_SOURCE[0]:-$0}`: under `set -u`, a piped script has no
+# BASH_SOURCE entry, so indexing it directly is an unbound-variable error
+# that broke `curl ... | bash` on every run. Falling back to `$0` (which
+# bash sets to "bash" when piped) keeps the comparison true for that case;
+# an empty-string fallback would stop the crash but then silently skip
+# main too, since "" never equals "bash".
 if [[ "${BASH_SOURCE[0]:-$0}" == "${0}" ]]; then
   main "$@"
 fi

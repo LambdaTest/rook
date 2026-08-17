@@ -65,21 +65,16 @@ jobs:
       # preinstalled. The Linux job below does need it.
       - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
 
-      # `brew deps` (no --include-build) lists only the required/recommended
-      # dependencies Homebrew resolves for EVERY install path, bottle pour
-      # included — build-only deps are excluded unless asked for. rook
-      # bundles its own Node runtime and only touches Homebrew's `node` at
-      # formula-build time (inside `def install`, which a bottle pour never
-      # runs), so `node` belongs there, not here. A static check rather than
-      # "assert node isn't installed after `brew install`" because these
-      # runner images can carry Homebrew's `node` preinstalled already,
-      # which would make that check pass even with the bug present. See #497.
+      # `brew deps` (without --include-build) only lists required/
+      # recommended deps, so this fails if node is ever unscoped from
+      # `:build` again. Checks the resolved deps rather than before/after
+      # install, since runner images can already carry Homebrew's node for
+      # unrelated reasons.
       - name: Assert node is not a resolved runtime dependency of the bottle
         run: |
           DEPS="$(brew deps lambdatest/rook/rook)"
           if echo "$DEPS" | grep -qx node; then
-            echo "::error::lambdatest/rook/rook resolves 'node' as a runtime dependency, so a bottle pour installs/upgrades Homebrew's Node (and its dependency tree) even though rook ships its own bundled runtime. Formula/rook.rb's 'depends_on \"node\"' needs '=> :build'. See #497."
-            echo "Full non-build dependency list:"
+            echo "::error::lambdatest/rook/rook resolves 'node' as a runtime dependency — Formula/rook.rb's 'depends_on \"node\"' needs '=> :build'."
             echo "$DEPS"
             exit 1
           fi
@@ -152,14 +147,12 @@ jobs:
       - uses: Homebrew/actions/setup-homebrew@b35a29a0f83ee8b8ca07b219fc8db3d7bb88ab49 # 2026.08.10.2
       - run: brew tap lambdatest/rook https://github.com/LambdaTest/rook.git
 
-      # See the identical step in macos-arm above for why this is a static
-      # `brew deps` check rather than an installed-before/after comparison.
+      # See the identical step in macos-arm above.
       - name: Assert node is not a resolved runtime dependency of the bottle
         run: |
           DEPS="$(brew deps lambdatest/rook/rook)"
           if echo "$DEPS" | grep -qx node; then
-            echo "::error::lambdatest/rook/rook resolves 'node' as a runtime dependency, so a bottle pour installs/upgrades Homebrew's Node (and its dependency tree) even though rook ships its own bundled runtime. Formula/rook.rb's 'depends_on \"node\"' needs '=> :build'. See #497."
-            echo "Full non-build dependency list:"
+            echo "::error::lambdatest/rook/rook resolves 'node' as a runtime dependency — Formula/rook.rb's 'depends_on \"node\"' needs '=> :build'."
             echo "$DEPS"
             exit 1
           fi

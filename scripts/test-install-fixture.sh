@@ -390,17 +390,11 @@ $INSTALL_OUT_E" \
 done
 
 # =============================================================================
-# Case G: the actual documented public command — `curl -fsSL ... | bash` —
-# pipes install.sh's content into bash on stdin rather than executing a
-# named file. Every other case in this harness runs `bash "$INSTALL_SH"
-# ...`, where BASH_SOURCE[0] is always the real filename; piped execution
-# is the one shape none of them exercise, and it is the one real users
-# actually run (#498). Under `set -u`, a piped script leaves BASH_SOURCE
-# with zero elements, so the direct-execution guard's old
-# `"${BASH_SOURCE[0]}" == "${0}"` check died on an unbound-variable error
-# before main() ever ran — install exited nonzero having downloaded
-# nothing, with no useful message. `bash -s --` is what lets a piped
-# script still receive --version/--dir the same way argv would.
+# Case G: the documented public command, `curl -fsSL ... | bash`, pipes
+# install.sh into bash on stdin instead of executing a named file — the
+# one invocation shape none of the other cases exercise (they all run
+# `bash "$INSTALL_SH" ...`, where BASH_SOURCE[0] is always set).
+# `bash -s --` lets the piped script still receive --version/--dir.
 # =============================================================================
 HOME_G="$WORKDIR/home-g"
 DIR_G="$WORKDIR/bin-g"
