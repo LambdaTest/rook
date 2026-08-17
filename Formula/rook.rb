@@ -31,11 +31,20 @@ class Rook < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux: "a8a22dae199e78a68daa8a619a1210e881009675fb5400c292bf092d836190e3"
   end
 
-  # node/npm are only used inside `def install` below, which never runs on
-  # a bottle pour — only when building from source. `:build` keeps a
-  # bottle install from also pulling in Homebrew's own Node, since rook
-  # ships and runs on its own bundled runtime (see caveats below).
-  depends_on "node" => :build
+  # NOT :build-only, despite npm/node only being invoked inside `def
+  # install` below. This dependency is load-bearing at a second layer:
+  # Homebrew's own Cleaner#rewrite_shebangs (utils/shebang.rb,
+  # language/node.rb) automatically rewrites this package's published
+  # `#!/usr/bin/env node` launcher shebang to the absolute path of a
+  # *:required* Node dependency — silently skipped for :build-scoped ones
+  # (`formula.deps.select(&:required?)`). Without a :required node dep,
+  # the shebang stays as `env node`, which works ONLY if some node is on
+  # PATH at runtime; scoping this to :build (tried and reverted — see
+  # git history) leaves a bottle pour with no working interpreter at all
+  # on a machine with no system Node. Tracked as a real gap, not fixed
+  # here: the caveats text below currently overstates how self-contained
+  # this is.
+  depends_on "node"
 
   def install
     # `.reject` drops --build-from-source, which brew injects unconditionally
