@@ -49,6 +49,18 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# The install directory ends up inside install-manifest.json, which is JSON
+# written by a bash script with no JSON encoder. Backslash and double-quote
+# are escaped on the way out (see json_escape); control characters are refused
+# here instead, because escaping them correctly is more machinery than a real
+# install path ever justifies, and a directory containing one is far more
+# likely to be a mistake than an intention. Checked before any work happens,
+# and covering the default as well as --dir.
+if printf '%s' "$INSTALL_DIR" | LC_ALL=C grep -q '[[:cntrl:]]'; then
+  echo "Error: --dir must not contain control characters." >&2
+  exit 1
+fi
+
 resolve_version() {
   if [[ -n "$VERSION" ]]; then
     echo "$VERSION"
@@ -129,6 +141,19 @@ sha256_of() {
   fi
 }
 
+# json_escape STRING: escapes a string for embedding in a JSON string literal.
+# Only backslash and double-quote, and that is the complete set here rather
+# than a shortcut: control characters are refused up front (see the check
+# above), and every other byte is legal unescaped inside a JSON string.
+# Order matters — backslash first, or the backslashes this function itself
+# introduces get escaped a second time.
+json_escape() {
+  local s="$1"
+  s="${s//\\/\\\\}"
+  s="${s//\"/\\\"}"
+  printf '%s' "$s"
+}
+
 # verify_checksum FILE SIDECAR: verifies that FILE — the artifact actually
 # downloaded, at its known local path — hashes to the digest published in
 # SIDECAR.
@@ -205,6 +230,17 @@ main() {
   verify_checksum "${tmp_dir}/${asset}" "${tmp_dir}/${checksum_asset}"
 
   mkdir -p "$INSTALL_DIR"
+  # Resolve to an absolute, physical path — but only AFTER mkdir, never at
+  # parse time. The directory need not exist when --dir is parsed, and the
+  # default (~/.local/bin) does not exist on a fresh machine, so `cd`,
+  # `realpath` and `readlink -f` would all fail there and `set -e` would turn
+  # a working install into a non-zero exit that installs nothing.
+  #
+  # It has to be absolute because install-manifest.json records it for
+  # `rook update` to reuse later, from a different working directory: a
+  # recorded "mybin" means nothing to the next process. `pwd -P` over `pwd`
+  # so the recorded path survives a later change to an intermediate symlink.
+  INSTALL_DIR="$(cd "$INSTALL_DIR" && pwd -P)"
 
   extract_dir="${tmp_dir}/extract"
   mkdir -p "$extract_dir"
@@ -230,6 +266,29 @@ main() {
   mkdir -p "$(dirname "$target_dir")"
   cp -R "$extracted_root" "$target_dir"
   ln -sf "${target_dir}/bin/rook" "${INSTALL_DIR}/rook"
+
+  # install-manifest.json — how this copy was installed, recorded by the only
+  # thing that knows. `rook update` reads it to re-run this installer with the
+  # same --dir; without it, an update would write a second symlink into the
+  # default directory while the one on the user's PATH still pointed at the
+  # old version, and report success.
+  #
+  # Written LAST, after the symlink: its presence means an install that
+  # actually reached PATH. Written before, it would survive a failed `ln` and
+  # describe an install nobody can run.
+  #
+  # A failure here is not a failed install — the tree and the symlink are
+  # already in place and working — so it warns rather than aborting. `rook
+  # update` treats an absent manifest as "print the command instead of running
+  # it", which is the safe direction.
+  if ! cat >"${target_dir}/install-manifest.json" <<MANIFEST
+{"v":1,"channel":"curl","installDir":"$(json_escape "$INSTALL_DIR")","version":"$(json_escape "$version")"}
+MANIFEST
+  then
+    echo "Warning: could not record ${target_dir}/install-manifest.json." >&2
+    echo "The install is complete and usable; 'rook update' will print the" >&2
+    echo "upgrade command rather than running it." >&2
+  fi
 
   echo ""
   echo "Installed rook v${version} (${platform}) to ${INSTALL_DIR}/rook"
