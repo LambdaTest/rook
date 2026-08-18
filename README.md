@@ -64,8 +64,14 @@ Three ways, on macOS and Linux, x64 and arm64. Each one carries its own Node run
 
 ```
 brew tap LambdaTest/rook https://github.com/LambdaTest/rook.git
-brew install rook
+brew install lambdatest/rook/rook
 ```
+
+Install by the full `lambdatest/rook/rook` name, not just `rook` — Homebrew
+requires third-party-tap formulae to be explicitly trusted before loading
+them, and naming the tap in full is what satisfies that automatically.
+`brew install rook` (after the same tap) hits `Error: Refusing to load
+formula lambdatest/rook/rook from untrusted tap lambdatest/rook.`
 
 **Shell installer** — downloads the archive matching your platform, verifies its checksum, and links `rook` into `~/.local/bin`. Pass `--dir` to put it somewhere else, or `--version X.Y.Z` to pin one.
 
