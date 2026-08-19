@@ -135,6 +135,23 @@ class Rook < Formula
       end
     end
 
+    # The keg's own identity record, read by `rook update`'s provenance
+    # detection at the fixed position this formula's layout dictates
+    # (`<keg>/libexec/lib/node_modules/@testmuai/rook` is the package root,
+    # so the marker sits five levels above it). Homebrew's own
+    # INSTALL_RECEIPT.json cannot serve this purpose: it carries no
+    # formula-name field, and for an API-loaded formula `source.path` is the
+    # shared formula.jws.json cache — so without this file, "is this keg
+    # rook's?" is only answerable by inferring from the Cellar path, which
+    # the reader refuses to do. Written unconditionally (the opoo fallback
+    # above still installs rook, and the keg is rook's either way), and
+    # deliberately containing no absolute paths: bottles are poured into
+    # whatever prefix the host uses, and `:any_skip_relocation` means
+    # nothing would rewrite one.
+    (prefix/"rook-keg-marker.json").write JSON.generate(
+      { v: 1, formula: "rook", version: version.to_s },
+    ) + "\n"
+
     bin.install_symlink libexec.glob("bin/*")
   end
 
@@ -171,5 +188,14 @@ class Rook < Formula
     # machine with no system Node — this catches it on every machine.
     shebang = (libexec/"bin/rook").readlines.first.to_s
     refute_match(/node/, shebang, "launcher shells out through node again")
+
+    # The keg marker `rook update` identifies this keg by — asserted on
+    # contents, not just presence, so a change that breaks its shape fails
+    # here (and in brew-smoke, which calls `brew test`) rather than in
+    # every installed copy's provenance detection.
+    marker = JSON.parse((prefix/"rook-keg-marker.json").read)
+    assert_equal 1, marker["v"], "keg marker v drifted"
+    assert_equal "rook", marker["formula"], "keg marker names the wrong formula"
+    assert_equal version.to_s, marker["version"], "keg marker version disagrees with the keg"
   end
 end
