@@ -33,34 +33,6 @@ missing_value() {
   exit 1
 }
 
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --version)
-      [[ $# -ge 2 ]] || missing_value "$1"
-      VERSION="$2"; shift 2 ;;
-    --dir)
-      [[ $# -ge 2 ]] || missing_value "$1"
-      INSTALL_DIR="$2"; shift 2 ;;
-    --help)
-      usage
-      exit 0
-      ;;
-    *) echo "Unknown option: $1" >&2; exit 1 ;;
-  esac
-done
-
-# The install directory ends up inside install-manifest.json, which is JSON
-# written by a bash script with no JSON encoder. Backslash and double-quote
-# are escaped on the way out (see json_escape); control characters are refused
-# here instead, because escaping them correctly is more machinery than a real
-# install path ever justifies, and a directory containing one is far more
-# likely to be a mistake than an intention. Checked before any work happens,
-# and covering the default as well as --dir.
-if printf '%s' "$INSTALL_DIR" | LC_ALL=C grep -q '[[:cntrl:]]'; then
-  echo "Error: --dir must not contain control characters." >&2
-  exit 1
-fi
-
 resolve_version() {
   if [[ -n "$VERSION" ]]; then
     echo "$VERSION"
@@ -154,6 +126,39 @@ json_escape() {
   printf '%s' "$s"
 }
 
+# reject_unsafe_value SUBJECT VALUE: aborts if VALUE contains a control
+# character or is not valid UTF-8. Both are refused for the same reason:
+# escaping either correctly inside install-manifest.json's hand-rolled JSON
+# encoding is more machinery than a real install path or version string
+# ever justifies, and a value violating either is far more likely to be a
+# mistake than an intention. SUBJECT names the value in the error message
+# (e.g. "--dir", "the version").
+#
+# Used on --dir (both the raw value and, separately, its resolved physical
+# path — resolution can fold in a control character that wasn't in the raw
+# argument, e.g. from a control character in the current working directory
+# when --dir is relative, or from a symlink target) and on the version
+# string, which flows into the same unescaped-by-design JSON fields.
+#
+# The UTF-8 check is skipped (not treated as a failure) when iconv isn't on
+# PATH — unlike sha256_of's sha256sum/shasum choice, there's no universal
+# fallback tool for this, and refusing every install over a missing
+# optional tool would be worse than not catching a rare malformed-input
+# edge case. The control-character check has no such gap: grep is always
+# present.
+reject_unsafe_value() {
+  local subject="$1" value="$2"
+  if printf '%s' "$value" | LC_ALL=C grep -q '[[:cntrl:]]'; then
+    echo "Error: ${subject} must not contain control characters." >&2
+    exit 1
+  fi
+  if command -v iconv >/dev/null 2>&1 \
+     && ! printf '%s' "$value" | iconv -f UTF-8 -t UTF-8 >/dev/null 2>&1; then
+    echo "Error: ${subject} must be valid UTF-8." >&2
+    exit 1
+  fi
+}
+
 # verify_checksum FILE SIDECAR: verifies that FILE — the artifact actually
 # downloaded, at its known local path — hashes to the digest published in
 # SIDECAR.
@@ -206,8 +211,36 @@ main() {
   # trap time once the function has returned; a non-local one doesn't.
   local version platform asset checksum_asset download_url checksum_url
   local extract_dir extracted_root target_dir entries
+  local raw_install_dir manifest_tmp manifest_ok
+
+  # Arg parsing and the values it produces (INSTALL_DIR, VERSION) live here,
+  # inside main(), rather than as top-level script code — this file is also
+  # `source`d by test harnesses that want detect_platform() alone (see the
+  # BASH_SOURCE guard at the bottom); top-level code runs on every source,
+  # main() only runs when this script is actually executed.
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --version)
+        [[ $# -ge 2 ]] || missing_value "$1"
+        VERSION="$2"; shift 2 ;;
+      --dir)
+        [[ $# -ge 2 ]] || missing_value "$1"
+        INSTALL_DIR="$2"; shift 2 ;;
+      --help)
+        usage
+        exit 0
+        ;;
+      *) echo "Unknown option: $1" >&2; exit 1 ;;
+    esac
+  done
+
+  # Checked before any work happens (no network, no filesystem writes yet),
+  # and covering the default as well as --dir. See reject_unsafe_value()'s
+  # own comment for why both control characters and invalid UTF-8 matter.
+  reject_unsafe_value "--dir" "$INSTALL_DIR"
 
   version="$(resolve_version)"
+  reject_unsafe_value "the version" "$version"
 
   if ! platform="$(detect_platform "$(uname -s)" "$(uname -m)")"; then
     exit 1
@@ -240,7 +273,19 @@ main() {
   # `rook update` to reuse later, from a different working directory: a
   # recorded "mybin" means nothing to the next process. `pwd -P` over `pwd`
   # so the recorded path survives a later change to an intermediate symlink.
+  #
+  # raw_install_dir keeps the pre-resolution value around: the $PATH
+  # membership check below needs to compare against what a user actually put
+  # on $PATH (typically unresolved, e.g. `/tmp/mybin`), not the resolved
+  # physical path (`/private/tmp/mybin` on macOS) — a directory that IS on
+  # $PATH would otherwise get a spurious "add to your PATH" warning.
+  raw_install_dir="$INSTALL_DIR"
   INSTALL_DIR="$(cd "$INSTALL_DIR" && pwd -P)"
+  # Resolution can fold in a control character or invalid UTF-8 byte that
+  # wasn't in the raw --dir (e.g. from the CWD when --dir is relative, or
+  # from a symlink target) — the check above only saw the raw value, so it
+  # has to run again here on the resolved one.
+  reject_unsafe_value "the resolved --dir" "$INSTALL_DIR"
 
   extract_dir="${tmp_dir}/extract"
   mkdir -p "$extract_dir"
@@ -273,18 +318,34 @@ main() {
   # default directory while the one on the user's PATH still pointed at the
   # old version, and report success.
   #
-  # Written LAST, after the symlink: its presence means an install that
-  # actually reached PATH. Written before, it would survive a failed `ln` and
-  # describe an install nobody can run.
+  # Written LAST, after the symlink: its presence means an install whose
+  # symlink was written successfully. Written before, it would survive a
+  # failed `ln` and describe an install nobody can run. (Whether that
+  # symlink's directory is actually on $PATH is a separate question — see
+  # the check below, which can be false even for a fully successful install.)
+  #
+  # Written to a temp file in the same directory first, then renamed into
+  # place: `mv` within one filesystem is atomic, so a crash, signal, or full
+  # disk mid-write can never leave a present-but-truncated manifest — the
+  # worst case is a leftover temp file and an absent real one, which the
+  # warning path below already handles.
   #
   # A failure here is not a failed install — the tree and the symlink are
   # already in place and working — so it warns rather than aborting. `rook
   # update` treats an absent manifest as "print the command instead of running
   # it", which is the safe direction.
-  if ! cat >"${target_dir}/install-manifest.json" <<MANIFEST
+  manifest_tmp="${target_dir}/.install-manifest.json.tmp"
+  manifest_ok=1
+  if ! cat >"$manifest_tmp" <<MANIFEST
 {"v":1,"channel":"curl","installDir":"$(json_escape "$INSTALL_DIR")","version":"$(json_escape "$version")"}
 MANIFEST
   then
+    manifest_ok=0
+  elif ! mv "$manifest_tmp" "${target_dir}/install-manifest.json"; then
+    manifest_ok=0
+  fi
+  if [[ "$manifest_ok" -eq 0 ]]; then
+    rm -f "$manifest_tmp"
     echo "Warning: could not record ${target_dir}/install-manifest.json." >&2
     echo "The install is complete and usable; 'rook update' will print the" >&2
     echo "upgrade command rather than running it." >&2
@@ -292,8 +353,8 @@ MANIFEST
 
   echo ""
   echo "Installed rook v${version} (${platform}) to ${INSTALL_DIR}/rook"
-  if ! echo "$PATH" | tr ':' '\n' | grep -qx "$INSTALL_DIR"; then
-    echo "Add to your PATH: export PATH=\"${INSTALL_DIR}:\$PATH\""
+  if ! echo "$PATH" | tr ':' '\n' | grep -qx "$raw_install_dir"; then
+    echo "Add to your PATH: export PATH=\"${raw_install_dir}:\$PATH\""
   fi
   echo "Run 'rook --version' to verify."
 }

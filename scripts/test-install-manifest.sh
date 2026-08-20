@@ -347,11 +347,108 @@ check "(e) nothing was installed for the refused path" \
 # symlink into, which is not portable across the platforms this runs on.
 # =============================================================================
 LN_LINE="$(grep -n 'ln -sf' "$INSTALL_SH" | head -1 | cut -d: -f1)"
-MANIFEST_LINE="$(grep -n 'install-manifest.json' "$INSTALL_SH" | tail -1 | cut -d: -f1)"
+# The manifest becomes visible at the atomic rename into place (install.sh
+# writes to a temp file first, then `mv`s it — see its own comment on why),
+# not at the temp-file write that precedes it. A bare 'install-manifest.json'
+# substring match would also hit the header comment and the warning-echo
+# line, so match the rename statement specifically instead.
+# shellcheck disable=SC2016  # the literal '$manifest_tmp' is the grep target, not meant to expand
+MANIFEST_LINE="$(grep -Fn 'mv "$manifest_tmp"' "$INSTALL_SH" | head -1 | cut -d: -f1)"
 
 check "(f) the manifest write comes after the symlink in install.sh (ln:${LN_LINE}, manifest:${MANIFEST_LINE})" \
       "(f) install.sh writes install-manifest.json at line ${MANIFEST_LINE}, before the ln -sf at line ${LN_LINE} — a manifest must not outlive a failed symlink" \
       [ "$MANIFEST_LINE" -gt "$LN_LINE" ]
+
+# =============================================================================
+# Case G: a control character introduced BY resolving --dir (not present in
+# the raw --dir argument itself) must still be refused — defense in depth
+# for the pre-resolution guard Case E already covers, which only ever sees
+# the raw value.
+#
+# A relative --dir with no control character of its own, run from a working
+# directory whose OWN name contains one, folds the control character in at
+# `pwd -P` resolution time. The pre-resolution guard cannot see this; only a
+# guard run AFTER resolution can.
+# =============================================================================
+HOME_G="$WORKDIR/home-g"
+mkdir -p "$HOME_G"
+CWD_G="$(printf '%s/cwd-g\ttab' "$WORKDIR")"
+mkdir -p "$CWD_G"
+
+OUT_G="$(cd "$CWD_G" && run_install "$HOME_G" --dir "mybin" 2>&1)"; RC_G=$?
+
+check "(g) a control character introduced by resolving a relative --dir is refused" \
+      "(g) exited 0 — a resolved path containing a tab (from the CWD) must be refused, not recorded. Output:
+$OUT_G" \
+      [ "$RC_G" -ne 0 ]
+
+check "(g) the refusal names what is wrong" \
+      "(g) refusal message did not mention control characters. Output:
+$OUT_G" \
+      grep -qi 'control character' <<<"$OUT_G"
+
+check "(g) nothing was installed for the refused resolved path" \
+      "(g) an install tree exists under ${HOME_G}/.testmuai despite the refusal" \
+      [ ! -d "${HOME_G}/.testmuai" ]
+
+# =============================================================================
+# Case H: a control character in --version is refused, before anything is
+# written — the same contract Case E enforces for --dir, extended to the
+# version string that flows into the same hand-rolled JSON.
+# =============================================================================
+HOME_H="$WORKDIR/home-h"
+mkdir -p "$HOME_H"
+VERSION_H="$(printf '9.9.9\tfixture')"
+
+OUT_H="$(run_install "$HOME_H" --version "$VERSION_H" 2>&1)"; RC_H=$?
+
+check "(h) a control character in --version is refused" \
+      "(h) exited 0 — a version containing a tab must be refused, not recorded. Output:
+$OUT_H" \
+      [ "$RC_H" -ne 0 ]
+
+check "(h) the refusal names what is wrong" \
+      "(h) refusal message did not mention control characters. Output:
+$OUT_H" \
+      grep -qi 'control character' <<<"$OUT_H"
+
+check "(h) nothing was installed for the refused version" \
+      "(h) an install tree exists under ${HOME_H}/.testmuai despite the refusal" \
+      [ ! -d "${HOME_H}/.testmuai" ]
+
+# =============================================================================
+# Case I: a --dir containing a byte sequence that is not valid UTF-8 is
+# refused, before anything is written. RFC 8259 requires the manifest's JSON
+# text be valid UTF-8; this catches what the control-character guard alone
+# does not — 0xFF is not an ASCII control byte, so Case E's guard would let
+# it through, but iconv rejects it as invalid UTF-8. Refused before the
+# install directory is ever created (see install.sh's own ordering), so no
+# filesystem support for storing the bad byte sequence in a real filename is
+# needed for this test.
+# =============================================================================
+if command -v iconv >/dev/null 2>&1; then
+  HOME_I="$WORKDIR/home-i"
+  mkdir -p "$HOME_I"
+  DIR_I="$(printf '%s/bin-i\xffinvalid' "$WORKDIR")"
+
+  OUT_I="$(run_install "$HOME_I" --dir "$DIR_I" 2>&1)"; RC_I=$?
+
+  check "(i) a --dir with an invalid UTF-8 byte is refused" \
+        "(i) exited 0 — a --dir containing an invalid UTF-8 byte must be refused, not recorded. Output:
+$OUT_I" \
+        [ "$RC_I" -ne 0 ]
+
+  check "(i) the refusal names what is wrong" \
+        "(i) refusal message did not mention UTF-8. Output:
+$OUT_I" \
+        grep -qi 'utf-8' <<<"$OUT_I"
+
+  check "(i) nothing was installed for the refused path" \
+        "(i) an install tree exists under ${HOME_I}/.testmuai despite the refusal" \
+        [ ! -d "${HOME_I}/.testmuai" ]
+else
+  echo "SKIP: (i) iconv not on PATH — install.sh's UTF-8 guard is a no-op here too, nothing to assert"
+fi
 
 # =============================================================================
 if [ "$FAIL" -ne 0 ]; then
