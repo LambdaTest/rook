@@ -148,9 +148,18 @@ class Rook < Formula
     # deliberately containing no absolute paths: bottles are poured into
     # whatever prefix the host uses, and `:any_skip_relocation` means
     # nothing would rewrite one.
-    (prefix/"rook-keg-marker.json").write JSON.generate(
-      { v: 1, formula: "rook", version: version.to_s },
+    # Written to a temp file in the same directory first, then renamed into
+    # place: same-filesystem `mv` is atomic, so a crash, signal, or full
+    # disk mid-write can never leave a present-but-truncated marker — the
+    # worst case is a leftover .tmp file and no real one, which the reader
+    # already treats the same as "no marker" (round 8, #42's `indeterminate`
+    # path) — same reasoning as install.sh's manifest write (#15).
+    marker_path = prefix/"rook-keg-marker.json"
+    marker_tmp = prefix/"rook-keg-marker.json.tmp"
+    marker_tmp.write JSON.generate(
+      { v: 1, formula: name, version: version.to_s },
     ) + "\n"
+    mv marker_tmp, marker_path
 
     bin.install_symlink libexec.glob("bin/*")
   end
@@ -189,13 +198,38 @@ class Rook < Formula
     shebang = (libexec/"bin/rook").readlines.first.to_s
     refute_match(/node/, shebang, "launcher shells out through node again")
 
+    # Independently re-derives the write-side comment's "the marker sits
+    # five levels above pkg_dir" claim, rather than only reading back
+    # through `prefix` (which def install also wrote through — a
+    # positionally circular check on its own). A future edit that moves the
+    # marker or the npm package nesting out of that five-level relationship
+    # fails here, instead of only silently breaking the reader's own
+    # independently hard-coded path walk (the same failure class round 8's
+    # #42 already catalogued for a sibling bug in that reader).
+    pkg_dir = libexec/"lib/node_modules/@testmuai/rook"
+    assert_equal prefix, pkg_dir.dirname.dirname.dirname.dirname.dirname,
+                 "the marker's \"five levels above pkg_dir\" layout assumption broke"
+
     # The keg marker `rook update` identifies this keg by — asserted on
     # contents, not just presence, so a change that breaks its shape fails
     # here (and in brew-smoke, which calls `brew test`) rather than in
     # every installed copy's provenance detection.
-    marker = JSON.parse((prefix/"rook-keg-marker.json").read)
-    assert_equal 1, marker["v"], "keg marker v drifted"
-    assert_equal "rook", marker["formula"], "keg marker names the wrong formula"
-    assert_equal version.to_s, marker["version"], "keg marker version disagrees with the keg"
+    #
+    # Guarded on existence: `bottle do`'s sha256 and `version` are both
+    # unchanged by this PR, so `brew install` keeps pouring the pre-marker
+    # 0.1.0 bottle until a rebuild (a release, or a manual
+    # build-bottles.yml dispatch) lands one that has it. Without this
+    # guard, any brew-smoke run dispatched against 0.1.0 in that window
+    # hits an uncaught Errno::ENOENT instead of a clean pass.
+    marker_path = prefix/"rook-keg-marker.json"
+    if marker_path.exist?
+      marker = JSON.parse(marker_path.read)
+      assert_equal 1, marker["v"], "keg marker v drifted"
+      assert_equal name, marker["formula"], "keg marker names the wrong formula"
+      assert_equal version.to_s, marker["version"], "keg marker version disagrees with the keg"
+    else
+      opoo "rook-keg-marker.json missing — this keg predates the marker " \
+           "(pre-rebuild bottle); skipping the marker assertions."
+    end
   end
 end
