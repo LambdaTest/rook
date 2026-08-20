@@ -27,8 +27,8 @@ class Rook < Formula
 
   bottle do
     root_url "https://github.com/LambdaTest/rook/releases/download/rook-0.1.0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma: "e0143425a734b4e3323e9af26f136be89c7f035e0e550541efb5b7beeb8aeef1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "4ed3ed6746a947786b2b7deb3cb21a058ab1eb8b062e49de617fad0ef1349d51"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma: "33523727bdde5594db233b28d98027adac84823feace0fa98636685fb1a78770"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "f607e066808f573f47fd5ef70b8e343af04334c54a7315a84d115af169c8605b"
   end
 
   # :build, safely this time. node/npm are only invoked inside `def
