@@ -1,0 +1,30 @@
+# knowledge-vault — HTTP sync. The grounding story: observe.usage on, and the
+# read-only /v1/last endpoint lets a judge check the answer was cited from a doc
+# that actually contains it. Point url at :9601 for the buggy (hallucinating) twin.
+id: knowledge-vault
+name: knowledge-vault
+kind: http
+mode: sync
+timeout_seconds: 15
+invoke:
+  method: POST
+  url: http://127.0.0.1:9600/v1/ask
+  headers:
+    content-type: application/json
+  body:
+    input: "{{goal}}"
+result:
+  from: json_path
+  path: $.output
+conversation:
+  kind: field
+  id_path: $.session_id
+  send_as: body.session_id
+response:
+  kind: json
+observe:
+  usage: true
+reset:
+  argv: ["node", "scripts/reset.mjs"]
+  cwd: "."
+verified: false

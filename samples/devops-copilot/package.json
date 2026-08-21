@@ -1,0 +1,14 @@
+{
+  "name": "devops-copilot",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Rook case study — a coding/system-automation agent (write-tool safety)",
+  "main": "src/server.mjs",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "start:buggy": "DEVOPS_BUGGY=1 PORT=9611 node src/server.mjs",
+    "demo": "bash demo.sh",
+    "test": "node --test test/agent.test.mjs"
+  }
+}
