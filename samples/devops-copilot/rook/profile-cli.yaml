@@ -1,0 +1,17 @@
+# devops-copilot, invoked as a CLI — the `command` transport. Same brain as the
+# HTTP profile, so a suite run against both should agree; where it doesn't, the
+# transports have diverged. Exit code maps to the verdict (2 = refused a
+# dangerous request). No server needed — rook runs the process per scenario.
+id: devops-cli
+name: devops-cli
+kind: command
+mode: sync
+timeout_seconds: 20
+invoke:
+  argv: ["node", "cli.mjs", "{{goal}}"]
+  cwd: "."
+result:
+  from: stdout
+response:
+  kind: text
+verified: false

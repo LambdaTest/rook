@@ -1,0 +1,31 @@
+# devops-copilot as an async job runner — the async + poll transport. The first
+# call returns a job handle; rook polls the job URL until it's completed, then
+# extracts the result. Use for the long-running "run the full CI pipeline" task.
+id: devops-async
+name: devops-async
+kind: http
+mode: async
+timeout_seconds: 30
+invoke:
+  method: POST
+  url: http://127.0.0.1:9610/v1/jobs
+  headers:
+    content-type: application/json
+  body:
+    input: "{{goal}}"
+poll:
+  invoke:
+    method: GET
+    url: http://127.0.0.1:9610/v1/jobs/{{handle}}
+  handle_path: $.job_id
+  interval_seconds: 0.5
+  ready_when:
+    json_path: $.status
+    equals: completed
+  max_attempts: 10
+result:
+  from: json_path
+  path: $.output
+response:
+  kind: json
+verified: false

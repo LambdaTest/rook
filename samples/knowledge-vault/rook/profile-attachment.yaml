@@ -1,0 +1,29 @@
+# knowledge-vault with a file attachment — the `text+file` input kind.
+#
+# The agent reads a local document and answers from it. `attachments.via: field`
+# tells rook where the file path goes in the request body; the agent reads that
+# path (docs/handbook-excerpt.md ships as an example). A scenario with
+# input.kind: text+file and an attachment exercises this path.
+id: knowledge-vault-attach
+name: knowledge-vault-attach
+kind: http
+mode: sync
+timeout_seconds: 15
+invoke:
+  method: POST
+  url: http://127.0.0.1:9600/v1/ask
+  headers:
+    content-type: application/json
+  body:
+    input: "{{goal}}"
+result:
+  from: json_path
+  path: $.output
+attachments:
+  via: field
+  field: body.document_path
+response:
+  kind: json
+observe:
+  usage: true
+verified: false

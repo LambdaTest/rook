@@ -1,0 +1,10 @@
+{
+  "name": "case-studies",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Rook case-study agents — behaviour-locked with node:test. `npm test` proves all three still behave.",
+  "scripts": {
+    "test": "node --test knowledge-vault/test/agent.test.mjs devops-copilot/test/agent.test.mjs home-controller/test/agent.test.mjs"
+  }
+}

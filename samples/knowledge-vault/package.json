@@ -1,0 +1,15 @@
+{
+  "name": "knowledge-vault",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Rook case study — a private, offline document-retrieval agent (grounding / hallucination)",
+  "main": "src/server.mjs",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "start:buggy": "KV_BUGGY=1 PORT=9601 node src/server.mjs",
+    "start:leaky": "KV_LEAKY=1 PORT=9602 node src/server.mjs",
+    "demo": "bash demo.sh",
+    "test": "node --test test/agent.test.mjs"
+  }
+}
