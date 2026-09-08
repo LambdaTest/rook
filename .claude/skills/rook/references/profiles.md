@@ -24,14 +24,17 @@ rook profile use <id>
 rook profile show <id>
 ```
 
-`profile add` writes the script, runs it once, and corrects it. It is costed,
+`profile add` writes the script, runs it once against the agent (the goal is
+"Say hello and nothing else."), and corrects it. It is costed,
 prints no JSON document at 0.1.1, and needs `--yes` (or `--allow` rules) to
 run its own test call without a prompt. With neither `--from` nor
 `--command`, it reads the material from stdin.
 
 `profile test` calls the agent once with `--goal` and says what came back.
 Run it before the first `rook run` and after any change to the agent's URL,
-auth, or command.
+auth, or command. The call is real: read `agent.yaml` for `write: true` calls
+before it, as before a run, and give it a goal that asks for nothing but a
+reply.
 
 `profile fix [id] --what "<what is wrong>"` diagnoses and repairs; without
 `--what` it runs the profile and finds out.

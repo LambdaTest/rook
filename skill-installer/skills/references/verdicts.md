@@ -85,7 +85,10 @@ Then the unverifiables, grouped by reason, each with what would make it checkabl
 
 ## When the run itself failed
 
-Exit 1, or a run document with `ok: false`:
+Exit 1, or a run document with `ok: false`. When stdout is empty (a gate
+refusal on `report`, `status` or `ask`), the last stderr line is the error and
+there is no remedy token; translate the sentence with the table in
+`references/troubleshooting.md` under "Failure documents":
 
 ```markdown
 🔴 **rook could not run the suite**

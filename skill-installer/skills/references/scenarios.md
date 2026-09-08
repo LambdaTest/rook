@@ -35,10 +35,14 @@ It prints no JSON document at 0.1.1; read the exit code, then
 
 ```bash
 rook scenarios list --json
-rook scenarios exclude SC-004,SC-009 --json           # kept on disk, left out of runs
+rook scenarios exclude SC-004 SC-009 --json           # kept on disk, left out of runs
 rook scenarios include SC-004 --json
 rook scenarios delete SC-021 --json                   # permanent
 ```
+
+IDs are separate arguments here, unlike `run --only SC-004,SC-009`. A
+comma-joined string is one unknown ID: nothing changes, and the document still
+says `ok: true` with the string under `unknown`. Check `changed` in the reply.
 
 `list` recomputes `unrunnable` against the profile as it is now: a scenario
 that needs a capability the profile lacks (a file, an image, an MCP server)

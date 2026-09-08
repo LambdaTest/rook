@@ -38,8 +38,10 @@ Everything else is free. Never add `--rca` without asking.
 
 When the command exits 1, read the failure document on stdout
 (`{"ok": false, "error": …, "remedy": …}`) and use the template in
-`references/verdicts.md` under "When the run itself failed". Do not paste raw
-stderr.
+`references/verdicts.md` under "When the run itself failed". `plan` and `run`
+always write one; `report`, `status` and `ask` refused by the admission gate
+exit 1 with an empty stdout, and the reason is the last line of stderr. Quote
+that line as the error. Do not paste the rest of stderr.
 
 ## 2. Decision tree
 
@@ -73,9 +75,10 @@ Full detail: `references/headless-contract.md`.
   document, once; prose goes to stderr.
 - Exit `0` means the command did what it said; `1` means anything else. A
   finished run exits `0` even with failures. Gate on verdicts.
-- `explore`, `generate`, `sync` and `profile` accept `--json` but print no
-  document at 0.1.1: use the exit code, then read
-  `.testmuai/rook/projects/<project>/agents/<agent>/`.
+- `explore`, `generate`, `sync`, `profile` and `report --rca` accept `--json`
+  but print no document at 0.1.1: use the exit code, then read
+  `.testmuai/rook/projects/<project>/agents/<agent>/`. After `--rca`, run
+  `rook report <run-id> --json` for the explained report as a document.
 - Prefer `--allow 'bash(npm test)'` (one call shape, repeatable, scoped with
   `@<phase>`) over `--yes` (every tool call, this command only).
 - Without `--yes` or an `--allow` rule, headless rook refuses any bash, fetch
@@ -92,7 +95,8 @@ A profile is how rook reaches the agent: an HTTP endpoint (paste a curl), a
 command line with `{{goal}}` such as `claude -p "{{goal}}"`, or an MCP tool.
 Secrets are `${VAR}` references set with `rook env set '{"KEY":"…"}'`; never
 inline a value. Prove a profile with `rook profile test --goal "…"` before
-the first run. Detail: `references/profiles.md`.
+the first run; the call reaches the real agent, so make the goal one that asks
+for nothing but a reply. Detail: `references/profiles.md`.
 
 ## 5. Safety
 
@@ -100,12 +104,14 @@ The agent under test is the user's, and its writes are real. rook invokes it
 the way a user would and cannot roll anything back.
 
 - Point it at staging. rook 0.1.1 does not pause for a per-target write-tool
-  confirmation in headless mode, so before the first `run` read what the agent
-  declares — `agent.yaml` under the agent's folder, whose `calls[]` entries
-  carry `write: true` for the ones that mutate something outside the agent —
-  and get the user's consent.
-- Do not pass `--yes` to a run against an agent with write tools without
-  telling the user what it declares.
+  confirmation in headless mode, so before the first command that reaches the
+  agent — `profile add`, `profile fix` and `profile test` all call it, not
+  only `run` — read what the agent declares: `agent.yaml` under the agent's
+  folder, whose `calls[]` entries carry `write: true` for the ones that mutate
+  something outside the agent. Get the user's consent then, and give
+  `profile test` a goal that asks for nothing but a reply.
+- Do not pass `--yes` to `profile add` or to a run against an agent with write
+  tools without telling the user what it declares.
 - Judges verify without changing anything; calling `issue_refund` to find out
   whether a refund exists creates one, so rook reports such checks as
   unverifiable instead. Do not "help" by making the call yourself.

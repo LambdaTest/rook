@@ -182,9 +182,10 @@ Four rules:
    verdicts in the report, not on the exit code.
 2. **Keep Unable to Verify separate.** It is neither a pass nor a failure; it
    is what rook could not observe. Report it with its reason.
-3. **The agent's writes are real.** Point it at staging, and never pass
-   `--yes` to a run against an agent with write tools without telling the
-   user what it declares.
+3. **The agent's writes are real.** Point it at staging. `profile add` and
+   `profile test` call the agent before any run does, so read what it
+   declares first, and never pass `--yes` to a run against an agent with
+   write tools without telling the user what it declares.
 4. **explore, generate, profile add and run spend credits.** Say so before
    running them, and never add `--rca` without asking.
 

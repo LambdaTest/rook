@@ -48,7 +48,8 @@ and `'bash(git *)@explore'` scopes it to one phase. Prefer `--allow`.
 | `1`  | anything else: signed out, refused by the admission gate, unreachable service, bad flags, no active agent, a run that could not start |
 
 There is no separate code for unauthorized or exhausted credits at 0.1.1. Read
-the failure document's `remedy` instead.
+the failure document's `remedy` instead, or the last stderr line when there is
+no document (below).
 
 A finished `rook run` exits `0` even when scenarios failed. The verdicts are in
 the run document and on disk; a pipeline gates on them, not on the exit code.
@@ -59,7 +60,9 @@ the run document and on disk; a pipeline gates on them, not on the exit code.
 the end. Prose (progress, warnings, the human summary) goes to stderr. Parse
 stdout with `jq` and ignore stderr unless the exit code is 1.
 
-Failure, on every command that emits documents:
+Failure, as `plan` and `run` write it when the admission gate refuses, and as
+`report` and `scenarios` write it for a command-level error (`no runs yet`,
+`no active agent`):
 
 ```json
 { "ok": false, "error": "not signed in — run `rook login`", "remedy": "login" }
@@ -70,11 +73,16 @@ Failure, on every command that emits documents:
 `agent_missing`, `explore_agents`, `pick_agent`, `topup`, `reconcile`, `update`.
 It names what to do, not a sentence.
 
+A gate refusal on `report`, `status` or `ask` writes no document at 0.1.1: the
+command exits `1` with stdout empty and the gate's sentence as the last line of
+stderr. When stdout is empty, take that line as the error and translate it with
+the table in `references/troubleshooting.md` under "Failure documents".
+
 | Command                                           | Document                                                                                                                                                                                                                                                 |
 | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `plan --json`                                     | `{ username, user_id, org_name, org_id, subscription, credits }`. `credits` is `null` when the balance could not be fetched, never `0`.                                                                                                                  |
 | `run --json`                                      | `{ ok, error?, run_id?, halted, reason?, discarded?, unrunnable?: [...], flag_problems?: [...], credits, report? }`. `report` is the run's `report.yaml` (see `verdicts.md`).                                                                            |
-| `report --json`                                   | `{ run_id, name?, dir, report }` or a failure document. `dir` is the run folder.                                                                                                                                                                         |
+| `report --json`                                   | `{ run_id, name?, dir, report }` or a failure document. `dir` is the run folder. With `--rca`, no document (below).                                                                                                                                      |
 | `scenarios list --json`                           | `{ agent_id, profile_id, total, runnable, scenarios: [ { scenario_id, title, feature_id, class, category?, state, excluded, unrunnable, multi_turn, repeat, criteria } ] }`                                                                              |
 | `scenarios exclude \| include \| delete … --json` | `{ ok: true, verb, … }`                                                                                                                                                                                                                                  |
 | `status --json`                                   | `{ project_id, offline, agents: [ { local_id, name, tree, offline, features, scenarios, profiles, unfinished_runs, owed_runs } ], runs? }`. `tree` is `unsynced \| clean \| ahead \| diverged \| behind \| unknown`; `unknown` means offline, not clean. |
@@ -82,15 +90,18 @@ It names what to do, not a sentence.
 | `mcp … --json`                                    | the server list / one server's config                                                                                                                                                                                                                    |
 | `ask --json`                                      | the answer document                                                                                                                                                                                                                                      |
 
-**No document at 0.1.1** from `explore`, `generate`, `sync`, `profile add|fix|test`.
-They accept `--json` and print their result lines to stdout as text. For these,
-use the exit code, then read the files under `.testmuai/rook/` (below).
+**No document at 0.1.1** from `explore`, `generate`, `sync`, `profile add|fix|test`
+and `report --rca`. They accept `--json` and print their result lines to stdout
+as text. For these, use the exit code, then read the files under
+`.testmuai/rook/` (below). `report --rca` rewrites the run's `report.yaml`, so
+follow it with `rook report <run-id> --json` to get the explained report as a
+document.
 
 ## Streams
 
 - stdout: the JSON document under `--json`; otherwise the human output. The
-  four commands that emit no document — `explore`, `generate`, `sync` and
-  `profile` — keep their text on stdout even under `--json`.
+  commands that emit no document — `explore`, `generate`, `sync`, `profile`
+  and `report --rca` — keep their text on stdout even under `--json`.
 - stderr: prose under `--json`; errors always; `--verbose` events always.
 - Run progress lines (`  SC-001: …`) go to stdout normally and to stderr under `--json`.
 
