@@ -20,7 +20,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       # The flag harness checks the skill against the rook it describes.
       - name: Install the pinned rook
@@ -29,6 +29,11 @@ jobs:
       # ubuntu-latest ships GNU sed, so test-formula-patch.sh's gsed
       # fallback (for BSD sed on macOS) is simply unused here.
       - name: Run the script harnesses
+        env:
+          # Exercises the flag harness's self-test (a `profile test --what`
+          # line must fail, a `profile test --goal` line must pass) on every
+          # run, not just when someone remembers to set it locally.
+          SKILL_FLAGS_SELFTEST: "1"
         run: |
           shopt -s nullglob
           harnesses=(scripts/test-*.sh)

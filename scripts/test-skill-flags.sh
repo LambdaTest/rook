@@ -11,6 +11,7 @@
 # Usage: scripts/test-skill-flags.sh
 #   ROOK_SKILL_PIN=0.1.1             version the skill describes (default)
 #   SKILL_FLAGS_SKIP_IF_MISSING=1    exit 0 with SKIP when rook is absent
+#   SKILL_FLAGS_SELFTEST=1           check the checker itself before scanning
 set -uo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -35,12 +36,78 @@ if [ "$HAVE" != "$PIN" ]; then
   exit 2
 fi
 
-# Subcommand groups whose flags live under `rook help <group>` (0.1.1 quirk:
-# `rook <group> <sub> --help` prints the root help, `rook help <group>` does not).
-GROUPS="profile scenarios mcp env project agent runs auth"
+# Subcommand groups whose flags live under `rook help <group>`.
+GROUP_CMDS="profile scenarios mcp env project agent runs auth"
 
 # Top-level command words, from the root help's Commands block.
 TOP="$(rook --help 2>/dev/null | awk '/^Commands:/{p=1;next} p && /^  [a-z]/{print $1}')"
+
+# One `rook …` line in, PASS/FAIL on stdout out. Returns 0 when the command
+# word and every `--flag` on the line are real, 1 otherwise — shared by the
+# self-test below and the scan of the skill so the two can never disagree
+# about what counts as a failure.
+check_line() {
+  local line="$1" cmd sub help flag block tok ok=0
+  set -f                     # `[args...]` and `*` in a doc line are text, not a glob
+  set -- $line
+  set +f
+  shift                      # drop `rook`
+  cmd="${1:-}"
+  [ -z "$cmd" ] && return 0
+  if ! printf '%s\n' "$TOP" | grep -qx -- "$cmd"; then
+    echo "FAIL: unknown command in skill: rook $cmd    (line: $line)"
+    return 1
+  fi
+  sub=""
+  if printf ' %s ' "$GROUP_CMDS" | grep -q " $cmd " && [ -n "${2:-}" ] && [[ "${2}" != -* ]]; then
+    sub="$2"
+  fi
+  help="$(rook help "$cmd" 2>/dev/null)"
+  for tok in "$@"; do
+    case "$tok" in
+      --)
+        # The argv separator (`mcp add <name> -- <command>`), not a flag —
+        # matching it against `--*` and then word-bounding against the help
+        # text would otherwise report it as an unknown flag.
+        ;;
+      --*)
+        flag="${tok%%=*}"
+        if [ -n "$sub" ]; then
+          # Flags of one subcommand are listed under its own heading line.
+          block="$(printf '%s\n' "$help" | awk -v s="  $sub" 'index($0,s)==1{p=1;next} p && /^  [a-z]/{p=0} p')"
+          if printf '%s\n' "$block" | grep -qE -- "(^|[[:space:]])${flag}([[:space:]]|$)"; then
+            :
+          else
+            echo "FAIL: rook $cmd $sub: flag $flag not in \`rook help $cmd\`    (line: $line)"
+            ok=1
+          fi
+        else
+          if printf '%s\n' "$help" | grep -qE -- "(^|[[:space:]])${flag}([[:space:]]|$)"; then
+            :
+          else
+            echo "FAIL: rook $cmd: flag $flag not in \`rook help $cmd\`    (line: $line)"
+            ok=1
+          fi
+        fi
+        ;;
+    esac
+  done
+  return $ok
+}
+
+if [ "${SKILL_FLAGS_SELFTEST:-0}" = "1" ]; then
+  # `--what` belongs to `profile fix`, not `profile test` — this is the exact
+  # bug the group-substring check used to miss. `--goal` is the real flag.
+  if check_line "rook profile test --what x" >/dev/null; then
+    echo "FAIL: selftest — 'rook profile test --what x' should have failed and did not"
+    exit 1
+  fi
+  if ! check_line "rook profile test --goal x" >/dev/null; then
+    echo "FAIL: selftest — 'rook profile test --goal x' should have passed and did not"
+    exit 1
+  fi
+  pass "selftest"
+fi
 
 # Collect `rook …` lines from fenced blocks in SKILL.md and references/*.md.
 # Lines starting with `$ rook`, `rook`, or `  rook` count; prose does not.
@@ -56,33 +123,9 @@ fi
 checked=0
 while IFS= read -r line; do
   [ -z "$line" ] && continue
-  set -- $line
-  shift                      # drop `rook`
-  cmd="${1:-}"
-  [ -z "$cmd" ] && continue
-  if ! printf '%s\n' "$TOP" | grep -qx -- "$cmd"; then
-    fail "unknown command in skill: rook $cmd    (line: $line)"
-    continue
+  if ! check_line "$line"; then
+    FAIL=1
   fi
-  sub=""
-  if printf ' %s ' "$GROUPS" | grep -q " $cmd " && [ -n "${2:-}" ] && [[ "${2}" != -* ]]; then
-    sub="$2"
-  fi
-  help="$(rook help "$cmd" 2>/dev/null)"
-  for tok in "$@"; do
-    case "$tok" in
-      --*)
-        flag="${tok%%=*}"
-        if [ -n "$sub" ]; then
-          # Flags of one subcommand are listed under its own heading line.
-          block="$(printf '%s\n' "$help" | awk -v s="  $sub" 'index($0,s)==1{p=1;next} p && /^  [a-z]/{p=0} p')"
-          if printf '%s\n' "$block" | grep -q -- "$flag"; then :; else fail "rook $cmd $sub: flag $flag not in \`rook help $cmd\`    (line: $line)"; fi
-        else
-          if printf '%s\n' "$help" | grep -q -- "$flag"; then :; else fail "rook $cmd: flag $flag not in \`rook help $cmd\`    (line: $line)"; fi
-        fi
-        ;;
-    esac
-  done
   checked=$((checked+1))
 done <<< "$LINES"
 
