@@ -48,7 +48,7 @@ Two ideas do most of the work.
 
 **An agent's account of what it did is the weakest evidence available about what it did.** It is the one party with a reason to be wrong. So `rook` does not grade the reply. It reads the code, watches the filesystem, and calls the agent's own tools to check the effect — then quotes what it found.
 
-**Anything `rook` could not verify is reported as unverifiable — never as a pass, never as a failure.** It is excluded from the denominator rather than counted against you, and the gaps are computed rather than asked of a model, so a verdict can say _"Pass, and here is what nobody looked at."_ A harness that reports a failure it did not observe is worse than one that admits it could not look.
+**Anything `rook` could not verify is reported as unverifiable — never as a pass, never as a failure.** It is excluded from the denominator rather than counted against you, and the gaps are computed rather than asked of a model, so a verdict can say *"Pass, and here is what nobody looked at."* A harness that reports a failure it did not observe is worse than one that admits it could not look.
 
 What a run gives you:
 
@@ -126,18 +126,18 @@ You do not have to run the commands in order. Ask for a later step and `rook` pl
 
 ## Commands
 
-|                                            |                                                                |
-| ------------------------------------------ | -------------------------------------------------------------- |
-| `/explore`                                 | read the codebase — find agents and what they do               |
-| `/agent`                                   | list agents, switch the active one                             |
-| `/generate`                                | write scenarios for the active agent                           |
-| `/profile`                                 | how to invoke it — `add` (paste a curl), `use`, `test`, `show` |
-| `/run`                                     | execute scenarios against the live agent                       |
-| `/ui`                                      | the browser view — runs, evidence, trends                      |
-| `/scenarios`                               | list, exclude, include, delete                                 |
-| `/mcp`                                     | the MCP servers `rook` may call                                |
-| `/plan`                                    | what is stale, and what refreshing it would cost               |
-| `/budget` · `/doctor` · `/guide` · `/help` |                                                                |
+| | |
+|---|---|
+| `/explore` | read the codebase — find agents and what they do |
+| `/agent` | list agents, switch the active one |
+| `/generate` | write scenarios for the active agent |
+| `/profile` | how to invoke it — `add` (paste a curl), `use`, `test`, `show` |
+| `/run` | execute scenarios against the live agent |
+| `/ui` | the browser view — runs, evidence, trends |
+| `/scenarios` | list, exclude, include, delete |
+| `/mcp` | the MCP servers `rook` may call |
+| `/plan` | what is stale, and what refreshing it would cost |
+| `/budget` · `/doctor` · `/guide` · `/help` | |
 
 Three ways to invoke the agent under test: an **HTTP** endpoint, a **command** (`claude -p "{{goal}}"`), or an **MCP** tool.
 
@@ -197,10 +197,10 @@ the repo gives Claude Code and Codex CLI the skill at project scope
 
 Two agents to try `rook` against live in [`samples/`](samples), covering the two cases that exist in the wild:
 
-|                                            |                                                                                                                                                                              |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`triage-service`](samples/triage-service) | A plain codebase — a prompt in a string, a tool table, an HTTP server. Nothing declares itself an agent, so finding it means reading the code.                               |
-| [`refund-desk`](samples/refund-desk)       | A Claude Code agent — `.claude/agents/*.md`, a skill, a read-only subagent and two MCP servers. Found deterministically, then each server is asked what tools it really has. |
+| | |
+|---|---|
+| [`triage-service`](samples/triage-service) | A plain codebase — a prompt in a string, a tool table, an HTTP server. Nothing declares itself an agent, so finding it means reading the code. |
+| [`refund-desk`](samples/refund-desk) | A Claude Code agent — `.claude/agents/*.md`, a skill, a read-only subagent and two MCP servers. Found deterministically, then each server is asked what tools it really has. |
 
 Both keep their state in memory and reset with the process, so they are safe to point a harness at. Both are also deliberately imperfect — an agent that passes everything teaches you nothing about a harness.
 
@@ -208,10 +208,10 @@ Both keep their state in memory and reset with the process, so they are safe to 
 
 Everything `rook` produces is plain files. No database.
 
-| Path                        | What                                                       |
-| --------------------------- | ---------------------------------------------------------- |
+| Path | What |
+|---|---|
 | `<project>/.testmuai/rook/` | agents, scenarios, runs, evidence — yours, and committable |
-| `~/.testmuai/rook/`         | credentials, settings, permission grants, sessions         |
+| `~/.testmuai/rook/` | credentials, settings, permission grants, sessions |
 
 The second is deliberately outside your project, so a credential cannot be swept into a commit by `git add -A`. Profiles and MCP configuration reference secrets as `${VAR}` rather than embedding them, so they are safe to commit.
 
