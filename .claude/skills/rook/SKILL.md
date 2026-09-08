@@ -32,9 +32,9 @@ A one-line "the agent passed" is a bug. After a run, present:
 4. What changed since the previous run, when there is one.
 
 Before a costed command, say what you are about to run and that it spends
-credits. `explore`, `generate`, `run`, `profile add|fix|test`, `ask`, and
-`report --rca` are costed. Everything else is free. Never add `--rca` without
-asking.
+credits. `explore`, `generate`, `run`, `profile add|fix`, `ask`, and
+`report --rca` are costed. `profile test` calls your agent once and no model.
+Everything else is free. Never add `--rca` without asking.
 
 When the command exits 1, read the failure document on stdout
 (`{"ok": false, "error": …, "remedy": …}`) and use the template in
@@ -78,6 +78,9 @@ Full detail: `references/headless-contract.md`.
   `.testmuai/rook/projects/<project>/agents/<agent>/`.
 - Prefer `--allow 'bash(npm test)'` (one call shape, repeatable, scoped with
   `@<phase>`) over `--yes` (every tool call, this command only).
+- Without `--yes` or an `--allow` rule, headless rook refuses any bash, fetch
+  or MCP call the model asks for and prints the rule you can pass; read tools
+  need no grant.
 - Check `rook plan --json` before a long run; `credits: null` means the balance
   could not be read, not that it is zero.
 - `--concurrency 1-8`, `--only SC-001,SC-002`, `--class`, `--category`, `--tag`
@@ -96,8 +99,11 @@ the first run. Detail: `references/profiles.md`.
 The agent under test is the user's, and its writes are real. rook invokes it
 the way a user would and cannot roll anything back.
 
-- Point it at staging. Say so before the first run against anything that
-  declares write tools; rook prints the count and asks once per target.
+- Point it at staging. rook 0.1.1 does not pause for a per-target write-tool
+  confirmation in headless mode, so before the first `run` read what the agent
+  declares — `agent.yaml` under the agent's folder, whose `calls[]` entries
+  carry `write: true` for the ones that mutate something outside the agent —
+  and get the user's consent.
 - Do not pass `--yes` to a run against an agent with write tools without
   telling the user what it declares.
 - Judges verify without changing anything; calling `issue_refund` to find out
@@ -122,6 +128,10 @@ rook generate --yes --json
 rook run --yes --json > run.json
 rook report --json > report.json
 ```
+
+This assumes `.testmuai/rook/` is committed with the project and agent already
+selected; on a fresh runner add `rook project use <id>` and
+`rook agent use <id>` before `explore`.
 
 Fail the job on any `Fail` or `compromised` scenario in the report; print
 `Unable to Verify` with reasons. Recipe and caveats: `references/ci.md`.

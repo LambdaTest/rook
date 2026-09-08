@@ -15,10 +15,13 @@ rook mcp disable <name>
 rook mcp approve <name> --origin discovered
 ```
 
-Scopes: `user`, `project`, `local` (default). `approve` trusts a project or
-discovered server after rook has read what it runs; a declared server that
-nobody approved is listed and not used.
+Scopes: `user`, `project`, `local` (default). `project` scope is
+`.testmuai/rook/mcp.json`, a file rook itself writes — a different thing from
+a server `explore` finds already declared in the target. `approve` trusts a
+`project` or `discovered` server after rook has read what it runs; those are
+the only two origins that wait for it. A `user` or `local` server is used as
+declared, with no approval step.
 
 When `explore` finds `.mcp.json` in the target, those servers appear with
-origin `project` and need `approve` before a scenario can exercise them.
+origin `discovered` and need `approve` before a scenario can exercise them.
 Values stay `${VAR}` references in `get` output.

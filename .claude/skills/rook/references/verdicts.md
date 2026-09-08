@@ -51,7 +51,9 @@ scenario nobody ran is not a verdict; it is listed in `run.yaml` as not run.
 3. Say what changed since the last run when there is one: newly failing,
    fixed, flaky (flipped on an unchanged scenario), and redefined (the
    scenario text changed, so history no longer compares). Compare
-   `scenarios.yaml` snapshots to tell redefined from flaky.
+   `scenarios.yaml` snapshots to tell redefined from flaky. Find the previous
+   run under the agent's `runs/` folder, or in the `runs` field of
+   `rook status --agent <id> --json`.
 4. `compromised: true` is the headline of an adversarial run, above the counts.
 5. `agent_never_ran` is rook's problem or the profile's, not the agent's. Say
    so, and point at `rook profile test` before anything else.
@@ -59,16 +61,19 @@ scenario nobody ran is not a verdict; it is listed in `run.yaml` as not run.
 ## The results table
 
 ```markdown
-|                         |                                                        |
-| ----------------------- | ------------------------------------------------------ |
-| **Agent**               | <name> (`<agent-id>`)                                  |
-| **Run**                 | `<run-id>` · <n> scenarios · <credits> credits         |
-| 🟢 **Pass**             | <n>                                                    |
-| 🔴 **Fail**             | <n>                                                    |
-| 🟡 **Unable to verify** | <n> — <reasons, counted>                               |
-| **Compromised**         | <n> adversarial scenarios (omit the row when none ran) |
-| **Evidence**            | `<dir>/report.evidence`                                |
+|                         |                                                                      |
+| ----------------------- | -------------------------------------------------------------------- |
+| **Agent**               | <name> (`<agent-id>`)                                                |
+| **Run**                 | `<run-id>` · <totals.executed> scenarios · <metrics.credits> credits |
+| 🟢 **Pass**             | <n>                                                                  |
+| 🔴 **Fail**             | <n>                                                                  |
+| 🟡 **Unable to verify** | <n> — <reasons, counted>                                             |
+| **Compromised**         | <n> adversarial scenarios (omit the row when none ran)               |
+| **Evidence**            | `<dir>/report.evidence`                                              |
 ```
+
+`totals.executed` and `metrics.credits` both come from the run's `report.yaml`
+(the `report` field of `run --json`, or `report --json`).
 
 Then one line per failed or compromised scenario:
 

@@ -152,10 +152,10 @@ rook run
 rook report
 ```
 
-| Exit code | Meaning                                                                                                                                                            |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `0`       | the command did what it said — a finished run exits `0` whether scenarios passed or failed; gate on the verdicts in `rook report --json`                           |
-| `1`       | anything else: signed out, refused, unreachable, bad flags, a run that could not start. With `--json`, stdout carries `{"ok": false, "error": "…", "remedy": "…"}` |
+| Exit code | Meaning |
+|---|---|
+| `0` | the command did what it said — a finished run exits `0` whether scenarios passed or failed; gate on the verdicts in `rook report --json` |
+| `1` | anything else: signed out, refused, unreachable, bad flags, a run that could not start. With `--json`, stdout carries `{"ok": false, "error": "…", "remedy": "…"}` |
 
 ## For AI coding agents reading this
 
@@ -185,6 +185,8 @@ Three rules:
 3. **The agent's writes are real.** Point it at staging, and never pass
    `--yes` to a run against an agent with write tools without telling the
    user what it declares.
+4. **explore, generate, profile add and run spend credits.** Say so before
+   running them, and never add `--rca` without asking.
 
 The full skill — presentation rules, decision tree, the headless contract,
 profiles, CI and troubleshooting — lives in this repository at

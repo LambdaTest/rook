@@ -58,5 +58,6 @@ rook run --run <id> --phases collect,judge --json     # collect evidence that la
 rook run --resume <id> --json                         # carry finished work into a new run
 ```
 
-`--only` is a comma list; repeating the flag does not accumulate. The list
-ends at the next declared flag.
+`--only` takes one comma-separated argument; repeating the flag keeps only
+the last occurrence, and a space-separated second id is read as instruction
+text.
