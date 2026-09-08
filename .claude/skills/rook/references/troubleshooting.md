@@ -1,0 +1,58 @@
+# Troubleshooting
+
+Start with the environment, it is free and safe:
+
+```bash
+rook doctor
+rook auth status
+rook plan --json
+rook status --json
+```
+
+`doctor` prints version, node, workspace, environment, controller and api
+reachability, identity, auth state, project, mode (`headless` or `tui`),
+tty, and state.
+
+## Failure documents
+
+| `error` says             | Do                                                                                              |
+| ------------------------ | ----------------------------------------------------------------------------------------------- |
+| `remedy: login`          | you are not signed in — `rook login`                                                            |
+| `remedy: new_session`    | that session has been used up — run the command again                                           |
+| `remedy: retry`          | could not reach rook-api — it may be down, or the network; wait and try again, or `rook doctor` |
+| `remedy: request_access` | you do not have access to this project — ask the org admin for access                           |
+| `remedy: create_project` | this org has no projects yet — `rook project create <name>`                                     |
+| `remedy: pick_project`   | no project selected — `rook project use <id>`                                                   |
+| `remedy: agent_missing`  | the active agent is gone — `rook agent use <id>`                                                |
+| `remedy: explore_agents` | no agents registered — `rook explore`                                                           |
+| `remedy: pick_agent`     | no agent selected — `rook agent use <id>`                                                       |
+| `remedy: topup`          | you are out of credits — check `rook plan` and add credits                                      |
+| `remedy: reconcile`      | this agent has diverged from upstream — `rook sync`                                             |
+| `remedy: update`         | this version of rook is too old to be served — `rook update`                                    |
+| no active agent          | `rook agent use <id>` after `rook explore`                                                      |
+| no project selected      | `rook project use <id>` or `rook project create <name>`                                         |
+| could not reach rook-api | check the network; `doctor` shows both endpoints                                                |
+
+## Unable to Verify everywhere
+
+`unverifiable_reason: agent_never_ran` on every scenario means the profile
+does not reach the agent. `rook profile test --goal "hello"` shows the raw
+exchange; `rook profile fix` repairs it. `not_observable` means the criteria
+are about something rook cannot see (a tool call the agent made off-record,
+an image); that is a gap to report, not a failure to fix.
+
+## A verdict you disagree with
+
+Quote the criterion and the evidence it cited, and open an issue with the
+repo's "verdict dispute" template. Those are the most useful reports rook
+gets.
+
+## Bug reports
+
+```bash
+rook export logs --out ./rook-logs
+rook export logs --out ./rook-logs.zip --all-sessions
+```
+
+Include `rook --version`, the OS, and the scenario and run ids. Never paste a
+transcript, a credential, or the contents of `~/.testmuai/rook/`.
