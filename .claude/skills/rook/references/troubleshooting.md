@@ -17,7 +17,7 @@ tty, and state.
 
 | `error` says             | Do                                                                                              |
 | ------------------------ | ----------------------------------------------------------------------------------------------- |
-| `remedy: login`          | you are not signed in — `rook login`                                                            |
+| `remedy: login`          | you are not signed in — `rook login`; in CI, `rook login --username <u> --access-key <k>`       |
 | `remedy: new_session`    | that session has been used up — run the command again                                           |
 | `remedy: retry`          | could not reach rook-api — it may be down, or the network; wait and try again, or `rook doctor` |
 | `remedy: request_access` | you do not have access to this project — ask the org admin for access                           |
