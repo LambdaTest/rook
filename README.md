@@ -175,7 +175,7 @@ rook run --json
 rook report --json
 ```
 
-Three rules:
+Four rules:
 
 1. **Always add `--json`.** stdout carries one JSON document; prose goes to
    stderr. A finished run exits `0` whether it passed or failed — gate on the

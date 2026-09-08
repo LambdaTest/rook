@@ -112,15 +112,18 @@ Project side, committable, under the folder rook was pointed at:
 .testmuai/rook/projects/<project-id>/
   active                                           the active agent
   agents/<agent-id>/
-    manifest.yaml  discovery.yaml  features.yaml  context.md  findings.yaml
-    profiles/                                       <profile-id>.yaml, active
-    agents/                                         reserved, empty at 0.1.1
-    scenarios/                                     the live scenario set
+    agent.yaml                                       the spec: what the agent is, what it calls
+    features/<feature-id>.yaml                       one file per feature
+    findings.yaml                                    what rook thinks is wrong, if anything
+    profiles/                                        <profile-id>.yaml, active
+    agents/                                          reserved, empty at 0.1.1
+    scenarios/                                       the live scenario set
     runs/<run-id>/
-      run.yaml                                     manifest: what ran, timings, profile revision
-      scenarios.yaml                               the scenarios as they were for this run
-      report.yaml                                  the summary `report --json` returns
-      report.evidence                              sealed evidence bundle
+      run.yaml                                       manifest: what ran, timings, profile revision
+      scenarios.yaml                                 the scenarios as they were for this run
+      agent.yaml  features.yaml  profile.yaml        the agent, features and profile as they were, snapshotted
+      report.yaml                                    the summary `report --json` returns
+      report.evidence                                sealed evidence bundle
       scenarios/<scenario-id>/
         request.json  response.json  artifacts/    the exchange
         verdict.yaml                               the graded result (see verdicts.md)
