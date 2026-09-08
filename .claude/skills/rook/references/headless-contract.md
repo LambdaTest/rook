@@ -1,7 +1,6 @@
 # Headless contract, rook 0.1.1
 
-Everything here was read from `rook help <cmd>` of rook 0.1.1 or from the
-source at tag `v0.1.1`. When rook moves, this file moves with it and
+Everything here was checked against rook 0.1.1. When rook moves, this file moves with it and
 `scripts/test-skill-flags.sh` pins the version.
 
 ## Commands

@@ -26,7 +26,7 @@ scenario nobody ran is not a verdict; it is listed in `run.yaml` as not run.
 ## Run report
 
 `runs/<run-id>/report.yaml`, also returned as `report` by `run --json` and
-`report --json`. Fields, from `Report` at tag v0.1.1:
+`report --json`. Fields, as rook 0.1.1 writes them:
 
 | Field              | Meaning                                                                                                                                                                                                           |
 | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
