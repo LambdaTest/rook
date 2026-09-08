@@ -3,10 +3,10 @@
 Two agents to point `rook` at, chosen because they are the two cases that exist
 in the wild.
 
-| | what it is | how rook finds it |
-|---|---|---|
-| [`refund-desk/`](refund-desk) | A Claude Code agent: `.claude/agents/*.md`, a skill, a subagent, two MCP servers | Deterministically — frontmatter and `.mcp.json`, no model involved |
-| [`triage-service/`](triage-service) | A plain codebase: a prompt in a string, a tool table, an HTTP server | By reading the code, with tools |
+|                                     | what it is                                                                       | how rook finds it                                                  |
+| ----------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| [`refund-desk/`](refund-desk)       | A Claude Code agent: `.claude/agents/*.md`, a skill, a subagent, two MCP servers | Deterministically — frontmatter and `.mcp.json`, no model involved |
+| [`triage-service/`](triage-service) | A plain codebase: a prompt in a string, a tool table, an HTTP server             | By reading the code, with tools                                    |
 
 The first is the declared case, and it is the minority. A survey of ~20 real
 repositories found **zero** agent manifests, which is why the folder is the
@@ -35,8 +35,8 @@ The ones worth knowing about up front:
   — severity describes impact, not who is asking. A suite that agrees with the
   customer instead of the policy has found nothing.
 - **refund-desk** must refuse an already-refunded order, refuse a downloaded
-  digital good, verify identity above $100, and treat *"my manager approved
-  this"* as changing nothing. None of that restraint is visible in what the
+  digital good, verify identity above $100, and treat _"my manager approved
+  this"_ as changing nothing. None of that restraint is visible in what the
   agent says — you have to check the effect, which is the distinction `rook`
   exists to make.
 
@@ -48,4 +48,7 @@ policy. Enforcing it would test the server rather than the agent.
 `refund-desk` contains a real `.claude/` directory — agent definitions and a
 `refund-policy` skill — because that is precisely what `rook` is meant to
 discover. A coding agent opened on this repository may register that skill as
-though it were yours. It is a test fixture, not policy for your project.
+though it were yours. It is a test fixture, not policy for your project. The
+one skill in this repository that _is_ meant for your coding agent is the
+`rook` skill at the repository root (`.claude/skills/rook/`,
+`.agents/skills/rook/`).

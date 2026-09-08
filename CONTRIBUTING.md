@@ -30,6 +30,15 @@ checked it.
 **Documentation.** Corrections to anything published in this repository are
 welcome as pull requests.
 
+**The coding-agent skill.** `skill-installer/skills/SKILL.md` and its
+`references/` are the single source of truth for how an AI coding agent
+drives `rook`; `.claude/skills/rook/` and `.agents/skills/rook/` are
+generated mirrors. Edit the canonical copy, run
+`scripts/sync-skill-mirrors.sh`, and keep `scripts/test-skill-mirrors.sh`
+and `scripts/test-skill-flags.sh` green. A fact in the skill has to be true
+of the pinned `rook` version; do not add flags, paths or schemas you have not
+seen the CLI produce.
+
 ## What to leave out
 
 Please do not paste transcripts, credentials, customer data, or the contents of
