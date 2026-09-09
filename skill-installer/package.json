@@ -1,0 +1,19 @@
+{
+  "name": "@testmuai/rook-skill",
+  "version": "0.1.0",
+  "description": "Install the Rook agent-testing skill for Claude Code, Codex and Gemini CLI",
+  "type": "module",
+  "bin": { "rook-skill": "./cli.js" },
+  "files": ["cli.js", "lib", "skills", "LICENSE"],
+  "scripts": { "test": "node --test test/*.test.mjs" },
+  "engines": { "node": ">=22" },
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/LambdaTest/rook",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LambdaTest/rook.git",
+    "directory": "skill-installer"
+  },
+  "publishConfig": { "access": "public" },
+  "keywords": ["rook", "agent-skills", "agent-testing", "claude-code", "codex", "gemini-cli"]
+}
