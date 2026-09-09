@@ -111,6 +111,8 @@ Full detail: `references/headless-contract.md`.
 
 A profile is how rook reaches the agent: an HTTP endpoint (paste a curl), a
 command line with `{{goal}}` such as `claude -p "{{goal}}"`, or an MCP tool.
+Choose the transport and invocation from the target's source/configuration or
+the user's supplied command. If they are unknown, ask; examples are not defaults.
 Secrets are `${VAR}` references set with `rook env set '{"KEY":"…"}'`; never
 inline a value. Prove a profile with `rook profile test --goal "…"` before
 the first run; the call reaches the real agent, so make the goal one that asks
@@ -133,6 +135,10 @@ the way a user would and cannot roll anything back.
 - Judges verify without changing anything; calling `issue_refund` to find out
   whether a refund exists creates one, so rook reports such checks as
   unverifiable instead. Do not "help" by making the call yourself.
+  A separate read-only tool, such as `get_refund_status`, may verify the write.
+  Inspect the available verification interface before predicting an
+  unverifiable result; an agent having write tools does not make its effects
+  inherently unverifiable.
 - `.testmuai/rook/` in the project is committable. `~/.testmuai/rook/` holds
   credentials and never is.
 

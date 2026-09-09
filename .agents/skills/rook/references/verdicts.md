@@ -44,6 +44,13 @@ scenario nobody ran is not a verdict; it is listed in `run.yaml` as not run.
 
 ## The rules that make a summary honest
 
+Use only metadata supplied for the result being summarized. Missing summary
+or RCA fields do not establish which flags were used, whether a role ran, or
+why an optional field is absent. If the evidence directory was not supplied,
+say so; a path derived from the documented layout is only an example, not a
+verified location. Do not infer that no adversarial scenarios ran merely
+because the report contains no compromised cluster.
+
 1. `Unable to Verify` is never folded into `Fail` and never into `Pass`. It has
    its own column and its own count, always.
 2. Quote the evidence. A criterion row without the `evidence` text is an
@@ -98,6 +105,8 @@ and do not invent a remedy token. Translate known remedies with the table in
 
 A declined or halted run must be reported as declined or incomplete, even when
 it exits 0. Present any retained evidence without claiming the suite finished.
+Preserve the recorded planned and executed counts: a halt alone does not prove
+that scenarios were skipped or that the intended plan contained more scenarios.
 
 ```markdown
 🔴 **rook could not run the suite**
