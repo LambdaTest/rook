@@ -58,6 +58,14 @@ exchange; `rook profile fix` repairs it. `not_observable` means the criteria
 are about something rook cannot see (a tool call the agent made off-record,
 an image); that is a gap to report, not a failure to fix.
 
+Inspect the saved raw response and hook records before concluding that the
+target omitted evidence. Two 0.1.1 limitations can hide evidence already saved:
+an explicitly empty execute `calls` array is omitted from the hook record, and
+`json_path` checks do not decode a JSON string in `raw_response` before traversing
+it. A recorded `calls: []` or a field visible inside that string therefore does
+not guarantee a conclusive check. Report the limitation and retain the verdict;
+do not invent calls or change scenario criteria just to obtain a pass.
+
 ## A verdict you disagree with
 
 Quote the criterion and the evidence it cited, and open an issue with the
