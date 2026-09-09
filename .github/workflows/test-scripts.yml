@@ -50,3 +50,15 @@ jobs:
             bash "$t"
             echo "::endgroup::"
           done
+
+  installer-macos:
+    runs-on: macos-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: '22'
+      - run: bash scripts/test-skill-installer.sh

@@ -15,30 +15,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  validate:
-    if: github.repository == 'LambdaTest/rook' && github.ref == 'refs/heads/main'
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v7.0.1
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@v7.0.0
-        with:
-          node-version: '22'
-      - name: Validate release input
-        env:
-          SKILL_VERSION: ${{ inputs.version }}
-        run: node scripts/prepare-skill-release.mjs --check
-      - run: bash scripts/test-skill-installer.sh
-      - run: bash scripts/test-skill-mirrors.sh
-
   publish:
-    needs: validate
+    if: github.repository == 'LambdaTest/rook' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -49,6 +27,12 @@ jobs:
         with:
           node-version: '22'
           registry-url: https://registry.npmjs.org
+      - name: Validate release input
+        env:
+          SKILL_VERSION: ${{ inputs.version }}
+        run: node scripts/prepare-skill-release.mjs --check
+      - run: bash scripts/test-skill-installer.sh
+      - run: bash scripts/test-skill-mirrors.sh
       - name: Prepare the literal package version
         env:
           SKILL_VERSION: ${{ inputs.version }}
