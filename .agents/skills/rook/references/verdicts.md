@@ -35,8 +35,8 @@ scenario nobody ran is not a verdict; it is listed in `run.yaml` as not run.
 | `agent_version_id` | the tree revision this was written against, when known — a re-report on a moved version must re-derive rather than re-render                                                                                      |
 | `generated`        | when the report was written                                                                                                                                                                                       |
 | `headline`         | one sentence a person reads first — written on every report, `--rca` or not; when the summary role itself failed this reads `no run summary — <reason>` instead                                                   |
-| `narrative`        | what happened, in a few paragraphs — written on every report                                                                                                                                                      |
-| `next[]`           | what to do next, in order — never more than a handful; written on every report                                                                                                                                    |
+| `narrative`        | optional: what happened; absent when summary generation fails                                                                                                                                                      |
+| `next[]`           | optional: what to do next, present only when the summary supplies nonempty next steps                                                                                                                                    |
 | `totals`           | the same tally `run` reports: `planned`, `executed`, `passed`, `failed`, `unverifiable`, `unjudged`, `not_run`, `unrunnable`, `decided`, `pass_rate`, `carried_forward`                                           |
 | `metrics`          | cost and quality: `credits`, `duration_ms`, `tokens_in`, `tokens_out`, `latency_p50_ms`, `latency_p95_ms`, `turns_total`, `quality`, `quality_samples`                                                            |
 | `clusters[]`       | failures and unverifiables grouped by shared cause: `id`, `why`, `kind` (`failed`/`unverifiable`/`compromised`), `scenarios[]`, and — `--rca` only — `cause`, `remedy`, `confidence`, `fault`, `where`, `summary` |
@@ -51,7 +51,7 @@ scenario nobody ran is not a verdict; it is listed in `run.yaml` as not run.
 3. Say what changed since the last run when there is one: newly failing,
    fixed, flaky (flipped on an unchanged scenario), and redefined (the
    scenario text changed, so history no longer compares). Compare
-   `scenarios.yaml` snapshots to tell redefined from flaky. Find the previous
+   `scenarios/<scenario-id>/snapshot.yaml` files to tell redefined from flaky. Find the previous
    run under the agent's `runs/` folder, or in the `runs` field of
    `rook status --agent <id> --json`.
 4. `compromised: true` is the headline of an adversarial run, above the counts.
@@ -64,16 +64,21 @@ scenario nobody ran is not a verdict; it is listed in `run.yaml` as not run.
 |                         |                                                                      |
 | ----------------------- | -------------------------------------------------------------------- |
 | **Agent**               | <name> (`<agent-id>`)                                                |
-| **Run**                 | `<run-id>` · <totals.executed> scenarios · <metrics.credits> credits |
+| **Run**                 | `<run-id>` · <totals.executed> scenarios · <run.credits> total credits |
 | 🟢 **Pass**             | <n>                                                                  |
 | 🔴 **Fail**             | <n>                                                                  |
 | 🟡 **Unable to verify** | <n> — <reasons, counted>                                             |
 | **Compromised**         | <n> adversarial scenarios (omit the row when none ran)               |
-| **Evidence**            | `<dir>/report.evidence`                                              |
+| **Evidence**            | `<dir>/`                                              |
 ```
 
-`totals.executed` and `metrics.credits` both come from the run's `report.yaml`
-(the `report` field of `run --json`, or `report --json`).
+`totals.executed` comes from `report.totals`. For a just-completed run, total
+command spend is top-level `credits` from `rook run --json`: it includes the
+report. `report.metrics.credits` excludes report generation. When only a saved
+report is available, replace the total-credit label with two separate amounts:
+`report.metrics.credits` execution/judging credits and `report.credits`
+report-generation credits. A later RCA can rewrite the report spend, so do not
+present that saved report as a cumulative billing history.
 
 Then one line per failed or compromised scenario:
 
@@ -85,14 +90,18 @@ Then the unverifiables, grouped by reason, each with what would make it checkabl
 
 ## When the run itself failed
 
-Exit 1, or a run document with `ok: false`. When stdout is empty (a gate
-refusal on `report`, `status` or `ask`), the last stderr line is the error and
-there is no remedy token; translate the sentence with the table in
-`references/troubleshooting.md` under "Failure documents":
+Exit 1, `ok: false`, or `discarded: "refused"` means rook could not run the
+suite as requested. A refusal may carry `ok: true`; use `reason` when `error`
+is absent. When stdout has no JSON document, use the relevant stderr diagnostic
+and do not invent a remedy token. Translate known remedies with the table in
+`references/troubleshooting.md` under "Failure documents".
+
+A declined or halted run must be reported as declined or incomplete, even when
+it exits 0. Present any retained evidence without claiming the suite finished.
 
 ```markdown
 🔴 **rook could not run the suite**
 
-**What happened:** <error from the document, in plain words>.
-**Remedy:** <the remedy token, translated: login → `rook login`; new_session → run the command again; retry → wait and try again, or `rook doctor`; request_access → ask the org admin for access; create_project → `rook project create <name>`; pick_project → `rook project use <id>`; agent_missing → `rook agent use <id>`; explore_agents → `rook explore`; pick_agent → `rook agent use <id>`; topup → check `rook plan` and add credits; reconcile → `rook sync`; update → `rook update`>.
+**What happened:** <error or reason from the document, or the stderr diagnostic, in plain words>.
+**Remedy:** <the remedy token, translated: login → `rook login`; new_session → run the command again; retry → wait and try again, or `rook doctor`; request_access → ask the org admin for access; create_project → `rook project create <name>`; pick_project → `rook project use <id>`; agent_missing → `rook agent use <id>`; explore_agents → `rook explore`; pick_agent → `rook agent use <id>`; topup → check `rook plan` and add credits; reconcile → `rook sync`; update → announce that `rook update` may install a newer release; no token → explain the diagnostic without inventing one>.
 ```

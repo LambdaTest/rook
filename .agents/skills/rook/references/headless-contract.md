@@ -5,7 +5,7 @@ Everything here was checked against rook 0.1.1. When rook moves, this file moves
 
 ## Commands
 
-Costed commands call a model and say what they spent. Free commands read disk.
+Costed commands call a model and say what they spent. Free means no Rook model credits; a free command may use the network, change state or call your agent.
 
 | Command                                                                                                                                                                                                                                                                                 | Costed                     | Purpose                                                                          |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------- |
@@ -34,10 +34,10 @@ Costed commands call a model and say what they spent. Free commands read disk.
 | `rook doctor`                                                                                                                                                                                                                                                                           | no                         | environment check, safe anywhere                                                 |
 | `rook guide` / `rook help [cmd]` / `rook docs [--no-open]`                                                                                                                                                                                                                              | no                         | orientation                                                                      |
 | `rook export logs [--out <path>] [--session <id>] [--all-sessions]`                                                                                                                                                                                                                     | no                         | bundle logs for a bug report                                                     |
-| `rook update [auto] [--json]`                                                                                                                                                                                                                                                           | no                         | is a newer rook available                                                        |
+| `rook update [auto] [--json]`                                                                                                                                                                                                                                                           | no                         | check for and potentially install a newer rook; announce the installation change first                                                        |
 
-`--yes` approves every tool call for that one command and writes nothing to
-settings. `--allow 'bash(npm test)'` authorises one call shape, repeatable,
+`--yes` supplies broad approval for that command and writes nothing to
+settings; existing deny policy still applies. `--allow 'bash(npm test)'` authorises one call shape, repeatable,
 and `'bash(git *)@explore'` scopes it to one phase. Prefer `--allow`.
 
 ## Exit codes
@@ -48,17 +48,18 @@ and `'bash(git *)@explore'` scopes it to one phase. Prefer `--allow`.
 | `1`  | anything else: signed out, refused by the admission gate, unreachable service, bad flags, no active agent, a run that could not start |
 
 There is no separate code for unauthorized or exhausted credits at 0.1.1. Read
-the failure document's `remedy` instead, or the last stderr line when there is
-no document (below).
+`remedy` when present, `reason` for a discarded run, or the stderr diagnostic
+when there is no JSON document (below).
 
 A finished `rook run` exits `0` even when scenarios failed. The verdicts are in
 the run document and on disk; a pipeline gates on them, not on the exit code.
 
 ## JSON documents
 
-`--json` prints exactly one pretty-printed JSON document on stdout, once, at
-the end. Prose (progress, warnings, the human summary) goes to stderr. Parse
-stdout with `jq` and ignore stderr unless the exit code is 1.
+Commands documented below as emitting JSON print one document on stdout.
+Their prose goes to stderr. Other commands accept `--json` but still emit text;
+do not pipe those outputs into `jq`. Inspect exit status AND the run document:
+`ok: true` alone does not mean a run executed or finished.
 
 Failure, as `plan` and `run` write it when the admission gate refuses, and as
 `report` and `scenarios` write it for a command-level error (`no runs yet`,
@@ -67,6 +68,13 @@ Failure, as `plan` and `run` write it when the admission gate refuses, and as
 ```json
 { "ok": false, "error": "not signed in — run `rook login`", "remedy": "login" }
 ```
+
+A run refused before execution can instead exit 1 with
+`{ok:true, discarded:"refused", reason:"…", halted:false, credits:0}`.
+A declined plan exits 0 with `discarded:"declined"`; neither produced a run.
+Read `reason` when `error` is absent. A halted run may retain a report and
+exit 0; report its interruption, not a completed suite. Parser errors may
+leave stdout empty, so JSON failure documents are not guaranteed on every error.
 
 `remedy`, when present, is the admission gate's own token, one of: `login`,
 `new_session`, `retry`, `request_access`, `create_project`, `pick_project`,
@@ -86,32 +94,33 @@ the table in `references/troubleshooting.md` under "Failure documents".
 | `scenarios list --json`                           | `{ agent_id, profile_id, total, runnable, scenarios: [ { scenario_id, title, feature_id, class, category?, state, excluded, unrunnable, multi_turn, repeat, criteria } ] }`                                                                              |
 | `scenarios exclude \| include \| delete … --json` | `{ ok: true, verb, … }`                                                                                                                                                                                                                                  |
 | `status --json`                                   | `{ project_id, offline, agents: [ { local_id, name, tree, offline, features, scenarios, profiles, unfinished_runs, owed_runs } ], runs? }`. `tree` is `unsynced \| clean \| ahead \| diverged \| behind \| unknown`; `unknown` means offline, not clean. |
-| `update --json`                                   | `{ ok, pinned }` or the update notice                                                                                                                                                                                                                    |
-| `mcp … --json`                                    | the server list / one server's config                                                                                                                                                                                                                    |
-| `ask --json`                                      | the answer document                                                                                                                                                                                                                                      |
+| `update --json`                                   | text, including installer output; may install an update. Only `update auto --json` emits `{ ok, pinned }` and changes the notice preference                                                                                                                                                                                                                    |
+| `mcp … --json`                                    | `list`: `{ errors, servers: [{ name, origin, transport, state, source, changed_since_approval, shadowed_by }] }`; `get` and mutations: `{ ok, lines: string[] }`, with configuration rendered inside `lines`                                                                                                                                                                                                                    |
+| `ask --json`                                      | `{ answer, command?, blocked_by?, summary? }`; a suggested command is not executed by this headless call                                                                                                                                                                                                                                      |
 
 **No document at 0.1.1** from `explore`, `generate`, `sync`, `profile add|fix|test`
-and `report --rca`. They accept `--json` and print their result lines to stdout
+and `report --rca`. They accept `--json` and print result lines to stdout
 as text. For these, use the exit code, then read the files under
 `.testmuai/rook/` (below). `report --rca` rewrites the run's `report.yaml`, so
 follow it with `rook report <run-id> --json` to get the explained report as a
-document.
+document. `update` without `auto` also emits text; inspect its exit code and
+installation diagnostics, then check `rook --version` rather than project files.
 
 ## Streams
 
 - stdout: the JSON document under `--json`; otherwise the human output. The
-  commands that emit no document — `explore`, `generate`, `sync`, `profile`
-  and `report --rca` — keep their text on stdout even under `--json`.
+  commands that emit no document — `explore`, `generate`, `sync`, `profile`,
+  `report --rca` and `update` without `auto` — keep text on stdout under `--json`.
 - stderr: prose under `--json`; errors always; `--verbose` events always.
 - Run progress lines (`  SC-001: …`) go to stdout normally and to stderr under `--json`.
 
 ## Events
 
-Under `--verbose`, one line per event on stderr, rendered by rook, not JSON: `phase_start`,
-`phase_end`, `child_agent_start`, `child_agent_end`, `tool_start`, `tool_end`,
-`credits` (charged, session_spent), `scenario_start`, `scenario_done`
-(scenario_id, status), `permission`, `ask_user`, `error`. Use it to narrate a
-long run; do not parse it.
+`--verbose` renders child-agent starts/ends, tool starts, failed tool ends,
+credits, permission requests and errors on stderr as text. Phase events,
+`ask_user`, and scenario start/done events are not rendered by this formatter.
+Scenario progress is emitted separately, even without `--verbose`. Use these
+lines to narrate progress; do not parse them as an event stream.
 
 ## On disk
 
@@ -130,11 +139,10 @@ Project side, committable, under the folder rook was pointed at:
     scenarios/                                       the live scenario set
     runs/<run-id>/
       run.yaml                                       manifest: what ran, timings, profile revision
-      scenarios.yaml                                 the scenarios as they were for this run
       agent.yaml  features.yaml  profile.yaml        the agent, features and profile as they were, snapshotted
       report.yaml                                    the summary `report --json` returns
-      report.evidence                                sealed evidence bundle
       scenarios/<scenario-id>/
+        snapshot.yaml                              the scenario as it was for this run
         request.json  response.json  artifacts/    the exchange
         verdict.yaml                               the graded result (see verdicts.md)
 ```

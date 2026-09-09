@@ -1,15 +1,22 @@
 ---
 name: rook
-description: Test, red-team, evaluate or regression-check an AI agent with rook (TestMu AI agent assurance). rook reads a codebase to find the agents, writes functional and adversarial scenarios, calls the agent for real through a profile, and grades what came back with quoted evidence and an explicit account of what it could not verify. Use for any request to test, evaluate, red-team, assure, or regression-check an AI agent, or to check an agent change before commit. Drive rook headlessly with --json and never grade an agent by reading its reply yourself.
+license: Apache-2.0
+compatibility: Requires rook 0.1.1, network access and a TestMu AI account; CI examples also require bash and jq.
+description: Use rook to test, evaluate, red-team or regression-check an AI agent the user owns, or to interpret saved Rook results. Applies to agent behavior and effects, including checks before a commit. Does not apply to ordinary unit tests, browser automation or web UI checks without an AI agent under test.
 ---
 
 # rook — agent assurance from the terminal
 
 Use `rook` whenever the user wants to know whether an AI agent they own
-behaves: test it, red-team it, check a change, compare two runs. Do not write
-test cases by hand and do not grade the agent's reply yourself. rook derives
-the scenarios from the code, invokes the agent, checks the effect, and quotes
-what it found.
+behaves: test it, red-team it, check a change, compare two runs. Respect an
+explicit request to use another tool or to inspect saved evidence only. For
+Rook runs, derive scenarios and verdicts through the CLI; do not substitute
+your own judgment of the agent's reply for a Rook verdict. rook invokes the
+agent, checks the effect, and quotes what it found.
+
+When interpreting saved results, read the supplied report and verdict files.
+Do not start setup commands, a new run or paid analysis unless requested. If
+criterion evidence is missing, say what is missing; do not invent a quote.
 
 Three verdicts exist and they are not interchangeable: **Pass**, **Fail**, and
 **Unable to Verify**. The third is never a pass and never a failure. Keeping it
@@ -36,14 +43,20 @@ credits. `explore`, `generate`, `run`, `profile add|fix`, `ask`, and
 `report --rca` are costed. `profile test` calls your agent once and no model.
 Everything else is free. Never add `--rca` without asking.
 
-When the command exits 1, read the failure document on stdout
-(`{"ok": false, "error": …, "remedy": …}`) and use the template in
-`references/verdicts.md` under "When the run itself failed". `plan` and `run`
-always write one; `report`, `status` and `ask` refused by the admission gate
-exit 1 with an empty stdout, and the reason is the last line of stderr. Quote
-that line as the error. Do not paste the rest of stderr.
+On exit 1, parse stdout when it contains JSON. Read `error`, or `reason`
+for a discarded run, and translate `remedy` when present. A run can exit 1
+with `ok: true, discarded: "refused"`: nothing ran. Never treat `ok: true`
+alone as evidence that scenarios executed. If stdout has no JSON document,
+quote the relevant stderr diagnostic. Gate refusals on `report`, `status`
+and `ask` leave stdout empty. Use the failure template in `references/verdicts.md`.
+For a partial run, present its evidence and explicitly say it did not finish.
 
 ## 2. Decision tree
+
+Run `rook --version` first. This skill describes 0.1.1. If rook is absent,
+follow the installation instructions in https://github.com/LambdaTest/rook.
+If its version differs, verify command help and output contracts before using
+these examples; do not automatically update or downgrade the user's installation.
 
 ```bash
 rook doctor
@@ -61,7 +74,7 @@ rook status --json
 | active agent    | `rook agent use <id>`                                                                                     |
 | scenarios       | `rook generate --json`                                                                                    |
 | profile         | `rook profile add <name> --from <file>` or `--command '<argv>'`, then `rook profile test --goal "<text>"` |
-| results         | `rook run --json`                                                                                         |
+| results         | `rook sync --yes` to record the scenarios/profile upstream, then `rook run --json` (or `rook run --test --json` for a local result)                                                                                         |
 | upstream record | `rook sync`                                                                                               |
 
 That is the order `rook guide` gives. You do not have to run every step; ask
@@ -71,8 +84,9 @@ for a later one and rook says what is missing rather than guessing.
 
 Full detail: `references/headless-contract.md`.
 
-- Add `--json` to every command that has it. stdout then carries one JSON
-  document, once; prose goes to stderr.
+- Add `--json` where supported, but check the command-specific contract:
+  commands that emit a document keep prose on stderr; the exceptions below
+  still emit text.
 - Exit `0` means the command did what it said; `1` means anything else. A
   finished run exits `0` even with failures. Gate on verdicts.
 - `explore`, `generate`, `sync`, `profile` and `report --rca` accept `--json`
@@ -80,10 +94,14 @@ Full detail: `references/headless-contract.md`.
   `.testmuai/rook/projects/<project>/agents/<agent>/`. After `--rca`, run
   `rook report <run-id> --json` for the explained report as a document.
 - Prefer `--allow 'bash(npm test)'` (one call shape, repeatable, scoped with
-  `@<phase>`) over `--yes` (every tool call, this command only).
-- Without `--yes` or an `--allow` rule, headless rook refuses any bash, fetch
-  or MCP call the model asks for and prints the rule you can pass; read tools
+  `@<phase>`) over `--yes` (broad approval, this command only; deny policy still applies).
+- Headless rook refuses permission requests without effective authorization.
+  Existing policy or session grants may authorize calls without `--yes` or
+  `--allow`; omitting those flags is not a read-only guarantee. Read tools
   need no grant.
+- `rook update` may install a newer release and emits text even with `--json`.
+  Announce that installation change before invoking it; this skill's contract
+  must be rechecked afterward.
 - Check `rook plan --json` before a long run; `credits: null` means the balance
   could not be read, not that it is zero.
 - `--concurrency 1-8`, `--only SC-001,SC-002`, `--class`, `--category`, `--tag`
@@ -122,25 +140,17 @@ the way a user would and cannot roll anything back.
 
 Everything rook produces is plain files. Agents, scenarios, runs and evidence
 sit under `.testmuai/rook/projects/<project-id>/agents/<agent-id>/`; each run
-has `run.yaml`, `report.yaml`, `report.evidence`, and one `verdict.yaml` per
-scenario. Layout: `references/headless-contract.md#on-disk`.
+has `run.yaml`, `report.yaml`, and a scenario directory containing
+`snapshot.yaml`, request/response files and `verdict.yaml` for each judged result.
+The evidence location is the run directory itself. Layout: `references/headless-contract.md#on-disk`.
 
 ## 7. CI
 
-```bash
-rook login --username "$LT_USERNAME" --access-key "$LT_ACCESS_KEY"
-rook explore . --yes
-rook generate --yes --json
-rook run --yes --json > run.json
-rook report --json > report.json
-```
-
-This assumes `.testmuai/rook/` is committed with the project and agent already
-selected; on a fresh runner add `rook project use <id>` and
-`rook agent use <id>` before `explore`.
-
-Fail the job on any `Fail` or `compromised` scenario in the report; print
-`Unable to Verify` with reasons. Recipe and caveats: `references/ci.md`.
+Use the complete recipe in `references/ci.md`. It requires a selected,
+configured profile and its environment variables, records generated scenarios
+and the profile with `rook sync`, captures the run exit code, and reads the
+report by that run's ID. It fails on command errors, incomplete runs, Fail or
+compromised scenarios; Unable to Verify alone stays separate and is printed.
 
 ## 8. Troubleshooting
 

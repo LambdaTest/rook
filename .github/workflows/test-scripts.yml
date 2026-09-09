@@ -31,17 +31,18 @@ jobs:
       - name: Run the script harnesses
         env:
           # Exercises the flag harness's self-test (a `profile test --what`
-          # line must fail, a `profile test --goal` line must pass) on every
+          # line must fail, a `profile test --goal` line must pass, and child
+          # flags after -- must be ignored) on every
           # run, not just when someone remembers to set it locally.
           SKILL_FLAGS_SELFTEST: "1"
         run: |
           shopt -s nullglob
           harnesses=(scripts/test-*.sh)
           # A glob that quietly matches nothing is a green run that checked
-          # nothing. There are 9 harnesses; fewer means one was renamed or
+          # nothing. There are 10 harnesses; fewer means one was renamed or
           # deleted, and that should be a red run, not a silent gap.
-          if [ "${#harnesses[@]}" -lt 9 ]; then
-            echo "::error::expected at least 9 harnesses matching scripts/test-*.sh, found ${#harnesses[@]}"
+          if [ "${#harnesses[@]}" -lt 10 ]; then
+            echo "::error::expected at least 10 harnesses matching scripts/test-*.sh, found ${#harnesses[@]}"
             exit 1
           fi
           for t in "${harnesses[@]}"; do

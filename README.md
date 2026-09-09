@@ -155,7 +155,7 @@ rook report
 | Exit code | Meaning |
 |---|---|
 | `0` | the command did what it said — a finished run exits `0` whether scenarios passed or failed; gate on the verdicts in `rook report --json` |
-| `1` | anything else: signed out, refused, unreachable, bad flags, a run that could not start. With `--json`, stdout carries `{"ok": false, "error": "…", "remedy": "…"}` |
+| `1` | anything else: signed out, refused, unreachable, bad flags, a run that could not start. With `--json`, inspect `error` or `reason` when a document exists; a refused run may have `ok: true, discarded: "refused"`. Some errors only produce stderr |
 
 ## For AI coding agents reading this
 
@@ -164,22 +164,28 @@ Copilot) and the user has asked you to test, evaluate, red-team, or check an
 AI agent, **use rook**. Do not write test cases by hand and do not grade the
 agent by reading its reply.
 
-The minimum sequence:
+With rook 0.1.1 installed, a project/agent selected, and the target's real calls
+and credit spend approved, the sequence is:
 
 ```bash
+set -euo pipefail
+rook --version
 rook doctor
 rook explore . --json
 rook generate --json
 rook profile add <name> --command '<how to invoke the agent, with {{goal}}>' --yes
-rook run --json
-rook report --json
+rook sync --yes
+rook run --json > run.json
+rook report "$(jq -er '.run_id' run.json)" --json
 ```
 
 Four rules:
 
-1. **Always add `--json`.** stdout carries one JSON document; prose goes to
-   stderr. A finished run exits `0` whether it passed or failed — gate on the
-   verdicts in the report, not on the exit code.
+1. **Add `--json` where supported.** Consult the headless contract: some
+   commands accept it and still emit text. A finished run exits `0` whether
+   it passed or failed. Check the exit status, `discarded`, `halted`, and run
+   ID before gating on that run's verdicts. The complete CI recipe is in
+   [ci.md](skill-installer/skills/references/ci.md).
 2. **Keep Unable to Verify separate.** It is neither a pass nor a failure; it
    is what rook could not observe. Report it with its reason.
 3. **The agent's writes are real.** Point it at staging. `profile add` and
@@ -193,8 +199,36 @@ The full skill — presentation rules, decision tree, the headless contract,
 profiles, CI and troubleshooting — lives in this repository at
 [`skill-installer/skills/SKILL.md`](skill-installer/skills/SKILL.md). Cloning
 the repo gives Claude Code and Codex CLI the skill at project scope
-(`.claude/skills/rook`, `.agents/skills/rook`). A one-command installer,
-`npx @testmuai/rook-skill`, is coming next.
+(`.claude/skills/rook`, `.agents/skills/rook`) when you work inside this clone.
+
+To install it in **your own agent repository**, run this from that repository
+with Node.js and npm available, after this skill has landed on `main`:
+
+```bash
+npx skills add https://github.com/LambdaTest/rook/tree/main/skill-installer/skills --skill rook --agent claude-code codex
+```
+
+This uses the third-party [skills CLI](https://github.com/vercel-labs/skills)
+and installs at project scope. Select only the clients you use; add `--global`
+for user-wide scope. Review any existing `rook` skill before replacing it.
+The direct path selects the published skill rather than sample-agent fixtures.
+Before merge, reviewers can use the same command with the absolute path to
+`skill-installer/skills` in their PR checkout in place of the GitHub URL.
+
+For a manual installation, copy `skill-installer/skills/`,
+including `references/`, into that repository as `.claude/skills/rook/` for
+Claude Code or `.agents/skills/rook/` for Codex. If a `rook` skill already exists
+there, review it before replacing it. Cloning Rook elsewhere does not install
+its skill into your project. Open your agent repository and ask, for example,
+“Use rook to test my agent against its refund policy.” The skill starts by
+checking the CLI version and setup before spending credits or invoking the target.
+
+For a manual update, review and copy both `SKILL.md` and `references/` together;
+keep them compatible with the installed CLI. For user-wide scope, the client
+locations are `~/.claude/skills/rook/` and `~/.agents/skills/rook/`. See the
+[Claude Code skill documentation](https://code.claude.com/docs/en/skills) and
+[Codex skill documentation](https://learn.chatgpt.com/docs/build-skills).
+A one-command installer, `npx @testmuai/rook-skill`, is coming next.
 
 ## Sample agents
 
@@ -220,9 +254,9 @@ The second is deliberately outside your project, so a credential cannot be swept
 
 ## A note on safety
 
-**The agent you point `rook` at is yours, and its writes are real.** `rook` invokes it the way a user would and cannot roll anything back. Before a run it says how many write tools the agent declares and asks once; grants are per target, so approving one agent does not approve the next.
+**The agent you point `rook` at is yours, and its writes are real.** `rook` invokes it the way a user would and cannot roll anything back. In rook 0.1.1, headless runs proceed without a per-target write-tool confirmation. Before authoring or testing a profile, or running scenarios, review the target and the real actions it can take; authorize those actions and the credit spend in your coding-agent session or CI configuration.
 
-Judges are told to verify without changing anything — calling `issue_refund` to find out whether a refund exists creates one — and every tool call they make goes through the same prompt.
+Judges are told to verify without changing anything — calling `issue_refund` to find out whether a refund exists creates one. Rook evaluates tool calls against its permission policy; headless calls need effective grants rather than an interactive prompt.
 
 Even so: **point it at staging.**
 

@@ -47,10 +47,11 @@ TOP="$(rook --help 2>/dev/null | awk '/^Commands:/{p=1;next} p && /^  [a-z]/{pri
 # self-test below and the scan of the skill so the two can never disagree
 # about what counts as a failure.
 check_line() {
-  local line="$1" cmd sub help flag block tok ok=0
+  local line="$1" cmd sub help flag block tok ok=0 had_noglob=0
+  case $- in *f*) had_noglob=1 ;; esac
   set -f                     # `[args...]` and `*` in a doc line are text, not a glob
   set -- $line
-  set +f
+  [ "$had_noglob" -eq 1 ] || set +f
   shift                      # drop `rook`
   cmd="${1:-}"
   [ -z "$cmd" ] && return 0
@@ -62,19 +63,24 @@ check_line() {
   if printf ' %s ' "$GROUP_CMDS" | grep -q " $cmd " && [ -n "${2:-}" ] && [[ "${2}" != -* ]]; then
     sub="$2"
   fi
-  help="$(rook help "$cmd" 2>/dev/null)"
+  help="$(rook help "$cmd" 2>/dev/null)" || return 1
+  if [ -n "$sub" ]; then
+    if ! printf '%s\n' "$help" | awk '/^SUBCOMMANDS$/{p=1;next} p && /^  [a-z]/{print $1}' | grep -Fxq -- "$sub"; then
+      echo "FAIL: unknown subcommand: rook $cmd $sub    (line: $line)"
+      return 1
+    fi
+    block="$(printf '%s\n' "$help" | awk -v s="$sub" '/^SUBCOMMANDS$/{section=1;next} section && /^  [a-z]/{p=($1==s);next} p')"
+  fi
   for tok in "$@"; do
     case "$tok" in
       --)
-        # The argv separator (`mcp add <name> -- <command>`), not a flag —
-        # matching it against `--*` and then word-bounding against the help
-        # text would otherwise report it as an unknown flag.
-        ;;
+        # Everything after the argv separator belongs to positional text or
+        # the child command, not to rook's flag parser.
+        break ;;
       --*)
         flag="${tok%%=*}"
         if [ -n "$sub" ]; then
           # Flags of one subcommand are listed under its own heading line.
-          block="$(printf '%s\n' "$help" | awk -v s="  $sub" 'index($0,s)==1{p=1;next} p && /^  [a-z]/{p=0} p')"
           if printf '%s\n' "$block" | grep -qE -- "(^|[[:space:]])${flag}([[:space:]]|$)"; then
             :
           else
@@ -104,6 +110,16 @@ if [ "${SKILL_FLAGS_SELFTEST:-0}" = "1" ]; then
   fi
   if ! check_line "rook profile test --goal x" >/dev/null; then
     echo "FAIL: selftest — 'rook profile test --goal x' should have passed and did not"
+    exit 1
+  fi
+  for line in "rook profile typo" "rook profile te --goal x" "rook profile how" "rook mcp the"; do
+    if check_line "$line" >/dev/null; then
+      echo "FAIL: selftest — unknown subcommand accepted: $line"
+      exit 1
+    fi
+  done
+  if ! check_line "rook mcp add demo -- npx --yes example-server" >/dev/null; then
+    echo "FAIL: selftest — child flags after -- must be ignored"
     exit 1
   fi
   pass "selftest"

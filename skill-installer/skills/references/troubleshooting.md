@@ -15,6 +15,12 @@ tty, and state.
 
 ## Failure documents
 
+Parse stdout only when it contains JSON. A refused run can exit 1 with
+`ok: true, discarded: "refused"`: use `reason`, not a missing `error` field.
+Gate refusals on `report`, `status` and `ask`, and parser errors, may have no
+JSON document; use the stderr diagnostic. Do not infer successful execution
+from `ok: true` or from an old report on disk.
+
 | `error` says             | Do                                                                                              |
 | ------------------------ | ----------------------------------------------------------------------------------------------- |
 | `remedy: login`          | you are not signed in — `rook login`; in CI, `rook login --username <u> --access-key <k>`       |
@@ -28,7 +34,7 @@ tty, and state.
 | `remedy: pick_agent`     | no agent selected — `rook agent use <id>`                                                       |
 | `remedy: topup`          | you are out of credits — check `rook plan` and add credits                                      |
 | `remedy: reconcile`      | this agent has diverged from upstream — `rook sync`                                             |
-| `remedy: update`         | this version of rook is too old to be served — `rook update`                                    |
+| `remedy: update`         | this version is too old to be served — announce that `rook update` may install a newer version, then recheck skill compatibility                                    |
 | no active agent          | `rook agent use <id>` after `rook explore`                                                      |
 | no project selected      | `rook project use <id>` or `rook project create <name>`                                         |
 | could not reach rook-api | check the network; `doctor` shows both endpoints                                                |
