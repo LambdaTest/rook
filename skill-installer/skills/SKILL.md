@@ -42,6 +42,9 @@ Before a costed command, say what you are about to run and that it spends
 credits. `explore`, `generate`, `run`, `profile add|fix`, `ask`, and
 `report --rca` are costed. `profile test` calls your agent once and no model.
 Everything else is free. Never add `--rca` without asking.
+Track any user-authorized credit budget across commands and keep batches small.
+Rook 0.1.1 has no aggregate task-credit-limit flag. A missing cost line does not
+mean a command was free; see the accounting notes in `references/headless-contract.md`.
 
 On exit 1, parse stdout when it contains JSON. Read `error`, or `reason`
 for a discarded run, and translate `remedy` when present. A run can exit 1

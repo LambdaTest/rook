@@ -39,6 +39,17 @@ from `ok: true` or from an old report on disk.
 | no project selected      | `rook project use <id>` or `rook project create <name>`                                         |
 | could not reach rook-api | check the network; `doctor` shows both endpoints                                                |
 
+## Discovery succeeds but registers no agents
+
+An exit-zero `explore` with `0 analysed` does not establish that the target is
+ready for generation. Check `rook status --json` and the saved agent tree.
+Inspect whether the source was indexed and whether it contains the agent or
+only a deterministic simulator. When the source supports it and the user's
+scope/budget permits, retry once on the relevant file or directory with a
+truthful description of the target; `--force` re-derives cached analysis.
+Do not claim a simulator has an LLM backend, manufacture a declaration to hide
+the discovery gap, or keep repeating paid discovery without new evidence.
+
 ## Unable to Verify everywhere
 
 `unverifiable_reason: agent_never_ran` on every scenario means the profile

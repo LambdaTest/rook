@@ -5,7 +5,15 @@ Everything here was checked against rook 0.1.1. When rook moves, this file moves
 
 ## Commands
 
-Costed commands call a model and say what they spent. Free means no Rook model credits; a free command may use the network, change state or call your agent.
+Costed commands use Rook model credits. Free means no Rook model credits; a free command may use the network, change state or call your agent.
+
+Record reported spend when available. `profile add` may finish without printing
+a credit total at 0.1.1. A before/after `rook plan --json` balance change is an
+account-level observation, not a per-command receipt; other account activity
+can affect it. If reported spend and balance changes differ, retain both and
+do not invent a rounding, discount or settlement explanation. Track the user's
+authorized budget across commands; no aggregate task-credit cap is enforced
+by a CLI flag at this version.
 
 | Command                                                                                                                                                                                                                                                                                 | Costed                     | Purpose                                                                          |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- | -------------------------------------------------------------------------------- |
