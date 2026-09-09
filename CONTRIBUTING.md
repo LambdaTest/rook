@@ -38,10 +38,8 @@ generated mirrors. Edit the canonical copy, run
 and `SKILL_FLAGS_SELFTEST=1 scripts/test-skill-flags.sh` green. Run
 `scripts/test-skill-contract.sh` (bash, Python 3 and jq) for the offline CI
 recipe checks; it uses synthetic responses and never calls a target agent.
-For presentation changes, compare against the previous skill using the cases
-and assertions in [skill-evals.md](scripts/fixtures/skill-evals.md). A fact in
-the skill has to be true of the pinned `rook` version; do not add flags, paths or schemas you have not
-seen the CLI produce.
+Keep the skill accurate for its pinned CLI version; verify commands and output
+shapes before documenting them.
 
 ## What to leave out
 

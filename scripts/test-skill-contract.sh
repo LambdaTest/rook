@@ -5,12 +5,12 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 command -v jq >/dev/null || { echo 'FATAL: jq is required' >&2; exit 2; }
 python3 - "$REPO_ROOT" <<'PY'
-import json, os, pathlib, re, subprocess, sys, tempfile
+import json, os, pathlib, re, runpy, subprocess, sys, tempfile
 root = pathlib.Path(sys.argv[1])
 blocks = re.findall(r'```bash\n(.*?)\n```', (root / 'skill-installer/skills/references/ci.md').read_text(), re.S)
 assert len(blocks) == 1, 'keep one complete executable CI recipe'
 recipe = blocks[0]
-cases = json.loads((root / 'scripts/fixtures/skill-results.json').read_text())['cases']
+cases = runpy.run_path(str(root / 'scripts/fixtures/skill-results.py'))['cases']
 fake = '''#!/usr/bin/env python3
 import json, os, pathlib, sys
 case = json.loads(pathlib.Path(os.environ['SKILL_CASE']).read_text())
