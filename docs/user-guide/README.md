@@ -1,7 +1,8 @@
 # Rook user guide
 
 Rook discovers an AI agent's features, generates scenarios, invokes the target,
-and records verdicts with evidence. This guide covers **Rook 0.1.1**.
+and records verdicts with evidence. Use `rook help <command>` for your installed
+CLI; compatible minor and patch releases use the same workflow.
 
 [Headless use and CI](headless-and-ci.md) · [Troubleshooting](troubleshooting.md)
 
@@ -18,8 +19,8 @@ rook project use <project-id>
 ```
 
 Replace placeholders with your IDs. Use `rook project create <name>` if you
-need a project. For another CLI version, check `rook help <command>` before
-using these examples.
+need a project. If an example differs from installed help or output, adapt that
+step before continuing; do not treat missing result fields as success.
 
 The optional [coding-agent skill](../../README.md#for-ai-coding-agents-reading-this)
 teaches your coding agent to use Rook; install the CLI separately. That page
@@ -29,13 +30,13 @@ covers current skill installation routes. `@testmuai/rook-skill` is forthcoming.
 
 Use a staging target you own. Review its actions and authorize real writes;
 Rook cannot undo them. Profile authoring, repair, and testing also call the
-agent. Headless Rook has no per-target write confirmation at 0.1.1.
+agent. Do not rely on a per-target write confirmation in headless mode.
 
 `explore`, `generate`, profile authoring/repair, and `run` spend credits.
 `profile test` calls the target once without Rook model credits. Check
-`rook plan --json` and track your budget across commands: **there is no
-aggregate task-credit-limit flag**. `credits: null` means the balance is
-unavailable; a missing cost line does not mean a command was free.
+`rook plan --json` and track your budget across commands; check installed help
+for available limits rather than assuming an aggregate task cap. `credits: null`
+means the balance is unavailable; a missing cost line does not mean a command was free.
 
 The examples use `--yes` for broad approval for that command; deny policy still
 applies. Prefer suitable narrow `--allow` rules when possible. Existing grants

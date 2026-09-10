@@ -3,8 +3,8 @@
 [User guide](README.md) · [Troubleshooting](troubleshooting.md)
 
 Use the [canonical CI recipe](../../skill-installer/skills/references/ci.md)
-for Rook 0.1.1. It requires bash, jq, a selected project and agent, a configured
-profile, and credentials supplied through CI secrets. Review target writes,
+with your installed CLI. It requires bash, jq, a selected project and agent,
+a configured profile, and credentials supplied through CI secrets. Review target writes,
 credit spend, and tool grants before enabling it. Headless mode applies when
 stdin is not a TTY or a supported CI environment variable is set.
 
@@ -14,9 +14,9 @@ never cache the home credential directory.
 
 ## Check outputs and results
 
-`--json` is command-specific. At 0.1.1, `explore`, `generate`, `sync`, profile
-commands, `report --rca`, and ordinary `update` still emit text. Parser errors
-and admission refusals on `report`, `status`, or `ask` can leave stdout empty.
+`--json` is command-specific. Some releases emit text from `explore`, `generate`,
+`sync`, profile commands, `report --rca`, or ordinary `update` despite the flag.
+Parser errors and admission refusals on `report`, `status`, or `ask` can leave stdout empty.
 Keep stderr and inspect it when there is no JSON diagnostic. See the
 [output contract](../../skill-installer/skills/references/headless-contract.md).
 

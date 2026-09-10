@@ -128,7 +128,7 @@ You do not have to run the commands in order. Ask for a later step and `rook` pl
 ## Commands
 
 For setup, profiles, scenario selection, and interpreting results, read the
-[Rook 0.1.1 user guide](docs/user-guide/README.md).
+[Rook user guide](docs/user-guide/README.md).
 
 | | |
 |---|---|

@@ -2,7 +2,7 @@
 
 [User guide](README.md) · [Headless use and CI](headless-and-ci.md)
 
-For Rook 0.1.1, start with these free setup checks:
+Start with these free setup checks:
 
 ```bash
 rook doctor
@@ -25,9 +25,9 @@ Read diagnostics as well as exit codes: an unreachable `auth status` can exit
 
 For a refused command, read `error`, `reason`, or `remedy` when present.
 If stdout is empty, use stderr. The [troubleshooting reference](../../skill-installer/skills/references/troubleshooting.md)
-explains remedies and known 0.1.1 evidence limits, including empty call arrays
-and JSON-string responses. Preserve unknowns rather than changing criteria to
-obtain a pass. [Profile instructions](../../skill-installer/skills/references/profiles.md)
+explains remedies and version-specific evidence limits, including empty call
+arrays and JSON-string responses. Confirm a limitation applies to your release.
+Preserve unknowns rather than changing criteria to obtain a pass. [Profile instructions](../../skill-installer/skills/references/profiles.md)
 cover connection tests and repair.
 
 For a bug or disputed verdict, follow [CONTRIBUTING.md](../../CONTRIBUTING.md).
