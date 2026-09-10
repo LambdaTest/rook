@@ -1,3 +1,14 @@
+## [0.1.2] - 2026-09-10
+
+### Improvements
+- Choose whether to create a project, select an existing project, or open a project recorded in the current workspace.
+- Navigate long project lists within a fixed terminal viewport and refresh cached project names when they change upstream.
+
+### Fixes
+- Plan runs from explicit flags without making a model planning call. Free-text instructions still use the planner.
+- Keep the active profile consistent after adding a profile.
+- Parse comma-separated list flags consistently in the terminal UI and shell, including spaces around commas and intervening root options.
+- Resolve supported file citation suffixes during attack generation and report which cited files can be read when access is refused.
 ## [0.1.1] - 2026-09-05
 
 ### Added
