@@ -38,8 +38,11 @@ generated mirrors. Edit the canonical copy, run
 and `SKILL_FLAGS_SELFTEST=1 scripts/test-skill-flags.sh` green. Run
 `scripts/test-skill-contract.sh` (bash, Python 3 and jq) for the offline CI
 recipe checks; it uses synthetic responses and never calls a target agent.
-Keep the skill accurate for its pinned CLI version; verify commands and output
-shapes before documenting them.
+Refresh the skill when commands, workflows or output contracts change materially,
+normally around major releases; a minor or patch release alone needs no skill
+release. Check installed help and actual outputs when adapting guidance. CI
+checks commands against the current published CLI; record tested versions in
+validation evidence rather than enforcing an exact version in the skill.
 
 ## What to leave out
 

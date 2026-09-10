@@ -6,7 +6,7 @@
 ![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20Windows-brightgreen)
 [![Issues](https://img.shields.io/github/issues/LambdaTest/rook)](https://github.com/LambdaTest/rook/issues)
 
-> **Status: pre-alpha.** `0.1.0` is published — see [Install](#install). Expect sharp edges, and expect the surface to move.
+> **Status: pre-alpha.** Published builds are available — see [Install](#install). Expect sharp edges, and expect the surface to move.
 
 ---
 
@@ -86,7 +86,7 @@ curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | b
 npm install -g @testmuai/rook
 ```
 
-`0.1.0` is the current release. [Open an issue](https://github.com/LambdaTest/rook/issues/new/choose) if any of these does not work on your platform.
+[Open an issue](https://github.com/LambdaTest/rook/issues/new/choose) if any of these does not work on your platform.
 
 ## Five minutes
 
@@ -161,7 +161,8 @@ rook report
 
 Use the [Rook skill](skill-installer/skills/SKILL.md) to test, evaluate, or
 red-team an AI agent and interpret its saved results. It covers setup, target
-permissions, credit budgets, profiles, CI and evidence-based verdicts for Rook 0.1.1.
+permissions, credit budgets, profiles, CI and evidence-based verdicts using
+your installed Rook CLI.
 
 After this skill lands on `main`, install it from your agent repository with
 Node.js and npm available:
@@ -211,7 +212,7 @@ The second is deliberately outside your project, so a credential cannot be swept
 
 ## A note on safety
 
-**The agent you point `rook` at is yours, and its writes are real.** `rook` invokes it the way a user would and cannot roll anything back. In rook 0.1.1, headless runs proceed without a per-target write-tool confirmation. Before authoring or testing a profile, or running scenarios, review the target and the real actions it can take; authorize those actions and the credit spend in your coding-agent session or CI configuration.
+**The agent you point `rook` at is yours, and its writes are real.** `rook` invokes it the way a user would and cannot roll anything back. Do not rely on a per-target write-tool confirmation in headless mode. Before authoring or testing a profile, or running scenarios, review the target and the real actions it can take; authorize those actions and the credit spend in your coding-agent session or CI configuration.
 
 Judges are told to verify without changing anything — calling `issue_refund` to find out whether a refund exists creates one. Rook evaluates tool calls against its permission policy; headless calls need effective grants rather than an interactive prompt.
 

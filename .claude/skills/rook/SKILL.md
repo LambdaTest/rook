@@ -1,7 +1,7 @@
 ---
 name: rook
 license: Apache-2.0
-compatibility: Requires rook 0.1.1, network access and a TestMu AI account; CI examples require bash and jq.
+compatibility: Live testing requires the Rook CLI, network access and a TestMu AI account; CI examples require bash and jq.
 description: Use rook to test, evaluate, red-team or regression-check an AI agent the user owns, or to interpret saved Rook results. Does not apply to ordinary unit tests, browser automation or web UI checks without an AI agent under test.
 ---
 
@@ -13,10 +13,14 @@ without starting setup, a new run or paid analysis.
 
 ## Setup and execution
 
-Check `rook --version`; this skill describes **0.1.1**. If Rook is missing, use
-the [installation instructions](https://github.com/LambdaTest/rook#install).
-For another version, verify its help and output contracts before using examples.
-Do not update or downgrade the installation without authorization.
+Check `rook --version` and use `rook help <command>` for the installed CLI's
+options. If Rook is missing, use the
+[installation instructions](https://github.com/LambdaTest/rook#install).
+Use this workflow across compatible releases; a different version alone is not
+a reason to stop or change the installation. If a command or output differs,
+consult its help and release notes before adapting that step. Keep completion
+and evidence checks intact; do not guess missing fields or retry paid work to
+probe compatibility. Installation changes still require authorization.
 
 ```bash
 rook doctor
@@ -47,7 +51,7 @@ scope a run with `--only`, classes, categories or tags.
 Before `profile add`, `profile fix`, `profile test` or `run`, inspect the target's
 `agent.yaml` for `calls[]` entries with `write: true`. Those commands can reach
 the real agent. Use staging and obtain any missing authorization for its effects;
-Rook cannot undo them or supply a per-target headless confirmation at 0.1.1.
+Rook cannot undo them; do not rely on a per-target headless confirmation.
 Verify effects through read-only interfaces; inspect available read tools before
 concluding that an effect is unverifiable. Keep secrets as `${VAR}` references through
 `rook env set`, outside profiles and transcripts.
@@ -55,7 +59,8 @@ concluding that an effect is unverifiable. Keep secrets as `${VAR}` references t
 Announce spending before `explore`, `generate`, `run`, `profile add|fix`, `ask`
 and `report --rca`. `profile test` invokes the target without Rook model credits.
 Use paid RCA only with user authorization. Track the user's budget across
-commands; 0.1.1 has no aggregate credit-cap flag. A null balance means unknown.
+commands; do not assume the CLI enforces an aggregate task cap. Check its help
+for available limits. A null balance means unknown.
 Prefer scoped `--allow` grants; use `--yes` only within the authorized scope.
 See [headless contracts](references/headless-contract.md) for output, grants and
 credit accounting.
@@ -77,7 +82,7 @@ own reading of the agent reply.
 
 - [CI](references/ci.md): complete pipeline and verdict gating.
 - [MCP](references/mcp.md): server discovery, approval and configuration.
-- [Troubleshooting](references/troubleshooting.md): setup failures and 0.1.1 verification limitations.
+- [Troubleshooting](references/troubleshooting.md): setup failures and version-specific verification limitations.
 - [Headless contracts](references/headless-contract.md): JSON shapes and saved-file locations.
 
 Project evidence lives under `.testmuai/rook/`. Credentials and session state

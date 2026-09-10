@@ -19,14 +19,14 @@ Three kinds of target:
 printf '%s\n' "curl http://127.0.0.1:9110/v1/triage -H 'content-type: application/json' -d '{\"input\":\"{{goal}}\"}'" > /tmp/profile.txt
 rook profile add triage-http --from /tmp/profile.txt --yes
 rook profile add refund-cli --command 'claude -p "{{goal}}"' --yes
-rook profile test --goal "look at ticket T-1043"
+rook profile test --goal "Say hello and nothing else."
 rook profile use <id>
 rook profile show <id>
 ```
 
 `profile add` writes the script, runs it once against the agent (the goal is
 "Say hello and nothing else."), and corrects it. It is costed,
-prints no JSON document at 0.1.1, and needs `--yes` (or `--allow` rules) to
+may emit text despite `--json`, and uses `--yes` (or `--allow` rules) to
 run its own test call without a prompt. With neither `--from` nor
 `--command`, it reads the material from stdin.
 

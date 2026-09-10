@@ -5,18 +5,13 @@
 # `rook help <cmd> [<sub>]` for that command. The skill is prose about a
 # moving target; this is the one part of it a machine can keep honest.
 #
-# Pinned to one release. Bump ROOK_SKILL_PIN when the skill catches up to a
-# newer rook, in the same PR.
-#
 # Usage: scripts/test-skill-flags.sh
-#   ROOK_SKILL_PIN=0.1.1             version the skill describes (default)
 #   SKILL_FLAGS_SKIP_IF_MISSING=1    exit 0 with SKIP when rook is absent
 #   SKILL_FLAGS_SELFTEST=1           check the checker itself before scanning
 set -uo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SKILL_DIR="$REPO_ROOT/skill-installer/skills"
-PIN="${ROOK_SKILL_PIN:-0.1.1}"
 
 FAIL=0
 pass() { echo "PASS: $1"; }
@@ -24,17 +19,13 @@ fail() { echo "FAIL: $1"; FAIL=1; }
 
 if ! command -v rook >/dev/null 2>&1; then
   if [ "${SKILL_FLAGS_SKIP_IF_MISSING:-0}" = "1" ]; then
-    echo "SKIP: rook is not installed; set it up with: npm install -g @testmuai/rook@$PIN"
+    echo "SKIP: rook is not installed; set it up with: npm install -g @testmuai/rook"
     exit 0
   fi
-  echo "FATAL: rook is not on PATH — npm install -g @testmuai/rook@$PIN" >&2
+  echo "FATAL: rook is not on PATH — npm install -g @testmuai/rook" >&2
   exit 2
 fi
-HAVE="$(rook --version 2>/dev/null | tr -d '[:space:]')"
-if [ "$HAVE" != "$PIN" ]; then
-  echo "FATAL: installed rook is $HAVE, the skill is pinned to $PIN" >&2
-  exit 2
-fi
+HAVE="$(rook --version 2>/dev/null)" || { echo 'FATAL: rook --version failed' >&2; exit 2; }
 
 # Subcommand groups whose flags live under `rook help <group>`.
 GROUP_CMDS="profile scenarios mcp env project agent runs auth"
@@ -145,5 +136,5 @@ while IFS= read -r line; do
   checked=$((checked+1))
 done <<< "$LINES"
 
-pass "checked $checked distinct rook command lines against rook $PIN"
+pass "checked $checked distinct rook command lines against rook $HAVE"
 exit $FAIL

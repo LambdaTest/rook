@@ -1,15 +1,17 @@
 # In CI
 
-Requires bash, jq, rook 0.1.1, a committed `.testmuai/rook/` tree containing
+Requires bash, jq, the Rook CLI, a committed `.testmuai/rook/` tree containing
 `ROOK_AGENT_ID` and a selected, configured profile. Supply the profile's declared
 environment variables through CI secrets, alongside `LT_USERNAME`, `LT_ACCESS_KEY`
 and `ROOK_PROJECT_ID`. Set `GITHUB_RUN_ID` to a job label outside GitHub Actions.
 A person must review the target, its real writes, credit spend and tool grants
-before enabling this workflow. Install the CLI before this recipe.
+before enabling this workflow. Install the CLI before this recipe; pin its
+version in your own CI for reproducibility. Compatibility is checked through required output fields, not
+an exact version string. Recheck changed commands with `rook help <command>`.
 
 ```bash
 set -euo pipefail
-[ "$(rook --version)" = "0.1.1" ] || { echo "This recipe requires rook 0.1.1" >&2; exit 1; }
+printf 'Rook CLI: %s\n' "$(rook --version)" >&2
 rook login --username "$LT_USERNAME" --access-key "$LT_ACCESS_KEY"
 rook project use "$ROOK_PROJECT_ID"
 rook agent use "$ROOK_AGENT_ID"

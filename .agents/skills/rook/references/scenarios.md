@@ -28,7 +28,7 @@ rook generate -- focus on the refund limits and the identity check
 
 `generate` derives scenarios per feature and pins them; a second `generate`
 only refreshes features whose pins are stale. `--force` re-derives everything.
-It prints no JSON document at 0.1.1; read the exit code, then
+It may emit text despite `--json`; check the exit code, then read
 `rook scenarios list --json`.
 
 ## Listing and curating

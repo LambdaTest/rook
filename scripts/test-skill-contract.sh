@@ -17,7 +17,7 @@ case = json.loads(pathlib.Path(os.environ['SKILL_CASE']).read_text())
 a = sys.argv[1:]
 with open('calls.jsonl', 'a') as f: f.write(json.dumps(a) + '\\n')
 if a == ['--version']:
- print('0.1.1')
+ print(case.get('version', '0.1.1'))
 elif a and a[0] in ['login', 'project', 'agent', 'explore', 'generate']:
  print('synthetic setup')
 elif a == ['sync', '--yes']:

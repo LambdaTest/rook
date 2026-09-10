@@ -1,7 +1,10 @@
-# Headless contract: Rook 0.1.1
+# Headless output contracts
 
-Use `rook help <command>` for command flags. These output contracts are specific
-to 0.1.1; recheck them when changing the CLI version.
+Use `rook help <command>` for installed command flags. The shapes below describe
+the outputs used by this workflow. Validate required fields in actual responses;
+if they differ, consult the installed CLI's documentation before adapting the
+parser. Extra fields need not block a run; missing completion or verdict fields
+must not be treated as success.
 
 ## Completion and output
 
@@ -28,9 +31,10 @@ Commands that emit JSON write one document to stdout and prose to stderr.
 `status.agents[].tree` is `unsynced`, `clean`, `ahead`, `diverged`, `behind` or
 `unknown`. Unknown means offline, not clean.
 
-**Text despite `--json`:** `explore`, `generate`, `sync`, `profile add/fix/test`,
-`report --rca` and `update` without `auto`. Inspect their exit status and saved
-files. After authorized RCA, use `rook report <run-id> --json` to read the result.
+Some releases emit text despite accepting `--json` on `explore`, `generate`,
+`sync`, `profile add/fix/test`, `report --rca` and `update` without `auto`.
+Check for a JSON document before parsing; otherwise inspect exit status and
+saved files. After authorized RCA, use `rook report <run-id> --json` to read the result.
 `rook update` may replace the CLI; check its version afterward.
 
 ## Errors and partial runs

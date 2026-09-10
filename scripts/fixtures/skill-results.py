@@ -1,4 +1,4 @@
-"""Synthetic Rook 0.1.1 responses; no real agent data or model calls."""
+"""Synthetic Rook responses; no real agent data or model calls."""
 from copy import deepcopy
 
 BASE_RUN = {'ok': True,
@@ -33,6 +33,8 @@ def case(name, **options):
     return item["run"]
 
 case('pass_without_optional_summary', passes=True, expect=['Pass: 2', 'Total credits: 4.25', 'Evidence: fixture-evidence/R-fixture/'])
+
+case('compatible_newer_cli', version='0.1.2', passes=True, expect=['Pass: 2'])
 
 run = case('failed_scenario')
 run['report']['totals']['passed'] = 1

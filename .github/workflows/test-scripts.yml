@@ -22,9 +22,9 @@ jobs:
         with:
           node-version: "22"
 
-      # The flag harness checks the skill against the rook it describes.
-      - name: Install the pinned rook
-        run: npm install -g @testmuai/rook@0.1.1
+      # Detect command drift against the current published CLI.
+      - name: Install the current rook
+        run: npm install -g @testmuai/rook@latest
 
       # ubuntu-latest ships GNU sed, so test-formula-patch.sh's gsed
       # fallback (for BSD sed on macOS) is simply unused here.
