@@ -1,3 +1,10 @@
+## [0.1.3] - 2026-09-10
+
+### Fixes
+- Fix npm-installed `rook update` failing with `TAR_BAD_ARCHIVE` by binding the scoped registry setting correctly.
+- Resume the scenarios selected by the approved plan, reject incomplete carried evidence, and report interrupted or aborted work accurately.
+- Show declared positional choices in the terminal menu and help, and avoid duplicate parser diagnostics.
+- Remove the unused evidence-cli runtime dependency.
 ## [0.1.2] - 2026-09-10
 
 ### Improvements
