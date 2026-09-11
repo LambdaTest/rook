@@ -62,10 +62,10 @@ What a run gives you:
 
 Three ways, on macOS and Linux, x64 and arm64. Each one carries its own Node runtime, so none of them needs Node installed.
 
-**Homebrew**
+**Homebrew** — the formula lives in [LambdaTest/homebrew-rook](https://github.com/LambdaTest/homebrew-rook).
 
 ```
-brew tap LambdaTest/rook https://github.com/LambdaTest/rook.git
+brew tap lambdatest/rook
 brew install lambdatest/rook/rook
 ```
 
@@ -74,6 +74,10 @@ requires third-party-tap formulae to be explicitly trusted before loading
 them, and naming the tap in full is what satisfies that automatically.
 `brew install rook` (after the same tap) hits `Error: Refusing to load
 formula lambdatest/rook/rook from untrusted tap lambdatest/rook.`
+
+If you tapped before the formula moved, with `brew tap LambdaTest/rook https://github.com/LambdaTest/rook.git`,
+point the tap at its new home once so upgrades keep arriving:
+`brew tap --custom-remote lambdatest/rook https://github.com/LambdaTest/homebrew-rook`.
 
 **Shell installer** — downloads the archive matching your platform, verifies its checksum, and links `rook` into `~/.local/bin`. Pass `--dir` to put it somewhere else, or `--version X.Y.Z` to pin one.
 

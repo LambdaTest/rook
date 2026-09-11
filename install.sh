@@ -42,7 +42,8 @@ resolve_version() {
   # `sed -n ... p` (print only on a match), NOT a bare `s///`: a plain
   # substitution passes a non-matching line through UNCHANGED, so a
   # `tag_name` that isn't a `v<version>` tag — e.g. the `rook-<version>`
-  # tag build-bottles.yml publishes bottles under — would make $latest the
+  # tags Homebrew bottles were released under here before the formula
+  # moved to LambdaTest/homebrew-rook — would make $latest the
   # whole raw JSON line, sail past the `-z` guard below, and fail much
   # later as a confusing 404 on a garbage download URL. With `-n`+`p` a
   # non-match produces empty output and the guard does its job.

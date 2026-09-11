@@ -36,7 +36,7 @@
 # Usage: scripts/test-install-fixture.sh
 # shellcheck disable=SC1090  # install.sh is sourced via a computed path below
 set -uo pipefail
-# (Deliberately no -e — same reasoning as scripts/test-bottle-insert.sh:
+# (Deliberately no -e — same reasoning as homebrew-rook's test-bottle-insert.sh:
 # several checks here run install.sh expecting it to FAIL, and every
 # check after that must still run and report on its own merits.)
 
