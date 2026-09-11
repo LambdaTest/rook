@@ -89,6 +89,8 @@ npm install -g @testmuai/rook
 
 [Open an issue](https://github.com/LambdaTest/rook/issues/new/choose) if any of these does not work on your platform.
 
+**Coding-agent skill** — if you drive Rook from Claude Code, Codex or Gemini CLI, `npx @testmuai/rook-skill` (Node.js 22+) installs the Rook skill for all three. See [For AI coding agents reading this](#for-ai-coding-agents-reading-this).
+
 ## Five minutes
 
 Once installed, from inside a project that contains an agent:
@@ -167,6 +169,9 @@ Use the [Rook skill](skill-installer/skills/SKILL.md) to test, evaluate, or
 red-team an AI agent and interpret its saved results. It covers setup, target
 permissions, credit budgets, profiles, CI and evidence-based verdicts using
 your installed Rook CLI.
+Rook is also listed on the TestMu AI
+[Agent Skills](https://www.testmuai.com/support/docs/agent-skills/) page and in the
+[LambdaTest/agent-skills](https://github.com/LambdaTest/agent-skills) catalog README.
 
 Install it from your agent repository with Node.js 22+ and npm available:
 
