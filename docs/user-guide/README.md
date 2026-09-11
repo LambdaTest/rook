@@ -24,7 +24,7 @@ step before continuing; do not treat missing result fields as success.
 
 The optional [coding-agent skill](../../README.md#for-ai-coding-agents-reading-this)
 teaches your coding agent to use Rook; install the CLI separately. That page
-covers current skill installation routes. `@testmuai/rook-skill` is forthcoming.
+covers the installation routes, including `npx @testmuai/rook-skill`.
 
 ## Before spending credits or calling the target
 

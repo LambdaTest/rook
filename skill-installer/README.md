@@ -4,7 +4,6 @@ Install the Rook skill for Claude Code, Codex and Gemini CLI. Requires Node.js
 22+ and npm. Install the [Rook CLI](https://github.com/LambdaTest/rook#install)
 separately. The skill supports compatible CLI releases and has its own package
 version; a CLI version bump alone does not require a skill-package release.
-The npm commands below work after maintainers publish the first package.
 
 ```bash
 npx @testmuai/rook-skill

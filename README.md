@@ -168,16 +168,22 @@ red-team an AI agent and interpret its saved results. It covers setup, target
 permissions, credit budgets, profiles, CI and evidence-based verdicts using
 your installed Rook CLI.
 
-After this skill lands on `main`, install it from your agent repository with
-Node.js and npm available:
+Install it from your agent repository with Node.js 22+ and npm available:
+
+```bash
+npx @testmuai/rook-skill
+```
+
+This installs the skill user-wide for Claude Code, Codex and Gemini CLI. See the
+[installer guide](skill-installer/README.md) for client selection, updates,
+uninstall and file protections. For a project-scoped install through the
+third-party [skills CLI](https://github.com/vercel-labs/skills):
 
 ```bash
 npx skills add https://github.com/LambdaTest/rook/tree/main/skill-installer/skills --skill rook --agent claude-code codex
 ```
 
-This uses the third-party [skills CLI](https://github.com/vercel-labs/skills).
-Select the clients you use; add `--global` for user-wide scope. Before merge,
-replace the URL with the absolute path to `skill-installer/skills` in a PR checkout.
+Select the clients you use; add `--global` for user-wide scope.
 
 For manual installation or updates, copy `SKILL.md` and `references/` together
 into `.claude/skills/rook/` or `.agents/skills/rook/` in your agent repository.
@@ -193,9 +199,6 @@ verdict checks; an exit code of `0` alone does not mean scenarios passed.
 For client details, see the
 [Claude Code skill documentation](https://code.claude.com/docs/en/skills) and
 [Codex skill documentation](https://learn.chatgpt.com/docs/build-skills).
-After its first npm publication, `npx @testmuai/rook-skill` (Node.js 22+) installs
-the skill for Claude Code, Codex and Gemini CLI. See the [installer guide](skill-installer/README.md)
-for updates, uninstall, file protections and a local preview before publication.
 
 ## Sample agents
 
