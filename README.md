@@ -16,6 +16,7 @@
 - [Why it works this way](#why-it-works-this-way)
 - [Install](#install)
 - [Five minutes](#five-minutes)
+- [User guide](docs/user-guide/README.md)
 - [Commands](#commands)
 - [In CI](#in-ci)
 - [For AI coding agents reading this](#for-ai-coding-agents-reading-this)
@@ -125,6 +126,9 @@ Once installed, from inside a project that contains an agent:
 You do not have to run the commands in order. Ask for a later step and `rook` plans the ones it needs first, with the cost, before spending anything. Or just describe what you want in a sentence.
 
 ## Commands
+
+For setup, profiles, scenario selection, and interpreting results, read the
+[Rook user guide](docs/user-guide/README.md).
 
 | | |
 |---|---|
