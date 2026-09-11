@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "vault": {
+      "command": "node",
+      "args": ["mcp/vault-server.mjs"]
+    }
+  }
+}
