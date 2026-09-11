@@ -186,7 +186,12 @@ policy.” Approve the target's real actions and credit spend before execution.
 See the [CI recipe](skill-installer/skills/references/ci.md) for completion and
 verdict checks; an exit code of `0` alone does not mean scenarios passed.
 
-A one-command installer, `npx @testmuai/rook-skill`, is coming next.
+For client details, see the
+[Claude Code skill documentation](https://code.claude.com/docs/en/skills) and
+[Codex skill documentation](https://learn.chatgpt.com/docs/build-skills).
+After its first npm publication, `npx @testmuai/rook-skill` (Node.js 22+) installs
+the skill for Claude Code, Codex and Gemini CLI. See the [installer guide](skill-installer/README.md)
+for updates, uninstall, file protections and a local preview before publication.
 
 ## Sample agents
 

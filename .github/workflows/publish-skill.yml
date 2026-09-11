@@ -1,0 +1,50 @@
+name: Publish rook-skill
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Stable skill package version, for example 0.1.0 (distinct from the Rook CLI version)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-rook-skill
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'LambdaTest/rook' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: '22'
+          registry-url: https://registry.npmjs.org
+      - name: Validate release input
+        env:
+          SKILL_VERSION: ${{ inputs.version }}
+        run: node scripts/prepare-skill-release.mjs --check
+      - run: bash scripts/test-skill-installer.sh
+      - run: bash scripts/test-skill-mirrors.sh
+      - name: Prepare the literal package version
+        env:
+          SKILL_VERSION: ${{ inputs.version }}
+        run: node scripts/prepare-skill-release.mjs
+      - name: Pack the reviewed package
+        working-directory: skill-installer
+        run: npm pack --ignore-scripts
+      - name: Publish to npm
+        working-directory: skill-installer
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          SKILL_VERSION: ${{ inputs.version }}
+        run: |
+          test -n "$NODE_AUTH_TOKEN" || { echo 'NPM_TOKEN is required' >&2; exit 1; }
+          npm publish "./testmuai-rook-skill-${SKILL_VERSION}.tgz" --access public --ignore-scripts --registry https://registry.npmjs.org
