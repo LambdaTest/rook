@@ -76,8 +76,13 @@ them, and naming the tap in full is what satisfies that automatically.
 formula lambdatest/rook/rook from untrusted tap lambdatest/rook.`
 
 If you tapped before the formula moved, with `brew tap LambdaTest/rook https://github.com/LambdaTest/rook.git`,
-point the tap at its new home once so upgrades keep arriving:
-`brew tap --custom-remote lambdatest/rook https://github.com/LambdaTest/homebrew-rook`.
+re-point that tap once so upgrades keep arriving. The installed `rook` is untouched. Do not
+`brew untap --force`, which uninstalls it.
+
+```
+brew tap --custom-remote lambdatest/rook https://github.com/LambdaTest/homebrew-rook
+git -C "$(brew --repository lambdatest/rook)" reset --hard origin/main
+```
 
 **Shell installer** — downloads the archive matching your platform, verifies its checksum, and links `rook` into `~/.local/bin`. Pass `--dir` to put it somewhere else, or `--version X.Y.Z` to pin one.
 
