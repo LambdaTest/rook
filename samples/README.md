@@ -48,4 +48,7 @@ policy. Enforcing it would test the server rather than the agent.
 `refund-desk` contains a real `.claude/` directory — agent definitions and a
 `refund-policy` skill — because that is precisely what `rook` is meant to
 discover. A coding agent opened on this repository may register that skill as
-though it were yours. It is a test fixture, not policy for your project.
+though it were yours. It is a test fixture, not policy for your project. The
+one skill in this repository that _is_ meant for your coding agent is the
+`rook` skill at the repository root (`.claude/skills/rook/`,
+`.agents/skills/rook/`).

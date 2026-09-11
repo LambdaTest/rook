@@ -30,6 +30,20 @@ checked it.
 **Documentation.** Corrections to anything published in this repository are
 welcome as pull requests.
 
+**The coding-agent skill.** `skill-installer/skills/SKILL.md` and its
+`references/` are the single source of truth for how an AI coding agent
+drives `rook`; `.claude/skills/rook/` and `.agents/skills/rook/` are
+generated mirrors. Edit the canonical copy, run
+`scripts/sync-skill-mirrors.sh`, and keep `scripts/test-skill-mirrors.sh`
+and `SKILL_FLAGS_SELFTEST=1 scripts/test-skill-flags.sh` green. Run
+`scripts/test-skill-contract.sh` (bash, Python 3 and jq) for the offline CI
+recipe checks; it uses synthetic responses and never calls a target agent.
+Refresh the skill when commands, workflows or output contracts change materially,
+normally around major releases; a minor or patch release alone needs no skill
+release. Check installed help and actual outputs when adapting guidance. CI
+checks commands against the current published CLI; record tested versions in
+validation evidence rather than enforcing an exact version in the skill.
+
 ## What to leave out
 
 Please do not paste transcripts, credentials, customer data, or the contents of

@@ -6,7 +6,7 @@
 ![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20Windows-brightgreen)
 [![Issues](https://img.shields.io/github/issues/LambdaTest/rook)](https://github.com/LambdaTest/rook/issues)
 
-> **Status: pre-alpha.** `0.1.0` is published — see [Install](#install). Expect sharp edges, and expect the surface to move.
+> **Status: pre-alpha.** Published builds are available — see [Install](#install). Expect sharp edges, and expect the surface to move.
 
 ---
 
@@ -18,6 +18,7 @@
 - [Five minutes](#five-minutes)
 - [Commands](#commands)
 - [In CI](#in-ci)
+- [For AI coding agents reading this](#for-ai-coding-agents-reading-this)
 - [Sample agents](#sample-agents)
 - [Where things are kept](#where-things-are-kept)
 - [A note on safety](#a-note-on-safety)
@@ -85,7 +86,7 @@ curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | b
 npm install -g @testmuai/rook
 ```
 
-`0.1.0` is the current release. [Open an issue](https://github.com/LambdaTest/rook/issues/new/choose) if any of these does not work on your platform.
+[Open an issue](https://github.com/LambdaTest/rook/issues/new/choose) if any of these does not work on your platform.
 
 ## Five minutes
 
@@ -153,10 +154,39 @@ rook report
 
 | Exit code | Meaning |
 |---|---|
-| `0` | success |
-| `1` | error |
-| `3` | unauthorized |
-| `4` | budget exhausted |
+| `0` | the command did what it said — a finished run exits `0` whether scenarios passed or failed; gate on the verdicts in `rook report --json` |
+| `1` | anything else: signed out, refused, unreachable, bad flags, a run that could not start. With `--json`, inspect `error` or `reason` when a document exists; a refused run may have `ok: true, discarded: "refused"`. Some errors only produce stderr |
+
+## For AI coding agents reading this
+
+Use the [Rook skill](skill-installer/skills/SKILL.md) to test, evaluate, or
+red-team an AI agent and interpret its saved results. It covers setup, target
+permissions, credit budgets, profiles, CI and evidence-based verdicts using
+your installed Rook CLI.
+
+After this skill lands on `main`, install it from your agent repository with
+Node.js and npm available:
+
+```bash
+npx skills add https://github.com/LambdaTest/rook/tree/main/skill-installer/skills --skill rook --agent claude-code codex
+```
+
+This uses the third-party [skills CLI](https://github.com/vercel-labs/skills).
+Select the clients you use; add `--global` for user-wide scope. Before merge,
+replace the URL with the absolute path to `skill-installer/skills` in a PR checkout.
+
+For manual installation or updates, copy `SKILL.md` and `references/` together
+into `.claude/skills/rook/` or `.agents/skills/rook/` in your agent repository.
+Review an existing skill before replacing it. The corresponding locations under
+`~/` provide user-wide scope. This Rook clone already includes both project mirrors;
+cloning it elsewhere does not install the skill into your project.
+
+Open your agent repository and ask: “Use rook to test my agent against its refund
+policy.” Approve the target's real actions and credit spend before execution.
+See the [CI recipe](skill-installer/skills/references/ci.md) for completion and
+verdict checks; an exit code of `0` alone does not mean scenarios passed.
+
+A one-command installer, `npx @testmuai/rook-skill`, is coming next.
 
 ## Sample agents
 
@@ -182,9 +212,9 @@ The second is deliberately outside your project, so a credential cannot be swept
 
 ## A note on safety
 
-**The agent you point `rook` at is yours, and its writes are real.** `rook` invokes it the way a user would and cannot roll anything back. Before a run it says how many write tools the agent declares and asks once; grants are per target, so approving one agent does not approve the next.
+**The agent you point `rook` at is yours, and its writes are real.** `rook` invokes it the way a user would and cannot roll anything back. Do not rely on a per-target write-tool confirmation in headless mode. Before authoring or testing a profile, or running scenarios, review the target and the real actions it can take; authorize those actions and the credit spend in your coding-agent session or CI configuration.
 
-Judges are told to verify without changing anything — calling `issue_refund` to find out whether a refund exists creates one — and every tool call they make goes through the same prompt.
+Judges are told to verify without changing anything — calling `issue_refund` to find out whether a refund exists creates one. Rook evaluates tool calls against its permission policy; headless calls need effective grants rather than an interactive prompt.
 
 Even so: **point it at staging.**
 

@@ -1,7 +1,7 @@
 name: test-scripts
 
-# The five harnesses under scripts/ extract the real sed/Python/bash logic
-# live out of the committed workflow files and install.sh and run it, so
+# The harnesses under scripts/ extract the real sed/Python/bash logic
+# out of the committed workflow files and install.sh and run it, so
 # they only stay honest if something runs them. Before this, they ran when
 # a human remembered to.
 on:
@@ -18,17 +18,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Detect command drift against the current published CLI.
+      - name: Install the current rook
+        run: npm install -g @testmuai/rook@latest
+
       # ubuntu-latest ships GNU sed, so test-formula-patch.sh's gsed
       # fallback (for BSD sed on macOS) is simply unused here.
       - name: Run the script harnesses
+        env:
+          # Exercises the flag harness's self-test (a `profile test --what`
+          # line must fail, a `profile test --goal` line must pass, and child
+          # flags after -- must be ignored) on every
+          # run, not just when someone remembers to set it locally.
+          SKILL_FLAGS_SELFTEST: "1"
         run: |
           shopt -s nullglob
           harnesses=(scripts/test-*.sh)
           # A glob that quietly matches nothing is a green run that checked
-          # nothing. There are 5 harnesses; fewer means one was renamed or
+          # nothing. There are 10 harnesses; fewer means one was renamed or
           # deleted, and that should be a red run, not a silent gap.
-          if [ "${#harnesses[@]}" -lt 5 ]; then
-            echo "::error::expected at least 5 harnesses matching scripts/test-*.sh, found ${#harnesses[@]}"
+          if [ "${#harnesses[@]}" -lt 10 ]; then
+            echo "::error::expected at least 10 harnesses matching scripts/test-*.sh, found ${#harnesses[@]}"
             exit 1
           fi
           for t in "${harnesses[@]}"; do
