@@ -8,6 +8,7 @@
 
 > **Status: pre-alpha.** Published builds are available — see [Install](#install). Expect sharp edges, and expect the surface to move.
 
+Check out [TestMu AI Agent Assurance documentation](https://www.testmuai.com/support/docs/agent-assurance-overview/).
 ---
 
 ## Contents
