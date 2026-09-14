@@ -18,7 +18,7 @@
 # ... ) rather than sourcing once at top level — install.sh does `set -euo
 # pipefail`, and sourcing it directly into this script's top-level shell
 # would leak those options into the rest of this test harness (which,
-# like its siblings test-formula-patch.sh/test-bottle-insert.sh, needs to
+# like the formula harnesses now in LambdaTest/homebrew-rook, needs to
 # keep running after a deliberately-failing case).
 #
 # Usage: scripts/test-platform-detect.sh
