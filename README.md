@@ -65,9 +65,10 @@ Three ways, on macOS and Linux, x64 and arm64. Each one carries its own Node run
 **Homebrew** — the formula lives in [LambdaTest/homebrew-rook](https://github.com/LambdaTest/homebrew-rook).
 
 ```
-brew tap lambdatest/rook
 brew install lambdatest/rook/rook
 ```
+
+Homebrew automatically adds the tap for a fresh installation.
 
 Install by the full `lambdatest/rook/rook` name, not just `rook` — Homebrew
 requires third-party-tap formulae to be explicitly trusted before loading
