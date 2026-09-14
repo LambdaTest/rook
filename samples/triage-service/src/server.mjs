@@ -102,6 +102,13 @@ export function readRequestBody(req, { maxBytes, timeoutMs }) {
   });
 }
 
+/** True if the request announced a body via Content-Length or Transfer-Encoding. */
+function declaresBody(req) {
+  const length = Number(req.headers["content-length"]);
+  if (Number.isFinite(length) && length > 0) return true;
+  return typeof req.headers["transfer-encoding"] === "string" && req.headers["transfer-encoding"].length > 0;
+}
+
 function bodyError(code, message) {
   const err = new Error(message);
   err.code = code;
@@ -140,7 +147,13 @@ function rejectBody(res, err, limits) {
 
 async function handleRequest(req, res, limits) {
   if (req.method === "GET" && req.url === "/healthz") {
-    sendJson(res, 200, { ok: true });
+    // A GET request is not required to be bodyless. This route never reads
+    // req, so a body declared here would otherwise be silently drained by
+    // Node with no byte limit or timeout applied — closing on any declared
+    // body forces the connection down instead. `req.complete` is not yet
+    // reliable at this point even for an ordinary bodyless request, so the
+    // check is against what the client declared, not the stream state.
+    sendJson(res, 200, { ok: true }, { close: declaresBody(req) });
     return;
   }
 
@@ -198,7 +211,10 @@ export function createTriageServer(options = {}) {
 
 /** Bind and resolve with the listening server; `server.address()` is authoritative. */
 export function startTriageServer(options = {}) {
-  const host = options.host ?? (process.env.HOST || DEFAULTS.host);
+  // `||`, not `??`: an empty string must fall through too, or a blank
+  // config value silently reopens the wildcard listen() this default exists
+  // to prevent.
+  const host = options.host || process.env.HOST || DEFAULTS.host;
   const port = options.port ?? (process.env.PORT ? Number(process.env.PORT) : DEFAULTS.port);
   const server = createTriageServer(options);
   return new Promise((resolve, reject) => {

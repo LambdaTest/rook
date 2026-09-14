@@ -9,6 +9,10 @@ on:
   push:
   pull_request:
 
+concurrency:
+  group: test-samples-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 

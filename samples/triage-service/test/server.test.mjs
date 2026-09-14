@@ -7,6 +7,7 @@ import { request as httpRequest } from "node:http";
 import { networkInterfaces } from "node:os";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { startTriageServer } from "../src/server.mjs";
 
 /**
  * HTTP regression tests for src/server.mjs.
@@ -16,10 +17,10 @@ import { dirname, join } from "node:path";
  * process dying, not as an exception inside the test runner. Nothing here
  * touches shared services or the default port 9110.
  *
- * Covered findings:
- *   F1  loopback binding by default; banner derived from the bound socket
- *   F4  aborted / reset request bodies must not terminate the service
- *   F5  documented byte limit + body-read timeout; 413 / 408; bounded memory
+ * Covered:
+ *   - loopback binding by default; banner derived from the bound socket
+ *   - aborted / reset request bodies must not terminate the service
+ *   - a documented byte limit and body-read timeout; 413 / 408; bounded memory
  */
 
 const SERVER = join(dirname(fileURLToPath(import.meta.url)), "..", "src", "server.mjs");
@@ -170,9 +171,9 @@ function statusOf(raw) {
 
 const LIMIT = 65536; // bytes; the tests pin the limit via env so runs stay fast
 
-// -------------------------------------------------------------------- F1 --
+// ---------------------------------------------------------- loopback binding --
 
-test("F1: banner reports the actually bound loopback address and real port (PORT=0)", async () => {
+test("banner reports the actually bound loopback address and real port (PORT=0)", async () => {
   const record = await startServer({ env: { PORT: "0", HOST: "" } });
   assert.equal(record.url.hostname, "127.0.0.1", `banner host: ${record.banner}`);
   const port = Number(record.url.port);
@@ -183,7 +184,7 @@ test("F1: banner reports the actually bound loopback address and real port (PORT
   await stop(record.child);
 });
 
-test("F1: default listener is loopback-only, not a wildcard socket (non-default port)", async () => {
+test("default listener is loopback-only, not a wildcard socket (non-default port)", async () => {
   const port = await getFreePort();
   assert.notEqual(port, 9110);
   const record = await startServer({ env: { PORT: String(port), HOST: "" } });
@@ -207,18 +208,58 @@ test("F1: default listener is loopback-only, not a wildcard socket (non-default 
   await stop(record.child);
 });
 
-test("F1: explicit HOST override is honoured and reflected in the banner", async () => {
+test("explicit HOST override is honoured and reflected in the banner", async () => {
   const port = await getFreePort();
   const record = await startServer({ env: { PORT: String(port), HOST: "0.0.0.0" } });
   assert.equal(record.url.hostname, "0.0.0.0", `banner: ${record.banner}`);
   assert.equal(record.url.port, String(port));
   assert.equal(await canConnect("127.0.0.1", port), true);
+
+  // Positive control, scoped to what 0.0.0.0 actually binds: Node treats it
+  // as an IPv4-only wildcard, not dual-stack, so only the external-IPv4
+  // probe applies here — [::1] is covered by the dual-stack test below.
+  const ext = externalIPv4();
+  if (ext) {
+    assert.equal(await canConnect(ext, port), true, `${ext} must reach an explicit 0.0.0.0 listener`);
+  }
   await stop(record.child);
 });
 
-// -------------------------------------------------------------------- F4 --
+test("HOST=:: is dual-stack and reachable on both IPv6 loopback and external IPv4 — positive control", async () => {
+  // The original bug bound this exact dual-stack socket (`listen(port)` with
+  // no host resolves to `::`). This test reproduces that socket family on
+  // purpose, as a positive control for the refusal assertions in the
+  // loopback-only test above: without it, canConnect() returning `false` for
+  // a filtered or timed-out probe would be indistinguishable from a real
+  // refusal, and that test could pass without proving anything.
+  if (!hasIPv6Loopback()) return;
+  const port = await getFreePort();
+  const record = await startServer({ env: { PORT: String(port), HOST: "::" } });
+  assert.equal(await canConnect("::1", port), true, "[::1] must reach a dual-stack listener");
+  const ext = externalIPv4();
+  if (ext) {
+    assert.equal(await canConnect(ext, port), true, `${ext} must reach a dual-stack listener`);
+  }
+  await stop(record.child);
+});
 
-test("F4: a reset mid-body does not terminate the service; a valid request follows", async () => {
+test("an empty HOST option does not fall through to a wildcard bind", async () => {
+  // Only reachable through the programmatic API: env HOST="" is already
+  // covered above via the CLI entrypoint and the `||` fallback in
+  // startTriageServer resolves it the same way, but a caller passing
+  // `{ host: "" }` directly bypasses the environment entirely.
+  const server = await startTriageServer({ host: "", port: 0 });
+  try {
+    const address = server.address();
+    assert.equal(address.address, "127.0.0.1", `expected loopback, got ${JSON.stringify(address)}`);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+// ------------------------------------------------------------- aborted bodies --
+
+test("a reset mid-body does not terminate the service; a valid request follows", async () => {
   const port = await getFreePort();
   const record = await startServer({ env: { PORT: String(port) } });
 
@@ -239,7 +280,7 @@ test("F4: a reset mid-body does not terminate the service; a valid request follo
   await stop(record.child);
 });
 
-test("F4: abort before any body byte does not terminate the service", async () => {
+test("abort before any body byte does not terminate the service", async () => {
   const port = await getFreePort();
   const record = await startServer({ env: { PORT: String(port) } });
 
@@ -258,7 +299,7 @@ test("F4: abort before any body byte does not terminate the service", async () =
   await stop(record.child);
 });
 
-test("F4: fifty bounded aborts leave the service alive and responsive", async () => {
+test("fifty bounded aborts leave the service alive and responsive", async () => {
   const port = await getFreePort();
   const record = await startServer({ env: { PORT: String(port) } });
   for (let i = 0; i < 50; i += 1) {
@@ -277,9 +318,9 @@ test("F4: fifty bounded aborts leave the service alive and responsive", async ()
   await stop(record.child);
 });
 
-// -------------------------------------------------------------------- F5 --
+// --------------------------------------------------------------- body limits --
 
-test("F5: an oversized declared Content-Length is rejected with 413 before the body arrives", async () => {
+test("an oversized declared Content-Length is rejected with 413 before the body arrives", async () => {
   const port = await getFreePort();
   const record = await startServer({ env: { PORT: String(port), TRIAGE_MAX_BODY_BYTES: String(LIMIT) } });
 
@@ -296,7 +337,7 @@ test("F5: an oversized declared Content-Length is rejected with 413 before the b
   await stop(record.child);
 });
 
-test("F5: an oversized chunked body is rejected with 413 while streaming", async () => {
+test("an oversized chunked body is rejected with 413 while streaming", async () => {
   const port = await getFreePort();
   const record = await startServer({ env: { PORT: String(port), TRIAGE_MAX_BODY_BYTES: String(LIMIT) } });
 
@@ -318,7 +359,7 @@ test("F5: an oversized chunked body is rejected with 413 while streaming", async
   await stop(record.child);
 });
 
-test("F5: exact byte boundary — at the limit succeeds, one byte over is 413", async () => {
+test("exact byte boundary — at the limit succeeds, one byte over is 413", async () => {
   const port = await getFreePort();
   const record = await startServer({ env: { PORT: String(port), TRIAGE_MAX_BODY_BYTES: String(LIMIT) } });
   const prefix = "{\"input\":\"";
@@ -344,7 +385,7 @@ test("F5: exact byte boundary — at the limit succeeds, one byte over is 413", 
   await stop(record.child);
 });
 
-test("F5: the limit counts bytes, not characters (multibyte input)", async () => {
+test("the limit counts bytes, not characters (multibyte input)", async () => {
   const port = await getFreePort();
   const record = await startServer({ env: { PORT: String(port), TRIAGE_MAX_BODY_BYTES: String(LIMIT) } });
   const prefix = "{\"input\":\"";
@@ -372,7 +413,7 @@ test("F5: the limit counts bytes, not characters (multibyte input)", async () =>
   await stop(record.child);
 });
 
-test("F5: a stalled body hits the read timeout, gets 408, and resources are released", async () => {
+test("a stalled body hits the read timeout, gets 408, and resources are released", async () => {
   const port = await getFreePort();
   const record = await startServer({ env: { PORT: String(port), TRIAGE_BODY_TIMEOUT_MS: "600" } });
 
@@ -392,7 +433,7 @@ test("F5: a stalled body hits the read timeout, gets 408, and resources are rele
   await stop(record.child);
 });
 
-test("F5: memory stays bounded under a constrained heap; same PID survives an oversized stream", async () => {
+test("memory stays bounded under a constrained heap; same PID survives an oversized stream", async () => {
   const port = await getFreePort();
   const record = await startServer({
     nodeArgs: ["--max-old-space-size=32"],
@@ -432,6 +473,48 @@ test("valid JSON still returns 400 for malformed bodies and the service keeps se
     method: "POST", headers: { "content-type": "application/json" }, body: "{not json",
   });
   assert.equal(bad.status, 400);
+  await assertValidTriage(record);
+  await stop(record.child);
+});
+
+// ---------------------------------------------------------- connection reuse --
+
+test("a successful reply keeps the connection alive; a rejection closes it", async () => {
+  const port = await getFreePort();
+  const record = await startServer({ env: { PORT: String(port), TRIAGE_MAX_BODY_BYTES: String(LIMIT) } });
+
+  const ok = await requestJson(new URL("/healthz", record.url));
+  assert.equal(ok.status, 200);
+  assert.match(String(ok.headers.connection), /keep-alive/i, `expected keep-alive, got: ${ok.headers.connection}`);
+
+  const rejected = await requestJson(new URL("/v1/triage", record.url), {
+    method: "POST",
+    headers: { "content-type": "application/json", "content-length": String(LIMIT * 3) },
+  }).catch((e) => ({ status: -1, headers: {}, text: String(e) }));
+  assert.equal(rejected.status, 413);
+  assert.match(String(rejected.headers.connection), /close/i, `expected close, got: ${rejected.headers.connection}`);
+
+  await assertValidTriage(record);
+  await stop(record.child);
+});
+
+test("healthz with a declared but unread body still answers 200 and closes the connection", async () => {
+  const port = await getFreePort();
+  const record = await startServer({ env: { PORT: String(port) } });
+
+  // GET is not required to be bodyless. A declared body on /healthz that the
+  // handler never reads must not leave the connection open waiting on — or
+  // silently draining — bytes nobody asked for; the byte limit and timeout
+  // above are scoped to /v1/triage and do not apply to this route.
+  const { response } = await rawExchange(port, {
+    waitMs: 1500,
+    write: (s) => {
+      s.write("GET /healthz HTTP/1.1\r\nHost: localhost\r\nContent-Length: 1000000\r\n\r\n");
+    },
+  });
+  assert.equal(statusOf(response), 200, `expected 200, raw:\n${response || "<none>"}`);
+  assert.match(response, /connection:\s*close/i, `expected the reply to close the connection, raw:\n${response}`);
+  assert.equal(await stillAlive(record), true);
   await assertValidTriage(record);
   await stop(record.child);
 });
