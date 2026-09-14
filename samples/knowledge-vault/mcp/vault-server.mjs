@@ -27,6 +27,7 @@ serve({
   ],
 
   call(name, args) {
+    vault.refresh(); // stay coherent with an HTTP instance sharing the same VAULT_DB
     if (name === "search") {
       const k = Math.min(Math.max(Number(args.top_k ?? 5), 1), 20);
       const results = retrieve(String(args.query ?? ""), vault.vectors, { confidential: false, domain: args.domain ? String(args.domain) : undefined })

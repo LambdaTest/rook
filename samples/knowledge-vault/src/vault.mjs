@@ -29,7 +29,7 @@ const SEED_USERS = [
 // RBAC: which operations each role may perform. `read` is ask/search; the rest
 // are the write operations on the database. Anonymous (no user) = read-only.
 const PERMISSIONS = {
-  admin: new Set(["read", "read_audit", "create", "edit", "delete", "revert", "grant", "revoke", "manage_users", "add_synonym"]),
+  admin: new Set(["read", "read_audit", "create", "edit", "delete", "revert", "grant", "revoke", "manage_users", "add_synonym", "reset"]),
   editor: new Set(["read", "create", "edit", "delete", "revert", "add_synonym"]),
   member: new Set(["read", "create", "edit"]),
   guest: new Set(["read"]),
@@ -69,6 +69,7 @@ export class Vault {
       if (this.db.synonymsEmpty()) this.db.seedSynonyms(DEFAULT_SYNONYMS);
       setSynonyms(this.db.allSynonyms());
       for (const d of this.db.allDocs()) this.#index(d);
+      this._dataVersion = this.db.dataVersion();
     } else {
       this.dbPath = null;
       this.db = null;
@@ -79,6 +80,21 @@ export class Vault {
   }
 
   #index(doc) { this.docs.set(doc.id, doc); this.vectors.add(indexDoc(doc)); }
+
+  // Reload the hot index if another connection/process committed to the same
+  // SQLite file since our last read (PRAGMA data_version changes only on *other*
+  // connections' commits). Cheap check per request; full rebuild only on change,
+  // so two live instances (HTTP + MCP) sharing one VAULT_DB stay coherent.
+  refresh() {
+    if (!this.db) return;
+    const v = this.db.dataVersion();
+    if (v === this._dataVersion) return;
+    this._dataVersion = v;
+    this.docs = new Map();
+    this.vectors = new MemoryStore();
+    setSynonyms(this.db.allSynonyms());
+    for (const d of this.db.allDocs()) this.#index(d);
+  }
 
   // ── reads ──────────────────────────────────────────────────────────────────
   getDoc(id) { return this.docs.get(id); }
@@ -136,8 +152,8 @@ export class Vault {
   queryAudit(f = {}) {
     if (this.db) return { total: this.db.auditCount(f), rows: this.db.queryAudit(f) };
     const matched = this._audit.filter((e) => auditMatches(e, f));
-    const limit = Math.min(Math.max(Number(f.limit) || 20, 1), 500);
-    const offset = Math.max(Number(f.offset) || 0, 0);
+    const limit = Math.min(Math.max(Math.floor(Number(f.limit)) || 20, 1), 500);
+    const offset = Math.max(Math.floor(Number(f.offset)) || 0, 0);
     return { total: matched.length, rows: matched.slice().reverse().slice(offset, offset + limit) };
   }
   auditCount(f) { return this.db ? this.db.auditCount(f) : this._audit.filter((e) => auditMatches(e, f)).length; }

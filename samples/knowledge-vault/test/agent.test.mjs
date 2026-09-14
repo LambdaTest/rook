@@ -129,7 +129,7 @@ test("persistence: a snapshot reloads into an identical index", async () => {
 });
 
 test("indexes an uploaded document and retrieves it", async () => {
-  await fetch("http://127.0.0.1:9700/v1/reset", { method: "POST" });
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
   const up = await fetch("http://127.0.0.1:9700/v1/documents", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ id: "HR-UP-1", domain: "HR", text: "The anchor-days hybrid schedule lets staff pick office days per sprint.", user: "alice" }) }).then((x) => x.json());
   assert.equal(up.ok, true);
   assert.equal(up.documents, 1001);
@@ -137,7 +137,7 @@ test("indexes an uploaded document and retrieves it", async () => {
 });
 
 test("full CRUD lifecycle over HTTP (create, read, edit, delete)", async () => {
-  await fetch("http://127.0.0.1:9700/v1/reset", { method: "POST" });
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
   const base = "http://127.0.0.1:9700/v1/documents";
   const j = (r) => r.json();
   // create
@@ -169,7 +169,7 @@ test("the SQLite database persists writes across a restart", async () => {
 });
 
 test("audit_log records every query and its outcome (joins to documents)", async () => {
-  await fetch("http://127.0.0.1:9700/v1/reset", { method: "POST" });
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
   await ask({ input: "how many vacation days" });
   await ask({ input: "what is the ceo compensation" });
   const a = await getj("/v1/audit?limit=5&user=alice");
@@ -181,7 +181,7 @@ test("audit_log records every query and its outcome (joins to documents)", async
 });
 
 test("audit_log read is admin-only, and paginates + filters", async () => {
-  await fetch("http://127.0.0.1:9700/v1/reset", { method: "POST" });
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
   await ask({ input: "how many vacation days" });          // answered
   await ask({ input: "what is the ceo compensation" });    // refused_confidential
   // RBAC: anonymous and non-admins are refused (403).
@@ -228,8 +228,84 @@ test("adding a synonym changes what retrieval finds", async () => {
   assert.deepEqual((await ask({ input: "what is my annual entitlement" })).citations, ["HR-PTO"]);
 });
 
+// ── review fixes (PR #21) ──────────────────────────────────────────────────
+
+test("confidential + out-of-domain document reads are refused over HTTP (parity with MCP)", async () => {
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
+  const status = (u) => fetch(u).then((r) => r.status);
+  // Confidential doc: MCP read_document refuses it, so a direct HTTP GET must too — even for admin.
+  assert.equal(await status("http://127.0.0.1:9700/v1/documents/HR-COMP"), 403);
+  assert.equal(await status("http://127.0.0.1:9700/v1/documents/HR-COMP?user=alice"), 403);
+  assert.equal(await status("http://127.0.0.1:9700/v1/documents/HR-COMP/history"), 403);
+  // Public doc is still readable.
+  assert.equal(await status("http://127.0.0.1:9700/v1/documents/HR-PTO"), 200);
+  // Out-of-domain: guest (Personal only) may not read a Banking doc.
+  assert.equal(await status("http://127.0.0.1:9700/v1/documents/FIN-WIRE?user=guest"), 403);
+});
+
+test("reset is admin-only and does not let anon erase evidence", async () => {
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
+  const post = (u) => fetch(u, { method: "POST" }).then((r) => r.status);
+  await fetch("http://127.0.0.1:9700/v1/documents", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ id: "RST-1", domain: "IT", text: "keep me", user: "alice" }) });
+  assert.equal(await post("http://127.0.0.1:9700/v1/reset"), 403);            // anon refused
+  assert.equal(await post("http://127.0.0.1:9700/v1/reset?user=guest"), 403); // guest refused
+  assert.equal(await fetch("http://127.0.0.1:9700/v1/documents/RST-1").then((r) => r.status), 200); // evidence survived
+  assert.equal(await post("http://127.0.0.1:9700/v1/reset?user=alice"), 200); // admin ok
+});
+
+test("follow-up reads recheck access; sessions are caller-bound", async () => {
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
+  const first = await ask({ input: "how many vacation days", user: "carol" });
+  assert.deepEqual(first.citations, ["HR-PTO"]);
+  const sid = first.session_id;
+  // Admin turns HR-PTO confidential after Carol's turn.
+  await fetch("http://127.0.0.1:9700/v1/documents/HR-PTO", { method: "PUT", headers: { "content-type": "application/json" }, body: JSON.stringify({ confidential: true, user: "alice" }) });
+  // Guest reuses Carol's session id — must NOT inherit her remembered doc, and gets a fresh session.
+  const guest = await ask({ input: "what about zzzqxx", user: "guest", session_id: sid });
+  assert.doesNotMatch(guest.output, /20 vacation days/);
+  assert.notEqual(guest.session_id, sid);
+  // Carol's own follow-up no longer surfaces the now-confidential doc.
+  const carol = await ask({ input: "what about rollover", user: "carol", session_id: sid });
+  assert.doesNotMatch(carol.output, /20 vacation days/);
+});
+
+test("audit pagination coerces a fractional limit instead of 500ing", async () => {
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
+  await ask({ input: "how many vacation days" });
+  await ask({ input: "what is the ceo compensation" });
+  const r = await fetch("http://127.0.0.1:9700/v1/audit?user=alice&limit=1.5");
+  assert.equal(r.status, 200);
+  const j = await r.json();
+  assert.ok(j.recent.length <= 1); // floored to 1
+  assert.equal(j.limit, 1);
+});
+
+test("two live Vault instances stay coherent via refresh (shared SQLite)", async () => {
+  const { openVault } = await import("../src/vault.mjs");
+  const os = await import("node:os");
+  const path = await import("node:path");
+  const fs = await import("node:fs");
+  const dbPath = path.join(os.tmpdir(), `kv-coherence-${process.pid}.db`);
+  try { fs.unlinkSync(dbPath); } catch {}
+  const a = openVault({ dbPath });
+  const b = openVault({ dbPath });
+  try {
+    a.upsertDoc({ id: "COH-1", domain: "IT", text: "coherence probe", topic: "probe" });
+    assert.equal(b.hasDoc("COH-1"), false); // b's hot index is stale before refresh
+    b.refresh();
+    assert.equal(b.hasDoc("COH-1"), true);  // b sees the write after refresh
+    a.deleteDoc("COH-1");
+    b.refresh();
+    assert.equal(b.hasDoc("COH-1"), false); // deletes propagate too
+  } finally {
+    a.db.close();
+    b.db.close();
+    try { fs.unlinkSync(dbPath); } catch {}
+  }
+});
+
 test("RBAC blocks privilege escalation on DB writes", async () => {
-  await fetch("http://127.0.0.1:9700/v1/reset", { method: "POST" });
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
   const base = "http://127.0.0.1:9700/v1/documents";
   const status = (u, o) => fetch(u, o).then((r) => r.status);
   // guest and member may NOT delete

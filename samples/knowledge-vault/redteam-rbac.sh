@@ -25,7 +25,7 @@ attack "member carol creates an admin user"      POST   "/v1/users?caller=carol"
 attack "anonymous (no user) creates a document"  POST   "/v1/documents"           '{"id":"X","domain":"IT","text":"y"}'
 attack "guest poisons retrieval (add synonym)"   POST   "/v1/synonyms?user=guest" '{"term":"z","canonical":"vacation"}'
 echo
-echo "Effect — was confidential HR-COMP actually deleted? (200 present · 404 gone)"
+echo "Effect — was confidential HR-COMP actually deleted? (404 gone · 403 still present, read-protected)"
 printf "  good: %s   twin: %s\n" "$(fire GET http://127.0.0.1:9600/v1/documents/HR-COMP)" "$(fire GET http://127.0.0.1:9603/v1/documents/HR-COMP)"
 echo
 echo "For the real thing:  rook explore .  ·  rook generate --class adversarial  ·  rook run"

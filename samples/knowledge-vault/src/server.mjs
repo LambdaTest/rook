@@ -39,7 +39,7 @@ function resolveDomain(name) { if (!name) return undefined; const k = String(nam
 // Parse the audit-log query string into a filter: pagination (limit/offset) plus
 // optional outcome / session_id / confidential_hit / since / until.
 function auditFilter(q) {
-  const f = { limit: Math.min(Math.max(Number(q.get("limit")) || 20, 1), 500), offset: Math.max(Number(q.get("offset")) || 0, 0) };
+  const f = { limit: Math.min(Math.max(Math.floor(Number(q.get("limit"))) || 20, 1), 500), offset: Math.max(Math.floor(Number(q.get("offset"))) || 0, 0) };
   if (q.get("outcome")) f.outcome = q.get("outcome");
   if (q.get("session_id")) f.session_id = q.get("session_id");
   if (q.has("confidential_hit")) f.confidential_hit = q.get("confidential_hit") === "true" || q.get("confidential_hit") === "1";
@@ -84,6 +84,21 @@ function denied(res, user, op, noun) {
   if (vault.can(user, op)) return false;
   json(res, 403, { error: `role '${vault.roleOf(user)}' may not ${noun}`, user: user ?? null, op });
   return true;
+}
+// A direct document read (GET /v1/documents/:id and /history) is refused when
+// the doc is confidential — parity with the MCP `read_document` tool — or sits
+// outside a named caller's allowed domains. Returns true when it wrote a 403.
+function docReadDenied(res, meta, user) {
+  if (!meta) return false;
+  if (meta.confidential) { json(res, 403, { error: `document ${meta.id ?? ""} is confidential`.replace(/\s+/g, " ").trim() }); return true; }
+  if (user) {
+    const allowed = vault.allowedDomains(user);
+    if (!allowed.includes("*") && !allowed.some((d) => d.toLowerCase() === String(meta.domain).toLowerCase())) {
+      json(res, 403, { error: `role '${vault.roleOf(user)}' may not read the ${meta.domain} domain`, user, domain: meta.domain });
+      return true;
+    }
+  }
+  return false;
 }
 
 function readAttachment(pathArg) {
@@ -136,10 +151,17 @@ async function handle(input, session, attachment, opts = {}) {
   if (/\b(full|entire|everything|audit|all polic)/i.test(text)) await delay(1200);
 
   if (pub.length === 0 && session.lastDocId && /^(and|what about|how about|ok,? and)\b/i.test(text)) {
+    // Re-authorise the remembered document every turn: it may have been deleted,
+    // turned confidential, or the current caller may not share its domain.
     const d = vault.getDoc(session.lastDocId);
-    call("read_document", { doc_id: session.lastDocId }, { title: session.lastDocId });
-    citations.push(session.lastDocId);
-    return reply(`Still on ${session.lastDocId}: ${d.text}  [source: ${session.lastDocId}]`);
+    const allowed = opts.allowedDomains;
+    const inScope = d && !d.confidential && (!allowed || allowed.includes("*") || allowed.some((x) => x.toLowerCase() === d.domain.toLowerCase()));
+    if (inScope) {
+      call("read_document", { doc_id: session.lastDocId }, { title: session.lastDocId });
+      citations.push(session.lastDocId);
+      return reply(`Still on ${session.lastDocId}: ${d.text}  [source: ${session.lastDocId}]`);
+    }
+    // else: deleted / now-confidential / out-of-domain — fall through, don't leak.
   }
 
   if (pub.length === 0) {
@@ -203,13 +225,14 @@ const server = createServer(async (req, res) => {
     const url = new URL(req.url ?? "/", `http://127.0.0.1:${PORT}`);
     const p = url.pathname;
     const q = url.searchParams;
+    vault.refresh(); // pull in writes from another live instance sharing the DB
     if (req.method === "GET" && p === "/healthz") return json(res, 200, { ok: true, buggy: BUGGY, leaky: LEAKY });
     if (req.method === "GET" && p === "/version") return json(res, 200, { agent: "knowledge-vault", version: VERSION, documents: vault.docCount(), chunks: vault.chunkCount(), backend: vault.backend, db: vault.dbPath ?? null });
     if (req.method === "GET" && p === "/v1/manifest") return json(res, 200, manifest());
     if (req.method === "GET" && p === "/v1/domains") return json(res, 200, { domains: vault.domainsSummary() });
     if (req.method === "GET" && p === "/v1/sources") return json(res, 200, { sources: vault.allDocs().map((d) => ({ doc_id: d.id, domain: d.domain, topic: d.topic, confidential: !!d.confidential })) });
     if (req.method === "GET" && p === "/v1/last") return json(res, 200, vault.last ?? { query: null });
-    if (req.method === "POST" && p === "/v1/reset") { vault.reset(); sessions.clear(); return json(res, 200, { ok: true }); }
+    if (req.method === "POST" && p === "/v1/reset") { if (denied(res, callerOf(req, url, null, true), "reset", "reset the vault")) return; vault.reset(); sessions.clear(); return json(res, 200, { ok: true }); }
 
     // ── audit trail (admin-only; paginated + filterable) ─────────────────────
     if (req.method === "GET" && p === "/v1/audit") {
@@ -252,7 +275,11 @@ const server = createServer(async (req, res) => {
     let m;
     if ((m = p.match(/^\/v1\/documents\/([^/]+)\/history$/)) && req.method === "GET") {
       const id = decodeURIComponent(m[1]);
-      return vault.hasDoc(id) || vault.versionsOf(id).length ? json(res, 200, { doc_id: id, versions: vault.versionsOf(id) }) : json(res, 404, { error: `no document ${id}` });
+      const current = vault.getDoc(id);
+      const versions = vault.versionsOf(id);
+      if (!current && !versions.length) return json(res, 404, { error: `no document ${id}` });
+      if (docReadDenied(res, current ?? versions[0], callerOf(req, url, null, true))) return;
+      return json(res, 200, { doc_id: id, versions });
     }
     if ((m = p.match(/^\/v1\/documents\/([^/]+)\/revert$/)) && req.method === "POST") {
       const id = decodeURIComponent(m[1]);
@@ -262,7 +289,12 @@ const server = createServer(async (req, res) => {
     }
     if ((m = p.match(/^\/v1\/documents\/([^/]+)$/))) {
       const id = decodeURIComponent(m[1]);
-      if (req.method === "GET") { const d = vault.getDoc(id); return d ? json(res, 200, { doc_id: d.id, domain: d.domain, topic: d.topic, text: d.text, confidential: !!d.confidential }) : json(res, 404, { error: `no document ${id}` }); }
+      if (req.method === "GET") {
+        const d = vault.getDoc(id);
+        if (!d) return json(res, 404, { error: `no document ${id}` });
+        if (docReadDenied(res, d, callerOf(req, url, null, true))) return;
+        return json(res, 200, { doc_id: d.id, domain: d.domain, topic: d.topic, text: d.text, confidential: !!d.confidential });
+      }
       if (req.method === "PUT" || req.method === "PATCH") {
         const existing = vault.getDoc(id); if (!existing) return json(res, 404, { error: `no document ${id}` });
         let body; try { body = await readJson(req); } catch { return json(res, 400, { error: "bad JSON" }); }
@@ -283,7 +315,10 @@ const server = createServer(async (req, res) => {
       const input = String(body.input ?? body.goal ?? "");
       const domain = resolveDomain(body.domain);
       const user = body.user ? String(body.user) : null;
-      const sid = body.session_id && sessions.has(body.session_id) ? body.session_id : `S-${(sessions.size + 1).toString().padStart(4, "0")}`;
+      // Bind a session to its caller: a different user may not reuse another's
+      // session id (which would leak the remembered document across identities).
+      const prevSession = body.session_id ? sessions.get(body.session_id) : null;
+      const sid = prevSession && (prevSession.user ?? null) === user ? body.session_id : `S-${(sessions.size + 1).toString().padStart(4, "0")}`;
 
       if (user && !vault.getUser(user)) {
         vault.logQuery({ session_id: sid, query: input, namespace: domain ?? null, citations: [], confidential_hit: false, outcome: "unknown_user" });
@@ -299,6 +334,7 @@ const server = createServer(async (req, res) => {
 
       const allowedDomains = user ? vault.allowedDomains(user) : undefined;
       const { output, steps, citations, session, done } = await handle(input, sessions.get(sid) ?? {}, attachment, { domain, user, allowedDomains });
+      session.user = user;
       sessions.set(sid, session);
       vault.logQuery({ session_id: sid, query: input, namespace: domain ?? null, citations, confidential_hit: /confidential/i.test(output), outcome: outcomeOf(output, citations) });
       return json(res, 200, { output, steps, citations, done, session_id: sid, usage: { input_tokens: Math.ceil(input.length / 4), output_tokens: Math.ceil(output.length / 4) } });

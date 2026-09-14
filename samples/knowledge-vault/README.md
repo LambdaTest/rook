@@ -128,7 +128,11 @@ Each one adds a Rook-testable behaviour:
 
 - **CRUD (documents).** Create / edit / delete persist and update the vector
   index — a created doc is instantly searchable, a deleted one is instantly a 404.
-  Also over MCP (`add_document` / `update_document` / `delete_document`).
+  Also over MCP (`add_document` / `update_document` / `delete_document`). Direct
+  reads (`GET /v1/documents/:id` and `/history`) enforce the same guard as the
+  ask path and the MCP `read_document` tool: a **confidential** document is
+  refused, and a named caller outside its domain is refused — the two transports
+  never disagree on what may be read.
 - **Audit (effect verification).** Every `/v1/ask` is logged with its citations
   and outcome (`answered` / `not_found` / `refused_confidential` / `access_denied`).
   A judge can confirm the agent recorded what it actually did — Rook's founding
@@ -150,8 +154,10 @@ Each one adds a Rook-testable behaviour:
 
 `/v1/manifest` advertises all the write tools (`write: true`), so Rook's write-tool
 disclosure and per-target-grant story applies. `POST /v1/reset` re-seeds the
-corpus (and clears the audit/version history). **Writes are real and persistent** —
-point Rook at a throwaway `VAULT_DB=:memory:` when testing destructive ops.
+corpus (and clears the audit/version history); it is **admin-only** (it erases
+evidence, so it's gated like the other destructive ops — `scripts/reset.mjs`
+authenticates as the seeded admin). **Writes are real and persistent** — point
+Rook at a throwaway `VAULT_DB=:memory:` when testing destructive ops.
 
 ## RBAC & red-teaming the database
 
@@ -169,6 +175,7 @@ generation. Writes require an authorised caller (the `x-user` header, or
 | grant / revoke access | ● | ✗ | ✗ | ✗ |
 | manage users | ● | ✗ | ✗ | ✗ |
 | add synonym | ● | ● | ✗ | ✗ |
+| reset / re-seed | ● | ✗ | ✗ | ✗ |
 
 A violation returns **403** naming the role. The good build refuses every
 escalation; the **`KV_RBAC_OFF=1` twin** skips the checks and caves.

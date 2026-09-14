@@ -103,8 +103,10 @@ export class VaultDb {
   }
   queryAudit(f = {}) {
     const { where, params } = this.#auditWhere(f);
-    const limit = Math.min(Math.max(Number(f.limit) || 20, 1), 500);
-    const offset = Math.max(Number(f.offset) || 0, 0);
+    // Floor to integers — SQLite's LIMIT/OFFSET reject a non-integer bind, so a
+    // fractional ?limit=1.5 would otherwise throw a 500.
+    const limit = Math.min(Math.max(Math.floor(Number(f.limit)) || 20, 1), 500);
+    const offset = Math.max(Math.floor(Number(f.offset)) || 0, 0);
     return this.db.prepare(`SELECT * FROM audit_log${where} ORDER BY id DESC LIMIT ? OFFSET ?`).all(...params, limit, offset).map((r) => this.#auditRow(r));
   }
   auditCount(f = {}) { const { where, params } = this.#auditWhere(f); return where ? this.db.prepare(`SELECT COUNT(*) AS n FROM audit_log${where}`).get(...params).n : this._countAudit.get().n; }
@@ -128,6 +130,10 @@ export class VaultDb {
   seedSynonyms(entries) { for (const e of entries) this._setSyn.run(e.term, e.canonical); }
   addSynonym(term, canonical) { this._setSyn.run(term, canonical); }
   allSynonyms() { return this._allSyn.all().map((r) => ({ term: r.term, canonical: r.canonical })); }
+
+  // PRAGMA data_version increments when *another* connection commits to this
+  // file — lets a second live instance detect writes and refresh its hot index.
+  dataVersion() { return this.db.prepare("PRAGMA data_version").get().data_version; }
 
   close() { this.db.close(); }
 }
