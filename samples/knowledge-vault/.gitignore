@@ -1,0 +1,2 @@
+# The local SQLite database is generated at runtime (seeded from corpus.mjs).
+data/
