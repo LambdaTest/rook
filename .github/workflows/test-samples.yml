@@ -1,0 +1,29 @@
+name: test-samples
+
+# The sample agents under samples/ are published, runnable code. Their tests
+# only stay honest if something runs them on every change; before this they
+# ran when a human remembered to. The triage-service suite starts the sample
+# as a disposable child process and checks socket binding, aborted uploads,
+# body limits and read timeouts, so it needs nothing beyond Node itself.
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  triage-service:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22"
+      # `node --test` discovers every test/*.test.mjs file, so a new test file
+      # joins without editing package.json or this workflow.
+      - run: npm test
+        working-directory: samples/triage-service
