@@ -109,7 +109,13 @@ Retrieval is the real RAG architecture, not a keyword lookup:
   model (`/explore` reads `.mcp.json`, connects, calls `tools/list`), and a judge
   can `mcp_call` `search`/`read_document` to **verify an answer was grounded** —
   grey-box, using the agent's own tools. `rook/profile-mcp.yaml` is the
-  `kind: mcp` transport option.
+  `kind: mcp` transport option. By default `.mcp.json` launches a thin
+  **recording proxy** ([`mcp/recording-proxy.mjs`](./mcp/recording-proxy.mjs)) in
+  front of the server: it forwards every message untouched but appends each
+  `tools/call` to `data/tool-trace.jsonl` first — an out-of-process record that a
+  tool really ran (for Rook's `CALL-*` / `mcp_probe` checks), independent of the
+  agent's self-reported `steps`. Point `.mcp.json` back at `mcp/vault-server.mjs`
+  to skip it.
 
 ## The database — six tables
 

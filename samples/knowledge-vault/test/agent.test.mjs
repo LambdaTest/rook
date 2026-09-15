@@ -374,3 +374,32 @@ test("MCP server: lists tools, searches, and refuses a confidential doc", async 
     p.kill();
   }
 });
+
+test("MCP recording proxy forwards calls unchanged and records them out-of-process", async () => {
+  const os = await import("node:os");
+  const path = await import("node:path");
+  const fs = await import("node:fs");
+  const trace = path.join(os.tmpdir(), `kv-tool-trace-${process.pid}.jsonl`);
+  try { fs.unlinkSync(trace); } catch {}
+  const p = spawn("node", ["mcp/recording-proxy.mjs"], { cwd: AGENT, env: { ...process.env, VAULT_DB: ":memory:", KV_TOOL_TRACE: trace } });
+  const responses = new Map();
+  let buf = "";
+  p.stdout.on("data", (d) => { buf += d; const lines = buf.split("\n"); buf = lines.pop() ?? ""; for (const l of lines) if (l.trim()) { const m = JSON.parse(l); responses.set(m.id, m); } });
+  const send = (m) => p.stdin.write(JSON.stringify(m) + "\n");
+  try {
+    send({ jsonrpc: "2.0", id: 1, method: "tools/list" });
+    send({ jsonrpc: "2.0", id: 2, method: "tools/call", params: { name: "search", arguments: { query: "first-line hypertension treatment" } } });
+    for (let i = 0; i < 100 && responses.size < 2; i++) await new Promise((r) => setTimeout(r, 20));
+    // Forwarded verbatim — discovery and a real search result reach the client through the proxy.
+    assert.ok(responses.get(1).result.tools.some((t) => t.name === "search"));
+    assert.equal(JSON.parse(responses.get(2).result.content[0].text)[0].doc_id, "MED-HTN");
+    // Out-of-process evidence — the tools/call was recorded on the wire (tools/list is not a call).
+    const rows = fs.readFileSync(trace, "utf8").trim().split("\n").filter(Boolean).map((l) => JSON.parse(l));
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].tool, "search");
+    assert.match(rows[0].arguments.query, /hypertension/);
+  } finally {
+    p.kill();
+    try { fs.unlinkSync(trace); } catch {}
+  }
+});

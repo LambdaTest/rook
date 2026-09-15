@@ -127,6 +127,12 @@ The same `.mcp.json` lets Rook **discover** all of them without a model
 `read_audit` (with an admin `user` argument) to verify the recorded outcome
 (`mcp_call`) — all independent of the transport under test.
 
+`.mcp.json` launches these through a thin **recording proxy**
+([`mcp/recording-proxy.mjs`](./mcp/recording-proxy.mjs)) that forwards every
+message untouched but logs each `tools/call` to `data/tool-trace.jsonl` first —
+wire-level evidence a tool actually ran, independent of the agent's self-reported
+`steps`.
+
 > **Note:** MCP invocation in `/run` is newer than the HTTP path. Verify it runs
 > end-to-end in your build before relying on it for a full suite; discovery and
 > judge-verification are the always-available parts.
