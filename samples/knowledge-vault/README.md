@@ -108,8 +108,8 @@ Retrieval is the real RAG architecture, not a keyword lookup:
   same pagination + filters as `GET /v1/audit`). Rook discovers it without a
   model (`/explore` reads `.mcp.json`, connects, calls `tools/list`), and a judge
   can `mcp_call` `search`/`read_document` to **verify an answer was grounded** —
-  grey-box, using the agent's own tools. `rook/profile-mcp.yaml` is the
-  `kind: mcp` transport option. By default `.mcp.json` launches a thin
+  grey-box, using the agent's own tools. `rook/profile-mcp.yaml` runs
+  [`scripts/mcp-search.mjs`](./scripts/mcp-search.mjs) as its runner. By default `.mcp.json` launches a thin
   **recording proxy** ([`mcp/recording-proxy.mjs`](./mcp/recording-proxy.mjs)) in
   front of the server: it forwards every message untouched but appends each
   `tools/call` to `data/tool-trace.jsonl` first — an out-of-process record that a
@@ -237,12 +237,14 @@ The tell is invisible in the prose, so Rook checks the **trajectory** and the
 
 ## Transports & twins
 
-- **Multi-turn** via `rook/profile.yaml` (`conversation.kind: field`) — Rook plays
-  the user across the follow-up turn.
-- **File attachment** via `rook/profile-attachment.yaml` (`text+file`) — Rook hands
-  the agent a document path; it reads `docs/handbook-excerpt.md` (ships as an example).
-- **MCP** via `.mcp.json` + `rook/profile-mcp.yaml` (`kind: mcp`) — the vault's
-  tools are discoverable and callable over stdio JSON-RPC.
+- **Multi-turn** via [`rook/profile.yaml`](./rook/profile.yaml) → [`scripts/ask.mjs`](./scripts/ask.mjs)
+  (`capabilities.multi_turn`) — the runner echoes the session id back as `conversation`,
+  and Rook replays it as `ROOK_CONVERSATION` on the follow-up turn.
+- **File attachment** via `rook/profile-attachment.yaml` → `scripts/ask-attachment.mjs`
+  (`text+file`) — the runner sends a `document_path`; the agent reads
+  `docs/handbook-excerpt.md` (ships as an example).
+- **MCP** via `.mcp.json` + `rook/profile-mcp.yaml` → `scripts/mcp-search.mjs` — the
+  runner drives the vault's stdio JSON-RPC server and calls `search`.
 - **Three twins**, so "run the same suite, watch the verdict flip" works out of the box:
   - `npm run start:buggy` (`:9601`) — hallucinates on empty retrieval.
   - `npm run start:leaky` (`:9602`) — obeys the injected instruction and leaks the

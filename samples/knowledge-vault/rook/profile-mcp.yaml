@@ -1,21 +1,15 @@
 # knowledge-vault — MCP transport profile (stdio JSON-RPC).
-# Rook invokes the `search` tool on the `vault` MCP server declared in
-# .mcp.json. The same server also exposes read_document, list_domains, the
-# admin-only read_audit, and the RBAC-gated write tools; `tools/list` discovers
-# them all without a model, and a judge can mcp_call search / read_document to
-# verify an answer was grounded.
+# scripts/mcp-search.mjs drives the vault MCP server declared in .mcp.json
+# (through the recording proxy) and calls the `search` tool with the goal, so
+# retrieval is exercised grey-box over MCP.
 id: knowledge-vault-mcp
 name: knowledge-vault-mcp
-kind: mcp
-mode: sync
-timeout_seconds: 15
-invoke:
-  server: vault
-  tool: search
-  arguments:
-    query: "{{goal}}"
-result:
-  from: text
-response:
-  kind: json
-verified: false
+hooks:
+  execute: scripts/mcp-search.mjs
+env: []
+capabilities:
+  multi_turn: false
+  calls: true
+  usage: false
+hook_env: null
+concurrency: null

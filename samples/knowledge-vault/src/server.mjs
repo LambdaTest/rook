@@ -70,6 +70,14 @@ function outcomeOf(output, citations) {
   if (/which policy/i.test(output)) return "clarify";
   return "refused";
 }
+// A document retrieved before an awaited step (the latency delay) may have been
+// edited, deleted, or turned confidential under us — recheck before composing an
+// answer from it, so a slow turn can't serve content that is now protected.
+function stillReadable(doc, allowedDomains) {
+  if (!doc || doc.confidential) return false;
+  if (allowedDomains && !allowedDomains.includes("*") && !allowedDomains.some((d) => d.toLowerCase() === String(doc.domain).toLowerCase())) return false;
+  return true;
+}
 
 // The caller's identity for a write: the `x-user` header (or body.user / ?user=
 // for non-privileged ops). Anonymous (null) has read-only rights.
@@ -88,17 +96,20 @@ function denied(res, user, op, noun) {
 // A direct document read (GET /v1/documents/:id and /history) is refused when
 // the doc is confidential — parity with the MCP `read_document` tool — or sits
 // outside a named caller's allowed domains. Returns true when it wrote a 403.
-function docReadDenied(res, meta, user) {
-  if (!meta) return false;
-  if (meta.confidential) { json(res, 403, { error: `document ${meta.id ?? ""} is confidential`.replace(/\s+/g, " ").trim() }); return true; }
+function docReadAllowed(meta, user) {
+  if (!meta) return true;
+  if (meta.confidential) return false;
   if (user) {
     const allowed = vault.allowedDomains(user);
-    if (!allowed.includes("*") && !allowed.some((d) => d.toLowerCase() === String(meta.domain).toLowerCase())) {
-      json(res, 403, { error: `role '${vault.roleOf(user)}' may not read the ${meta.domain} domain`, user, domain: meta.domain });
-      return true;
-    }
+    if (!allowed.includes("*") && !allowed.some((d) => d.toLowerCase() === String(meta.domain).toLowerCase())) return false;
   }
-  return false;
+  return true;
+}
+function docReadDenied(res, meta, user) {
+  if (docReadAllowed(meta, user)) return false;
+  if (meta.confidential) { json(res, 403, { error: `document ${meta.id ?? ""} is confidential`.replace(/\s+/g, " ").trim() }); return true; }
+  json(res, 403, { error: `role '${vault.roleOf(user)}' may not read the ${meta.domain} domain`, user, domain: meta.domain });
+  return true;
 }
 
 function readAttachment(pathArg) {
@@ -178,16 +189,27 @@ async function handle(input, session, attachment, opts = {}) {
 
   const sameTopic = pub.filter((h) => h.topic === pub[0].topic);
   if (sameTopic.length > 1) {
-    const current = sameTopic.find((h) => !vault.getDoc(h.doc_id).superseded) ?? sameTopic[0];
+    const current = sameTopic.find((h) => !vault.getDoc(h.doc_id)?.superseded) ?? sameTopic[0];
     const older = sameTopic.find((h) => h.doc_id !== current.doc_id);
-    call("read_document", { doc_id: current.doc_id }, { title: current.doc_id });
-    call("read_document", { doc_id: older.doc_id }, { title: older.doc_id });
-    citations.push(current.doc_id, older.doc_id);
-    session.lastDocId = current.doc_id;
-    return reply(`There are two versions. The current one (${current.doc_id}): ${vault.getDoc(current.doc_id).text} An older, superseded one (${older.doc_id}): ${vault.getDoc(older.doc_id).text}  [sources: ${current.doc_id}, ${older.doc_id}]`);
+    const cdoc = vault.getDoc(current.doc_id), odoc = older ? vault.getDoc(older.doc_id) : null;
+    if (stillReadable(cdoc, opts.allowedDomains) && odoc && stillReadable(odoc, opts.allowedDomains)) {
+      call("read_document", { doc_id: current.doc_id }, { title: current.doc_id });
+      call("read_document", { doc_id: older.doc_id }, { title: older.doc_id });
+      citations.push(current.doc_id, older.doc_id);
+      session.lastDocId = current.doc_id;
+      return reply(`There are two versions. The current one (${current.doc_id}): ${cdoc.text} An older, superseded one (${older.doc_id}): ${odoc.text}  [sources: ${current.doc_id}, ${older.doc_id}]`);
+    }
+    // a version changed under us during the turn — fall through to single-doc handling.
   }
 
   const top = vault.getDoc(pub[0].doc_id);
+  if (!stillReadable(top, opts.allowedDomains)) {
+    // the chosen document changed after retrieval (e.g. turned confidential during
+    // the latency delay) — fail closed rather than serve now-protected content.
+    if (top && top.confidential) return reply(`That's best answered by a confidential document I'm not able to share.`);
+    const where = ns ? ` in the ${ns} namespace` : "";
+    return reply(`I couldn't find anything about that in the vault${where}. I won't guess at an answer.`);
+  }
   call("read_document", { doc_id: pub[0].doc_id }, { title: pub[0].doc_id, injected: !!top.injected });
   citations.push(pub[0].doc_id);
   session.lastDocId = pub[0].doc_id;
@@ -275,11 +297,15 @@ const server = createServer(async (req, res) => {
     let m;
     if ((m = p.match(/^\/v1\/documents\/([^/]+)\/history$/)) && req.method === "GET") {
       const id = decodeURIComponent(m[1]);
+      const user = callerOf(req, url, null, true);
       const current = vault.getDoc(id);
       const versions = vault.versionsOf(id);
       if (!current && !versions.length) return json(res, 404, { error: `no document ${id}` });
-      if (docReadDenied(res, current ?? versions[0], callerOf(req, url, null, true))) return;
-      return json(res, 200, { doc_id: id, versions });
+      // A confidential / out-of-domain *live* doc refuses the whole history…
+      if (current && docReadDenied(res, current, user)) return;
+      // …and every returned snapshot is authorised on its own — a version that
+      // was confidential or in another domain in the past must not leak now.
+      return json(res, 200, { doc_id: id, versions: versions.filter((v) => docReadAllowed(v, user)) });
     }
     if ((m = p.match(/^\/v1\/documents\/([^/]+)\/revert$/)) && req.method === "POST") {
       const id = decodeURIComponent(m[1]);
@@ -315,15 +341,20 @@ const server = createServer(async (req, res) => {
       const input = String(body.input ?? body.goal ?? "");
       const domain = resolveDomain(body.domain);
       const user = body.user ? String(body.user) : null;
-      // Bind a session to its caller: a different user may not reuse another's
-      // session id (which would leak the remembered document across identities).
+      // Bind a session to its caller (a different user may not reuse another's
+      // id) and reserve it *synchronously*, before the awaited handler — so two
+      // concurrent new conversations can't both be handed the same S-000N id.
       const prevSession = body.session_id ? sessions.get(body.session_id) : null;
-      const sid = prevSession && (prevSession.user ?? null) === user ? body.session_id : `S-${(sessions.size + 1).toString().padStart(4, "0")}`;
+      const reuse = !!prevSession && (prevSession.user ?? null) === user;
+      const sid = reuse ? body.session_id : `S-${(sessions.size + 1).toString().padStart(4, "0")}`;
 
       if (user && !vault.getUser(user)) {
         vault.logQuery({ session_id: sid, query: input, namespace: domain ?? null, citations: [], confidential_hit: false, outcome: "unknown_user" });
         return json(res, 200, { output: `I don't recognise the user "${user}", so I can't answer.`, steps: [], citations: [], done: true, session_id: sid, usage: { input_tokens: 0, output_tokens: 0 } });
       }
+      const session = reuse ? prevSession : {};
+      session.user = user;
+      sessions.set(sid, session); // reserve now, before any await
 
       let attachment = null;
       if (typeof body.document === "string") attachment = { source: "inline", text: body.document };
@@ -333,9 +364,7 @@ const server = createServer(async (req, res) => {
       }
 
       const allowedDomains = user ? vault.allowedDomains(user) : undefined;
-      const { output, steps, citations, session, done } = await handle(input, sessions.get(sid) ?? {}, attachment, { domain, user, allowedDomains });
-      session.user = user;
-      sessions.set(sid, session);
+      const { output, steps, citations, done } = await handle(input, session, attachment, { domain, user, allowedDomains });
       vault.logQuery({ session_id: sid, query: input, namespace: domain ?? null, citations, confidential_hit: /confidential/i.test(output), outcome: outcomeOf(output, citations) });
       return json(res, 200, { output, steps, citations, done, session_id: sid, usage: { input_tokens: Math.ceil(input.length / 4), output_tokens: Math.ceil(output.length / 4) } });
     }

@@ -304,6 +304,43 @@ test("two live Vault instances stay coherent via refresh (shared SQLite)", async
   }
 });
 
+test("document history authorizes every snapshot, not just the live doc", async () => {
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
+  const base = "http://127.0.0.1:9700/v1/documents";
+  const put = (id, b) => fetch(`${base}/${id}`, { method: "PUT", headers: { "content-type": "application/json" }, body: JSON.stringify(b) });
+  const create = (b) => fetch(base, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(b) });
+  // (a) confidential doc later redacted to public: the old confidential snapshot must not leak.
+  await create({ id: "HX-1", domain: "IT", text: "TOP SECRET original", confidential: true, user: "alice" });
+  await put("HX-1", { text: "public redaction", confidential: false, user: "alice" });
+  const h1 = await fetch(`${base}/HX-1/history`).then((r) => r.json());
+  assert.equal((h1.versions ?? []).some((v) => /TOP SECRET/.test(v.text)), false);
+  // (b) Banking doc moved to Personal: Guest (Personal only) must not read the Banking snapshot.
+  await create({ id: "HX-2", domain: "Banking", text: "banking secret figures", user: "alice" });
+  await put("HX-2", { domain: "Personal", user: "alice" });
+  const h2 = await fetch(`${base}/HX-2/history?user=guest`).then((r) => r.json());
+  assert.equal((h2.versions ?? []).some((v) => /banking secret/.test(v.text)), false);
+});
+
+test("a document turned confidential mid-answer is not served (post-yield recheck)", async () => {
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
+  // "full …" triggers the ~1.2s latency delay AFTER retrieval; mutate HR-PTO during it.
+  const slow = ask({ input: "full vacation days policy", user: "carol" });
+  await new Promise((r) => setTimeout(r, 300));
+  await fetch("http://127.0.0.1:9700/v1/documents/HR-PTO", { method: "PUT", headers: { "content-type": "application/json" }, body: JSON.stringify({ text: "SECRET revised comp", confidential: true, user: "alice" }) });
+  const r = await slow;
+  assert.doesNotMatch(r.output, /SECRET revised comp/); // new confidential text not leaked
+  assert.doesNotMatch(r.output, /20 vacation days/);      // stale text not served either
+  assert.ok(!r.citations.includes("HR-PTO") || /confidential/i.test(r.output));
+});
+
+test("concurrent new conversations get distinct session ids", async () => {
+  await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
+  const slow = ask({ input: "full remote work policy audit", user: "carol" }); // delayed
+  const fast = ask({ input: "how do I make the ragu recipe", user: "carol" }); // fast
+  const [s, f] = await Promise.all([slow, fast]);
+  assert.notEqual(s.session_id, f.session_id);
+});
+
 test("RBAC blocks privilege escalation on DB writes", async () => {
   await fetch("http://127.0.0.1:9700/v1/reset?user=alice", { method: "POST" });
   const base = "http://127.0.0.1:9700/v1/documents";
