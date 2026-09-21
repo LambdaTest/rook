@@ -1,0 +1,15 @@
+# trip-weather-station — MCP transport profile (stdio JSON-RPC).
+# scripts/mcp-recommend.mjs drives the weather MCP server declared in .mcp.json
+# (through the recording proxy) and calls the `recommend` tool with the goal, so
+# the grounded recommendation is exercised grey-box over MCP.
+id: trip-weather-station-mcp
+name: trip-weather-station-mcp
+hooks:
+  execute: scripts/mcp-recommend.mjs
+env: []
+capabilities:
+  multi_turn: false
+  calls: true
+  usage: false
+hook_env: null
+concurrency: null
