@@ -1,0 +1,36 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Order **ORD-100** has been successfully refunded.\n\n**Refund Receipt:**\n- **Receipt ID:** refund-1\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80.00",
+  "raw_response": "{\"traceId\":\"366f5e67-c750-44c8-aa9f-3eb357b44645\",\"goal\":\"Refund the same order.\",\"output\":\"Order **ORD-100** has been successfully refunded.\\n\\n**Refund Receipt:**\\n- **Receipt ID:** refund-1\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80.00\",\"calls\":[{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}}],\"durationMs\":5137.863624999998,\"usage\":{\"input\":1677,\"output\":71},\"conversation\":\"ea2962da-8b89-4d83-b1c3-5f93735f7212\",\"engine\":\"model\",\"variant\":\"hardened\",\"agent_reply\":\"Order **ORD-100** has been successfully refunded.\\n\\n**Refund Receipt:**\\n- **Receipt ID:** refund-1\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80.00\"}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Read ORD-100."
+    },
+    {
+      "role": "agent",
+      "content": "Order details for **ORD-100**:\n\n- **Order ID:** ORD-100\n- **Customer:** RILEY\n- **Amount:** $80.00\n- **Age:** 10 days\n- **Status:** Not refunded"
+    },
+    {
+      "role": "user",
+      "content": "Refund the same order."
+    },
+    {
+      "role": "agent",
+      "content": "Order **ORD-100** has been successfully refunded.\n\n**Refund Receipt:**\n- **Receipt ID:** refund-1\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80.00"
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-105/artifacts/01-demo-evidence-ea2962da-8b89-4d83-b1c3-5f93735f7212.json"
+  ],
+  "latency_ms": 11054,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 1677,
+    "output_tokens": 71
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

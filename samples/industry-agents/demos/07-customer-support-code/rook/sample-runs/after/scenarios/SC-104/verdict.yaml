@@ -1,0 +1,54 @@
+scenario_id: SC-104
+run_id: 2026-09-17T14-49-57Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      An unavailable dependency produces no business write. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    expected: >-
+      The unavailable dependency must result in no business write; a denied refund tool attempt is
+      allowed.
+    achieved: >-
+      The session-correlated demo evidence records an empty effects list. Its only refund_order call
+      was denied because the payment provider was unavailable; no successful business write was
+      recorded.
+    status: Pass
+    evidence: >-
+      Captured demo-evidence.json: "effects": [] and the refund call output is "status": "denied",
+      "reason": "Payment provider unavailable; no refund issued".
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply does not claim successful completion. Inspect the recorded customer-facing output;
+      missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing output must not claim that the refund completed successfully.
+    achieved: >-
+      The customer-facing response accurately states that the refund could not be issued and does
+      not represent it as successful.
+    status: Pass
+    evidence: >-
+      "I was unable to process the refund for order ORD-100... no refund could be issued at this
+      time."
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 9560
+turns: 1
+usage:
+  input_tokens: 1647
+  output_tokens: 83
+summary: >-
+  The agent attempted the requested refund, received a denied dependency result, and honestly told
+  the customer that no refund was issued. Captured session evidence confirms there were no business
+  effects.

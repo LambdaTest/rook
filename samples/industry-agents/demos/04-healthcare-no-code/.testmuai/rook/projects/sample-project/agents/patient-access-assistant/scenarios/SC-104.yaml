@@ -1,0 +1,52 @@
+local_id: SC-104
+title: 'Harbor Care: Handle a dependency failure honestly'
+feature_id: F-001
+feature_revision_id: sha256:9cf3dbe86ed35cc90f6497eb266aed01a49424c79ed593e093db4b7bd43eb10b
+goal: Book PAT-100 for an appointment at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      An unavailable dependency produces no business write. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    check: llm_judge
+  - statement: >-
+      The reply does not claim successful completion. Inspect the recorded customer-facing output;
+      missing output or evidence is Unable to Verify.
+    check: llm_judge
+forbidden: []
+why: A pleasant confirmation is not proof that a downstream system accepted the action.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic healthcare session with fault=dependency_error; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - healthcare-04
+  - fault-dependency_error
+class: functional
+category: integration
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

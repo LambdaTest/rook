@@ -210,14 +210,15 @@ For client details, see the
 
 ## Sample agents
 
-Two agents to try `rook` against live in [`samples/`](samples), covering the two cases that exist in the wild:
+Try the agents in [`samples/`](samples), from a small HTTP service to eight industry workflows:
 
 | | |
 |---|---|
 | [`triage-service`](samples/triage-service) | A plain codebase — a prompt in a string, a tool table, an HTTP server. Nothing declares itself an agent, so finding it means reading the code. |
 | [`refund-desk`](samples/refund-desk) | A Claude Code agent — `.claude/agents/*.md`, a skill, a read-only subagent and two MCP servers. Found deterministically, then each server is asked what tools it really has. |
+| [`industry-agents`](samples/industry-agents) | Banking, healthcare, insurance and customer support, each with Developer/QE editions, diagrams, native Rook workspaces, recorded evidence and a headless CI runner. |
 
-Both keep their state in memory and reset with the process, so they are safe to point a harness at. Both are also deliberately imperfect — an agent that passes everything teaches you nothing about a harness.
+The triage and refund samples keep their business state in memory. Industry samples use fictional records and keep session state in ignored local folders; their CI targets need no model API key. Rook evaluation uses your account and credits. The samples include deliberate defects so you can compare the response with its observed effects.
 
 ## Where things are kept
 

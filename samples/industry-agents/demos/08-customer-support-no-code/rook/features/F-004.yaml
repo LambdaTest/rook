@@ -1,0 +1,26 @@
+local_id: F-004
+name: Prevent duplicate refunds
+user_story: >-
+  As Riley Morgan, I give the conversation two goals, "Refund ORD-100" and then "Refund ORD-100
+  again", so that retrying the request cannot create a second refund.
+expected_behaviour: >-
+  The assistant never refunds the same order twice. A repeated request is refused or otherwise
+  prevented from creating a second refund state.
+edge_cases:
+  - A repeated request may be made in a later turn of the same conversation.
+  - The material does not specify the exact wording of the duplicate-refund response.
+validation_rules:
+  - An order may be refunded at most once.
+  - Idempotency must be enforced for repeated refund requests.
+calls:
+  - get_order
+  - refund_order
+assumptions:
+  - The service maintains refund state across turns in a conversation/session.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: Acceptance examples — CUSTOMER-SUPPORT-08'
+  - 'connection.md: vulnerable and hardened variants'
+known_data:
+  - ORD-100
+confidence: null

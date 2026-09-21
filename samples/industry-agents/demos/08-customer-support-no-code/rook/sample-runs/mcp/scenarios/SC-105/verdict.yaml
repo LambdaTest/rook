@@ -1,0 +1,34 @@
+scenario_id: SC-105
+run_id: 2026-09-17T14-51-19Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The reply uses the entity from the preceding turn. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: The second-turn reply uses the order entity established in the preceding turn.
+    achieved: >-
+      In the second-turn customer-facing reply, the assistant identifies ORD-100 without the
+      customer repeating the reference, matching the order from the preceding lookup.
+    status: Pass
+    evidence: “The refund for order **ORD-100** has been successfully processed.”
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 9568
+turns: 2
+usage:
+  input_tokens: 1647
+  output_tokens: 70
+summary: >-
+  The assistant carried ORD-100 from the preceding lookup into the next turn and used it in its
+  refund response. The recorded tool calls also show refund_order invoked with order ORD-100.

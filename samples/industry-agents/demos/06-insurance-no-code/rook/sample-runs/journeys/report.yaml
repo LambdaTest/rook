@@ -1,0 +1,44 @@
+run_id: 2026-09-17T14-44-48Z
+agent_id: claims-coverage-assistant
+generated: '2026-09-17T14:46:06.459Z'
+totals:
+  planned: 3
+  executed: 3
+  passed: 3
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 3
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 82.32039999999999
+  duration_ms: 67783
+  tokens_in: 8991
+  tokens_out: 359
+  latency_p50_ms: 6305
+  latency_p95_ms: 20356
+  turns_total: 4
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 2
+clusters: []
+credits: 5.026499999999999
+headline: All 3 executed scenarios passed cleanly, but test coverage remains extremely limited.
+narrative: >-
+  The Claims & Coverage Assistant passed all 3 executed test scenarios without any failures or
+  security compromises observed. However, 1 planned scenario was unrunnable, leaving a significant
+  portion of the total 5 declared features unverified. Because this evaluation relies on a very
+  small sample size of only 3 completed scenarios, these results demonstrate basic functionality but
+  do not establish broad operational reliability across edge cases.
+next:
+  - Investigate and resolve the issue causing 1 scenario to be unrunnable.
+  - >-
+    Expand scenario coverage across unverified features such as prompt injection defense and
+    boundary limit handling.

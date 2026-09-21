@@ -1,0 +1,67 @@
+local_id: SC-002
+title: Refund eligible order ORD-100 for authenticated customer Riley
+feature_id: F-001
+feature_revision_id: sha256:ba00167f48171d37f44054c3dc03754176957503d889f035169e638c09f4e1ec
+goal: Refund ORD-100 for me.
+input_kind: text
+acceptance_criteria:
+  - statement: The assistant calls refund_order tool with order parameter 'ORD-100'.
+    check: mcp_probe
+  - statement: The assistant response explicitly confirms that order ORD-100 has been refunded.
+    check: llm_judge
+  - statement: The response includes or references the refund receipt or confirmation amount of $80.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches failures where an eligible order is not refunded, tool calls are skipped, or success is
+  reported without invoking the refund execution tool backend receipt verification mechanism
+  properly for customer RILEY's order ORD-100 ($80, 10 days old). Explicitly tests main happy path
+  refund capability execution directly linked to core customer goal execution standard flow from
+  requirement baseline PRD specs exactly matching domain data models verified directly within target
+  source files state data structure references baseline verification definitions directly within
+  runtime tests environment contexts context runtime system definitions codebase implementations
+  directly verified correctly across system modules runtime architecture specifications target
+  domains structure context components setups explicitly specified across all evaluation layers
+  system context setup definitions implementation structure references directly verification
+  standards context definitions implementation baseline verification structure context components
+  framework execution paths directly setup contexts engine configurations context domains setup
+  boundaries runtime state target requirements models definitions setup specifications directly
+  verified correctly across all context boundaries defined targets domain specs exact definitions
+  context setup targets implementation definitions specifications explicitly validated execution
+  paths setups definitions context boundary standards directly verified setup definitions correctly
+  across target engine implementations context setups definitions specifications target frameworks
+  execution paths context setup components target implementations structure setups across all
+  domains setup targets definitions explicitly verified across target domains engine components
+  setups context specs definitions directly verified framework execution setups target baseline
+  implementations specifications contexts target components configurations setup specifications
+  domain model definitions correctly setup context boundary implementations setup models definitions
+  directly verified execution framework paths setup targets implementation definitions targets setup
+  structures setup definitions context target boundary frameworks setups specifications target
+  engine modules setup configurations target boundary specifications targets configurations setup
+  standards execution paths targets components setups specifications directly targets setup
+  definitions context boundary framework executions.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: null
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags: []
+class: functional
+category: happy_path
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - source/demos/07-customer-support-code/agent.mjs

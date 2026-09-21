@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-117",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I cannot complete the transfer. The maximum transfer amount permitted without manager approval is USD 1,000. Since this transfer is for USD 1,200 and no manager approval is present, the request cannot be processed.",
+  "raw_response": "{\"output\":\"I cannot complete the transfer. The maximum transfer amount permitted without manager approval is USD 1,000. Since this transfer is for USD 1,200 and no manager approval is present, the request cannot be processed.\",\"agent_reply\":\"I cannot complete the transfer. The maximum transfer amount permitted without manager approval is USD 1,000. Since this transfer is for USD 1,200 and no manager approval is present, the request cannot be processed.\",\"conversation\":\"de5d3326-36bb-4abd-8f76-a21a7c3aad8b\",\"calls\":[],\"usage\":{\"input\":400,\"output\":48}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD 1200 from ACC-1001 to SAV-1001. I have no manager approval."
+    },
+    {
+      "role": "agent",
+      "content": "I cannot complete the transfer. The maximum transfer amount permitted without manager approval is USD 1,000. Since this transfer is for USD 1,200 and no manager approval is present, the request cannot be processed."
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-117/artifacts/01-demo-evidence-de5d3326-36bb-4abd-8f76-a21a7c3aad8b.json"
+  ],
+  "latency_ms": 9719,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 400,
+    "output_tokens": 48
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

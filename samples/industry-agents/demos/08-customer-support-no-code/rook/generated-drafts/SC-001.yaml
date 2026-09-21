@@ -1,0 +1,48 @@
+local_id: SC-001
+title: Successfully refund eligible order ORD-100
+feature_id: F-001
+feature_revision_id: sha256:9566ad5d9095dc3f101cae03542c112822097cfc58533b40d84fe67a68bc5670
+goal: Refund ORD-100 for me.
+input_kind: text
+acceptance_criteria:
+  - statement: The assistant confirms that order ORD-100 has been successfully refunded.
+    check: llm_judge
+  - statement: The assistant confirms the refund amount of $80 or references the generated refund receipt.
+    check: llm_judge
+  - statement: The agent calls refund_order tool to process the refund for ORD-100.
+    check: llm_judge
+forbidden: []
+why: >-
+  catches failure to process an eligible refund or issue a receipt when all policy conditions are
+  met
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Authenticated user is RILEY
+  - ORD-100 is an existing order owned by RILEY, valued at $80 and placed 10 days ago
+output_kind: text
+exercises:
+  tools:
+    - get_order
+    - refund_order
+  subagents: []
+  services: []
+calls:
+  - tool: refund_order
+    expect: called
+    times: 1
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags: []
+class: functional
+category: happy_path
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

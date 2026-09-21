@@ -1,0 +1,41 @@
+local_id: SC-012
+title: Measure total model token cost for a simple transfer request
+feature_id: F-003
+feature_revision_id: sha256:94a70489e3e83237b249de1fbe82e0e1ba4ab6078bf4f5f6b3c099dfc9984e47
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The overall model tokens consumed for completing the transfer remain within the budget of 4000
+      tokens.
+    check: llm_judge
+  - statement: The agent successfully completes the money transfer of USD 200 from ACC-1001 to SAV-1001.
+    check: llm_judge
+  - statement: The response does not contain unnecessary restatements or redundant turn iterations.
+    check: llm_judge
+forbidden: []
+why: ''
+confidence: null
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: null
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags: []
+class: non_functional
+category: token_economy
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

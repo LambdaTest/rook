@@ -1,0 +1,15 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.demo-state/
+.testmuai/
+# These eight native workspaces are sample inputs. Each has its own exclusions
+# for credentials, machine state, and unreviewed run outputs.
+!demos/*/.testmuai/
+!demos/*/.testmuai/rook/
+artifacts/local/
+delivery/*.zip
+*.log
+.DS_Store
+__pycache__/

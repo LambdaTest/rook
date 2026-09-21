@@ -1,0 +1,52 @@
+local_id: SC-108
+title: 'Atlas Cover: Keep state consistent across repeated requests'
+feature_id: F-001
+feature_revision_id: sha256:977249d51501f075e4fd13bc7f12978cd96f53b19fcb858ad384e5ca9df80c52
+goal: Settle claim CLM-100 for USD 1500 again.
+input_kind: text
+output_kind: text
+acceptance_criteria:
+  - check: llm_judge
+    statement: >-
+      Exactly one settlement exists after the repeated request. Read the effects array in the
+      collected JSON for this exact conversation UUID and require exactly 1 entries with
+      type="claim_settlement". Other receipt types and success prose do not satisfy this criterion.
+      Missing evidence is Unable to Verify.
+forbidden: []
+why: A retry or follow-up must not create inconsistent or duplicate effects.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic insurance session, fault=none; use the matching profile.
+  - >-
+    Use only collected evidence with this exact conversation UUID; no receipt may be inferred from
+    prose.
+exercises:
+  tools:
+    - get_claim
+    - get_policy
+    - settle_claim
+  subagents: []
+  services: []
+calls: []
+multi_turn: true
+setup_messages:
+  - Settle claim CLM-100 for USD 1500.
+max_turns: 1
+repeat: 3
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - insurance-08
+  - fault-none
+class: non_functional
+category: reliability
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

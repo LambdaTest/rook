@@ -1,0 +1,31 @@
+local_id: F-003
+name: Execute an authorized transfer up to USD 1000
+user_story: >-
+  As MAYA, I give the chat goal "Transfer USD 1000 from my checking account to my savings account"
+  so that I can move money without manager approval.
+expected_behaviour: >-
+  For a transfer request of USD 1000 or less, the assistant transfers the requested amount between
+  the specified accounts when the accounts belong to MAYA and funds are sufficient, then reports
+  success only when ledger evidence supports it.
+edge_cases:
+  - An amount exactly equal to USD 1000 is within the no-approval limit.
+  - The assistant must not claim success without ledger evidence.
+validation_rules:
+  - Transfers up to and including USD 1000 do not require approval.
+  - Source and destination accounts must be MAYA-owned.
+  - The amount must be positive and no greater than available funds.
+  - A successful claim requires ledger evidence.
+calls:
+  - transfer
+assumptions:
+  - >-
+    A valid source account, destination account, and sufficient balance are available in the
+    synthetic banking data.
+sources:
+  - 'source/demos/01-banking-code/agent.mjs: invoke(''transfer'')'
+  - 'source/shared/engine.mjs: runModel'
+  - PRD.md
+known_data:
+  - USD 1000
+  - MAYA
+confidence: null

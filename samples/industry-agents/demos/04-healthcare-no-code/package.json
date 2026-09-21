@@ -1,0 +1,14 @@
+{
+  "name": "rook-demo-04-healthcare-no-code",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node ../../scripts/setup-env.mjs healthcare-agent",
+    "start": "node ../../scripts/start.mjs healthcare-agent",
+    "check:llm": "node ../../scripts/check-model.mjs healthcare-agent",
+    "rook:setup": "node ../../scripts/seed-native.mjs healthcare-agent",
+    "rook": "node ../../scripts/rook.mjs healthcare-agent",
+    "mcp": "node ../../scripts/mcp.mjs healthcare-agent",
+    "rook:ci": "node ../../scripts/rook-ci.mjs healthcare-agent"
+  }
+}

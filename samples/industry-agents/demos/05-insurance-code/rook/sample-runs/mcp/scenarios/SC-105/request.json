@@ -1,0 +1,10 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "goal": "Settle the same claim for USD 1500.",
+  "setup_messages": [
+    "Read claim CLM-100."
+  ],
+  "profile": "demo-mcp",
+  "invoked": "shared/rook-mcp-hook.mjs"
+}

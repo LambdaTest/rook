@@ -1,12 +1,12 @@
 # Sample agents
 
-Two agents to point `rook` at, chosen because they are the two cases that exist
-in the wild.
+Sample agents to explore, test and inspect with `rook`.
 
 | | what it is | how rook finds it |
 |---|---|---|
 | [`refund-desk/`](refund-desk) | A Claude Code agent: `.claude/agents/*.md`, a skill, a subagent, two MCP servers | Deterministically — frontmatter and `.mcp.json`, no model involved |
 | [`triage-service/`](triage-service) | A plain codebase: a prompt in a string, a tool table, an HTTP server | By reading the code, with tools |
+| [`industry-agents/`](industry-agents) | Eight Developer/QE editions across banking, healthcare, insurance and customer support | Explore source or requirements, or run the supplied native workspaces headlessly |
 
 The first is the declared case, and it is the minority. A survey of ~20 real
 repositories found **zero** agent manifests, which is why the folder is the
@@ -20,14 +20,11 @@ cd samples/triage-service && rook       # server-based agent
 
 ## They are safe to run
 
-Neither talks to a real system. Orders, tickets and CRM notes live in memory
-and reset when the process does, so there is nothing to clean up and nothing to
-break. That is not true of your own agents — see the
-[safety note](../README.md#a-note-on-safety).
+The business records are fictional. The triage and refund samples keep orders, tickets and CRM notes in memory. Industry fixtures keep session state in ignored local folders; their CI targets need no model API key. Rook evaluation and optional model mode call their respective services. See the [safety note](../README.md#a-note-on-safety) before testing your own agents.
 
 ## They are meant to be imperfect
 
-An agent that passes everything teaches you nothing about a harness, so both
+An agent that passes everything teaches you nothing about a harness, so they
 have real defects to find. Each README lists what a good suite should catch.
 The ones worth knowing about up front:
 

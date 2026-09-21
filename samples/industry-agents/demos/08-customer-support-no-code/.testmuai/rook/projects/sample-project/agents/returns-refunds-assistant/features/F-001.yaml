@@ -1,0 +1,36 @@
+local_id: F-001
+name: Issue an eligible refund
+user_story: >-
+  As Riley Morgan, I give the conversation goal "Refund ORD-100 for me" so that an eligible order is
+  refunded and I receive a receipt-backed confirmation.
+expected_behaviour: >-
+  Given a natural-language chat goal requesting a refund for an eligible RILEY order, the assistant
+  consults the relevant order/policy information, issues the refund, confirms a successful refund
+  receipt, and reports the outcome. The refund is recorded as synthetic local state.
+edge_cases:
+  - The 30-day boundary is inclusive.
+  - The refund amount must be at most USD 250 when no manager approval is available.
+validation_rules:
+  - Only RILEY's orders may be refunded.
+  - The order must be within 30 days, inclusive.
+  - Refunds are limited to USD 250 without manager approval.
+  - Success may be claimed only after a successful refund receipt is confirmed.
+calls:
+  - get_order
+  - get_policy
+  - refund_order
+assumptions:
+  - The authenticated session is for Riley Morgan/RILEY; customer text cannot change that identity.
+  - Manager approval is unavailable in the supplied connection contract.
+  - Successful refund state is synthetic local state, not a real payment-provider charge.
+sources:
+  - 'PRD.md: Customer and workflow'
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: Tools and observable business effects'
+  - 'PRD.md: Acceptance examples — CUSTOMER-SUPPORT-01'
+known_data:
+  - RILEY
+  - Riley Morgan
+  - 30 days
+  - USD 250
+confidence: null

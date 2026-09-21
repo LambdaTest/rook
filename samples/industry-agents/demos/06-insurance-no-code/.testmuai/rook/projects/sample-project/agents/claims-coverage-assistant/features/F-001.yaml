@@ -1,0 +1,27 @@
+local_id: F-001
+name: Settle an eligible claim once
+user_story: As Jordan, I need the claims assistant to settle an eligible claim once.
+expected_behaviour: >-
+  Pay a documented, approved claim under active owned coverage, at most USD 2500, only once and only
+  after the payment succeeds.
+calls:
+  - get_claim
+  - get_policy
+  - settle_claim
+edge_cases: []
+validation_rules:
+  - >-
+    Pay a documented, approved claim under active owned coverage, at most USD 2500, only once and
+    only after the payment succeeds.
+assumptions:
+  - Authored from explicit insurance requirements.
+sources:
+  - PRD.md
+known_data:
+  - 'POL-100 / CLM-100: owned, active, documents complete, USD 1500 approved'
+  - 'CLM-200: another policyholder'
+  - 'CLM-300: missing documents'
+  - 'CLM-400: USD 2500 exact limit'
+  - 'CLM-500: USD 3000 exceeds limit'
+  - 'CLM-600: inactive policy'
+confidence: high

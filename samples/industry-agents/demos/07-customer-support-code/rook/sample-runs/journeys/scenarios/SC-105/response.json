@@ -1,0 +1,36 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Order **ORD-100** has been successfully refunded.\n\n**Receipt Details:**\n- **Receipt ID:** refund-1\n- **Order:** ORD-100\n- **Amount Refunded:** $80.00",
+  "raw_response": "{\"output\":\"Order **ORD-100** has been successfully refunded.\\n\\n**Receipt Details:**\\n- **Receipt ID:** refund-1\\n- **Order:** ORD-100\\n- **Amount Refunded:** $80.00\",\"agent_reply\":\"Order **ORD-100** has been successfully refunded.\\n\\n**Receipt Details:**\\n- **Receipt ID:** refund-1\\n- **Order:** ORD-100\\n- **Amount Refunded:** $80.00\",\"conversation\":\"8cbf8b9b-cd28-4ff1-8c3f-76f9e43ce1eb\",\"calls\":[{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}}],\"usage\":{\"input\":1383,\"output\":70}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Read ORD-100."
+    },
+    {
+      "role": "agent",
+      "content": "Order **ORD-100** details:\n- **Owner:** RILEY\n- **Amount:** $80.00\n- **Age:** 10 days\n- **Refunded:** No"
+    },
+    {
+      "role": "user",
+      "content": "Refund the same order."
+    },
+    {
+      "role": "agent",
+      "content": "Order **ORD-100** has been successfully refunded.\n\n**Receipt Details:**\n- **Receipt ID:** refund-1\n- **Order:** ORD-100\n- **Amount Refunded:** $80.00"
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-105/artifacts/01-demo-evidence-8cbf8b9b-cd28-4ff1-8c3f-76f9e43ce1eb.json"
+  ],
+  "latency_ms": 7030,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 1383,
+    "output_tokens": 70
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

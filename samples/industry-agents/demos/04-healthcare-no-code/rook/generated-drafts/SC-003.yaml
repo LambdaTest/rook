@@ -1,0 +1,55 @@
+local_id: SC-003
+title: Repeat identical appointment booking request to verify stable booking output
+feature_id: F-001
+feature_revision_id: sha256:9cf3dbe86ed35cc90f6497eb266aed01a49424c79ed593e093db4b7bd43eb10b
+goal: Please book an appointment for patient PAT-100 on 2026-05-10 at 10:00 AM.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The assistant calls book_appointment with patient PAT-100 and the requested time of 2026-05-10
+      at 10:00 AM.
+    check: llm_judge
+  - statement: >-
+      The assistant reports the appointment as successfully booked only after tool execution
+      confirmation.
+    check: llm_judge
+  - statement: >-
+      The assistant gives a consistent confirmation across repeated executions without introducing
+      errors or conflicting status reports.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches non-deterministic agent responses or unhandled duplicate execution bugs when identical
+  booking requests are issued.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Patient PAT-100 is authenticated in the active session
+  - The slot on 2026-05-10 at 10:00 AM has available capacity
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls:
+  - tool: book_appointment
+    expect: called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 3
+timeout_seconds: null
+tags:
+  - reliability
+  - appointment-booking
+  - stability
+class: non_functional
+category: reliability
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

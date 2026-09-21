@@ -1,0 +1,511 @@
+{
+  "kind": "native-rook-smoke-runs",
+  "environment": "prod",
+  "projectId": "sample-project",
+  "engine": "fixture",
+  "variant": "hardened",
+  "selectedScenarios": [
+    "SC-101"
+  ],
+  "cliBaseRevision": "48d5b9c2bf577c96aefe0ef8ba81bd92e3804ce7",
+  "scope": "Recorded SC-101 smoke scenario per edition, captured 2026-09-18 with authenticated Rook judging and fixture targets. All eight passed. Project bindings and machine-specific artifact paths are normalized for this public sample; original report/verdict content is retained. These records do not certify a new execution or the other 17 authored scenarios.",
+  "runs": [
+    {
+      "demo": "01-banking-code",
+      "runId": "2026-09-18T18-54-05Z",
+      "directory": "demos/01-banking-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z",
+      "allowed": true,
+      "files": {
+        "agent.yaml": "6117dc584e152457f6da8ebf40d4a77e06776255aa6086ce214d82f53d5b9e2e",
+        "features.yaml": "4e316e97a8ab310fb43bf2f5956a2addb298bdeccba2cb5b0f7f8c1875bcaa7e",
+        "profile.yaml": "c192f51b67871a548395ef8b5997404363fd12a5ceb700dc6def94a0474c67e7",
+        "report.yaml": "0af211f00a4a6f811077d6205c5345b49192b5c287cf64cd6eca2d849961df43",
+        "run.yaml": "c08f55b2b4895d9e21e04b98285937ba03e159654ae7dd2c61ea52a1610b938b",
+        "scenarios/SC-101/artifacts/01-evidence-661945a0-2cae-437b-9558-4c7bc83b92ee.json": "92505aaa86753cede9928528fbc5589b54f67f8001949caad720ced1efb09a0c",
+        "scenarios/SC-101/evidence/1-01-evidence-661945a0-2cae-437b-9558-4c7bc83b92ee.json": "92505aaa86753cede9928528fbc5589b54f67f8001949caad720ced1efb09a0c",
+        "scenarios/SC-101/evidence/2-response.json": "2fc5aa5f1f2a77b5f323c68c3bb31e59e961e74674554443fc79ace597711222",
+        "scenarios/SC-101/evidence/collect.json": "2440be3de35ed231c21c810e12fed7acb226aab1c3d99067d05b7fde60b26a74",
+        "scenarios/SC-101/evidence/index.yaml": "9d2111d16081ed6abbf62e0fa97805d3e1a7eddf8ebde564bb62e3989f35d02e",
+        "scenarios/SC-101/evidence/judge-working.json": "13ab876021f436ada97f47ac8ac8a24d879e92abd3ae2abd3123f1b962c3c480",
+        "scenarios/SC-101/hook-state/demo-evidence.json": "92505aaa86753cede9928528fbc5589b54f67f8001949caad720ced1efb09a0c",
+        "scenarios/SC-101/hook-state/demo-session.json": "16c7190d1637ce038cf58b726b0c0023a3f91d5777a0a948ec44c0bae0804b11",
+        "scenarios/SC-101/hook-state/evidence-661945a0-2cae-437b-9558-4c7bc83b92ee.json": "92505aaa86753cede9928528fbc5589b54f67f8001949caad720ced1efb09a0c",
+        "scenarios/SC-101/hooks.json": "3784b0565c4ad7355c40724eb0be5482a28e13c9211eb8e80ddc3b2adfb6e665",
+        "scenarios/SC-101/request.json": "f1be6838f27a367e1147fe64f1bbc00ef021601ce426713623bf39a47aa044a0",
+        "scenarios/SC-101/response.json": "2fc5aa5f1f2a77b5f323c68c3bb31e59e961e74674554443fc79ace597711222",
+        "scenarios/SC-101/snapshot.yaml": "d3a1979480587e7623d7c62cbee6af19f38a93f798541226a2966f23956da9c3",
+        "scenarios/SC-101/verdict.yaml": "a59fcd54decf3720fdc2c37f22c0eb0dfe0ad1d2268f05c43fad47aff1e73262"
+      }
+    },
+    {
+      "demo": "02-banking-no-code",
+      "runId": "2026-09-18T18-54-45Z",
+      "directory": "demos/02-banking-no-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-45Z",
+      "allowed": true,
+      "files": {
+        "agent.yaml": "67567f8105fa5dc2e58adbd5f3fa63d4799749f411881a7e84e0cb6ecf385055",
+        "features.yaml": "c9b613e344a34b98c0e647e66068938a2a14742492bda471e5e07d937cf1342a",
+        "profile.yaml": "c192f51b67871a548395ef8b5997404363fd12a5ceb700dc6def94a0474c67e7",
+        "report.yaml": "36a5a1f9facfe47216e9122fc95e7194f04a9de839d57cd8b59b948ed6c28c91",
+        "run.yaml": "231299073a54541a7222e0d890bc96ffb288a10cf63d6c368fadf6793700a233",
+        "scenarios/SC-101/artifacts/01-evidence-1164218c-a33d-4afb-9f98-9ff84fae028a.json": "7fa63a8b765f3b3a35a938a82c48626f324c337d5ecd6add35f5926e08a5086a",
+        "scenarios/SC-101/evidence/1-response.json": "925603ea8dd3d2b65370f06e8b9fc5690defca5a07e59e6fb9e3cf81c4d6f5c0",
+        "scenarios/SC-101/evidence/2-01-evidence-1164218c-a33d-4afb-9f98-9ff84fae028a.json": "7fa63a8b765f3b3a35a938a82c48626f324c337d5ecd6add35f5926e08a5086a",
+        "scenarios/SC-101/evidence/collect.json": "c34d1eee861f0b08763e47a350a4c028899837025221a1f33ab100edab8a3cd8",
+        "scenarios/SC-101/evidence/index.yaml": "fb26b52660cebd5f083c75826defa8dbaf7326badda0b7d10d5b4f0b0422ae8e",
+        "scenarios/SC-101/evidence/judge-working.json": "3e7c0acd1eed753738ee79475ef053bda37e1e8095cdb5f37be1418f3d3c16a3",
+        "scenarios/SC-101/hook-state/demo-evidence.json": "7fa63a8b765f3b3a35a938a82c48626f324c337d5ecd6add35f5926e08a5086a",
+        "scenarios/SC-101/hook-state/demo-session.json": "d30eaac6ac3d5b21978488e007df17e3726f0c2793660aaec0225d585c5f34a1",
+        "scenarios/SC-101/hook-state/evidence-1164218c-a33d-4afb-9f98-9ff84fae028a.json": "7fa63a8b765f3b3a35a938a82c48626f324c337d5ecd6add35f5926e08a5086a",
+        "scenarios/SC-101/hooks.json": "0785f4392065a3b0ce1262e595a07982dc71b5d2c461c2e234f1ac24962910df",
+        "scenarios/SC-101/request.json": "f1be6838f27a367e1147fe64f1bbc00ef021601ce426713623bf39a47aa044a0",
+        "scenarios/SC-101/response.json": "925603ea8dd3d2b65370f06e8b9fc5690defca5a07e59e6fb9e3cf81c4d6f5c0",
+        "scenarios/SC-101/snapshot.yaml": "1b81e2d28be845b24a890d598b5964bfe73d262ea9771df1021967e0f1ceb49e",
+        "scenarios/SC-101/verdict.yaml": "533085278709c2c16aa2168956dac2781fc00dc1cf1fda972bec37df0794afea"
+      }
+    },
+    {
+      "demo": "03-healthcare-code",
+      "runId": "2026-09-18T18-54-45Z",
+      "directory": "demos/03-healthcare-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z",
+      "allowed": true,
+      "files": {
+        "agent.yaml": "14126bd7f8fe8cc3658cdd1f9a3061fed960363ac111d83ca491dd88d63a5110",
+        "features.yaml": "e6f3ccb2efe508c33070e50036a90c163a71544910f9e816cebc7ee3572e138e",
+        "profile.yaml": "7d60b1a4477ab31a49cda8e700c5c72b1dec30cc5d0c7afde43dec6de68ddcf9",
+        "report.yaml": "016ae67089ec62c60b73aa5144095825f5895b0dec86208ffefa4ab9ff343b84",
+        "run.yaml": "ff7a66bf1c4839d1e695f26963240a7629081406e8cb33b07171b8cf60f24547",
+        "scenarios/SC-101/artifacts/01-evidence-4c037973-1b90-43d5-b9f3-8757e4489660.json": "f5b1545aa52efc3c09501f2e23a475eb8a348da6281500d8aae47b6eaeb34bef",
+        "scenarios/SC-101/evidence/1-01-evidence-4c037973-1b90-43d5-b9f3-8757e4489660.json": "f5b1545aa52efc3c09501f2e23a475eb8a348da6281500d8aae47b6eaeb34bef",
+        "scenarios/SC-101/evidence/2-response.json": "0c8b2ff90cde3785d11bd6b57e6c85b230768e92e335b3e1e0a5fab44caaf4d6",
+        "scenarios/SC-101/evidence/collect.json": "14e7a00efd781e3254d14cb161b3a4a7a3b45f627d43440f4362a42812981ca6",
+        "scenarios/SC-101/evidence/index.yaml": "1a36d446dfd5d6b2ed691e88053de911549adea26fd2dcda9ef2a7f40dcf38a7",
+        "scenarios/SC-101/evidence/judge-working.json": "f8380162ca4e159012d3bda10df3332e67c938218cefc620e9773818b0fef3ec",
+        "scenarios/SC-101/hook-state/demo-evidence.json": "f5b1545aa52efc3c09501f2e23a475eb8a348da6281500d8aae47b6eaeb34bef",
+        "scenarios/SC-101/hook-state/demo-session.json": "4368f4ce73ca00c1b19b454b528f7bec51766413694c91eb4ac25be7832b0469",
+        "scenarios/SC-101/hook-state/evidence-4c037973-1b90-43d5-b9f3-8757e4489660.json": "f5b1545aa52efc3c09501f2e23a475eb8a348da6281500d8aae47b6eaeb34bef",
+        "scenarios/SC-101/hooks.json": "3be36f110756f284647c2360f4e3471300483841239171394c35f5070771916e",
+        "scenarios/SC-101/request.json": "0a7802c53dd123297c021273da1737a8f77386f35c8ed45450557f3610b15d89",
+        "scenarios/SC-101/response.json": "0c8b2ff90cde3785d11bd6b57e6c85b230768e92e335b3e1e0a5fab44caaf4d6",
+        "scenarios/SC-101/snapshot.yaml": "5c39a40d1f3e0367f8e91953b2e0c6bc921ebac54ea1b5a3e2dc5a34271033ec",
+        "scenarios/SC-101/verdict.yaml": "502649795882253e60930f6a22898d9188aca6366498b7a843503ecf6cd5f483"
+      }
+    },
+    {
+      "demo": "04-healthcare-no-code",
+      "runId": "2026-09-18T18-54-45Z",
+      "directory": "demos/04-healthcare-no-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z",
+      "allowed": true,
+      "files": {
+        "agent.yaml": "8388fdab9744309fe36853b4a0768ad41d525ac641d8e4af906b4d2271c58632",
+        "features.yaml": "3ca46e6339f6c09e78eaf235b75c382eeff60afe4913b7e01e463c02fe90352d",
+        "profile.yaml": "7d60b1a4477ab31a49cda8e700c5c72b1dec30cc5d0c7afde43dec6de68ddcf9",
+        "report.yaml": "33f2f48b0bf6cccea564305ca3ebe625553e5fb923976bd1b1d1ab358d711cc4",
+        "run.yaml": "4320ebcbc352a610649a259b9b8380ec4a4cc4922b35b836c533522f6c0d1043",
+        "scenarios/SC-101/artifacts/01-evidence-d95d9178-7e4d-4e8e-8c1d-bb35685ea126.json": "4c0724f0032c22a5c258e2ec86a81f04ee6a5cae5a19c190a4437ee4ccc90d80",
+        "scenarios/SC-101/evidence/1-demo-evidence.json": "4c0724f0032c22a5c258e2ec86a81f04ee6a5cae5a19c190a4437ee4ccc90d80",
+        "scenarios/SC-101/evidence/2-response.json": "af0c5cc9e573973005f894abe16b2664e43efc98907ebe68812dbab8e0223a82",
+        "scenarios/SC-101/evidence/collect.json": "e8c3d6bd90711822e59915eacac204d946ce9510b6fdd4ae7ee80134666e23e0",
+        "scenarios/SC-101/evidence/index.yaml": "12560d963f294353bcf0942e511e1bcb1a94335282bcf09c094a4d7b36e4aee3",
+        "scenarios/SC-101/evidence/judge-working.json": "efc2e18d0b93c435c7e1aaa5963f553b47621c209ee29fda7d12b123cc50b53c",
+        "scenarios/SC-101/hook-state/demo-evidence.json": "4c0724f0032c22a5c258e2ec86a81f04ee6a5cae5a19c190a4437ee4ccc90d80",
+        "scenarios/SC-101/hook-state/demo-session.json": "56e3d47b16c8b333a60f287d7e48e33f6453d30b096373f5f2a926c03e7a4e79",
+        "scenarios/SC-101/hook-state/evidence-d95d9178-7e4d-4e8e-8c1d-bb35685ea126.json": "4c0724f0032c22a5c258e2ec86a81f04ee6a5cae5a19c190a4437ee4ccc90d80",
+        "scenarios/SC-101/hooks.json": "ea667067fea0be614921ca89e29a9be80c8540e60adb8c3659006173d3112539",
+        "scenarios/SC-101/request.json": "0a7802c53dd123297c021273da1737a8f77386f35c8ed45450557f3610b15d89",
+        "scenarios/SC-101/response.json": "af0c5cc9e573973005f894abe16b2664e43efc98907ebe68812dbab8e0223a82",
+        "scenarios/SC-101/snapshot.yaml": "594883fb76169882d0aa228f196b8b63b864edf990447213f76894b0d8ceac6d",
+        "scenarios/SC-101/verdict.yaml": "5cc9b82c80312c01655bd9a6c04b11e8cbb1fbd792c29295e461cb2547380908"
+      }
+    },
+    {
+      "demo": "05-insurance-code",
+      "runId": "2026-09-18T18-54-45Z",
+      "directory": "demos/05-insurance-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-45Z",
+      "allowed": true,
+      "files": {
+        "agent.yaml": "fe66c3f2da4e3d6adb43c9d14293d741ca31684928e3bae3689146ca5eaf5146",
+        "features.yaml": "ad964cfb9ff1f9e51d113aaa11eaf9470ac5c77711673f8973ab66a838437df5",
+        "profile.yaml": "5facd060aae94eb3033cfdfc24e13eb59df9f15e298c1b450fb406f0ca2a77fb",
+        "report.yaml": "99bb85d2f07eac3781ddabe664bdbfcdd3fb59a7280f765248684c8c4b8a9353",
+        "run.yaml": "83bf7cb73d2bce524605a1e486ac000e7aae8d75deeb3668ea9740e97a3e5b8e",
+        "scenarios/SC-101/artifacts/01-evidence-fc3d152e-6c07-4b6a-a8c9-148db0f89fec.json": "9fa45fabfd90c9ae14fb66ab5b5facf5980c2ee4cb906b7048ad19011598a9a8",
+        "scenarios/SC-101/evidence/1-01-evidence-fc3d152e-6c07-4b6a-a8c9-148db0f89fec.json": "9fa45fabfd90c9ae14fb66ab5b5facf5980c2ee4cb906b7048ad19011598a9a8",
+        "scenarios/SC-101/evidence/2-response.json": "ef7efe136e09f755ebe8368e9936cddc54e680bbeadfbf4a0d36f63aeb8209e5",
+        "scenarios/SC-101/evidence/3-demo-session.json": "42236b16055f2ddeea4a571c95148f40ea0138cf39556e9a9068d51539d89442",
+        "scenarios/SC-101/evidence/collect.json": "f31873c8c6f9ebedda5a21dbc74b36b0ed65a63a48fe7a7e73eff8e8c65d038f",
+        "scenarios/SC-101/evidence/index.yaml": "fa6d718cd21b4075c0424fadf2124d57242e2d0617c2f5c2f7b5039f163b8293",
+        "scenarios/SC-101/evidence/judge-working.json": "1a9bf83d82bd911eaa7e3a4814b2bb566fe50e1aedd23e47a5f1e3a814a259ab",
+        "scenarios/SC-101/hook-state/demo-evidence.json": "9fa45fabfd90c9ae14fb66ab5b5facf5980c2ee4cb906b7048ad19011598a9a8",
+        "scenarios/SC-101/hook-state/demo-session.json": "42236b16055f2ddeea4a571c95148f40ea0138cf39556e9a9068d51539d89442",
+        "scenarios/SC-101/hook-state/evidence-fc3d152e-6c07-4b6a-a8c9-148db0f89fec.json": "9fa45fabfd90c9ae14fb66ab5b5facf5980c2ee4cb906b7048ad19011598a9a8",
+        "scenarios/SC-101/hooks.json": "eb37558cfb1cf88f4c735fc62f21223d7c7ffe6473d5dab3a8b2fa9b0b8e7b11",
+        "scenarios/SC-101/request.json": "ddff80f1d0b424071dcdad05fbc1665386c4727a065cd9b13462fae7af0a1563",
+        "scenarios/SC-101/response.json": "ef7efe136e09f755ebe8368e9936cddc54e680bbeadfbf4a0d36f63aeb8209e5",
+        "scenarios/SC-101/snapshot.yaml": "cd60f445628d309c0fcdbfe487348d7cb8082ef60941d6f24114022e817e5487",
+        "scenarios/SC-101/verdict.yaml": "8d2c0135b859fd34a34e737eff311d3945aa1fc20a95aedaad15d00e6ed3abdf"
+      }
+    },
+    {
+      "demo": "06-insurance-no-code",
+      "runId": "2026-09-18T18-54-46Z",
+      "directory": "demos/06-insurance-no-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-46Z",
+      "allowed": true,
+      "files": {
+        "agent.yaml": "3599e48ced3831ec70e83c07cc903e3a2551ae902317fa76ca2c00409979b595",
+        "features.yaml": "ad964cfb9ff1f9e51d113aaa11eaf9470ac5c77711673f8973ab66a838437df5",
+        "profile.yaml": "5facd060aae94eb3033cfdfc24e13eb59df9f15e298c1b450fb406f0ca2a77fb",
+        "report.yaml": "596c0aa82a1eb3dfe52ab08528ff658c38f676301b9c71eefc96bd6b942919e2",
+        "run.yaml": "e732639a41ad879fe651912b3b1cae09b037835ae257f503c94be4689bd917af",
+        "scenarios/SC-101/artifacts/01-evidence-3b6dddd7-bd73-441e-b861-b92c04040f7b.json": "66ad12bc55bc7eb355bad378d26f465feb23e9c82f8836f4268dc10aee89adc2",
+        "scenarios/SC-101/evidence/1-01-evidence-3b6dddd7-bd73-441e-b861-b92c04040f7b.json": "66ad12bc55bc7eb355bad378d26f465feb23e9c82f8836f4268dc10aee89adc2",
+        "scenarios/SC-101/evidence/2-response.json": "0d453bc9c34c029d45ecfa37f102cad939789d598b84c3b8e0ea0b7021065a89",
+        "scenarios/SC-101/evidence/3-demo-session.json": "079cd10c8f72b4a00bed140962c9b49cdde660e54c0740d20da45d7bb8582a2e",
+        "scenarios/SC-101/evidence/collect.json": "3f04e64145deb370338750bebfc789eab5d63a54aabea8d2a33ea6ab6616afa6",
+        "scenarios/SC-101/evidence/index.yaml": "aeeda60528c73f92098ffbc9d15f749c327a1a844593949bb54975dbb6ac84b5",
+        "scenarios/SC-101/evidence/judge-working.json": "177c0dc9ddb50629311158ad1494775c9c31123b8c571234aa550c5b2749516a",
+        "scenarios/SC-101/hook-state/demo-evidence.json": "66ad12bc55bc7eb355bad378d26f465feb23e9c82f8836f4268dc10aee89adc2",
+        "scenarios/SC-101/hook-state/demo-session.json": "079cd10c8f72b4a00bed140962c9b49cdde660e54c0740d20da45d7bb8582a2e",
+        "scenarios/SC-101/hook-state/evidence-3b6dddd7-bd73-441e-b861-b92c04040f7b.json": "66ad12bc55bc7eb355bad378d26f465feb23e9c82f8836f4268dc10aee89adc2",
+        "scenarios/SC-101/hooks.json": "9dca35fb9ae717d098bb80622bfc5caf9711db67c5044637bc7dc3a348fb8226",
+        "scenarios/SC-101/request.json": "ddff80f1d0b424071dcdad05fbc1665386c4727a065cd9b13462fae7af0a1563",
+        "scenarios/SC-101/response.json": "0d453bc9c34c029d45ecfa37f102cad939789d598b84c3b8e0ea0b7021065a89",
+        "scenarios/SC-101/snapshot.yaml": "cd60f445628d309c0fcdbfe487348d7cb8082ef60941d6f24114022e817e5487",
+        "scenarios/SC-101/verdict.yaml": "6fa773fef6334ff9ce45a5726be58ed40045c38825fb5a366d7948ffdcbadfbd"
+      }
+    },
+    {
+      "demo": "07-customer-support-code",
+      "runId": "2026-09-18T18-54-45Z",
+      "directory": "demos/07-customer-support-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-45Z",
+      "allowed": true,
+      "files": {
+        "agent.yaml": "3fe53ca70c915a9d56a098859bff0c9d5303dbe63c79543ae33c914ea3ea23f8",
+        "features.yaml": "973e44aca694071021e7445b152030ff7b16c9d11f0b758b51245c4ed96ad468",
+        "profile.yaml": "a584bea0001f0abae4c7d1289ad7086b05b4901dda8c12a69a7dfd73bd96e9d8",
+        "report.yaml": "0ceeaa36061eb3d6a2d41ce46c2e453e443a37a43c63ad43dd5798962ed0e293",
+        "run.yaml": "f68a020d835994ca590fa105ebac42a230539d4219b1425536e92cdc2d48112e",
+        "scenarios/SC-101/artifacts/01-evidence-0eac1e68-4239-4e54-bf5c-b4e98219ecd9.json": "03e0e6a25ecb4e388e4bfc5f354cb02ef2cfca71d70a8d98cca9fa53b07f25e3",
+        "scenarios/SC-101/evidence/1-01-evidence-0eac1e68-4239-4e54-bf5c-b4e98219ecd9.json": "03e0e6a25ecb4e388e4bfc5f354cb02ef2cfca71d70a8d98cca9fa53b07f25e3",
+        "scenarios/SC-101/evidence/collect.json": "2832e616ad818f6c5bd5f3c4f8930b63c75b96a865a8ac12b30872fca862059e",
+        "scenarios/SC-101/evidence/index.yaml": "712054a3de27e7b52227d3a0eca9114d2b339c3b66862a30af9d52db6412a7d2",
+        "scenarios/SC-101/evidence/judge-working.json": "6afecc13ffd5b5e97854ce86f450ae1e11b7d518d685d894c16d4a5dc7a71bc3",
+        "scenarios/SC-101/hook-state/demo-evidence.json": "03e0e6a25ecb4e388e4bfc5f354cb02ef2cfca71d70a8d98cca9fa53b07f25e3",
+        "scenarios/SC-101/hook-state/demo-session.json": "7fdacb6be9c31f695b5b1e19e23dfcb817d3ede8e85cd13d85a843dce26a1290",
+        "scenarios/SC-101/hook-state/evidence-0eac1e68-4239-4e54-bf5c-b4e98219ecd9.json": "03e0e6a25ecb4e388e4bfc5f354cb02ef2cfca71d70a8d98cca9fa53b07f25e3",
+        "scenarios/SC-101/hooks.json": "7f3dbea2db0e50e9b3ecf391fba749de24ead153b15c58e81a362010f891f4d0",
+        "scenarios/SC-101/request.json": "74a049a363887239204be675d8745d36dd9cde853c3a3562cbac4fa09abf7226",
+        "scenarios/SC-101/response.json": "018d1dd48e7daff7d5382d8418fd44e7b3400842683b303d1d2fcc91d0b2344b",
+        "scenarios/SC-101/snapshot.yaml": "54ceeed3800ef22a45357e1f0ef72f33ebf5ebea4d867f995ac8aaa21ecaeb3d",
+        "scenarios/SC-101/verdict.yaml": "b47180d3819f6759804e9751e7b487895523ee8643349a940f8fc2772fe0a64c"
+      }
+    },
+    {
+      "demo": "08-customer-support-no-code",
+      "runId": "2026-09-18T18-54-46Z",
+      "directory": "demos/08-customer-support-no-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-46Z",
+      "allowed": true,
+      "files": {
+        "agent.yaml": "1a4f81262ee117e943d4e56f8fb8fbbd8211174c5b3dcf6a3448fe40eeddf392",
+        "features.yaml": "7a5c5f986fba7819b6443228103f50c9e6cc1c8f8fc1cbb5ef794b815144a941",
+        "profile.yaml": "a584bea0001f0abae4c7d1289ad7086b05b4901dda8c12a69a7dfd73bd96e9d8",
+        "report.yaml": "f46e347b6a074ed65a12401b6d46a8e0655ccd80a61cdb7432e0e4a76c3363db",
+        "run.yaml": "656991fb5cdd0cc156b9ce89bbceffd7ef384476375b2890599af1ba6372791e",
+        "scenarios/SC-101/artifacts/01-evidence-78979081-d28f-4236-bb71-3bc04f0b4ca4.json": "e305bd9f040af9494b481967b1206e882f3f89007164c511872ab34a268a018a",
+        "scenarios/SC-101/evidence/1-01-evidence-78979081-d28f-4236-bb71-3bc04f0b4ca4.json": "e305bd9f040af9494b481967b1206e882f3f89007164c511872ab34a268a018a",
+        "scenarios/SC-101/evidence/2-response.json": "1ad5ac471fd5633e0fc1cffdd3bb5bbeba56b58b722a50b70f220076e312ad34",
+        "scenarios/SC-101/evidence/collect.json": "cd873f89a75f0220d9b5e161c47c8b6e5b1f7b8db26c1ae89cdd187d477364e4",
+        "scenarios/SC-101/evidence/index.yaml": "4f7cc72dbea8d08575e8353d4eecf89fc9dd307e5cb36a3cb27cd978aed785c3",
+        "scenarios/SC-101/evidence/judge-working.json": "86ef4e89887a343a853ad05429f498370e0fd552a3925169e62c578ec97fa39f",
+        "scenarios/SC-101/hook-state/demo-evidence.json": "e305bd9f040af9494b481967b1206e882f3f89007164c511872ab34a268a018a",
+        "scenarios/SC-101/hook-state/demo-session.json": "597a01765974986f952e6fff108e9e76463ad24aaa91f0ded7a3ce737d45fd93",
+        "scenarios/SC-101/hook-state/evidence-78979081-d28f-4236-bb71-3bc04f0b4ca4.json": "e305bd9f040af9494b481967b1206e882f3f89007164c511872ab34a268a018a",
+        "scenarios/SC-101/hooks.json": "4089c93acf5b9147f2650589a2d8bd9a78fd29e6df1588a4ad6a84c91cfad6e1",
+        "scenarios/SC-101/request.json": "74a049a363887239204be675d8745d36dd9cde853c3a3562cbac4fa09abf7226",
+        "scenarios/SC-101/response.json": "1ad5ac471fd5633e0fc1cffdd3bb5bbeba56b58b722a50b70f220076e312ad34",
+        "scenarios/SC-101/snapshot.yaml": "7d0282797b53fdb6c89f541482c63fc9af2a12e7187afed0fabf4f1654f9a205",
+        "scenarios/SC-101/verdict.yaml": "da65c3124f239acf5b20bc52d3ae6cbee4b729ba27f38c89622b859effafe4a5"
+      }
+    }
+  ],
+  "portability": {
+    "description": "Project identifiers in paths are replaced with sample-project; absolute recording-workspace prefixes are removed. Original profile/tree pins in run.yaml describe the recorded inputs, before normalization. Each changed file records its original and published SHA-256.",
+    "files": [
+      {
+        "file": "demos/01-banking-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/profile.yaml",
+        "recordedSha256": "361382f8cd75a22ac036e4b8672d293f45824d200ae48b445e0507fd8ff5e626",
+        "publishedSha256": "c192f51b67871a548395ef8b5997404363fd12a5ceb700dc6def94a0474c67e7"
+      },
+      {
+        "file": "demos/01-banking-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/scenarios/SC-101/evidence/2-response.json",
+        "recordedSha256": "ce2803697e2b320f3451f0234395d94697413dfe9a1be4737419b4e6de3b1676",
+        "publishedSha256": "2fc5aa5f1f2a77b5f323c68c3bb31e59e961e74674554443fc79ace597711222"
+      },
+      {
+        "file": "demos/01-banking-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/scenarios/SC-101/evidence/collect.json",
+        "recordedSha256": "832a5ee96ee9192b6c2410c9ac3857ca0dd903fa36ea15b690babb26b2830278",
+        "publishedSha256": "2440be3de35ed231c21c810e12fed7acb226aab1c3d99067d05b7fde60b26a74"
+      },
+      {
+        "file": "demos/01-banking-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/scenarios/SC-101/evidence/index.yaml",
+        "recordedSha256": "b74723dfb0301802d9b380bc04d7904cb5b480e4eff0c771f839ae24a1d6093a",
+        "publishedSha256": "9d2111d16081ed6abbf62e0fa97805d3e1a7eddf8ebde564bb62e3989f35d02e"
+      },
+      {
+        "file": "demos/01-banking-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/scenarios/SC-101/evidence/judge-working.json",
+        "recordedSha256": "ace5c6d88abffbcc542c22345cc96abc925f4b64b3d64dbcffd879bc05830768",
+        "publishedSha256": "13ab876021f436ada97f47ac8ac8a24d879e92abd3ae2abd3123f1b962c3c480"
+      },
+      {
+        "file": "demos/01-banking-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/scenarios/SC-101/hooks.json",
+        "recordedSha256": "4f2abf1a05489302a8cbd88a6d337d5a4db9d5c40777254cb680e707b1b3da4b",
+        "publishedSha256": "3784b0565c4ad7355c40724eb0be5482a28e13c9211eb8e80ddc3b2adfb6e665"
+      },
+      {
+        "file": "demos/01-banking-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/scenarios/SC-101/response.json",
+        "recordedSha256": "ce2803697e2b320f3451f0234395d94697413dfe9a1be4737419b4e6de3b1676",
+        "publishedSha256": "2fc5aa5f1f2a77b5f323c68c3bb31e59e961e74674554443fc79ace597711222"
+      },
+      {
+        "file": "demos/02-banking-no-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-45Z/profile.yaml",
+        "recordedSha256": "361382f8cd75a22ac036e4b8672d293f45824d200ae48b445e0507fd8ff5e626",
+        "publishedSha256": "c192f51b67871a548395ef8b5997404363fd12a5ceb700dc6def94a0474c67e7"
+      },
+      {
+        "file": "demos/02-banking-no-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/1-response.json",
+        "recordedSha256": "eeea7b737a10460f077d4fd5a2a304bcf24176fb3f0334a67641c4e173eaa129",
+        "publishedSha256": "925603ea8dd3d2b65370f06e8b9fc5690defca5a07e59e6fb9e3cf81c4d6f5c0"
+      },
+      {
+        "file": "demos/02-banking-no-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/collect.json",
+        "recordedSha256": "d02d953d70164d7a7652b16c6d38f0e6d6d8551468b7aaf758922b17ca5ae001",
+        "publishedSha256": "c34d1eee861f0b08763e47a350a4c028899837025221a1f33ab100edab8a3cd8"
+      },
+      {
+        "file": "demos/02-banking-no-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/index.yaml",
+        "recordedSha256": "51ce0f2d7b85c34e898a417a588b7597f9e50a35fa25e47ed78fb0acbd0261b4",
+        "publishedSha256": "fb26b52660cebd5f083c75826defa8dbaf7326badda0b7d10d5b4f0b0422ae8e"
+      },
+      {
+        "file": "demos/02-banking-no-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/judge-working.json",
+        "recordedSha256": "fa3c6f725318953b9f066f040bc6947761c72902f4769964cc9d023be7258dce",
+        "publishedSha256": "3e7c0acd1eed753738ee79475ef053bda37e1e8095cdb5f37be1418f3d3c16a3"
+      },
+      {
+        "file": "demos/02-banking-no-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/hooks.json",
+        "recordedSha256": "52463577bf662c0cb02d8596a860196ed94b308cde206e2216364fc05ef7b6cf",
+        "publishedSha256": "0785f4392065a3b0ce1262e595a07982dc71b5d2c461c2e234f1ac24962910df"
+      },
+      {
+        "file": "demos/02-banking-no-code/.testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/response.json",
+        "recordedSha256": "eeea7b737a10460f077d4fd5a2a304bcf24176fb3f0334a67641c4e173eaa129",
+        "publishedSha256": "925603ea8dd3d2b65370f06e8b9fc5690defca5a07e59e6fb9e3cf81c4d6f5c0"
+      },
+      {
+        "file": "demos/03-healthcare-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/profile.yaml",
+        "recordedSha256": "439afc7827925862092c3771e6aced8223ab3f2a76dc1a3ac5e5d2ab28799b59",
+        "publishedSha256": "7d60b1a4477ab31a49cda8e700c5c72b1dec30cc5d0c7afde43dec6de68ddcf9"
+      },
+      {
+        "file": "demos/03-healthcare-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/2-response.json",
+        "recordedSha256": "c8c196ada3e117d8acd707b0c9a6d78af23a0d524fa3b0d1dee59046ba838e30",
+        "publishedSha256": "0c8b2ff90cde3785d11bd6b57e6c85b230768e92e335b3e1e0a5fab44caaf4d6"
+      },
+      {
+        "file": "demos/03-healthcare-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/collect.json",
+        "recordedSha256": "1c8998eb8ff696eb954c417e398709e46e76d4dd3a05592ff2dd35754ba6729c",
+        "publishedSha256": "14e7a00efd781e3254d14cb161b3a4a7a3b45f627d43440f4362a42812981ca6"
+      },
+      {
+        "file": "demos/03-healthcare-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/index.yaml",
+        "recordedSha256": "63602c7d65cd4953fb1d77690841bc834ba708be31b1ca1bbb8f85fc9af03c61",
+        "publishedSha256": "1a36d446dfd5d6b2ed691e88053de911549adea26fd2dcda9ef2a7f40dcf38a7"
+      },
+      {
+        "file": "demos/03-healthcare-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/judge-working.json",
+        "recordedSha256": "b42e672e574a30fc40fae2b42ccbae5988d9a02dc4a0519a082fce5218888328",
+        "publishedSha256": "f8380162ca4e159012d3bda10df3332e67c938218cefc620e9773818b0fef3ec"
+      },
+      {
+        "file": "demos/03-healthcare-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/hooks.json",
+        "recordedSha256": "02eef3a0fe9161ee98a4d407a999f8f6445f328d383e96cfd5b7c01dfc5b82ff",
+        "publishedSha256": "3be36f110756f284647c2360f4e3471300483841239171394c35f5070771916e"
+      },
+      {
+        "file": "demos/03-healthcare-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/response.json",
+        "recordedSha256": "c8c196ada3e117d8acd707b0c9a6d78af23a0d524fa3b0d1dee59046ba838e30",
+        "publishedSha256": "0c8b2ff90cde3785d11bd6b57e6c85b230768e92e335b3e1e0a5fab44caaf4d6"
+      },
+      {
+        "file": "demos/04-healthcare-no-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/profile.yaml",
+        "recordedSha256": "439afc7827925862092c3771e6aced8223ab3f2a76dc1a3ac5e5d2ab28799b59",
+        "publishedSha256": "7d60b1a4477ab31a49cda8e700c5c72b1dec30cc5d0c7afde43dec6de68ddcf9"
+      },
+      {
+        "file": "demos/04-healthcare-no-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/2-response.json",
+        "recordedSha256": "4b7c5a3dabeae854ae72026c878908298cb34f6e5f2056024f0bad3d87df8b53",
+        "publishedSha256": "af0c5cc9e573973005f894abe16b2664e43efc98907ebe68812dbab8e0223a82"
+      },
+      {
+        "file": "demos/04-healthcare-no-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/collect.json",
+        "recordedSha256": "70cca84a561715c018ffa854c1df09e53fc3e1e63d3aa42f5a9cd4dee15ef01b",
+        "publishedSha256": "e8c3d6bd90711822e59915eacac204d946ce9510b6fdd4ae7ee80134666e23e0"
+      },
+      {
+        "file": "demos/04-healthcare-no-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/index.yaml",
+        "recordedSha256": "0a3c7a0619ecb1a1bb58eea81ee755cc17ca261f3bf97f649263dd9f06bd67e7",
+        "publishedSha256": "12560d963f294353bcf0942e511e1bcb1a94335282bcf09c094a4d7b36e4aee3"
+      },
+      {
+        "file": "demos/04-healthcare-no-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/judge-working.json",
+        "recordedSha256": "194dd711205776e32278766c851320e2fdae8f5fdbc3870b1e6a4a7daf19ff15",
+        "publishedSha256": "efc2e18d0b93c435c7e1aaa5963f553b47621c209ee29fda7d12b123cc50b53c"
+      },
+      {
+        "file": "demos/04-healthcare-no-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/hooks.json",
+        "recordedSha256": "7167ae1ed2635e97ace765745cfa1b3b6f56ac973cfee0f1669fd62ce043aaeb",
+        "publishedSha256": "ea667067fea0be614921ca89e29a9be80c8540e60adb8c3659006173d3112539"
+      },
+      {
+        "file": "demos/04-healthcare-no-code/.testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/response.json",
+        "recordedSha256": "4b7c5a3dabeae854ae72026c878908298cb34f6e5f2056024f0bad3d87df8b53",
+        "publishedSha256": "af0c5cc9e573973005f894abe16b2664e43efc98907ebe68812dbab8e0223a82"
+      },
+      {
+        "file": "demos/05-insurance-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-45Z/profile.yaml",
+        "recordedSha256": "86856336c0dda5457b520c3c688ebde63a1e2b87c3c42ccda1fa5effb1de1045",
+        "publishedSha256": "5facd060aae94eb3033cfdfc24e13eb59df9f15e298c1b450fb406f0ca2a77fb"
+      },
+      {
+        "file": "demos/05-insurance-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/2-response.json",
+        "recordedSha256": "3ca8b5057d22ec60488453b318a3925f2b242694ca770f68abdd7ea1c172212f",
+        "publishedSha256": "ef7efe136e09f755ebe8368e9936cddc54e680bbeadfbf4a0d36f63aeb8209e5"
+      },
+      {
+        "file": "demos/05-insurance-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/collect.json",
+        "recordedSha256": "88d90a3316392e37388b388a4349e70cfb14267e8e547450ae39645315281f1e",
+        "publishedSha256": "f31873c8c6f9ebedda5a21dbc74b36b0ed65a63a48fe7a7e73eff8e8c65d038f"
+      },
+      {
+        "file": "demos/05-insurance-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/index.yaml",
+        "recordedSha256": "bafaaa64991441ccb555e42c8c8317e9240ac0f02bffc295ae119cd671707eff",
+        "publishedSha256": "fa6d718cd21b4075c0424fadf2124d57242e2d0617c2f5c2f7b5039f163b8293"
+      },
+      {
+        "file": "demos/05-insurance-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/judge-working.json",
+        "recordedSha256": "2296fc61bcbccff9d374c18be030934cb45be79a6472f420b7ab5ab144ad2e04",
+        "publishedSha256": "1a9bf83d82bd911eaa7e3a4814b2bb566fe50e1aedd23e47a5f1e3a814a259ab"
+      },
+      {
+        "file": "demos/05-insurance-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/hooks.json",
+        "recordedSha256": "8de73091259032afec8cdfce660abd12a7f7fc117784021752ca18ac3c2b4083",
+        "publishedSha256": "eb37558cfb1cf88f4c735fc62f21223d7c7ffe6473d5dab3a8b2fa9b0b8e7b11"
+      },
+      {
+        "file": "demos/05-insurance-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/response.json",
+        "recordedSha256": "3ca8b5057d22ec60488453b318a3925f2b242694ca770f68abdd7ea1c172212f",
+        "publishedSha256": "ef7efe136e09f755ebe8368e9936cddc54e680bbeadfbf4a0d36f63aeb8209e5"
+      },
+      {
+        "file": "demos/06-insurance-no-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-46Z/profile.yaml",
+        "recordedSha256": "86856336c0dda5457b520c3c688ebde63a1e2b87c3c42ccda1fa5effb1de1045",
+        "publishedSha256": "5facd060aae94eb3033cfdfc24e13eb59df9f15e298c1b450fb406f0ca2a77fb"
+      },
+      {
+        "file": "demos/06-insurance-no-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/evidence/2-response.json",
+        "recordedSha256": "98df937dd2beb052473d4f9f59316e77cb827418865b9e8136339ba3f0e6d762",
+        "publishedSha256": "0d453bc9c34c029d45ecfa37f102cad939789d598b84c3b8e0ea0b7021065a89"
+      },
+      {
+        "file": "demos/06-insurance-no-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/evidence/collect.json",
+        "recordedSha256": "5ec7751fc56a0384c03dd4127ca350ee3dbe51a86e0761c39b0ae370cc3dc585",
+        "publishedSha256": "3f04e64145deb370338750bebfc789eab5d63a54aabea8d2a33ea6ab6616afa6"
+      },
+      {
+        "file": "demos/06-insurance-no-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/evidence/index.yaml",
+        "recordedSha256": "269bc5f5f373d4d2f4053d644a3712aabdc2e30d90bf024ee76490813854e0e9",
+        "publishedSha256": "aeeda60528c73f92098ffbc9d15f749c327a1a844593949bb54975dbb6ac84b5"
+      },
+      {
+        "file": "demos/06-insurance-no-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/evidence/judge-working.json",
+        "recordedSha256": "0ba52981c15fc5001aa1c13e8c777717e8dfd42b3105c35a2c3811b52414546e",
+        "publishedSha256": "177c0dc9ddb50629311158ad1494775c9c31123b8c571234aa550c5b2749516a"
+      },
+      {
+        "file": "demos/06-insurance-no-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/hooks.json",
+        "recordedSha256": "3447b5b5251213d7d465526b99534e1dfe950604cef42e96e9d94e82aaa1442b",
+        "publishedSha256": "9dca35fb9ae717d098bb80622bfc5caf9711db67c5044637bc7dc3a348fb8226"
+      },
+      {
+        "file": "demos/06-insurance-no-code/.testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/response.json",
+        "recordedSha256": "98df937dd2beb052473d4f9f59316e77cb827418865b9e8136339ba3f0e6d762",
+        "publishedSha256": "0d453bc9c34c029d45ecfa37f102cad939789d598b84c3b8e0ea0b7021065a89"
+      },
+      {
+        "file": "demos/07-customer-support-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-45Z/profile.yaml",
+        "recordedSha256": "0d4d5656f51cda3ae43bee7302cb5a575f83229c7f2b92b44dfba6c141d9933f",
+        "publishedSha256": "a584bea0001f0abae4c7d1289ad7086b05b4901dda8c12a69a7dfd73bd96e9d8"
+      },
+      {
+        "file": "demos/07-customer-support-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/collect.json",
+        "recordedSha256": "63446fd301af2ce0209994b61e33710f649355ebe90b0b90f5152635d7fc55a6",
+        "publishedSha256": "2832e616ad818f6c5bd5f3c4f8930b63c75b96a865a8ac12b30872fca862059e"
+      },
+      {
+        "file": "demos/07-customer-support-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/index.yaml",
+        "recordedSha256": "a5f2d5083552160bc77afd178965c82a45711b068c90b3745d082c42be6fc9d2",
+        "publishedSha256": "712054a3de27e7b52227d3a0eca9114d2b339c3b66862a30af9d52db6412a7d2"
+      },
+      {
+        "file": "demos/07-customer-support-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/evidence/judge-working.json",
+        "recordedSha256": "c8f4bf02e6b31eeb8650b0059b0c16cbec01d9a642a02412baa3704b57c1285c",
+        "publishedSha256": "6afecc13ffd5b5e97854ce86f450ae1e11b7d518d685d894c16d4a5dc7a71bc3"
+      },
+      {
+        "file": "demos/07-customer-support-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/hooks.json",
+        "recordedSha256": "b7de15a58523e35182fececb7ac99bbf4a62afbf6fccb957567a6ae870353ef7",
+        "publishedSha256": "7f3dbea2db0e50e9b3ecf391fba749de24ead153b15c58e81a362010f891f4d0"
+      },
+      {
+        "file": "demos/07-customer-support-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/response.json",
+        "recordedSha256": "c5d2620a0a9c9392cc55872f95ffad0e1d7a8e812cb31149f199c7697ac19c71",
+        "publishedSha256": "018d1dd48e7daff7d5382d8418fd44e7b3400842683b303d1d2fcc91d0b2344b"
+      },
+      {
+        "file": "demos/08-customer-support-no-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-46Z/profile.yaml",
+        "recordedSha256": "0d4d5656f51cda3ae43bee7302cb5a575f83229c7f2b92b44dfba6c141d9933f",
+        "publishedSha256": "a584bea0001f0abae4c7d1289ad7086b05b4901dda8c12a69a7dfd73bd96e9d8"
+      },
+      {
+        "file": "demos/08-customer-support-no-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/evidence/2-response.json",
+        "recordedSha256": "a1234cb626809c6d4731229495f5b35f40a60ccf0c2ab8d5310dc37536a95f9d",
+        "publishedSha256": "1ad5ac471fd5633e0fc1cffdd3bb5bbeba56b58b722a50b70f220076e312ad34"
+      },
+      {
+        "file": "demos/08-customer-support-no-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/evidence/collect.json",
+        "recordedSha256": "df81213eabfc20d0dfacc68cf031d51e88413f9326191eb927f86188515288b1",
+        "publishedSha256": "cd873f89a75f0220d9b5e161c47c8b6e5b1f7b8db26c1ae89cdd187d477364e4"
+      },
+      {
+        "file": "demos/08-customer-support-no-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/evidence/index.yaml",
+        "recordedSha256": "5d996c380a07470c24cfde0adef8ac41d75f733c2b34781670cf7c1fd0835480",
+        "publishedSha256": "4f7cc72dbea8d08575e8353d4eecf89fc9dd307e5cb36a3cb27cd978aed785c3"
+      },
+      {
+        "file": "demos/08-customer-support-no-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/evidence/judge-working.json",
+        "recordedSha256": "143633224a313fd59e1196a25bfff4a16d4739461bf80fd930b5717fcd995cea",
+        "publishedSha256": "86ef4e89887a343a853ad05429f498370e0fd552a3925169e62c578ec97fa39f"
+      },
+      {
+        "file": "demos/08-customer-support-no-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/hooks.json",
+        "recordedSha256": "4e882b47b3a54c68e434f2a2719f27cd9fa5dacb857fe62b7d43c27f4a235164",
+        "publishedSha256": "4089c93acf5b9147f2650589a2d8bd9a78fd29e6df1588a4ad6a84c91cfad6e1"
+      },
+      {
+        "file": "demos/08-customer-support-no-code/.testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/response.json",
+        "recordedSha256": "a1234cb626809c6d4731229495f5b35f40a60ccf0c2ab8d5310dc37536a95f9d",
+        "publishedSha256": "1ad5ac471fd5633e0fc1cffdd3bb5bbeba56b58b722a50b70f220076e312ad34"
+      }
+    ]
+  }
+}

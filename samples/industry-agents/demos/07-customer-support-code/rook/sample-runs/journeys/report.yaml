@@ -1,0 +1,47 @@
+run_id: 2026-09-17T14-47-46Z
+agent_id: returns-refunds-assistant
+generated: '2026-09-17T14:49:05.414Z'
+totals:
+  planned: 3
+  executed: 3
+  passed: 3
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 3
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 60.481899999999996
+  duration_ms: 69338
+  tokens_in: 4575
+  tokens_out: 249
+  latency_p50_ms: 7073
+  latency_p95_ms: 10807
+  turns_total: 4
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 2
+clusters: []
+credits: 8.979750000000001
+headline: >-
+  The agent passed all three executed test scenarios, but narrow coverage leaves major security and
+  business boundaries unverified.
+narrative: >-
+  All three executed scenarios passed without recorded failures or safety compromises. However,
+  evaluating only three scenarios out of ten defined features—alongside one unrunnable
+  scenario—creates a substantial assurance gap. Critical capabilities including cross-customer data
+  isolation, policy enforcement, export controls, and role-hijacking resistance were not tested in
+  this run. Passing a small subset of standard workflows does not license claims of broader
+  operational safety or system readiness.
+next:
+  - Investigate and fix the single unrunnable scenario.
+  - >-
+    Add test scenarios targeting untested features F-004 through F-010, focusing on data boundary
+    defense and prompt injection resistance.

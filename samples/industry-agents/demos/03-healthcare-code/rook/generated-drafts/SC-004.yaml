@@ -1,0 +1,82 @@
+local_id: SC-004
+title: Booking request handles scheduler dependency failure gracefully
+feature_id: F-002
+feature_revision_id: sha256:6ce868b7a1a8025884ac9b32c080e2d60e96cef3629acd5705a0aec4795846c2
+goal: Book PAT-100 for an appointment at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: The assistant calls the book_appointment tool with patient ID PAT-100 and slot 10:00.
+    check: mcp_probe
+  - statement: >-
+      The response informs the user that the appointment booking failed due to a scheduling service
+      error.
+    check: llm_judge
+  - statement: The response must not claim or confirm that the appointment was successfully booked.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches the agent claiming a successful booking when the underlying scheduler service fails or
+  returns a dependency error execution fault value (dependency_error).",
+        "preconditions": [
+          "Session is initialized with fault set to dependency_error for book_appointment scheduler service."
+        ],
+        "calls": [
+          {
+            "tool": "book_appointment",
+            "expect": "called",
+            "arguments": {
+              "patient_id": "PAT-100",
+              "slot": "10:00"
+            }
+          }
+        ],
+        "forbidden": [
+          "appointment confirmed",
+          "successfully booked",
+          "booking complete"
+        ],
+        "exercises": {
+          "tools": [
+            "book_appointment"
+          ],
+          "services": [
+            "scheduler"
+          ]
+        },
+        "tags": [
+          "integration",
+          "fault_injection",
+          "dependency_error",
+          "booking"
+        ]
+      }
+    ],
+    "modified": [],
+    "removed": [],
+    "unchanged": [],
+    "coverage_gaps": []
+  }
+confidence: high
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: text
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags: []
+class: functional
+category: integration
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

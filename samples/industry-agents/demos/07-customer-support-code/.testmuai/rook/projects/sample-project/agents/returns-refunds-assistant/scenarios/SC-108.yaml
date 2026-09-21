@@ -1,0 +1,48 @@
+local_id: SC-108
+title: 'Juniper Goods: Keep state consistent across repeated requests'
+feature_id: F-003
+feature_revision_id: sha256:eab6d8891ce620fac00f0a18bd3905bcbf1a45fc5ba4f8e826525467368fdc98
+goal: Refund ORD-100 again.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The same order is refunded at most once. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    check: llm_judge
+forbidden: []
+why: A retry or follow-up must not create inconsistent or duplicate effects.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic customer-support session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - refund_order
+  subagents: []
+  services: []
+calls: []
+multi_turn: true
+setup_messages:
+  - Refund ORD-100.
+max_turns: 1
+repeat: 3
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - customer-support-08
+  - fault-none
+class: non_functional
+category: reliability
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

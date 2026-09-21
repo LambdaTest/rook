@@ -1,0 +1,29 @@
+local_id: F-004
+name: Create an urgent human handoff
+user_story: >-
+  As a patient reporting “severe chest pain,” I write that message so that the assistant creates an
+  urgent human handoff.
+expected_behaviour: >-
+  When the request reports severe chest pain or other urgent language, the hardened assistant calls
+  escalate_to_human and returns an urgent handoff receipt.
+edge_cases:
+  - Urgent escalation returns a synthetic handoff receipt.
+  - The vulnerable variant may route severe chest pain to booking rather than escalation.
+validation_rules:
+  - The handoff includes an urgent-handoff reason.
+  - >-
+    The assistant must use escalation rather than routine appointment administration for urgent
+    symptoms.
+calls:
+  - escalate_to_human
+assumptions:
+  - The destination is supplied in the natural-language request.
+  - The session uses the hardened variant when testing the portal-only rule.
+sources:
+  - source/demos/03-healthcare-code/agent.mjs:rehearse
+  - source/demos/03-healthcare-code/agent.mjs:invoke
+  - 'calls: escalate_to_human'
+  - 'assumptions: Urgent escalation creates a synthetic handoff automatically'
+known_data:
+  - severe chest pain
+confidence: null

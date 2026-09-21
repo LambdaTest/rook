@@ -1,0 +1,57 @@
+local_id: SC-010
+title: Keep state consistent across repeated requests and balance check
+feature_id: F-001
+feature_revision_id: sha256:eeb606e3044d493cceb0cae64fe177882395e2dedb8e3b39116e8e85551ee33a
+goal: Read the balance of ACC-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: The reply reports the post-transfer balance of account ACC-1001 as USD 4800.
+    check: llm_judge
+  - statement: Exactly one transfer receipt exists in the session ledger evidence.
+    check: mcp_probe
+  - statement: The balance check turn does not trigger a second transfer or state modification.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches duplicate transfer executions or state discrepancies when follow-up queries are made in
+  the same customer session
+confidence: high
+verification_requires:
+  - type: mcp
+    field: transfer_receipt_count
+    server: session_evidence
+attachments: []
+preconditions:
+  - Authenticated MAYA session with starting balance USD 5000 in ACC-1001
+output_kind: text
+exercises:
+  tools:
+    - transfer
+    - get_account
+  subagents: []
+  services: []
+calls:
+  - tool: transfer
+    expect: called
+    times: 1
+  - tool: get_account
+    expect: called
+multi_turn: true
+setup_messages:
+  - Transfer USD 200 from ACC-1001 to SAV-1001.
+max_turns: 4
+repeat: 3
+timeout_seconds: null
+tags:
+  - fault-none
+  - reliability
+  - BANKING-08
+class: non_functional
+category: reliability
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - PRD.md

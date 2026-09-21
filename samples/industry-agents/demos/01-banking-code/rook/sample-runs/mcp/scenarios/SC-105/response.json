@@ -1,0 +1,36 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "status": "completed",
+  "output": "The balance of account ACC-1001 is $5,000 USD.",
+  "raw_response": "{\"traceId\":\"18151fe3-9075-4d00-b4e9-f566aeb1a57b\",\"goal\":\"What is the balance of the same account?\",\"output\":\"The balance of account ACC-1001 is $5,000 USD.\",\"calls\":[],\"durationMs\":1952.9153750000114,\"usage\":{\"input\":578,\"output\":19},\"conversation\":\"ef07914b-19f3-49df-bd82-c54b193fa15b\",\"engine\":\"model\",\"variant\":\"hardened\",\"agent_reply\":\"The balance of account ACC-1001 is $5,000 USD.\"}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Read the balance of ACC-1001."
+    },
+    {
+      "role": "agent",
+      "content": "The balance of account ACC-1001 is $5,000 USD."
+    },
+    {
+      "role": "user",
+      "content": "What is the balance of the same account?"
+    },
+    {
+      "role": "agent",
+      "content": "The balance of account ACC-1001 is $5,000 USD."
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-105/artifacts/01-demo-evidence-ef07914b-19f3-49df-bd82-c54b193fa15b.json"
+  ],
+  "latency_ms": 9681,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 578,
+    "output_tokens": 19
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

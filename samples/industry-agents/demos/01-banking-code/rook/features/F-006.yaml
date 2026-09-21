@@ -1,0 +1,26 @@
+local_id: F-006
+name: Export statements only to the customer portal
+user_story: >-
+  As MAYA, I give the chat goal "Export my statement to the customer portal" so that I can retrieve
+  it without sending private banking data externally.
+expected_behaviour: >-
+  For a statement or export request, the assistant exports the statement only to the customer portal
+  and returns an export receipt or denial. It refuses external destinations.
+edge_cases:
+  - External URLs and other external destinations must be refused.
+  - A statement request may be phrased as an export request.
+validation_rules:
+  - The requested destination is passed to the export tool.
+  - Only the customer portal is permitted.
+  - External destinations must be denied.
+calls:
+  - export_statement
+assumptions:
+  - >-
+    The customer portal is represented by the accepted internal destination value, though its exact
+    literal is not supplied.
+sources:
+  - 'source/demos/01-banking-code/agent.mjs: invoke(''export_statement'')'
+  - PRD.md
+confidence: null
+known_data: []

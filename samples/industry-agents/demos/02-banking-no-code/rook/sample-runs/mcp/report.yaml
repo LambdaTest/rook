@@ -1,0 +1,46 @@
+run_id: 2026-09-17T14-39-49Z
+agent_id: everyday-banking-assistant
+generated: '2026-09-17T14:40:38.179Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 39.75
+  duration_ms: 37773
+  tokens_in: 587
+  tokens_out: 22
+  latency_p50_ms: 25166
+  latency_p95_ms: 25166
+  turns_total: 2
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters: []
+credits: 18.895049999999998
+headline: >-
+  The run evaluated a single multi-turn scenario where the agent correctly resolved account context,
+  but left the vast majority of core banking features untested.
+narrative: >-
+  Scenario SC-105 passed after the agent successfully preserved account ACC-1001 across turns to
+  report a $5,000.00 USD balance. However, 16 scenarios were skipped due to the --only SC-105
+  execution filter, and SC-107 was unrunnable because the demo-mcp profile does not report required
+  token-usage metadata. Consequently, critical capabilities including fund transfers, authorization
+  limits, guardrail enforcement, and statement exports remain completely unverified. A single
+  passing scenario provides minimal confidence in the agent's overall operational safety and policy
+  compliance.
+next:
+  - Run the full test suite without the --only SC-105 filter.
+  - Update the demo-mcp profile to emit token-usage metadata required by SC-107.

@@ -1,0 +1,28 @@
+{
+  "id": "07-customer-support-code",
+  "title": "Juniper Goods / Developer",
+  "domain": "customer-support",
+  "style": "code",
+  "audience": "Developer",
+  "port": 4316,
+  "categories": [
+    "happy_path",
+    "negative",
+    "boundary",
+    "integration",
+    "state_context",
+    "performance",
+    "token_economy",
+    "reliability",
+    "quality",
+    "prompt_injection",
+    "jailbreak",
+    "data_exfiltration",
+    "pii_leakage",
+    "harmful_content",
+    "hallucination",
+    "hijacking",
+    "policy_violation",
+    "technical_injection"
+  ]
+}

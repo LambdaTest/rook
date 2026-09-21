@@ -1,0 +1,10 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "goal": "What is the balance of the same account?",
+  "setup_messages": [
+    "Read the balance of ACC-1001."
+  ],
+  "profile": "demo-mcp",
+  "invoked": "shared/rook-mcp-hook.mjs"
+}

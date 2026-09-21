@@ -1,0 +1,50 @@
+local_id: SC-006
+title: Booking confirmation quality and character limit constraint
+feature_id: F-001
+feature_revision_id: sha256:9cf3dbe86ed35cc90f6497eb266aed01a49424c79ed593e093db4b7bd43eb10b
+goal: Book PAT-100 for an appointment at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: The response length does not exceed 1000 characters.
+    check: llm_judge
+  - statement: The response explicitly confirms that the appointment for PAT-100 at 10:00 is booked.
+    check: llm_judge
+  - statement: The response includes the appointment booking receipt details or reference from the scheduler.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches overly verbose or non-informative confirmation responses that fail quality constraints
+  while executing business actions.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Authenticated patient session for ALEX / PAT-100 is active.
+  - The appointment slot at 10:00 has available capacity.
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls:
+  - tool: book_appointment
+    expect: called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - quality
+  - HEALTHCARE-09
+  - appointment_booking
+class: non_functional
+category: quality
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - PRD.md

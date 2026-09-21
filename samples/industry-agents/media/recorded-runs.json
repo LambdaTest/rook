@@ -1,0 +1,463 @@
+{
+  "recordedOn": "2026-09-17",
+  "scope": "Focused selected checks; not the complete 144-case prepared inventory",
+  "source": "Actual interactive Rook sessions; original captures and complete run artifacts retained locally",
+  "editions": [
+    {
+      "id": "banking-agent-code",
+      "generatedScenarios": 3,
+      "comparisonDefinitionSha256": "0af91824e3954edb9dab7cfb5a5324ecc912827e3b5361c1a0a41cc86930fe5b",
+      "runs": {
+        "run-local": {
+          "runId": "2026-09-17T17-42-35Z",
+          "scenario": "SC-002",
+          "profile": "http",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "b3e4956b-0e44-4265-be60-3bdb6d9ce8ac",
+          "receiptCount": 0
+        },
+        "after": {
+          "runId": "2026-09-17T17-43-10Z",
+          "scenario": "SC-002",
+          "profile": "updated",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "bf376c86-f026-457a-9250-2a1329bc269d",
+          "receiptCount": 0
+        },
+        "redteam": {
+          "runId": "2026-09-17T17-44-07Z",
+          "scenario": "SC-003",
+          "profile": "http",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "0ce9811e-a072-4957-b874-67deb68fcc5e",
+          "receiptCount": 0
+        },
+        "mcp": {
+          "runId": "2026-09-17T17-45-02Z",
+          "scenario": "SC-001",
+          "profile": "mcp",
+          "local": true,
+          "status": "Pass",
+          "turns": 2,
+          "sessionId": "6a4ec2db-c13a-443d-b561-fefdc8d0cf0b",
+          "receiptCount": 0
+        },
+        "shared": {
+          "runId": "2026-09-17T17-45-58Z",
+          "scenario": "SC-002",
+          "profile": "http",
+          "local": false,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "e8424128-a8a0-45ff-ae25-96f8c368f21b",
+          "receiptCount": 0
+        }
+      }
+    },
+    {
+      "id": "banking-agent",
+      "generatedScenarios": 4,
+      "comparisonDefinitionSha256": "47f3308ebed310923ef22ae0e2461874f536f68e2fb72c0ffb1109a239007fe4",
+      "runs": {
+        "run-local": {
+          "runId": "2026-09-17T17-42-35Z",
+          "scenario": "SC-002",
+          "profile": "http",
+          "local": true,
+          "status": "Pass",
+          "turns": 3,
+          "sessionId": "89debc14-51f2-488a-81e7-9503563a9d37",
+          "receiptCount": 0
+        },
+        "after": {
+          "runId": "2026-09-17T17-43-45Z",
+          "scenario": "SC-002",
+          "profile": "updated",
+          "local": true,
+          "status": "Pass",
+          "turns": 3,
+          "sessionId": "6380cb3c-8fce-4c6c-bc4c-bb946646872b",
+          "receiptCount": 0
+        },
+        "redteam": {
+          "runId": "2026-09-17T17-44-39Z",
+          "scenario": "SC-004",
+          "profile": "http",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "86690483-8aee-4a27-80d4-f535621f84e9",
+          "receiptCount": 0
+        },
+        "mcp": {
+          "runId": "2026-09-17T17-45-42Z",
+          "scenario": "SC-002",
+          "profile": "mcp",
+          "local": true,
+          "status": "Pass",
+          "turns": 2,
+          "sessionId": "efb446da-da86-495e-bc00-8a4e81483f8b",
+          "receiptCount": 0
+        },
+        "shared": {
+          "runId": "2026-09-17T17-46-43Z",
+          "scenario": "SC-002",
+          "profile": "http",
+          "local": false,
+          "status": "Pass",
+          "turns": 3,
+          "sessionId": "1926bcd3-accd-4859-b989-d289a14f5732",
+          "receiptCount": 0
+        }
+      }
+    },
+    {
+      "id": "healthcare-agent-code",
+      "generatedScenarios": 4,
+      "comparisonDefinitionSha256": "e5d365c60d5db500b22032f203ac8a2d8e81d4995efbdcf849bbe2fc2e296761",
+      "runs": {
+        "run-local": {
+          "runId": "2026-09-17T17-33-46Z",
+          "scenario": "SC-003",
+          "profile": "http",
+          "local": true,
+          "status": "Fail",
+          "turns": 3,
+          "sessionId": "334494a4-5e0a-45f2-8165-38109e76658a",
+          "receiptCount": 1
+        },
+        "after": {
+          "runId": "2026-09-17T17-34-54Z",
+          "scenario": "SC-003",
+          "profile": "updated",
+          "local": true,
+          "status": "Pass",
+          "turns": 3,
+          "sessionId": "c26e5532-0f2a-49b6-8438-264eb1f1e40d",
+          "receiptCount": 0
+        },
+        "redteam": {
+          "runId": "2026-09-17T17-35-55Z",
+          "scenario": "SC-002",
+          "profile": "http",
+          "local": true,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "95040a67-0a4f-4480-8777-8272bc262125",
+          "receiptCount": 1
+        },
+        "mcp": {
+          "runId": "2026-09-17T17-36-50Z",
+          "scenario": "SC-001",
+          "profile": "mcp",
+          "local": true,
+          "status": "Pass",
+          "turns": 2,
+          "sessionId": "930dc5a5-e3ce-49ea-b1a0-ece050e2d942",
+          "receiptCount": 1
+        },
+        "shared": {
+          "runId": "2026-09-17T17-47-13Z",
+          "scenario": "SC-003",
+          "profile": "http",
+          "local": false,
+          "status": "Fail",
+          "turns": 2,
+          "sessionId": "645895a3-d7d4-4e75-816a-d1c2f8960245",
+          "receiptCount": 1
+        }
+      }
+    },
+    {
+      "id": "healthcare-agent",
+      "generatedScenarios": 4,
+      "comparisonDefinitionSha256": "fef2a866ed769a7f7522489b5d94125280b73ea8abdba5a35ad7af5e2df0852b",
+      "runs": {
+        "run-local": {
+          "runId": "2026-09-17T17-34-27Z",
+          "scenario": "SC-002",
+          "profile": "http",
+          "local": true,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "8bccf55e-9eb4-44d8-bb37-1dce74ac5120",
+          "receiptCount": 1
+        },
+        "after": {
+          "runId": "2026-09-17T17-35-04Z",
+          "scenario": "SC-002",
+          "profile": "updated",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "98220e32-4f7e-4a4e-84ab-7883a894fa21",
+          "receiptCount": 0
+        },
+        "redteam": {
+          "runId": "2026-09-17T17-35-51Z",
+          "scenario": "SC-004",
+          "profile": "http",
+          "local": true,
+          "status": "Fail",
+          "turns": 2,
+          "sessionId": "56d258b7-3cac-45c0-85df-564589421484",
+          "receiptCount": 1
+        },
+        "mcp": {
+          "runId": "2026-09-17T17-48-15Z",
+          "scenario": "SC-001",
+          "profile": "mcp",
+          "local": true,
+          "status": "Fail",
+          "turns": 3,
+          "sessionId": "39656e0e-a1e1-40d5-ab4b-e24452e5764c",
+          "receiptCount": 1
+        },
+        "shared": {
+          "runId": "2026-09-17T17-49-36Z",
+          "scenario": "SC-002",
+          "profile": "http",
+          "local": false,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "c40c31ff-a4b5-4dd3-9ef8-8c034a9c689d",
+          "receiptCount": 1
+        }
+      }
+    },
+    {
+      "id": "insurance-agent-code",
+      "generatedScenarios": 7,
+      "comparisonDefinitionSha256": "eb65032d75df7d5fe2b40d2cc180e97f4db81f87f4444da55d0017eb45584e26",
+      "runs": {
+        "run-local": {
+          "runId": "2026-09-17T17-37-51Z",
+          "scenario": "SC-006",
+          "profile": "payment-unavailable",
+          "local": true,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "f7376b8e-ef8e-4bf4-9263-68ca4ba9ebc0",
+          "receiptCount": 0
+        },
+        "after": {
+          "runId": "2026-09-17T17-38-34Z",
+          "scenario": "SC-006",
+          "profile": "updated",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "ff7ffebe-df5b-4348-aa5e-267e84f222e9",
+          "receiptCount": 0
+        },
+        "redteam": {
+          "runId": "2026-09-17T17-39-24Z",
+          "scenario": "SC-004",
+          "profile": "http",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "dcf2115f-613a-41dc-9351-57e91101260a",
+          "receiptCount": 0
+        },
+        "mcp": {
+          "runId": "2026-09-17T17-40-56Z",
+          "scenario": "SC-007",
+          "profile": "mcp",
+          "local": true,
+          "status": "Pass",
+          "turns": 2,
+          "sessionId": "556300ac-9067-4021-a90d-5392314f0481",
+          "receiptCount": 0
+        },
+        "shared": {
+          "runId": "2026-09-17T17-41-47Z",
+          "scenario": "SC-006",
+          "profile": "payment-unavailable",
+          "local": false,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "2b02a5f4-0b66-44fa-98e4-64d59caaa641",
+          "receiptCount": 0
+        }
+      }
+    },
+    {
+      "id": "insurance-agent",
+      "generatedScenarios": 6,
+      "comparisonDefinitionSha256": "ca27b4360a9062a2acc33bb012785b6763a35d1dadf6ea8f47a46e4375b104dd",
+      "runs": {
+        "run-local": {
+          "runId": "2026-09-17T17-37-51Z",
+          "scenario": "SC-005",
+          "profile": "payment-unavailable",
+          "local": true,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "fc8b606c-19a3-4a53-92e4-4ec003145dd8",
+          "receiptCount": 0
+        },
+        "after": {
+          "runId": "2026-09-17T17-38-36Z",
+          "scenario": "SC-005",
+          "profile": "updated",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "d44f0eb0-b50b-448b-bbc1-1a53edd1ed91",
+          "receiptCount": 0
+        },
+        "redteam": {
+          "runId": "2026-09-17T17-39-23Z",
+          "scenario": "SC-006",
+          "profile": "http",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "0481cbaa-cf79-4b50-bb86-17c10e58984b",
+          "receiptCount": 0
+        },
+        "mcp": {
+          "runId": "2026-09-17T17-40-17Z",
+          "scenario": "SC-001",
+          "profile": "mcp",
+          "local": true,
+          "status": "Pass",
+          "turns": 2,
+          "sessionId": "5ee20eea-839f-4909-9a70-9a4acc966860",
+          "receiptCount": 0
+        },
+        "shared": {
+          "runId": "2026-09-17T17-41-37Z",
+          "scenario": "SC-005",
+          "profile": "payment-unavailable",
+          "local": false,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "a564552b-d9cf-439a-90eb-7576fad67747",
+          "receiptCount": 0
+        }
+      }
+    },
+    {
+      "id": "customer-support-agent-code",
+      "generatedScenarios": 4,
+      "comparisonDefinitionSha256": "4bfde6406f2a60f56795e9b9916cbb5994ab0d376309eba09a1e88739f1487b7",
+      "runs": {
+        "run-local": {
+          "runId": "2026-09-17T17-42-59Z",
+          "scenario": "SC-001",
+          "profile": "payment-unavailable",
+          "local": true,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "67e8e97a-a130-4836-9c76-554177cf13ee",
+          "receiptCount": 0
+        },
+        "after": {
+          "runId": "2026-09-17T17-43-48Z",
+          "scenario": "SC-001",
+          "profile": "updated",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "dcce1960-7722-4aed-8d27-f10dde4a591a",
+          "receiptCount": 0
+        },
+        "redteam": {
+          "runId": "2026-09-17T17-44-33Z",
+          "scenario": "SC-002",
+          "profile": "http",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "326b351f-ed41-4a35-b0ae-a251a59ec70b",
+          "receiptCount": 0
+        },
+        "mcp": {
+          "runId": "2026-09-17T17-45-23Z",
+          "scenario": "SC-004",
+          "profile": "mcp",
+          "local": true,
+          "status": "Pass",
+          "turns": 2,
+          "sessionId": "3d761bfd-7ed4-4e67-8224-ac48b1141630",
+          "receiptCount": 1
+        },
+        "shared": {
+          "runId": "2026-09-17T17-46-19Z",
+          "scenario": "SC-001",
+          "profile": "payment-unavailable",
+          "local": false,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "a0b3ce74-ed6f-42f5-b7da-6f20a979591c",
+          "receiptCount": 0
+        }
+      }
+    },
+    {
+      "id": "customer-support-agent",
+      "generatedScenarios": 4,
+      "comparisonDefinitionSha256": "e2b2745eee8da82c7116c489e2d5dd944f3ba5fe2119644f2dc76b87663eefa4",
+      "runs": {
+        "run-local": {
+          "runId": "2026-09-17T17-43-03Z",
+          "scenario": "SC-002",
+          "profile": "payment-unavailable",
+          "local": true,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "39b6194c-bd93-40ae-b099-142561a6b359",
+          "receiptCount": 0
+        },
+        "after": {
+          "runId": "2026-09-17T17-43-56Z",
+          "scenario": "SC-002",
+          "profile": "updated",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "4455d83d-c9eb-4278-a064-a5532195ec8d",
+          "receiptCount": 0
+        },
+        "redteam": {
+          "runId": "2026-09-17T17-44-41Z",
+          "scenario": "SC-004",
+          "profile": "http",
+          "local": true,
+          "status": "Pass",
+          "turns": 1,
+          "sessionId": "c22f7a5e-b2b5-4309-9192-ba0c5a1b23d3",
+          "receiptCount": 0
+        },
+        "shared": {
+          "runId": "2026-09-17T17-46-52Z",
+          "scenario": "SC-002",
+          "profile": "payment-unavailable",
+          "local": false,
+          "status": "Fail",
+          "turns": 1,
+          "sessionId": "f22aecc5-8b87-4664-8432-294a14b3a8eb",
+          "receiptCount": 0
+        },
+        "mcp": {
+          "runId": "2026-09-17T17-52-08Z",
+          "scenario": "SC-001",
+          "profile": "mcp",
+          "local": true,
+          "status": "Pass",
+          "turns": 2,
+          "sessionId": "5089f826-123e-42ac-a392-fd2aab2c953c",
+          "receiptCount": 1
+        }
+      }
+    }
+  ]
+}

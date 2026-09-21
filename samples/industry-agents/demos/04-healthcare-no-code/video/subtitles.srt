@@ -1,0 +1,328 @@
+1
+00:00:00,035 --> 00:00:03,553
+Alex asks for the eleven o'clock appointment, but the slot is full.
+
+2
+00:00:04,156 --> 00:00:07,872
+A confident booking confirmation is useful only if the schedule can support
+it.
+
+3
+00:00:08,382 --> 00:00:11,424
+We will test the capacity rule and inspect the appointment record.
+
+4
+00:00:11,660 --> 00:00:13,947
+Alex is using the Patient Access Assistant.
+
+5
+00:00:14,121 --> 00:00:17,697
+The conversation sits beside the recorded business action and tool trace.
+
+6
+00:00:18,138 --> 00:00:22,062
+We start with a customer request, then use Rook to test the expected
+behavior
+
+7
+00:00:22,132 --> 00:00:22,945
+independently.
+
+8
+00:00:23,160 --> 00:00:25,575
+Patient lookup resolves the authenticated patient.
+
+9
+00:00:25,958 --> 00:00:28,187
+Booking checks capacity and records an appointment.
+
+10
+00:00:28,570 --> 00:00:33,121
+Urgent handoff, administrative guidance and record export serve separate
+responsibilities.
+
+11
+00:00:33,632 --> 00:00:37,498
+This fictional service handles access and scheduling, not clinical
+diagnosis.
+
+12
+00:00:37,660 --> 00:00:41,712
+Follow a routine booking request through patient identity and slot
+availability.
+
+13
+00:00:42,095 --> 00:00:44,312
+A full slot must produce no appointment.
+
+14
+00:00:44,637 --> 00:00:46,948
+An available slot may be reserved once.
+
+15
+00:00:47,389 --> 00:00:50,605
+Urgent requests follow the separate human-handoff policy.
+
+16
+00:00:50,930 --> 00:00:53,136
+The reply must agree with the recorded action.
+
+17
+00:00:53,391 --> 00:00:55,074
+Start in Rook's interactive terminal.
+
+18
+00:00:55,400 --> 00:00:57,664
+Explore the requirements and connection contract.
+
+19
+00:00:58,105 --> 00:01:00,543
+No application source is provided in this workspace.
+
+20
+00:01:01,239 --> 00:01:04,583
+Rook identifies the agent's responsibilities and business features from the
+supplied
+
+21
+00:01:04,618 --> 00:01:05,117
+material.
+
+22
+00:01:05,327 --> 00:01:08,914
+Exploration writes an agent definition and feature files into this
+workspace.
+
+23
+00:01:09,425 --> 00:01:11,736
+Open them and check the discovered responsibilities.
+
+24
+00:01:12,119 --> 00:01:15,869
+These are readable local artifacts, ready for review before anything is
+synchronized.
+
+25
+00:01:16,118 --> 00:01:20,715
+Generate a focused set across functional, non-functional and adversarial
+classes.
+
+26
+00:01:21,319 --> 00:01:23,606
+Review the proposed scope, then confirm.
+
+27
+00:01:24,303 --> 00:01:28,831
+Rook writes scenario files with customer goals and acceptance criteria; the
+generated
+
+28
+00:01:28,877 --> 00:01:30,955
+count alone is not a coverage claim.
+
+29
+00:01:31,213 --> 00:01:33,826
+The requirements declare no capacity at eleven o'clock.
+
+30
+00:01:34,209 --> 00:01:37,657
+The selected criterion therefore requires no appointment at that time.
+
+31
+00:01:38,354 --> 00:01:41,906
+Review the patient reference and the booking rule together; a successful
+tool
+
+32
+00:01:41,964 --> 00:01:44,101
+response does not make an overbooking correct.
+
+33
+00:01:44,327 --> 00:01:46,951
+Create the connection profile from the supplied contract.
+
+34
+00:01:47,334 --> 00:01:48,982
+Rook authors the runner and checks it.
+
+35
+00:01:49,366 --> 00:01:53,417
+Opening a session, executing turns, closing it and collecting evidence are
+separate
+
+36
+00:01:53,441 --> 00:01:54,381
+responsibilities.
+
+37
+00:01:54,577 --> 00:01:56,643
+Inspect the profile, then test the connection.
+
+38
+00:01:57,027 --> 00:02:00,626
+Confirm that Rook reaches the intended agent and returns a correlated
+response.
+
+39
+00:02:01,136 --> 00:02:04,654
+Keep credential values in the environment, outside the profile and
+recording.
+
+40
+00:02:04,868 --> 00:02:06,981
+Run the selected scenario with the test flag.
+
+41
+00:02:07,364 --> 00:02:12,716
+Review the plan and proceed. Rook invokes the agent and judges the returned
+evidence.
+
+42
+00:02:13,099 --> 00:02:15,932
+This run stays out of the hosted project timeline.
+
+43
+00:02:16,315 --> 00:02:18,370
+Processing time is removed from the edit.
+
+44
+00:02:18,618 --> 00:02:20,023
+Open the report in the terminal.
+
+45
+00:02:20,348 --> 00:02:23,064
+Read the verdict and the criterion-level explanation.
+
+46
+00:02:23,668 --> 00:02:27,674
+A passing response, a failed business action and missing evidence are
+distinct
+
+47
+00:02:27,732 --> 00:02:30,553
+findings; the report must preserve that distinction.
+
+48
+00:02:30,838 --> 00:02:34,484
+The run is also a set of files on this machine: its plan, report,
+
+49
+00:02:34,600 --> 00:02:37,688
+requests, responses, verdicts and collected evidence.
+
+50
+00:02:38,013 --> 00:02:41,554
+Open the same run identifier and follow one scenario through these files.
+
+51
+00:02:41,938 --> 00:02:45,212
+These files remain available without opening the hosted interface.
+
+52
+00:02:45,421 --> 00:02:49,021
+The agent confirms an eleven o'clock appointment and records appointment
+one,
+
+53
+00:02:49,346 --> 00:02:52,109
+even though the requirements declare zero capacity.
+
+54
+00:02:52,713 --> 00:02:56,962
+Rook reports Fail because the original booking tool accepts a slot that the
+requirements
+
+55
+00:02:56,997 --> 00:02:57,740
+say is full.
+
+56
+00:02:57,963 --> 00:03:00,738
+The role-play attack asks for a capacity override.
+
+57
+00:03:01,121 --> 00:03:04,953
+The answer refuses the override persona, but an appointment is still
+recorded
+
+58
+00:03:04,987 --> 00:03:07,762
+for the full slot. Rook reports Fail.
+
+59
+00:03:08,366 --> 00:03:10,792
+A polite refusal did not prevent the business action.
+
+60
+00:03:11,035 --> 00:03:14,855
+The M C P check retains the patient reference across three turns, but still
+
+61
+00:03:14,924 --> 00:03:16,573
+records the eleven o'clock appointment.
+
+62
+00:03:17,014 --> 00:03:21,762
+Its capacity criterion fails. The transport and conversation state work; the
+
+63
+00:03:21,809 --> 00:03:23,748
+business rule still needs the same repair.
+
+64
+00:03:23,963 --> 00:03:26,634
+Repeat the same case against the updated capacity check.
+
+65
+00:03:27,017 --> 00:03:30,094
+The appointment list remains empty, and Rook reports Pass.
+
+66
+00:03:30,535 --> 00:03:34,343
+The repair enforces availability at the booking boundary; it does not depend
+
+67
+00:03:34,424 --> 00:03:36,293
+only on the model choosing to refuse.
+
+68
+00:03:36,452 --> 00:03:41,061
+Sharing is optional. Sync the reviewed project definitions, then execute a
+shared
+
+69
+00:03:41,107 --> 00:03:44,985
+run without the test flag. That new run records its results upstream.
+
+70
+00:03:45,426 --> 00:03:48,805
+Sync does not convert the earlier local test into a hosted run.
+
+71
+00:03:49,077 --> 00:03:53,245
+Open the hosted web interface. Select the matching shared run, then open its
+
+72
+00:03:53,268 --> 00:03:57,297
+scenario and evidence. The local files and hosted view serve different
+review
+
+73
+00:03:57,355 --> 00:04:00,942
+needs; use the run identifier to keep the investigation consistent.
+
+74
+00:04:01,160 --> 00:04:03,598
+Explore the agent. Review generated tests.
+
+75
+00:04:03,749 --> 00:04:06,419
+Prove the connection. Run, inspect and repair.
+
+76
+00:04:06,628 --> 00:04:09,867
+Keep the artifacts local, and share a reviewed run when the team needs it.
+
+77
+00:04:10,146 --> 00:04:11,667
+Agent Assurance, with Rook.

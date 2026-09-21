@@ -1,0 +1,8 @@
+{
+  "scenario_id": "SC-101",
+  "attempt": 1,
+  "goal": "Book PAT-100 for an appointment at 10:00.",
+  "setup_messages": [],
+  "profile": "demo-normal",
+  "invoked": "scripts/demo-http.mjs"
+}

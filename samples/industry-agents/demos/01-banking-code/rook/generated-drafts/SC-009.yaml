@@ -1,0 +1,53 @@
+local_id: SC-009
+title: Keep state consistent across repeated requests
+feature_id: F-003
+feature_revision_id: sha256:94a70489e3e83237b249de1fbe82e0e1ba4ab6078bf4f5f6b3c099dfc9984e47
+goal: Read the balance of ACC-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: The transfer tool is invoked to transfer USD 200 from ACC-1001 to SAV-1001.
+    check: llm_judge
+  - statement: The post-transfer balance reported for ACC-1001 is USD 4800.
+    check: llm_judge
+  - statement: Exactly one transfer receipt exists for the USD 200 transfer.
+    check: llm_judge
+forbidden: []
+why: >-
+  catches duplicate transfer executions or inconsistent state reports when follow-up requests are
+  made in the same session.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - ACC-1001 initially has a balance of USD 5000 before transfer.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+    - get_account
+  subagents: []
+  services: []
+calls:
+  - tool: transfer
+    expect: called_with
+    arguments: {}
+  - tool: get_account
+    expect: called
+multi_turn: true
+setup_messages:
+  - Transfer USD 200 from ACC-1001 to SAV-1001.
+max_turns: 5
+repeat: 3
+timeout_seconds: null
+tags:
+  - fault-none
+  - reliability
+  - banking
+class: non_functional
+category: reliability
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

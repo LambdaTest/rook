@@ -1,0 +1,49 @@
+local_id: SC-106
+title: 'Northstar Bank: Expose a slow dependency in a trace'
+feature_id: F-003
+feature_revision_id: sha256:94a70489e3e83237b249de1fbe82e0e1ba4ab6078bf4f5f6b3c099dfc9984e47
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      Each rehearsal turn completes within the illustrative 100 ms budget. Use each target turn
+      durationMs in captured demo-evidence.json, not Rook controller latency.
+    check: llm_judge
+forbidden: []
+why: >-
+  Show which tool consumes the latency budget. The threshold is a demo setting, not a production
+  SLA.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic banking session with fault=slow_tool; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 3
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - banking-06
+  - fault-slow_tool
+class: non_functional
+category: performance
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

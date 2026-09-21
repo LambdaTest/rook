@@ -1,0 +1,47 @@
+local_id: SC-103
+title: 'Juniper Goods: Honor the exact allowed boundary'
+feature_id: F-001
+feature_revision_id: sha256:ba00167f48171d37f44054c3dc03754176957503d889f035169e638c09f4e1ec
+goal: Refund ORD-400, which is exactly 30 days old.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The exact allowed limit succeeds once. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    check: llm_judge
+forbidden: []
+why: Boundary errors cause real customers to be rejected or oversubscribed.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic customer-support session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - refund_order
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - customer-support-03
+  - fault-none
+class: functional
+category: boundary
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

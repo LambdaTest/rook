@@ -31,3 +31,31 @@ jobs:
       # joins without editing package.json or this workflow.
       - run: npm test
         working-directory: samples/triage-service
+
+  industry-samples:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: samples/industry-agents
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npm run setup
+      - run: npm test
+      - run: npm run check
+      - run: npm run rook:coverage
+      - run: npm run samples:check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: industry-sample-evidence
+          if-no-files-found: error
+          path: |
+            samples/industry-agents/artifacts/local/sample-replay/
+            samples/industry-agents/artifacts/local/native-coverage.json
+            samples/industry-agents/native-ci-runs.json
