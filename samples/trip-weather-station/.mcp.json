@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "weather": {
+      "command": "node",
+      "args": ["mcp/recording-proxy.mjs"]
+    }
+  }
+}

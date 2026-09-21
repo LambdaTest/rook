@@ -1,0 +1,18 @@
+{
+  "name": "trip-weather-station",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Rook case study — an activity-driven, weather-grounded trip advisor (grounding / freshness / safety) over live Open-Meteo data + a local LLM",
+  "main": "src/server.mjs",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "start:hallucinate": "TWS_HALLUCINATE=1 PORT=9701 node src/server.mjs",
+    "start:stale": "TWS_STALE=1 PORT=9702 node src/server.mjs",
+    "start:unsafe": "TWS_UNSAFE=1 PORT=9703 node src/server.mjs",
+    "start:rbacoff": "TWS_RBAC_OFF=1 PORT=9704 node src/server.mjs",
+    "demo": "bash demo.sh",
+    "redteam": "bash redteam-rbac.sh",
+    "test": "node --test test/agent.test.mjs"
+  }
+}
