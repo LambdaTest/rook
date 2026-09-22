@@ -6,9 +6,12 @@
 ![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20Windows-brightgreen)
 [![Issues](https://img.shields.io/github/issues/LambdaTest/rook)](https://github.com/LambdaTest/rook/issues)
 
-> **Status: pre-alpha.** Published builds are available — see [Install](#install). Expect sharp edges, and expect the surface to move.
 
+> **Status: pre-alpha.** Published builds are available — see [Install](#install). Expect sharp edges, and expect the surface to move.
 ---
+
+Check out [TestMu AI Agent Assurance documentation](https://www.testmuai.com/support/docs/agent-assurance-overview/).
+
 
 ## Contents
 

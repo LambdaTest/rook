@@ -6,6 +6,7 @@
   "description": "Support ticket triage agent, exposed over HTTP",
   "main": "src/server.mjs",
   "scripts": {
-    "start": "node src/server.mjs"
+    "start": "node src/server.mjs",
+    "test": "node --test"
   }
 }

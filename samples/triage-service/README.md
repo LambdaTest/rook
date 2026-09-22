@@ -27,6 +27,35 @@ curl -s http://127.0.0.1:9110/v1/triage \
   -d '{"input":"please look at T-1043"}'
 ```
 
+The server only listens on loopback unless told otherwise, and the banner is
+read back from the socket it actually bound, so it always shows the real
+address and port. Everything below is an environment variable.
+
+| Variable                 | Default     | What it does                                                        |
+| ------------------------ | ----------- | ------------------------------------------------------------------- |
+| `HOST`                   | `127.0.0.1` | Bind address. Set it explicitly (e.g. `0.0.0.0`) to expose the sample beyond this machine. |
+| `PORT`                   | `9110`      | TCP port; `0` picks a free one and the banner reports it.           |
+| `TRIAGE_MAX_BODY_BYTES`  | `1048576`   | Request body limit in bytes (1 MiB), counted from the raw stream — multibyte and chunked input included. A larger declared or streamed body gets `413`. |
+| `TRIAGE_BODY_TIMEOUT_MS` | `10000`     | Deadline for receiving the whole body. A stalled upload gets `408`. |
+
+A client that disconnects part-way through a body is dropped at the request
+boundary; the process keeps serving. There is no global exception or
+rejection handler to hide a real crash.
+
+## Testing it
+
+```bash
+cd samples/triage-service
+npm test
+```
+
+`node --test` picks up every `test/*.test.mjs`. `test/server.test.mjs` starts
+the service as a throwaway child process on a free port and checks the socket
+it binds, the banner, reset and aborted uploads, the byte limit at its exact
+boundary (chunked and multibyte too), the read timeout, and that the same
+process still answers a valid request after each rejection. It needs nothing
+but Node.
+
 ## Pointing rook at it
 
 ```bash
