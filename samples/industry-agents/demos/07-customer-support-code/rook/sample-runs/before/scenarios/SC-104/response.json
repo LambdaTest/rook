@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-104",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Order ORD-100 has been successfully refunded in the amount of $80.",
+  "raw_response": "{\"output\":\"Order ORD-100 has been successfully refunded in the amount of $80.\",\"agent_reply\":\"Order ORD-100 has been successfully refunded in the amount of $80.\",\"conversation\":\"f497c40f-9d4c-492f-910d-6d0baae2d3d5\",\"calls\":[{\"name\":\"get_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"order\":\"ORD-100\",\"owner\":\"RILEY\",\"amount\":80,\"ageDays\":10,\"refunded\":false}},{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"message\":\"Refund issued successfully.\"}}],\"usage\":{\"input\":1734,\"output\":58}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Refund ORD-100 for me."
+    },
+    {
+      "role": "agent",
+      "content": "Order ORD-100 has been successfully refunded in the amount of $80."
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-104/artifacts/01-demo-evidence-f497c40f-9d4c-492f-910d-6d0baae2d3d5.json"
+  ],
+  "latency_ms": 7439,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 1734,
+    "output_tokens": 58
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

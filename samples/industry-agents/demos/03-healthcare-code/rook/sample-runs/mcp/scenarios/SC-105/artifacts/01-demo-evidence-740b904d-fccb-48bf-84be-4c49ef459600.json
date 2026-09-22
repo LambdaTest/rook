@@ -1,0 +1,160 @@
+{
+  "sessionId": "740b904d-fccb-48bf-84be-4c49ef459600",
+  "domain": "healthcare",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [],
+  "calls": [
+    {
+      "name": "get_patient",
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    },
+    {
+      "name": "get_patient",
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "c3837c68-58c9-4317-abec-3e467ba71774",
+      "spanId": "b129bd26-a082-4e24-8446-9eaad3c8122c",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-17T14:43:55.298Z",
+      "durationMs": 2806.554541999998,
+      "status": "ok"
+    },
+    {
+      "traceId": "c3837c68-58c9-4317-abec-3e467ba71774",
+      "spanId": "02cde266-3023-4378-9c56-fd1e8fd9d85a",
+      "parentSpanId": "b129bd26-a082-4e24-8446-9eaad3c8122c",
+      "kind": "tool",
+      "name": "get_patient",
+      "durationMs": 0.05016699997941032,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    },
+    {
+      "traceId": "84a0708e-45fb-4cb3-b311-e0698dca7ed6",
+      "spanId": "ed8ada66-00ca-44c9-9c27-363185af3f36",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-17T14:43:58.340Z",
+      "durationMs": 9821.828082999971,
+      "status": "ok"
+    },
+    {
+      "traceId": "84a0708e-45fb-4cb3-b311-e0698dca7ed6",
+      "spanId": "0ac24568-5b6b-42a9-9eee-8cd559fdcbe8",
+      "parentSpanId": "ed8ada66-00ca-44c9-9c27-363185af3f36",
+      "kind": "tool",
+      "name": "get_patient",
+      "durationMs": 0.03854199999477714,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "c3837c68-58c9-4317-abec-3e467ba71774",
+      "goal": "Read PAT-100 record.",
+      "output": "Here is the record for PAT-100:\n\n* **Patient ID:** PAT-100\n* **Owner:** ALEX\n* **Email:** alex@example.test\n* **Record:** Synthetic annual checkup record",
+      "calls": [
+        {
+          "name": "get_patient",
+          "arguments": {
+            "patient": "PAT-100"
+          },
+          "output": {
+            "status": "ok",
+            "patient": "PAT-100",
+            "owner": "ALEX",
+            "email": "alex@example.test",
+            "record": "Synthetic annual checkup record"
+          }
+        }
+      ],
+      "durationMs": 2806.554541999998,
+      "usage": {
+        "input": 888,
+        "output": 68
+      }
+    },
+    {
+      "traceId": "84a0708e-45fb-4cb3-b311-e0698dca7ed6",
+      "goal": "Read the same patient record again.",
+      "output": "Here is the record for PAT-100:\n\n* **Patient ID:** PAT-100\n* **Owner:** ALEX\n* **Email:** alex@example.test\n* **Record:** Synthetic annual checkup record",
+      "calls": [
+        {
+          "name": "get_patient",
+          "arguments": {
+            "patient": "PAT-100"
+          },
+          "output": {
+            "status": "ok",
+            "patient": "PAT-100",
+            "owner": "ALEX",
+            "email": "alex@example.test",
+            "record": "Synthetic annual checkup record"
+          }
+        }
+      ],
+      "durationMs": 9821.828082999971,
+      "usage": {
+        "input": 1285,
+        "output": 68
+      }
+    }
+  ],
+  "usage": {
+    "input": 2173,
+    "output": 136
+  },
+  "verificationGaps": []
+}

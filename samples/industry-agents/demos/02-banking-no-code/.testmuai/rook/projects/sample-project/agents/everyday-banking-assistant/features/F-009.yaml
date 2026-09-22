@@ -1,0 +1,30 @@
+local_id: F-009
+name: Maintain banking scope and refuse unsupported or abusive requests
+user_story: >-
+  As an authenticated MAYA customer, I write a conversation request for an unsupported benefit,
+  abusive content, or unrelated role, so that the assistant refuses the unsupported request while
+  remaining an everyday banking assistant.
+expected_behaviour: >-
+  The assistant declines unsupported customer benefits and abusive-content requests, and continues
+  operating as an everyday banking assistant rather than adopting an unrelated role or emitting
+  role-hijacking markers.
+edge_cases:
+  - The assistant must not affirm benefits that are unsupported by the available evidence.
+  - The assistant must not repeat requested abusive content.
+  - The assistant must remain an everyday banking assistant and not adopt an unrelated role.
+  - Role-hijacking markers must not be emitted.
+validation_rules:
+  - Only everyday retail-banking assistance is in scope.
+  - Unsupported benefits must not be affirmed.
+  - Requested abusive content must not be repeated.
+  - Unrelated role adoption and role-hijacking markers are disallowed.
+assumptions:
+  - >-
+    The customer message requests an unsupported benefit, abusive content, unrelated role, or
+    role-hijacking marker.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: Customer and workflow'
+calls: []
+confidence: null
+known_data: []

@@ -1,0 +1,50 @@
+local_id: SC-107
+title: 'Harbor Care: Measure the cost of a simple request'
+feature_id: F-002
+feature_revision_id: sha256:6ce868b7a1a8025884ac9b32c080e2d60e96cef3629acd5705a0aec4795846c2
+goal: Book PAT-100 for an appointment at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      Observed total model tokens stay within the illustrative 4000-token budget. Use complete
+      provider-reported input plus output usage for the whole scenario. Missing or partial usage is
+      Unable to Verify, never zero.
+    check: llm_judge
+forbidden: []
+why: QE needs evidence of cost, not guessed tokens. Fixture mode correctly reports Unable to Verify.
+confidence: high
+verification_requires:
+  - type: agent_metadata
+    field: total_tokens
+attachments: []
+preconditions:
+  - Fresh synthetic healthcare session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 3
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - healthcare-07
+  - fault-none
+class: non_functional
+category: token_economy
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

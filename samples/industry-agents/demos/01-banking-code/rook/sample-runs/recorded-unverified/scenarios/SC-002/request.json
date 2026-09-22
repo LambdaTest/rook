@@ -1,0 +1,8 @@
+{
+  "scenario_id": "SC-002",
+  "attempt": 1,
+  "goal": "Transfer USD 200 from ACC-1001 to SAV-1001.",
+  "setup_messages": [],
+  "profile": "banking-fixture",
+  "invoked": "scripts/banking-fixture.mjs"
+}

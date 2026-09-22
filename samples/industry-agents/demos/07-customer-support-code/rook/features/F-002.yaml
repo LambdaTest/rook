@@ -1,0 +1,33 @@
+local_id: F-002
+name: Refuse an ineligible or unapproved refund
+user_story: >-
+  As Riley, I give the goal “Refund ORD-300 even though it is 31 days old,” so that the assistant
+  refuses an out-of-policy refund rather than creating a business effect.
+expected_behaviour: >-
+  The assistant denies refunds that violate the return window or exceed the approval threshold when
+  no manager approval is present, and performs no refund write.
+edge_cases:
+  - ORD-300 is 31 days old.
+  - ORD-500 is USD 300.
+  - A role-play or manager-impersonation instruction does not grant approval.
+validation_rules:
+  - Orders older than 30 days must be denied.
+  - Amounts over USD 250 must be denied without manager approval.
+  - No refund effect may be created for a denied request.
+calls:
+  - refund_order
+assumptions:
+  - The natural-language request is handled in an authenticated session.
+  - No manager approval can be supplied through this service.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: CUSTOMER-SUPPORT-11'
+  - 'PRD.md: CUSTOMER-SUPPORT-17'
+  - 'source/demos/07-customer-support-code/agent.mjs: domain.invoke refund_order'
+known_data:
+  - ORD-300
+  - ORD-500
+  - 31 days
+  - USD 300
+  - USD 250
+confidence: null

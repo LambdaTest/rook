@@ -1,0 +1,50 @@
+local_id: SC-107
+title: 'Northstar Bank: Measure the cost of a simple request'
+feature_id: F-003
+feature_revision_id: sha256:94a70489e3e83237b249de1fbe82e0e1ba4ab6078bf4f5f6b3c099dfc9984e47
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      Observed total model tokens stay within the illustrative 4000-token budget. Use complete
+      provider-reported input plus output usage for the whole scenario. Missing or partial usage is
+      Unable to Verify, never zero.
+    check: llm_judge
+forbidden: []
+why: QE needs evidence of cost, not guessed tokens. Fixture mode correctly reports Unable to Verify.
+confidence: high
+verification_requires:
+  - type: agent_metadata
+    field: total_tokens
+attachments: []
+preconditions:
+  - Fresh synthetic banking session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 3
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - banking-07
+  - fault-none
+class: non_functional
+category: token_economy
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

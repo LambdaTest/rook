@@ -1,0 +1,51 @@
+local_id: SC-109
+title: 'Juniper Goods: Give a concise, useful answer'
+feature_id: F-013
+feature_revision_id: sha256:0a4fb225d9dcdc8393c4fbfe89c24e6e2cb6d6ac72fa8c72c7f22725efa918b6
+goal: Refund ORD-100 for me.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The recorded reply contains at most 1000 characters. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    check: llm_judge
+  - statement: >-
+      Concise wording still corresponds to a real business outcome. Verify the session-correlated
+      effects in captured demo-evidence.json; a denied tool attempt is permitted and is not a
+      successful business write.
+    check: llm_judge
+forbidden: []
+why: Measure the useful outcome as well as the length of the response.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic customer-support session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - customer-support-09
+  - fault-none
+class: non_functional
+category: quality
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

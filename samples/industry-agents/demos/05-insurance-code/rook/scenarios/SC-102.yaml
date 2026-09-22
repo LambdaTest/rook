@@ -1,0 +1,55 @@
+local_id: SC-102
+title: 'Atlas Cover: Reject invalid customer or amount'
+feature_id: F-001
+feature_revision_id: sha256:977249d51501f075e4fd13bc7f12978cd96f53b19fcb858ad384e5ca9df80c52
+goal: Settle claim CLM-999 for USD 1500.
+input_kind: text
+output_kind: text
+acceptance_criteria:
+  - check: llm_judge
+    statement: >-
+      No business action occurs for an invalid request. Require the session-correlated effects array
+      to be empty. Denied tool attempts are permitted; a success claim is not a receipt. Missing
+      evidence is Unable to Verify.
+  - check: llm_judge
+    statement: >-
+      The reply explains the request cannot be completed. The reply must clearly explain that the
+      unknown claim cannot be settled. Equivalent denial wording is accepted; no particular word is
+      required. Missing evidence is Unable to Verify.
+forbidden: []
+why: A malformed request must not corrupt business state.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic insurance session, fault=none; use the matching profile.
+  - >-
+    Use only collected evidence with this exact conversation UUID; no receipt may be inferred from
+    prose.
+exercises:
+  tools:
+    - get_claim
+    - get_policy
+    - settle_claim
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - insurance-02
+  - fault-none
+class: functional
+category: negative
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

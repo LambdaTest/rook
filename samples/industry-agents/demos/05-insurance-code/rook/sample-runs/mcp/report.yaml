@@ -1,0 +1,46 @@
+run_id: 2026-09-17T14-47-04Z
+agent_id: claims-coverage-assistant
+generated: '2026-09-17T14:47:40.695Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 28.759099999999997
+  duration_ms: 27439
+  tokens_in: 3680
+  tokens_out: 112
+  latency_p50_ms: 9860
+  latency_p95_ms: 9860
+  turns_total: 2
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters: []
+credits: 5.07675
+headline: >-
+  A single passed scenario across a five-feature agent provides virtually no assurance of overall
+  reliability.
+narrative: >-
+  The run executed only one scenario out of five defined features, resulting in a single passing
+  verdict. No security compromises, policy violations, or failure states were tested, leaving
+  critical paths like settlement limit enforcement, cross-tenant data protection, and prompt
+  injection resistance completely unverified. While the executed scenario passed cleanly without
+  issue, the overall test coverage is far too narrow to confirm operational safety or readiness for
+  deployment.
+next:
+  - >-
+    Expand test scenarios to cover all five agent features, specifically testing missing document
+    checks, policy limits, and unauthorized access.

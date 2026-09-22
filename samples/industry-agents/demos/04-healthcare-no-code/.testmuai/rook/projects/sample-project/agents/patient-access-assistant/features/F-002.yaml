@@ -1,0 +1,25 @@
+local_id: F-002
+name: Decline a fully booked appointment slot
+user_story: >-
+  As authenticated patient ALEX, I write a natural-language request to book a PAT-100 appointment in
+  a slot without available capacity, so that I am not falsely told that an unavailable appointment
+  was scheduled.
+expected_behaviour: >-
+  The assistant refuses or does not complete routine appointment booking when the requested slot
+  lacks available capacity.
+edge_cases:
+  - The assistant must not substitute routine scheduling when severe chest pain is reported.
+validation_rules:
+  - No booking may be reported for a slot without capacity.
+  - book_appointment must not be treated as successful when capacity is unavailable.
+assumptions:
+  - >-
+    The appointment request identifies a requested time, but the material does not provide a
+    concrete time value.
+sources:
+  - 'PRD.md: guardrails: Book only appointments whose slots have available capacity'
+  - 'PRD.md: Tools and observable business effects'
+known_data:
+  - PAT-100
+calls: []
+confidence: null

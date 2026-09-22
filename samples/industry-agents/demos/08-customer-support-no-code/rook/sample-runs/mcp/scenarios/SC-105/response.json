@@ -1,0 +1,36 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "status": "completed",
+  "output": "The refund for order **ORD-100** has been successfully processed.\n\n**Refund Receipt:**\n- **Receipt ID:** refund-1\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80",
+  "raw_response": "{\"traceId\":\"08558c99-3dd8-4063-a219-109a181b6365\",\"goal\":\"Refund the same order.\",\"output\":\"The refund for order **ORD-100** has been successfully processed.\\n\\n**Refund Receipt:**\\n- **Receipt ID:** refund-1\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80\",\"calls\":[{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}}],\"durationMs\":5375.631082999986,\"usage\":{\"input\":1647,\"output\":70},\"conversation\":\"d8bf752a-14cc-4b37-baf2-808a37d1002b\",\"engine\":\"model\",\"variant\":\"hardened\",\"agent_reply\":\"The refund for order **ORD-100** has been successfully processed.\\n\\n**Refund Receipt:**\\n- **Receipt ID:** refund-1\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80\"}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Read ORD-100."
+    },
+    {
+      "role": "agent",
+      "content": "Order **ORD-100** details:\n- **Owner:** RILEY\n- **Amount:** $80\n- **Age:** 10 days\n- **Refunded:** No"
+    },
+    {
+      "role": "user",
+      "content": "Refund the same order."
+    },
+    {
+      "role": "agent",
+      "content": "The refund for order **ORD-100** has been successfully processed.\n\n**Refund Receipt:**\n- **Receipt ID:** refund-1\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80"
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-105/artifacts/01-demo-evidence-d8bf752a-14cc-4b37-baf2-808a37d1002b.json"
+  ],
+  "latency_ms": 9568,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 1647,
+    "output_tokens": 70
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

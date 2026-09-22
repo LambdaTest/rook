@@ -1,0 +1,247 @@
+{
+  "status": "validated",
+  "videos": [
+    {
+      "id": "banking-agent",
+      "voice": {
+        "provider": "ElevenLabs",
+        "name": "Andrew \u2014 Smooth, Smart and Clear",
+        "voiceId": "gUABw7pXQjhjt0kNFBTF",
+        "accent": "American English"
+      },
+      "addedScenePauseSeconds": 0,
+      "durationSeconds": 255.95833333333334,
+      "frameCount": 6143,
+      "audioDurationSeconds": 255.958,
+      "captionCues": 76,
+      "integratedLoudnessLUFS": -18.93,
+      "truePeakDBTP": -1.74,
+      "longestDetectedSilenceSeconds": 0,
+      "detectedSilencesAbove1_2Seconds": [],
+      "decodedAllFrames": true,
+      "sha256": "941cf406fe07da8f85e4af03063ccd7503ce2994bd76866247357c51b16387fa"
+    },
+    {
+      "id": "banking-agent-code",
+      "voice": {
+        "provider": "ElevenLabs",
+        "name": "Andrew \u2014 Smooth, Smart and Clear",
+        "voiceId": "gUABw7pXQjhjt0kNFBTF",
+        "accent": "American English"
+      },
+      "addedScenePauseSeconds": 0,
+      "durationSeconds": 258.7916666666667,
+      "frameCount": 6211,
+      "audioDurationSeconds": 258.791,
+      "captionCues": 76,
+      "integratedLoudnessLUFS": -18.88,
+      "truePeakDBTP": -1.76,
+      "longestDetectedSilenceSeconds": 0,
+      "detectedSilencesAbove1_2Seconds": [],
+      "decodedAllFrames": true,
+      "sha256": "a633f70eef9b0bb460fb495a4f3c35dcc9f534f3bde3db25a8ba53817ddfdd5d"
+    },
+    {
+      "id": "customer-support-agent",
+      "voice": {
+        "provider": "ElevenLabs",
+        "name": "Andrew \u2014 Smooth, Smart and Clear",
+        "voiceId": "gUABw7pXQjhjt0kNFBTF",
+        "accent": "American English"
+      },
+      "addedScenePauseSeconds": 0,
+      "durationSeconds": 249.875,
+      "frameCount": 5997,
+      "audioDurationSeconds": 249.875,
+      "captionCues": 75,
+      "integratedLoudnessLUFS": -19.08,
+      "truePeakDBTP": -1.75,
+      "longestDetectedSilenceSeconds": 0,
+      "detectedSilencesAbove1_2Seconds": [],
+      "decodedAllFrames": true,
+      "sha256": "dfea95f9806391cb57bf8a3efe25ba325b88e815c8ec504c831a7ea877f6d76b"
+    },
+    {
+      "id": "customer-support-agent-code",
+      "voice": {
+        "provider": "ElevenLabs",
+        "name": "Andrew \u2014 Smooth, Smart and Clear",
+        "voiceId": "gUABw7pXQjhjt0kNFBTF",
+        "accent": "American English"
+      },
+      "addedScenePauseSeconds": 0,
+      "durationSeconds": 250.91666666666666,
+      "frameCount": 6022,
+      "audioDurationSeconds": 250.916,
+      "captionCues": 74,
+      "integratedLoudnessLUFS": -19.03,
+      "truePeakDBTP": -1.89,
+      "longestDetectedSilenceSeconds": 0,
+      "detectedSilencesAbove1_2Seconds": [],
+      "decodedAllFrames": true,
+      "sha256": "96dd9d56a920e50a9cf2571d5bcf4ae8180986651040718a79c6459241ba0bdc"
+    },
+    {
+      "id": "healthcare-agent",
+      "voice": {
+        "provider": "ElevenLabs",
+        "name": "Andrew \u2014 Smooth, Smart and Clear",
+        "voiceId": "gUABw7pXQjhjt0kNFBTF",
+        "accent": "American English"
+      },
+      "addedScenePauseSeconds": 0,
+      "durationSeconds": 251.83333333333334,
+      "frameCount": 6044,
+      "audioDurationSeconds": 251.833,
+      "captionCues": 77,
+      "integratedLoudnessLUFS": -18.9,
+      "truePeakDBTP": -0.7,
+      "longestDetectedSilenceSeconds": 0,
+      "detectedSilencesAbove1_2Seconds": [],
+      "decodedAllFrames": true,
+      "sha256": "5d9e2ff0a129d034e49a12a2aacf38f463af19b6a26844aeabb28003294089ba"
+    },
+    {
+      "id": "healthcare-agent-code",
+      "voice": {
+        "provider": "ElevenLabs",
+        "name": "Andrew \u2014 Smooth, Smart and Clear",
+        "voiceId": "gUABw7pXQjhjt0kNFBTF",
+        "accent": "American English"
+      },
+      "addedScenePauseSeconds": 0,
+      "durationSeconds": 256.0833333333333,
+      "frameCount": 6146,
+      "audioDurationSeconds": 256.083,
+      "captionCues": 77,
+      "integratedLoudnessLUFS": -18.89,
+      "truePeakDBTP": -1.86,
+      "longestDetectedSilenceSeconds": 0,
+      "detectedSilencesAbove1_2Seconds": [],
+      "decodedAllFrames": true,
+      "sha256": "856b9a20ad99d66ca16b9d312eb964f9e99f37e327962e13f33b531002ca4ac4"
+    },
+    {
+      "id": "insurance-agent",
+      "voice": {
+        "provider": "ElevenLabs",
+        "name": "Andrew \u2014 Smooth, Smart and Clear",
+        "voiceId": "gUABw7pXQjhjt0kNFBTF",
+        "accent": "American English"
+      },
+      "addedScenePauseSeconds": 0,
+      "durationSeconds": 259.5833333333333,
+      "frameCount": 6230,
+      "audioDurationSeconds": 259.583,
+      "captionCues": 75,
+      "integratedLoudnessLUFS": -18.92,
+      "truePeakDBTP": -1.75,
+      "longestDetectedSilenceSeconds": 0,
+      "detectedSilencesAbove1_2Seconds": [],
+      "decodedAllFrames": true,
+      "sha256": "6d44f03195b0438fceceabf034e301e14fe719ec8f7208611c1d223f361a123b"
+    },
+    {
+      "id": "insurance-agent-code",
+      "voice": {
+        "provider": "ElevenLabs",
+        "name": "Andrew \u2014 Smooth, Smart and Clear",
+        "voiceId": "gUABw7pXQjhjt0kNFBTF",
+        "accent": "American English"
+      },
+      "addedScenePauseSeconds": 0,
+      "durationSeconds": 262.4166666666667,
+      "frameCount": 6298,
+      "audioDurationSeconds": 262.416,
+      "captionCues": 75,
+      "integratedLoudnessLUFS": -18.89,
+      "truePeakDBTP": -1.8,
+      "longestDetectedSilenceSeconds": 0,
+      "detectedSilencesAbove1_2Seconds": [],
+      "decodedAllFrames": true,
+      "sha256": "7ee6865803baae08a32c84d8b8e6681a10d5bb183412a0a58fe9431dd202659d"
+    },
+    {
+      "id": "rook-overview",
+      "voice": {
+        "provider": "ElevenLabs",
+        "name": "Andrew \u2014 Smooth, Smart and Clear",
+        "voiceId": "gUABw7pXQjhjt0kNFBTF",
+        "accent": "American English"
+      },
+      "addedScenePauseSeconds": 0,
+      "durationSeconds": 319.7916666666667,
+      "frameCount": 7675,
+      "audioDurationSeconds": 319.791,
+      "captionCues": 94,
+      "integratedLoudnessLUFS": -18.96,
+      "truePeakDBTP": -1.71,
+      "longestDetectedSilenceSeconds": 0,
+      "detectedSilencesAbove1_2Seconds": [],
+      "decodedAllFrames": true,
+      "sha256": "465a3a445cb41c00c77100e9b12f3a8e115856f2560f06c95d923f6dd6780555"
+    }
+  ],
+  "browserPlayback": [
+    {
+      "id": "rook-overview",
+      "unmutedPlayback": true,
+      "decodedAudioBytes": 19142,
+      "chapterSeek": true
+    },
+    {
+      "id": "banking-agent-code",
+      "unmutedPlayback": true,
+      "decodedAudioBytes": 20520,
+      "chapterSeek": true
+    },
+    {
+      "id": "banking-agent",
+      "unmutedPlayback": true,
+      "decodedAudioBytes": 20995,
+      "chapterSeek": true
+    },
+    {
+      "id": "healthcare-agent-code",
+      "unmutedPlayback": true,
+      "decodedAudioBytes": 19675,
+      "chapterSeek": true
+    },
+    {
+      "id": "healthcare-agent",
+      "unmutedPlayback": true,
+      "decodedAudioBytes": 18682,
+      "chapterSeek": true
+    },
+    {
+      "id": "insurance-agent-code",
+      "unmutedPlayback": true,
+      "decodedAudioBytes": 19614,
+      "chapterSeek": true
+    },
+    {
+      "id": "insurance-agent",
+      "unmutedPlayback": true,
+      "decodedAudioBytes": 20497,
+      "chapterSeek": true
+    },
+    {
+      "id": "customer-support-agent-code",
+      "unmutedPlayback": true,
+      "decodedAudioBytes": 19542,
+      "chapterSeek": true
+    },
+    {
+      "id": "customer-support-agent",
+      "unmutedPlayback": true,
+      "decodedAudioBytes": 19942,
+      "chapterSeek": true
+    }
+  ],
+  "voice": {
+    "name": "Andrew \u2014 Smooth, Smart and Clear",
+    "voiceId": "gUABw7pXQjhjt0kNFBTF",
+    "accent": "American English"
+  },
+  "rebuiltOn": "2026-09-18"
+}

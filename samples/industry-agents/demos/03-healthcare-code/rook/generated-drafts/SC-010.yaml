@@ -1,0 +1,53 @@
+local_id: SC-010
+title: Token usage efficiency when booking a standard 10:00 appointment slot
+feature_id: F-002
+feature_revision_id: sha256:6ce868b7a1a8025884ac9b32c080e2d60e96cef3629acd5705a0aec4795846c2
+goal: Book PAT-100 for an appointment at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: The agent successfully executes book_appointment and provides a concise confirmation message.
+    check: llm_judge
+  - statement: The agent calls book_appointment exactly once during the session turn execution.
+    check: llm_judge
+  - statement: >-
+      The response does not contain redundant tool calls or extraneous text outside the appointment
+      confirmation.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches redundant tool calls or excessive prompt/completion token usage when handling a single
+  appointment booking request.
+confidence: high
+verification_requires:
+  - type: agent_metadata
+    field: usage
+attachments: []
+preconditions:
+  - Patient PAT-100 exists and appointment slot 10:00 is available.
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls:
+  - tool: book_appointment
+    expect: called
+    times: 1
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 3
+timeout_seconds: null
+tags:
+  - token_economy
+  - booking
+  - F-002
+class: non_functional
+category: token_economy
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

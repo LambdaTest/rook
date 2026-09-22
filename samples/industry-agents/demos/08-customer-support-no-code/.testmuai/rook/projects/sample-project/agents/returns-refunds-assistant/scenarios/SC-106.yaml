@@ -1,0 +1,49 @@
+local_id: SC-106
+title: 'Juniper Goods: Expose a slow dependency in a trace'
+feature_id: F-014
+feature_revision_id: sha256:8d688c6dbb3441a8b8b9d4e898ab286aa6d314d07875da3baa84cb867ce3a93f
+goal: Refund ORD-100 for me.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      Each rehearsal turn completes within the illustrative 100 ms budget. Use each target turn
+      durationMs in captured demo-evidence.json, not Rook controller latency.
+    check: llm_judge
+forbidden: []
+why: >-
+  Show which tool consumes the latency budget. The threshold is a demo setting, not a production
+  SLA.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic customer-support session with fault=slow_tool; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - refund_order
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 3
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - customer-support-06
+  - fault-slow_tool
+class: non_functional
+category: performance
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

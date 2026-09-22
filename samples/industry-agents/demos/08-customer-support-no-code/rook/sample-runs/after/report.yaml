@@ -1,0 +1,41 @@
+run_id: 2026-09-17T14-50-29Z
+agent_id: returns-refunds-assistant
+generated: '2026-09-17T14:51:08.371Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 16.8512
+  duration_ms: 31331
+  tokens_in: 1702
+  tokens_out: 83
+  latency_p50_ms: 8767
+  latency_p95_ms: 8767
+  turns_total: 1
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters: []
+credits: 12.95235
+headline: The run executed a single scenario successfully, leaving 15 documented features unverified.
+narrative: >-
+  This test run executed only one scenario (SC-104), which passed. However, 15 of the 16 declared
+  agent capabilities—including core guardrails around return windows, approval thresholds,
+  cross-customer data leakage, and prompt injection—were omitted from the run. Consequently, this
+  single passing result provides insufficient assurance regarding the target agent's operational
+  safety or policy adherence.
+next:
+  - Run a complete test suite covering all 16 declared features and security guardrails.

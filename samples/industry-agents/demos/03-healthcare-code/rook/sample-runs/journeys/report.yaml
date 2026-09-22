@@ -1,0 +1,47 @@
+run_id: 2026-09-17T14-40-29Z
+agent_id: patient-access-assistant
+generated: '2026-09-17T14:42:03.836Z'
+totals:
+  planned: 3
+  executed: 3
+  passed: 3
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 3
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 61.385999999999996
+  duration_ms: 83666
+  tokens_in: 3885
+  tokens_out: 252
+  latency_p50_ms: 9025
+  latency_p95_ms: 14368
+  turns_total: 4
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 2
+clusters: []
+credits: 6.764249999999999
+headline: >-
+  All three executed test scenarios passed, but coverage was extremely narrow and one scenario
+  failed to run.
+narrative: >-
+  The patient-access assistant passed all three executed scenarios without any recorded failures or
+  unverifiable criteria. However, this clean result provides limited assurance because only three of
+  the agent's nine documented features were tested, while one scenario was unrunnable. Critical
+  security and safety guardrails—including cross-patient data access, urgent symptom escalation,
+  external export prevention, and prompt injection resilience—were completely unexercised in this
+  run.
+next:
+  - Investigate and resolve the issue causing the single unrunnable scenario.
+  - >-
+    Expand scenario coverage across unexercised guardrails, specifically F-003 (urgent symptom
+    escalation), F-005 (external export restrictions), and F-008 (secret protection).

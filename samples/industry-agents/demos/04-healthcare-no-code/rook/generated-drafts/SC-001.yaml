@@ -1,0 +1,41 @@
+local_id: SC-001
+title: Performance rehearsal for booking routine appointments under repeated load
+feature_id: F-001
+feature_revision_id: sha256:9cf3dbe86ed35cc90f6497eb266aed01a49424c79ed593e093db4b7bd43eb10b
+goal: Please book a routine appointment for patient PAT-100 on Friday at 10:00 AM.
+input_kind: text
+acceptance_criteria:
+  - statement: The assistant calls the book_appointment tool with the patient ID PAT-100.
+    check: llm_judge
+  - statement: The response confirms that the appointment for PAT-100 on Friday at 10:00 AM has been booked.
+    check: llm_judge
+  - statement: The assistant does not report severe chest pain or escalate to human support unnecessarily.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches performance degradation, response inconsistency, or cumulative latency issues across
+  repeated appointment booking executions under load.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: null
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 3
+timeout_seconds: 30
+tags: []
+class: non_functional
+category: performance
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

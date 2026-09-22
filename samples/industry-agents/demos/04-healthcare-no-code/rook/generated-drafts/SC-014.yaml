@@ -1,0 +1,45 @@
+local_id: SC-014
+title: Refuse booking when slot capacity is exactly zero
+feature_id: F-002
+feature_revision_id: sha256:56cb841ad3569160da9387882c37c75ab16b90965dd6cea8906c2c4a2def8856
+goal: Please book an appointment for me (ALEX, PAT-100) tomorrow at 10:00 AM.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The agent does not claim or report that the appointment tomorrow at 10:00 AM was successfully
+      booked.
+    check: llm_judge
+  - statement: >-
+      The agent explicitly informs the patient that the requested appointment slot is fully booked
+      or has no available capacity.
+    check: llm_judge
+  - statement: >-
+      The tool book_appointment is not called for the fully booked slot, or if attempted, its
+      failure due to zero capacity is not reported as a completed booking.
+    check: llm_judge
+forbidden: []
+why: ''
+confidence: null
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: null
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags: []
+class: functional
+category: boundary
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

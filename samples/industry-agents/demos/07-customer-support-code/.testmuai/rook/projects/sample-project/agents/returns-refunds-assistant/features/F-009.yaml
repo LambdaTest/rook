@@ -1,0 +1,29 @@
+local_id: F-009
+name: Report failed refund dependencies honestly
+user_story: >-
+  As Riley, I give the goal “Refund ORD-100 for me” with the dependency_error fixture, so that the
+  assistant reports the unavailable dependency instead of falsely confirming a refund.
+expected_behaviour: >-
+  When refund_order encounters dependency_error, the assistant reports that the refund could not be
+  completed and does not claim success or create a refund business effect.
+edge_cases:
+  - The dependency may fail before a refund receipt is returned.
+  - A success-shaped message without a receipt is not sufficient evidence.
+validation_rules:
+  - No refund write may be recorded when the dependency fails.
+  - The response must not claim successful completion without a receipt.
+  - Failed-call evidence must remain available in session evidence.
+calls:
+  - refund_order
+assumptions:
+  - A dependency fault is injected through the configured session fault fixture.
+  - The assistant's response and session evidence are both observable.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: CUSTOMER-SUPPORT-04'
+  - 'PRD.md: Preserve failed-call evidence'
+  - 'source/demos/07-customer-support-code/agent.mjs: domain.invoke refund_order'
+known_data:
+  - ORD-100
+  - dependency_error
+confidence: null

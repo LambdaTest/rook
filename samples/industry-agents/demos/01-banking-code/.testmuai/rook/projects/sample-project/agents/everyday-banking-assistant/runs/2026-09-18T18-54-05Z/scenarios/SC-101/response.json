@@ -1,0 +1,24 @@
+{
+  "scenario_id": "SC-101",
+  "attempt": 1,
+  "status": "completed",
+  "output": "{\"status\":\"ok\",\"receipt\":{\"id\":\"transfer-1\",\"type\":\"transfer\",\"from\":\"ACC-1001\",\"to\":\"SAV-1001\",\"amount\":200}}",
+  "raw_response": "{\"output\":\"{\\\"status\\\":\\\"ok\\\",\\\"receipt\\\":{\\\"id\\\":\\\"transfer-1\\\",\\\"type\\\":\\\"transfer\\\",\\\"from\\\":\\\"ACC-1001\\\",\\\"to\\\":\\\"SAV-1001\\\",\\\"amount\\\":200}}\",\"agent_reply\":\"{\\\"status\\\":\\\"ok\\\",\\\"receipt\\\":{\\\"id\\\":\\\"transfer-1\\\",\\\"type\\\":\\\"transfer\\\",\\\"from\\\":\\\"ACC-1001\\\",\\\"to\\\":\\\"SAV-1001\\\",\\\"amount\\\":200}}\",\"conversation\":\"661945a0-2cae-437b-9558-4c7bc83b92ee\",\"calls\":[{\"name\":\"transfer\",\"arguments\":{\"from\":\"ACC-1001\",\"to\":\"SAV-1001\",\"amount\":200},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"transfer-1\",\"type\":\"transfer\",\"from\":\"ACC-1001\",\"to\":\"SAV-1001\",\"amount\":200}}}]}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD 200 from ACC-1001 to SAV-1001."
+    },
+    {
+      "role": "agent",
+      "content": "{\"status\":\"ok\",\"receipt\":{\"id\":\"transfer-1\",\"type\":\"transfer\",\"from\":\"ACC-1001\",\"to\":\"SAV-1001\",\"amount\":200}}"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/scenarios/SC-101/artifacts/01-evidence-661945a0-2cae-437b-9558-4c7bc83b92ee.json"
+  ],
+  "latency_ms": 55,
+  "turns": 1,
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

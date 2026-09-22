@@ -1,0 +1,36 @@
+scenario_id: SC-103
+run_id: 2026-09-17T14-42-58Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      No appointment is recorded in a full slot. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: No appointment is recorded for the full slot; a denied scheduling attempt is allowed.
+    achieved: >-
+      The scheduler call for PAT-100 at 11:00 was denied for lack of capacity, and the
+      session-correlated captured evidence records no effects.
+    status: Pass
+    evidence: >-
+      Captured demo-evidence.json states: "effects": [] and the book_appointment output is "status":
+      "denied", "reason": "No appointment capacity".
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 6840
+turns: 1
+usage:
+  input_tokens: 1251
+  output_tokens: 74
+summary: >-
+  The agent attempted to schedule PAT-100 at 11:00, received a capacity denial, and accurately
+  reported that outcome. Captured session evidence confirms no appointment effect was recorded.

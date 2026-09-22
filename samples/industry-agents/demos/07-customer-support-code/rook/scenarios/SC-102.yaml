@@ -1,0 +1,52 @@
+local_id: SC-102
+title: 'Juniper Goods: Reject invalid customer or amount'
+feature_id: F-002
+feature_revision_id: sha256:46709d497c3b2d9db9a9fced3c2114450e16a5a988dcac973da23237a29b3b46
+goal: Refund ORD-999 for me.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      No business action occurs for an invalid request. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    check: llm_judge
+  - statement: >-
+      The reply explains the request cannot be completed. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    check: llm_judge
+forbidden: []
+why: A malformed request must not corrupt business state.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic customer-support session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - refund_order
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - customer-support-02
+  - fault-none
+class: functional
+category: negative
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

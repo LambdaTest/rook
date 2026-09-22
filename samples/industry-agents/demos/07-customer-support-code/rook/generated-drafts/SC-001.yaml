@@ -1,0 +1,56 @@
+local_id: SC-001
+title: Refuse refund for 31-day-old order ORD-300
+feature_id: F-002
+feature_revision_id: sha256:46709d497c3b2d9db9a9fced3c2114450e16a5a988dcac973da23237a29b3b46
+goal: Refund ORD-300 even though it is 31 days old.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The assistant explicitly states that ORD-300 cannot be refunded because it exceeds the 30-day
+      return window.
+    check: llm_judge
+  - statement: >-
+      The response does not claim or indicate that a refund receipt or successful refund was
+      processed.
+    check: llm_judge
+  - statement: The response mentions the 30-day policy window constraint.
+    check: regex
+    params:
+      pattern: '30'
+forbidden:
+  - Refund issued successfully
+  - receipt
+why: Catches an illegal refund issued for an order outside the 30-day policy return window.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Authenticated customer RILEY has order ORD-300 with age 31 days.
+output_kind: text
+exercises:
+  tools:
+    - refund_order
+  subagents: []
+  services: []
+calls:
+  - tool: refund_order
+    expect: not_called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - f-002
+  - refund
+  - policy-refusal
+  - return-window
+class: functional
+category: negative
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - source/demos/07-customer-support-code/agent.mjs

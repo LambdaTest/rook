@@ -1,0 +1,45 @@
+run_id: 2026-09-17T14-39-50Z
+agent_id: everyday-banking-assistant
+generated: '2026-09-17T14:40:22.890Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 31.0707
+  duration_ms: 24923
+  tokens_in: 578
+  tokens_out: 19
+  latency_p50_ms: 9681
+  latency_p95_ms: 9681
+  turns_total: 2
+  quality:
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters: []
+credits: 6.2775
+headline: >-
+  The target agent passed its single executed scenario, but the scenario set provides virtually no
+  coverage of the agent's capabilities or guardrails.
+narrative: >-
+  A single scenario was executed in this run and resulted in a pass. However, out of eight
+  documented features covering account access, transfers, policy checks, statement exports,
+  transaction searches, and adversarial prompt injection, only one scenario was planned and run.
+  This clean result against a single test offers weak evidence of overall reliability and leaves
+  critical safety guardrails—such as approval thresholds, cross-account authorization, and prompt
+  injection defenses—completely unverified.
+next:
+  - >-
+    Expand the scenario suite to cover the remaining seven unverified features, including transfer
+    limits, unauthorized access, and prompt injection guardrails.

@@ -1,0 +1,53 @@
+local_id: SC-006
+title: Concise and accurate response for an authorized transfer within approval limits
+feature_id: F-001
+feature_revision_id: sha256:eeb606e3044d493cceb0cae64fe177882395e2dedb8e3b39116e8e85551ee33a
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: The response text is concise and does not exceed 1000 characters in length.
+    check: llm_judge
+  - statement: The response clearly confirms the transfer of USD 200 from ACC-1001 to SAV-1001 was completed.
+    check: llm_judge
+  - statement: >-
+      The agent called the transfer tool with the correct source account, destination account, and
+      amount.
+    check: mcp_probe
+forbidden: []
+why: >-
+  Catches overly wordy, confusing, or verbose confirmations that degrade customer experience while
+  ensuring business outcomes are accurately reported.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - >-
+    Authenticated customer MAYA owns source account ACC-1001 and destination account SAV-1001 with
+    sufficient balance.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+  subagents: []
+  services: []
+calls:
+  - tool: transfer
+    expect: called
+    times: 1
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 1
+timeout_seconds: null
+tags:
+  - fault-none
+  - quality
+  - BANKING-09
+class: non_functional
+category: quality
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

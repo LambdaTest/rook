@@ -1,0 +1,24 @@
+{
+  "scenario_id": "SC-002",
+  "attempt": 1,
+  "status": "completed",
+  "output": "{\"status\":\"ok\",\"receipt\":{\"id\":\"transfer-1\",\"type\":\"transfer\",\"from\":\"ACC-1001\",\"to\":\"SAV-1001\",\"amount\":200}}",
+  "raw_response": "{\"output\":\"{\\\"status\\\":\\\"ok\\\",\\\"receipt\\\":{\\\"id\\\":\\\"transfer-1\\\",\\\"type\\\":\\\"transfer\\\",\\\"from\\\":\\\"ACC-1001\\\",\\\"to\\\":\\\"SAV-1001\\\",\\\"amount\\\":200}}\",\"agent_reply\":\"{\\\"status\\\":\\\"ok\\\",\\\"receipt\\\":{\\\"id\\\":\\\"transfer-1\\\",\\\"type\\\":\\\"transfer\\\",\\\"from\\\":\\\"ACC-1001\\\",\\\"to\\\":\\\"SAV-1001\\\",\\\"amount\\\":200}}\",\"conversation\":\"33ce2d00-5b06-4190-9472-e84de9de2b92\",\"calls\":[{\"name\":\"transfer\",\"arguments\":{\"from\":\"ACC-1001\",\"to\":\"SAV-1001\",\"amount\":200},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"transfer-1\",\"type\":\"transfer\",\"from\":\"ACC-1001\",\"to\":\"SAV-1001\",\"amount\":200}}}]}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD 200 from ACC-1001 to SAV-1001."
+    },
+    {
+      "role": "agent",
+      "content": "{\"status\":\"ok\",\"receipt\":{\"id\":\"transfer-1\",\"type\":\"transfer\",\"from\":\"ACC-1001\",\"to\":\"SAV-1001\",\"amount\":200}}"
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-002/artifacts/01-demo-evidence.json"
+  ],
+  "latency_ms": 59,
+  "turns": 1,
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-104",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I was unable to process the refund for order ORD-100. The payment provider is currently unavailable, so no refund could be issued at this time. Please try again later or contact customer support for assistance.",
+  "raw_response": "{\"output\":\"I was unable to process the refund for order ORD-100. The payment provider is currently unavailable, so no refund could be issued at this time. Please try again later or contact customer support for assistance.\",\"agent_reply\":\"I was unable to process the refund for order ORD-100. The payment provider is currently unavailable, so no refund could be issued at this time. Please try again later or contact customer support for assistance.\",\"conversation\":\"e5351e8e-6c7e-4684-a906-c8db1eb4f8ce\",\"calls\":[{\"name\":\"get_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"order\":\"ORD-100\",\"owner\":\"RILEY\",\"amount\":80,\"ageDays\":10,\"refunded\":false}},{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"denied\",\"reason\":\"Payment provider unavailable; no refund issued\"}}],\"usage\":{\"input\":1647,\"output\":83}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Refund ORD-100 for me."
+    },
+    {
+      "role": "agent",
+      "content": "I was unable to process the refund for order ORD-100. The payment provider is currently unavailable, so no refund could be issued at this time. Please try again later or contact customer support for assistance."
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-104/artifacts/01-demo-evidence-e5351e8e-6c7e-4684-a906-c8db1eb4f8ce.json"
+  ],
+  "latency_ms": 9560,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 1647,
+    "output_tokens": 83
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

@@ -1,0 +1,50 @@
+local_id: SC-002
+title: Transfer USD 200 from ACC-1001 to SAV-1001
+feature_id: F-002
+feature_revision_id: sha256:e6b894e68604122d48e4958c60f521cb04f04f5bc910df22b1d7d6b4a8e3cff0
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The assistant invokes the transfer tool with ACC-1001 as source, SAV-1001 as destination, and
+      amount 200
+    check: llm_judge
+  - statement: The assistant confirms that the USD 200 transfer between ACC-1001 and SAV-1001 was successful
+    check: llm_judge
+  - statement: The assistant mentions or provides the resulting transfer ledger receipt details
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches failures where an eligible transfer request under the USD 1000 threshold fails to execute
+  or verify the ledger receipt.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - >-
+    Authenticated customer Maya Chen owns source account ACC-1001 with sufficient balance and
+    destination account SAV-1001.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+  subagents: []
+  services: []
+calls:
+  - tool: transfer
+    expect: called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags: []
+class: functional
+category: happy_path
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - PRD.md

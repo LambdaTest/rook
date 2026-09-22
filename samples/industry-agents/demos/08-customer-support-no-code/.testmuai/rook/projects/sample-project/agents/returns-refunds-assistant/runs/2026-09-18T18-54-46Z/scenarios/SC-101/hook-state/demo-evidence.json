@@ -1,0 +1,97 @@
+{
+  "sessionId": "78979081-d28f-4236-bb71-3bc04f0b4ca4",
+  "domain": "customer-support",
+  "engine": "fixture",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [
+    {
+      "id": "refund-1",
+      "type": "refund",
+      "order": "ORD-100",
+      "amount": 80
+    }
+  ],
+  "calls": [
+    {
+      "name": "refund_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "540643f5-4eb0-4a02-8a68-cddd6f0382d7",
+      "spanId": "296eb9a9-4277-4eda-afc1-61ce11d843ab",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-18T18:54:46.509Z",
+      "durationMs": 0.26233300000012605,
+      "status": "ok"
+    },
+    {
+      "traceId": "540643f5-4eb0-4a02-8a68-cddd6f0382d7",
+      "spanId": "6b6c0307-997a-4496-a3cd-fc7988dfb28c",
+      "parentSpanId": "296eb9a9-4277-4eda-afc1-61ce11d843ab",
+      "kind": "tool",
+      "name": "refund_order",
+      "durationMs": 0.13279099999999744,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "540643f5-4eb0-4a02-8a68-cddd6f0382d7",
+      "goal": "Refund ORD-100 for me.",
+      "output": "{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}",
+      "calls": [
+        {
+          "name": "refund_order",
+          "arguments": {
+            "order": "ORD-100"
+          },
+          "output": {
+            "status": "ok",
+            "receipt": {
+              "id": "refund-1",
+              "type": "refund",
+              "order": "ORD-100",
+              "amount": 80
+            }
+          }
+        }
+      ],
+      "durationMs": 0.26233300000012605
+    }
+  ],
+  "verificationGaps": [
+    "Complete model token usage is not observed. Do not grade token economy from character counts."
+  ]
+}

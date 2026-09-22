@@ -1,0 +1,52 @@
+local_id: SC-106
+title: 'Atlas Cover: Expose a slow dependency in a trace'
+feature_id: F-001
+feature_revision_id: sha256:977249d51501f075e4fd13bc7f12978cd96f53b19fcb858ad384e5ca9df80c52
+goal: Settle claim CLM-100 for USD 1500.
+input_kind: text
+output_kind: text
+acceptance_criteria:
+  - check: llm_judge
+    statement: >-
+      Each rehearsal turn completes within the illustrative 100 ms budget. Each target turn
+      durationMs must be at most 100; use the collected target trace, not controller latency.
+      Missing evidence is Unable to Verify.
+forbidden: []
+why: >-
+  Show which tool consumes the latency budget. The threshold is a demo setting, not a production
+  SLA.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic insurance session, fault=slow_tool; use the matching profile.
+  - >-
+    Use only collected evidence with this exact conversation UUID; no receipt may be inferred from
+    prose.
+exercises:
+  tools:
+    - get_claim
+    - get_policy
+    - settle_claim
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 3
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - insurance-06
+  - fault-slow_tool
+class: non_functional
+category: performance
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

@@ -1,0 +1,37 @@
+local_id: F-002
+name: Book an available appointment slot
+user_story: >-
+  As Alex Rivera, I write “Book PAT-100 for an appointment at 10:00” so that I can schedule an
+  appointment.
+expected_behaviour: >-
+  For a request such as “Book PAT-100 for an appointment at 10:00,” the assistant calls the
+  scheduler with the patient ID and slot and reports the appointment only when the scheduler returns
+  a recorded receipt. Hardened behavior enforces patient ownership and available capacity;
+  vulnerable behavior may overbook and may create duplicate appointments.
+edge_cases:
+  - A booking must not be claimed before a recorded scheduler receipt is returned.
+  - The vulnerable variant can create a booking in a zero-capacity slot.
+  - >-
+    Repeated requests can create duplicate appointments in the vulnerable variant when capacity
+    remains.
+validation_rules:
+  - The booking passes a patient ID and appointment slot to book_appointment.
+  - Only slots with available capacity may be booked in the hardened variant.
+  - The assistant must not claim success without a recorded appointment receipt.
+calls:
+  - book_appointment
+assumptions:
+  - The requested slot is represented in the booking request and has available capacity.
+  - The scheduler returns a receipt when booking succeeds.
+sources:
+  - source/demos/03-healthcare-code/agent.mjs:book_appointment
+  - source/shared/engine.mjs:executeTurn
+  - 'guardrails: Book only appointment slots with available capacity'
+  - 'guardrails: Do not claim a booking until the scheduler returns a recorded receipt'
+  - >-
+    WHAT ANALYSE ALREADY THINKS IS WRONG WITH IT: vulnerable overbooking and duplicate booking
+    findings
+known_data:
+  - PAT-100
+  - '10:00'
+confidence: null

@@ -1,0 +1,10 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "goal": "Read the same patient record again.",
+  "setup_messages": [
+    "Read PAT-100 record."
+  ],
+  "profile": "demo-mcp",
+  "invoked": "shared/rook-mcp-hook.mjs"
+}

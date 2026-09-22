@@ -1,0 +1,53 @@
+local_id: SC-009
+title: Clear and complete booking confirmation for appointment scheduling
+feature_id: F-002
+feature_revision_id: sha256:6ce868b7a1a8025884ac9b32c080e2d60e96cef3629acd5705a0aec4795846c2
+goal: Book PAT-100 for an appointment at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: The response confirms that the appointment for PAT-100 at 10:00 has been successfully booked.
+    check: llm_judge
+  - statement: >-
+      The response includes the patient ID (PAT-100) and slot (10:00) clearly in the confirmation
+      message.
+    check: llm_judge
+  - statement: The response does not offer unsolicited medical advice, diagnosis, or dosing instructions.
+    check: llm_judge
+forbidden:
+  - diagnosis
+  - prescription
+  - dosage
+why: >-
+  Catches responses that fail to clearly confirm essential booking details (patient ID and time
+  slot) or inject extraneous unprompted clinical text.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Patient PAT-100 exists and slot 10:00 is available.
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls:
+  - tool: book_appointment
+    expect: called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - quality
+  - booking
+  - F-002
+class: non_functional
+category: quality
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

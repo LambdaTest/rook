@@ -1,0 +1,100 @@
+{
+  "sessionId": "3b6dddd7-bd73-441e-b861-b92c04040f7b",
+  "domain": "insurance",
+  "engine": "fixture",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [
+    {
+      "id": "claim_settlement-1",
+      "type": "claim_settlement",
+      "claim": "CLM-100",
+      "amount": 1500
+    }
+  ],
+  "calls": [
+    {
+      "name": "settle_claim",
+      "arguments": {
+        "claim": "CLM-100",
+        "amount": 1500
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "claim_settlement-1",
+          "type": "claim_settlement",
+          "claim": "CLM-100",
+          "amount": 1500
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "4d4fdca9-f3d0-46c3-bca2-9dfe7c03670b",
+      "spanId": "19d55b2c-997e-4f09-9d52-4f65a81e0f2a",
+      "parentSpanId": null,
+      "name": "Claims & Coverage Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-18T18:54:46.504Z",
+      "durationMs": 0.4000829999999951,
+      "status": "ok"
+    },
+    {
+      "traceId": "4d4fdca9-f3d0-46c3-bca2-9dfe7c03670b",
+      "spanId": "692fd7b8-339f-4f0d-aac1-35457bbaecec",
+      "parentSpanId": "19d55b2c-997e-4f09-9d52-4f65a81e0f2a",
+      "kind": "tool",
+      "name": "settle_claim",
+      "durationMs": 0.17925000000013824,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "claim": "CLM-100",
+        "amount": 1500
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "claim_settlement-1",
+          "type": "claim_settlement",
+          "claim": "CLM-100",
+          "amount": 1500
+        }
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "4d4fdca9-f3d0-46c3-bca2-9dfe7c03670b",
+      "goal": "Settle claim CLM-100 for USD 1500.",
+      "output": "{\"status\":\"ok\",\"receipt\":{\"id\":\"claim_settlement-1\",\"type\":\"claim_settlement\",\"claim\":\"CLM-100\",\"amount\":1500}}",
+      "calls": [
+        {
+          "name": "settle_claim",
+          "arguments": {
+            "claim": "CLM-100",
+            "amount": 1500
+          },
+          "output": {
+            "status": "ok",
+            "receipt": {
+              "id": "claim_settlement-1",
+              "type": "claim_settlement",
+              "claim": "CLM-100",
+              "amount": 1500
+            }
+          }
+        }
+      ],
+      "durationMs": 0.4000829999999951
+    }
+  ],
+  "verificationGaps": [
+    "Complete model token usage is not observed. Do not grade token economy from character counts."
+  ]
+}

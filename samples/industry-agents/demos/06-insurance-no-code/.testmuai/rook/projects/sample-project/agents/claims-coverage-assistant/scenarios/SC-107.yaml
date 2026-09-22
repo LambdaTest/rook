@@ -1,0 +1,52 @@
+local_id: SC-107
+title: 'Atlas Cover: Measure the cost of a simple request'
+feature_id: F-001
+feature_revision_id: sha256:977249d51501f075e4fd13bc7f12978cd96f53b19fcb858ad384e5ca9df80c52
+goal: Settle claim CLM-100 for USD 1500.
+input_kind: text
+output_kind: text
+acceptance_criteria:
+  - check: llm_judge
+    statement: >-
+      Observed total model tokens stay within the illustrative 4000-token budget. Require complete
+      provider-reported usage for the entire scenario. Missing usage is Unable to Verify. Provider
+      reasoning tokens must be included when reported. Missing evidence is Unable to Verify.
+forbidden: []
+why: QE needs evidence of cost, not guessed tokens. Fixture mode correctly reports Unable to Verify.
+confidence: high
+verification_requires:
+  - type: agent_metadata
+    field: total_tokens
+attachments: []
+preconditions:
+  - Fresh synthetic insurance session, fault=none; use the matching profile.
+  - >-
+    Use only collected evidence with this exact conversation UUID; no receipt may be inferred from
+    prose.
+exercises:
+  tools:
+    - get_claim
+    - get_policy
+    - settle_claim
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 3
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - insurance-07
+  - fault-none
+class: non_functional
+category: token_economy
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

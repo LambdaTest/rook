@@ -1,0 +1,33 @@
+scenario_id: SC-105
+run_id: 2026-09-17T14-36-45Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The reply uses the entity from the preceding turn. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: Use the account entity established in the preceding turn in the customer-facing reply.
+    achieved: >-
+      The second-turn reply identifies ACC-1001, the account named in the preceding turn, and
+      returns its balance.
+    status: Pass
+    evidence: 'The recorded second-turn response states: "The balance of account ACC-1001 is $5,000.00 USD."'
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 9861
+turns: 2
+usage:
+  input_tokens: 587
+  output_tokens: 22
+summary: >-
+  The agent made a completed two-turn response and carried forward ACC-1001 from the initial
+  request. The recorded reply directly names that prior account and gives its balance.

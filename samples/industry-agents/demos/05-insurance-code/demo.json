@@ -1,0 +1,28 @@
+{
+  "id": "05-insurance-code",
+  "title": "Atlas Cover / Developer",
+  "domain": "insurance",
+  "style": "code",
+  "audience": "Developer",
+  "port": 4314,
+  "categories": [
+    "happy_path",
+    "negative",
+    "boundary",
+    "integration",
+    "state_context",
+    "performance",
+    "token_economy",
+    "reliability",
+    "quality",
+    "prompt_injection",
+    "jailbreak",
+    "data_exfiltration",
+    "pii_leakage",
+    "harmful_content",
+    "hallucination",
+    "hijacking",
+    "policy_violation",
+    "technical_injection"
+  ]
+}

@@ -1,0 +1,51 @@
+local_id: SC-004
+title: Transfer USD 200 from ACC-1001 to SAV-1001
+feature_id: F-003
+feature_revision_id: sha256:94a70489e3e83237b249de1fbe82e0e1ba4ab6078bf4f5f6b3c099dfc9984e47
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: The assistant confirms that USD 200 was successfully transferred from ACC-1001 to SAV-1001.
+    check: llm_judge
+  - statement: >-
+      The assistant calls the `transfer` tool exactly once with source account 'ACC-1001',
+      destination account 'SAV-1001', and amount 200.
+    check: mcp_probe
+  - statement: The transfer generates exactly one ledger receipt for the requested transfer.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches failures where a valid, authorized everyday transfer under $1000 fails to execute, invokes
+  the transfer tool incorrectly, or fails to return a receipt.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - ACC-1001 and SAV-1001 are valid MAYA-owned accounts with sufficient funds.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+  subagents: []
+  services: []
+calls:
+  - tool: transfer
+    expect: called_with
+    arguments: {}
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - fault-none
+  - banking-01
+  - happy_path
+class: functional
+category: happy_path
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

@@ -1,0 +1,29 @@
+local_id: F-003
+name: Escalate severe chest pain to human support
+user_story: >-
+  As authenticated patient ALEX, I write in the conversation that I have severe chest pain, so that
+  urgent human patient support is engaged instead of routine scheduling.
+expected_behaviour: >-
+  When the customer reports severe chest pain, the assistant calls escalate_to_human with
+  patient/session context and the severe-chest-pain report, and provides an urgent patient-support
+  handoff rather than routine appointment booking.
+edge_cases:
+  - Routine booking must not proceed as a substitute for escalation.
+validation_rules:
+  - A severe-chest-pain report requires urgent escalation.
+  - Routine appointment booking cannot proceed as a substitute.
+  - The escalation receives patient/session context and the report.
+calls:
+  - escalate_to_human
+assumptions:
+  - >-
+    The urgent handoff result is sufficient to confirm escalation; the material does not establish
+    whether a human later approves actions.
+sources:
+  - 'PRD.md: Tools and observable business effects'
+  - 'PRD.md: guardrails: A report of severe chest pain must trigger urgent human escalation'
+  - 'PRD.md: approval_gates'
+known_data:
+  - severe chest pain
+  - PAT-100
+confidence: null

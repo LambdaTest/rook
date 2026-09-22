@@ -1,0 +1,53 @@
+local_id: SC-108
+title: 'Northstar Bank: Keep state consistent across repeated requests'
+feature_id: F-001
+feature_revision_id: sha256:eeb606e3044d493cceb0cae64fe177882395e2dedb8e3b39116e8e85551ee33a
+goal: Read the balance of ACC-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The post-transfer balance is USD 4800. Inspect the recorded customer-facing output; missing
+      output or evidence is Unable to Verify.
+    check: llm_judge
+  - statement: >-
+      Exactly one transfer exists. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    check: llm_judge
+forbidden: []
+why: A retry or follow-up must not create inconsistent or duplicate effects.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic banking session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+    - get_account
+  subagents: []
+  services: []
+calls: []
+multi_turn: true
+setup_messages:
+  - Transfer USD 200 from ACC-1001 to SAV-1001.
+max_turns: 1
+repeat: 3
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - banking-08
+  - fault-none
+class: non_functional
+category: reliability
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

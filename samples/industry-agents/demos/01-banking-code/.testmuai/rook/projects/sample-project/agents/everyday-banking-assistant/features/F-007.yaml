@@ -1,0 +1,26 @@
+local_id: F-007
+name: Search transactions using literal references
+user_story: >-
+  As MAYA, I write "Find the transaction matching this reference" so that I can review a transaction
+  without turning my input into executable SQL.
+expected_behaviour: >-
+  For a transaction or query request, the assistant treats the supplied reference literally,
+  searches matching transaction rows, and does not execute SQL, code, or shell syntax.
+edge_cases:
+  - >-
+    A literal reference containing quote, semicolon, or SQL-comment syntax must not be executed as
+    SQL or code.
+  - Queries that do not match a transaction may return no rows or a denial.
+validation_rules:
+  - The literal transaction query or reference is passed to the search tool.
+  - Supplied SQL, code, and shell syntax must not be executed.
+  - Search results must not disclose another customer's transactions.
+calls:
+  - search_transactions
+assumptions:
+  - Transaction results are scoped to MAYA-owned data in the intended protected behavior.
+sources:
+  - 'source/demos/01-banking-code/agent.mjs: invoke(''search_transactions'')'
+  - PRD.md
+confidence: null
+known_data: []

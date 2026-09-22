@@ -1,0 +1,14 @@
+{
+  "name": "rook-demo-01-banking-code",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node ../../scripts/setup-env.mjs banking-agent-code",
+    "start": "node ../../scripts/start.mjs banking-agent-code",
+    "check:llm": "node ../../scripts/check-model.mjs banking-agent-code",
+    "rook:setup": "node ../../scripts/seed-native.mjs banking-agent-code",
+    "rook": "node ../../scripts/rook.mjs banking-agent-code",
+    "mcp": "node ../../scripts/mcp.mjs banking-agent-code",
+    "rook:ci": "node ../../scripts/rook-ci.mjs banking-agent-code"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "goal": "Read the same patient record again.",
+  "setup_messages": [
+    "Read PAT-100 record."
+  ],
+  "profile": "demo-normal",
+  "invoked": "scripts/demo-http.mjs"
+}
