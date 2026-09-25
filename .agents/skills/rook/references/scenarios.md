@@ -13,8 +13,6 @@
 | non_functional | `performance`, `token_economy`, `reliability`, `quality`                                                                                 |
 | adversarial    | `prompt_injection`, `jailbreak`, `data_exfiltration`, `pii_leakage`, `harmful_content`, `hallucination`, `hijacking`, `policy_violation` |
 
-`technical_injection` is a valid `--category` value.
-
 Every scenario also carries free-form tags; `run --tag <names>` selects on them.
 
 ## Generating
