@@ -65,13 +65,15 @@ still use the network, change state or invoke the target.
 
 ## On disk
 
-`.testmuai/rook/settings.json` selects the project. Under
-`.testmuai/rook/projects/<project-id>/agents/<agent-id>/`:
+`.testmuai/rook/settings.json` selects the project. New project directories
+usually use `.testmuai/rook/projects/<project-slug>--<project-id>/`; existing
+`<project-id>` directories are reused. Find the directory by its project ID
+rather than assuming either form. Under its `agents/<agent-id>/` directory:
 
 | Path | Contents |
 | --- | --- |
 | `agent.yaml`, `features/`, `findings.yaml` | Agent specification, capabilities and findings |
-| `profiles/`, `scenarios/` | Invocation profiles and current scenarios |
+| `profiles/`, `scenarios/` | Invocation profiles, generated profile READMEs and current scenarios |
 | `runs/<run-id>/run.yaml` | Run manifest and pinned profile revision |
 | `runs/<run-id>/` | Snapshots: `agent.yaml`, `features.yaml`, `profile.yaml` |
 | `runs/<run-id>/report.yaml` | Report returned by `report --json` |
