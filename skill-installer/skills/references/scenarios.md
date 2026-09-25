@@ -13,8 +13,6 @@
 | non_functional | `performance`, `token_economy`, `reliability`, `quality`                                                                                 |
 | adversarial    | `prompt_injection`, `jailbreak`, `data_exfiltration`, `pii_leakage`, `harmful_content`, `hallucination`, `hijacking`, `policy_violation` |
 
-`technical_injection` is a valid `--category` value.
-
 Every scenario also carries free-form tags; `run --tag <names>` selects on them.
 
 ## Generating
@@ -44,10 +42,11 @@ IDs are separate arguments here, unlike `run --only SC-004,SC-009`. A
 comma-joined string is one unknown ID: nothing changes, and the document still
 says `ok: true` with the string under `unknown`. Check `changed` in the reply.
 
-`list` recomputes `unrunnable` against the profile as it is now: a scenario
-that needs a capability the profile lacks (a file, an image, an MCP server)
-says so and is skipped by `run`, and counts toward the assurance gap, not
-toward Fail.
+`list` recomputes `unrunnable` against the current profile. A scenario needing
+multiple turns without an observed conversation handle, or token-economy
+grading without reported usage, is skipped by `run` and counts toward the
+assurance gap, not toward Fail. File and image requirements are not rejected
+solely by their input kind: inspect what the profile script can actually send.
 
 ## Scoping a run
 

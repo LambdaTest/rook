@@ -24,11 +24,14 @@ rook profile use <id>
 rook profile show <id>
 ```
 
-`profile add` writes the script, runs it once against the agent (the goal is
-"Say hello and nothing else."), and corrects it. It is costed,
-may emit text despite `--json`, and uses `--yes` (or `--allow` rules) to
-run its own test call without a prompt. With neither `--from` nor
-`--command`, it reads the material from stdin.
+`profile add` writes the script, runs it against the agent to verify it, and
+corrects it. It may make several real target calls and costs Rook credits. It
+may emit text despite `--json`; `--yes` (or `--allow` rules) permits its test
+calls without a prompt. With neither `--from` nor `--command`, it reads the
+material from stdin. If authoring stops after saving a profile but before
+verification, the CLI keeps it as **unverified**. Inspect the saved script and
+generated profile README, then use `rook profile test <id>` or
+`rook profile fix <id>` as appropriate; do not treat the draft as ready to run.
 
 `profile test` calls the agent once with `--goal` and says what came back.
 Run it before the first `rook run` and after any change to the agent's URL,
@@ -49,4 +52,7 @@ rook env rm API_KEY
 ```
 
 Never paste a value into a profile, a scenario, a transcript, or a commit.
-Reference it as `${API_KEY}` and set it with `rook env set`.
+Reference it as `${API_KEY}`. A verified `profile add` can store values it
+actually used during verification; check `rook env list` and set any remaining
+variables with `rook env set`. The shell's value takes precedence over a stored
+value. `rook env show` prints the full secret, so avoid it in logs.
