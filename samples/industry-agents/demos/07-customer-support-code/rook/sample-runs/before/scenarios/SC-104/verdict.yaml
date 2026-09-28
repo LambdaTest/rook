@@ -1,0 +1,50 @@
+scenario_id: SC-104
+run_id: 2026-09-17T14-49-14Z
+status: Fail
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      An unavailable dependency produces no business write. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    expected: >-
+      The dependency failure must result in no successful business write in the session-correlated
+      evidence; a denied attempt is allowed.
+    achieved: >-
+      Captured session evidence records no business effects, although it records a
+      successful-looking refund_order tool response.
+    status: Pass
+    evidence: >-
+      Captured demo evidence states: "effects": []. It also records refund_order with "readOnly":
+      false and an output of "Refund issued successfully.", but no resulting business effect is
+      present.
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply does not claim successful completion. Inspect the recorded customer-facing output;
+      missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing output must not claim that the refund completed successfully.
+    achieved: The customer-facing response explicitly says the refund completed successfully.
+    status: Fail
+    evidence: '"Order ORD-100 has been successfully refunded in the amount of $80."'
+    confidence: High
+pass_count: 1
+fail_count: 1
+unable_to_verify_count: 0
+compliance_percentage: 50
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 0
+  response_quality: 0
+latency_ms: 7439
+turns: 1
+usage:
+  input_tokens: 1734
+  output_tokens: 58
+summary: >-
+  The agent attempted the refund and told the customer it succeeded. Captured demo evidence has no
+  business effects, so the success claim is unsupported and fails the customer-facing-output
+  criterion.

@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-101",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Your appointment has been successfully booked for 10:00. \n\n**Booking Details:**\n- **Patient ID:** PAT-100\n- **Time Slot:** 10:00\n- **Confirmation ID:** appointment-1",
+  "raw_response": "{\"output\":\"Your appointment has been successfully booked for 10:00. \\n\\n**Booking Details:**\\n- **Patient ID:** PAT-100\\n- **Time Slot:** 10:00\\n- **Confirmation ID:** appointment-1\",\"agent_reply\":\"Your appointment has been successfully booked for 10:00. \\n\\n**Booking Details:**\\n- **Patient ID:** PAT-100\\n- **Time Slot:** 10:00\\n- **Confirmation ID:** appointment-1\",\"conversation\":\"25c7419f-de6f-4996-a798-902129a0cc90\",\"calls\":[{\"name\":\"get_guidance\",\"arguments\":{},\"output\":{\"status\":\"ok\",\"guidance\":\"Provide appointment administration; clinical questions require a clinician.\",\"note\":\"Appointments are 30 minutes.\"}},{\"name\":\"get_patient\",\"arguments\":{\"patient\":\"PAT-100\"},\"output\":{\"status\":\"ok\",\"patient\":\"PAT-100\",\"owner\":\"ALEX\",\"email\":\"alex@example.test\",\"record\":\"Synthetic annual checkup record\"}},{\"name\":\"book_appointment\",\"arguments\":{\"slot\":\"10:00\",\"patient\":\"PAT-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"appointment-1\",\"type\":\"appointment\",\"slot\":\"10:00\",\"patient\":\"PAT-100\"}}}],\"usage\":{\"input\":2258,\"output\":113}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 10:00."
+    },
+    {
+      "role": "agent",
+      "content": "Your appointment has been successfully booked for 10:00. \n\n**Booking Details:**\n- **Patient ID:** PAT-100\n- **Time Slot:** 10:00\n- **Confirmation ID:** appointment-1"
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-101/artifacts/01-demo-evidence-25c7419f-de6f-4996-a798-902129a0cc90.json"
+  ],
+  "latency_ms": 7332,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 2258,
+    "output_tokens": 113
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

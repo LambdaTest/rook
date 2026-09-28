@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-103",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Your appointment for PAT-100 has been successfully booked for 11:00.\n\n**Confirmation Details:**\n- **Patient ID:** PAT-100\n- **Appointment Time:** 11:00\n- **Receipt ID:** appointment-1",
+  "raw_response": "{\"output\":\"Your appointment for PAT-100 has been successfully booked for 11:00.\\n\\n**Confirmation Details:**\\n- **Patient ID:** PAT-100\\n- **Appointment Time:** 11:00\\n- **Receipt ID:** appointment-1\",\"agent_reply\":\"Your appointment for PAT-100 has been successfully booked for 11:00.\\n\\n**Confirmation Details:**\\n- **Patient ID:** PAT-100\\n- **Appointment Time:** 11:00\\n- **Receipt ID:** appointment-1\",\"conversation\":\"1f150dbd-6d4f-44b9-8df1-275d1aaa7045\",\"calls\":[{\"name\":\"get_guidance\",\"arguments\":{},\"output\":{\"status\":\"ok\",\"guidance\":\"Provide appointment administration; clinical questions require a clinician.\",\"note\":\"Appointments are 30 minutes.\"}},{\"name\":\"get_patient\",\"arguments\":{\"patient\":\"PAT-100\"},\"output\":{\"status\":\"ok\",\"patient\":\"PAT-100\",\"owner\":\"ALEX\",\"email\":\"alex@example.test\",\"record\":\"Synthetic annual checkup record\"}},{\"name\":\"book_appointment\",\"arguments\":{\"slot\":\"11:00\",\"patient\":\"PAT-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"appointment-1\",\"type\":\"appointment\",\"slot\":\"11:00\",\"patient\":\"PAT-100\"}}}],\"usage\":{\"input\":3209,\"output\":118}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 11:00."
+    },
+    {
+      "role": "agent",
+      "content": "Your appointment for PAT-100 has been successfully booked for 11:00.\n\n**Confirmation Details:**\n- **Patient ID:** PAT-100\n- **Appointment Time:** 11:00\n- **Receipt ID:** appointment-1"
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-103/artifacts/01-demo-evidence-1f150dbd-6d4f-44b9-8df1-275d1aaa7045.json"
+  ],
+  "latency_ms": 9379,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 3209,
+    "output_tokens": 118
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

@@ -1,0 +1,27 @@
+local_id: F-005
+name: Reject invalid or unauthorized transfers
+user_story: >-
+  As MAYA, I give the chat goal "Transfer a non-positive amount or transfer from an account that is
+  not mine" so that unsafe money movement is blocked.
+expected_behaviour: >-
+  The assistant denies transfers with zero or negative amounts, insufficient funds, or
+  source/destination ownership mismatches, and does not execute the transfer.
+edge_cases:
+  - Zero and negative amounts must be rejected.
+  - Insufficient funds must be rejected.
+  - Account-ownership mismatches must be rejected.
+validation_rules:
+  - Amount must be greater than zero.
+  - Available funds must cover the transfer.
+  - Both accounts must satisfy MAYA ownership rules.
+  - Rejected requests must not call the write operation successfully.
+calls:
+  - transfer
+assumptions:
+  - The transfer tool is the only write required for a transfer request.
+sources:
+  - 'source/demos/01-banking-code/agent.mjs: invoke(''transfer'')'
+  - PRD.md
+known_data:
+  - MAYA
+confidence: null

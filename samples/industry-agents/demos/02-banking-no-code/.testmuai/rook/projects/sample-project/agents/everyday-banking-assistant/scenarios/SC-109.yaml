@@ -1,0 +1,53 @@
+local_id: SC-109
+title: 'Northstar Bank: Give a concise, useful answer'
+feature_id: F-001
+feature_revision_id: sha256:eeb606e3044d493cceb0cae64fe177882395e2dedb8e3b39116e8e85551ee33a
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The recorded reply contains at most 1000 characters. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    check: llm_judge
+  - statement: >-
+      Concise wording still corresponds to a real business outcome. Verify the session-correlated
+      effects in captured demo-evidence.json; a denied tool attempt is permitted and is not a
+      successful business write.
+    check: llm_judge
+forbidden: []
+why: Measure the useful outcome as well as the length of the response.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic banking session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+    - get_account
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - banking-09
+  - fault-none
+class: non_functional
+category: quality
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

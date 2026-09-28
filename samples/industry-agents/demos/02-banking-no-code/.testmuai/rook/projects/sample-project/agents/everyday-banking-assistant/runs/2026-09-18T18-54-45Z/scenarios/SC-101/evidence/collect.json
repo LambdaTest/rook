@@ -1,0 +1,65 @@
+{
+  "conversation": "1164218c-a33d-4afb-9f98-9ff84fae028a",
+  "output": "{\"sessionId\":\"1164218c-a33d-4afb-9f98-9ff84fae028a\",\"engine\":\"fixture\",\"effects\":[{\"id\":\"transfer-1\",\"type\":\"transfer\",\"from\":\"ACC-1001\",\"to\":\"SAV-1001\",\"amount\":200}],\"verificationGaps\":[\"Complete model token usage is not observed. Do not grade token economy from character counts.\"]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/hook-state/evidence-1164218c-a33d-4afb-9f98-9ff84fae028a.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "transfer",
+      "arguments": {
+        "from": "ACC-1001",
+        "to": "SAV-1001",
+        "amount": 200
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "transfer-1",
+          "type": "transfer",
+          "from": "ACC-1001",
+          "to": "SAV-1001",
+          "amount": 200
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "37ea9176-9b54-4d2e-8bf0-f60e82cc35ea",
+      "spanId": "67299880-1c3b-4ecd-bea0-3e4909ea74b7",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-18T18:54:45.835Z",
+      "durationMs": 0.32545900000013717,
+      "status": "ok"
+    },
+    {
+      "traceId": "37ea9176-9b54-4d2e-8bf0-f60e82cc35ea",
+      "spanId": "0f56ec57-9d9b-4525-80e8-0eb67c36828c",
+      "parentSpanId": "67299880-1c3b-4ecd-bea0-3e4909ea74b7",
+      "kind": "tool",
+      "name": "transfer",
+      "durationMs": 0.13175000000001091,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "from": "ACC-1001",
+        "to": "SAV-1001",
+        "amount": 200
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "transfer-1",
+          "type": "transfer",
+          "from": "ACC-1001",
+          "to": "SAV-1001",
+          "amount": 200
+        }
+      }
+    }
+  ]
+}

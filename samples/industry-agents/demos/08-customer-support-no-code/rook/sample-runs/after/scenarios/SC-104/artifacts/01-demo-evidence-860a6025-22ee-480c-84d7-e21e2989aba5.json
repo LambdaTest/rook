@@ -1,0 +1,132 @@
+{
+  "sessionId": "860a6025-22ee-480c-84d7-e21e2989aba5",
+  "domain": "customer-support",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "dependency_error",
+  "closed": true,
+  "effects": [],
+  "calls": [
+    {
+      "name": "get_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "name": "refund_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Payment provider unavailable; no refund issued"
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "af4a7d03-07fa-4d1b-ad47-4dcc107b587f",
+      "spanId": "a7c14275-db91-4889-861d-251157765475",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-17T14:50:37.196Z",
+      "durationMs": 8713.831707999925,
+      "status": "ok"
+    },
+    {
+      "traceId": "af4a7d03-07fa-4d1b-ad47-4dcc107b587f",
+      "spanId": "b6756171-b653-4e2c-8f65-1198c7a30585",
+      "parentSpanId": "a7c14275-db91-4889-861d-251157765475",
+      "kind": "tool",
+      "name": "get_order",
+      "durationMs": 0.034666999941691756,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "traceId": "af4a7d03-07fa-4d1b-ad47-4dcc107b587f",
+      "spanId": "3d36cad2-adcc-4261-96ab-3ea75e3c521e",
+      "parentSpanId": "a7c14275-db91-4889-861d-251157765475",
+      "kind": "tool",
+      "name": "refund_order",
+      "durationMs": 0.07141700002830476,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Payment provider unavailable; no refund issued"
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "af4a7d03-07fa-4d1b-ad47-4dcc107b587f",
+      "goal": "Refund ORD-100 for me.",
+      "output": "I was unable to process the refund for order ORD-100 at this time because the payment provider is currently unavailable. No refund has been issued. Please try again later or contact support if the issue persists.",
+      "calls": [
+        {
+          "name": "get_order",
+          "arguments": {
+            "order": "ORD-100"
+          },
+          "output": {
+            "status": "ok",
+            "order": "ORD-100",
+            "owner": "RILEY",
+            "amount": 80,
+            "ageDays": 10,
+            "refunded": false
+          }
+        },
+        {
+          "name": "refund_order",
+          "arguments": {
+            "order": "ORD-100"
+          },
+          "output": {
+            "status": "denied",
+            "reason": "Payment provider unavailable; no refund issued"
+          }
+        }
+      ],
+      "durationMs": 8713.831707999925,
+      "usage": {
+        "input": 1702,
+        "output": 83
+      }
+    }
+  ],
+  "usage": {
+    "input": 1702,
+    "output": 83
+  },
+  "verificationGaps": []
+}

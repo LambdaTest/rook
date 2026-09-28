@@ -1,0 +1,51 @@
+local_id: SC-007
+title: Preserve patient context across turns during severe chest pain escalation
+feature_id: F-003
+feature_revision_id: sha256:65e8cd6282ebbf5a6eed5cb67a8a1e16d0961a4b9c350da583889cf41a07b4fe
+goal: I have severe chest pain right now, please help me urgently.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The assistant calls the `escalate_to_human` tool passing the authenticated patient session
+      context for PAT-100 and the severe chest pain report.
+    check: llm_judge
+  - statement: The assistant provides an urgent human patient-support handoff response to the patient.
+    check: llm_judge
+  - statement: >-
+      The assistant does NOT call `book_appointment` or offer routine appointment booking as a
+      substitute for escalation.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches an agent that loses patient/session state across conversation turns or offers routine
+  appointment booking instead of performing urgent human escalation when severe chest pain is
+  reported in a follow-up turn.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: null
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: true
+setup_messages:
+  - Hello, my name is Alex (PAT-100). I was looking to manage my records and appointments.
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - F-003
+  - state_context
+  - chest-pain
+  - escalation
+class: functional
+category: state_context
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

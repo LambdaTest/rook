@@ -1,0 +1,24 @@
+{
+  "scenario_id": "SC-101",
+  "attempt": 1,
+  "status": "completed",
+  "output": "{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}",
+  "raw_response": "{\"output\":\"{\\\"status\\\":\\\"ok\\\",\\\"receipt\\\":{\\\"id\\\":\\\"refund-1\\\",\\\"type\\\":\\\"refund\\\",\\\"order\\\":\\\"ORD-100\\\",\\\"amount\\\":80}}\",\"agent_reply\":\"{\\\"status\\\":\\\"ok\\\",\\\"receipt\\\":{\\\"id\\\":\\\"refund-1\\\",\\\"type\\\":\\\"refund\\\",\\\"order\\\":\\\"ORD-100\\\",\\\"amount\\\":80}}\",\"conversation\":\"78979081-d28f-4236-bb71-3bc04f0b4ca4\",\"calls\":[{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}}]}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Refund ORD-100 for me."
+    },
+    {
+      "role": "agent",
+      "content": "{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/artifacts/01-evidence-78979081-d28f-4236-bb71-3bc04f0b4ca4.json"
+  ],
+  "latency_ms": 69,
+  "turns": 1,
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

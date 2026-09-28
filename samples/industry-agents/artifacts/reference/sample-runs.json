@@ -1,0 +1,777 @@
+{
+  "kind": "recorded-rook-runs",
+  "exportedAt": "2026-09-17T14:55:52.294Z",
+  "notes": [
+    "Actual Rook output from model-backed demo agents. All business records are fictional.",
+    "Native report, verdict and scenario snapshots are preserved. Response artifact paths are made relative to the sample directory; request hook paths are made relative to the demo repository.",
+    "Only selected input, response and collected business evidence files are included. Credentials, hook state, local configuration and judge working files are excluded.",
+    "These focused runs do not cover all 18 categories. Native report counts for excluded or unrunnable scenarios are retained."
+  ],
+  "runs": [
+    {
+      "id": "banking-agent-code/journeys",
+      "directory": "demos/01-banking-code/rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-36-45Z",
+      "recordedAt": "2026-09-17T14:38:03.688Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "d8126ae0513b484fe3648e337d6113da86165c4f778bb18a289a559d7dd47d0b",
+        "scenarios/SC-101/verdict.yaml": "b82ce0d785cf8418d23796bfd38b510ae7c822fe56368e5d708b665980a6d77a",
+        "scenarios/SC-101/snapshot.yaml": "d3a1979480587e7623d7c62cbee6af19f38a93f798541226a2966f23956da9c3",
+        "scenarios/SC-101/request.json": "da5991f917c42bcdefaf4729759b3f0eaa184bbc4488d233ab0058a5a03a68b1",
+        "scenarios/SC-101/response.json": "770d6c8c0e07e67c3bcd66c3d41e3740a11c2a7ff8a0560d3f094fc2d77dae3a",
+        "scenarios/SC-101/artifacts/01-demo-evidence-b213dca5-4b9b-4e15-931b-5220d0a9f2db.json": "fd6f70923d46760ed74144e1509801c2504893711293bc5e63eb2f7dff488a23",
+        "scenarios/SC-105/verdict.yaml": "ad0d84cfb0295546124f394b53f5ce5166665799fe5dd0cec073edef465dd5d4",
+        "scenarios/SC-105/snapshot.yaml": "fbba109e3215665141fc6ba8652df66956ebabe34a2510a3b3678f4a2192792d",
+        "scenarios/SC-105/request.json": "41185dbecb2c22a4de74941389e0da2cb33ac7c736ece7efebbd0a44ddf6c117",
+        "scenarios/SC-105/response.json": "bc30321af815aa0f94bd3dc6f4a4e535503cadbfaba2fd3d1932cc84b1f3511c",
+        "scenarios/SC-105/artifacts/01-demo-evidence-8e7b836a-455f-4a40-b6c6-dc11db401370.json": "7a9118558d2ee30a848e9c2fe9348d2964533ac856f13406c24375c913df2c79",
+        "scenarios/SC-111/verdict.yaml": "fa92e11f704ba110c5302a6bf5188078d0fe3ffed722d31ca56fc0da37e7f881",
+        "scenarios/SC-111/snapshot.yaml": "c904b57558f5b5bb2c772c377677cedb7198819b58e6a0d95eedd69f3022d45b",
+        "scenarios/SC-111/request.json": "9cafbde457760346932a106ebe838a2ccb1422e54886edb1ce5961735bec6d9f",
+        "scenarios/SC-111/response.json": "2bfcc7a2e74766dd9b37fe963145f6be59362ffaebb4e6c36a516050609d1ac1",
+        "scenarios/SC-111/artifacts/01-demo-evidence-178264d6-a305-4534-a5aa-5aeb8161db61.json": "231692daa1004355eeb397c31f1eb77b8aa67c2dab1e6253afe454a560ad30eb"
+      }
+    },
+    {
+      "id": "banking-agent-code/before",
+      "directory": "demos/01-banking-code/rook/sample-runs/before",
+      "runId": "2026-09-17T14-38-16Z",
+      "recordedAt": "2026-09-17T14:38:45.622Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-117"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "8f1f371bb7724ffbd0acd12fd1d6da1b38ba68dc3a323818a2b825efb9ab210c",
+        "scenarios/SC-117/verdict.yaml": "123d3cbc44e8371c451cd7a0395646d05df52f8a908fbc3e2a772a14de4ae494",
+        "scenarios/SC-117/snapshot.yaml": "00f7782cf281ddc4639215a0810ae18b455896543810a494c28a49f75f37dd55",
+        "scenarios/SC-117/request.json": "0304d34b634c58baafd6e57468bf099216a052ca0421b281006d75ea55892a8a",
+        "scenarios/SC-117/response.json": "027a263bfd3255d4915ee1015e070b2f95eaab4642e6fb85346d31644483120c",
+        "scenarios/SC-117/artifacts/01-demo-evidence-fc90addc-8daa-4248-9640-b99a84e329cb.json": "9405ae61b09a181049466882b243f1a4d22912259c31c533f15dd990da9cd644"
+      }
+    },
+    {
+      "id": "banking-agent-code/after",
+      "directory": "demos/01-banking-code/rook/sample-runs/after",
+      "runId": "2026-09-17T14-38-59Z",
+      "recordedAt": "2026-09-17T14:39:35.991Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-117"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "5da820cd0b839ef7812e20eb49ab3b9833e96c6b10bbcc580509ca555112426f",
+        "scenarios/SC-117/verdict.yaml": "ed7b657727a83b7a94f8cf26fded2a675258e85e7df2d2764a0beeadc09ab265",
+        "scenarios/SC-117/snapshot.yaml": "00f7782cf281ddc4639215a0810ae18b455896543810a494c28a49f75f37dd55",
+        "scenarios/SC-117/request.json": "0304d34b634c58baafd6e57468bf099216a052ca0421b281006d75ea55892a8a",
+        "scenarios/SC-117/response.json": "9d32fbce52b7cc54cc4e22b344994c16f52dee9045cc7fbac8b81633e200f16f",
+        "scenarios/SC-117/artifacts/01-demo-evidence-de5d3326-36bb-4abd-8f76-a21a7c3aad8b.json": "fd9c53c4a35b840d5f1cdb98159ffdd8f68377cc09e146584c9fa1d1c7bc32fe"
+      }
+    },
+    {
+      "id": "banking-agent-code/mcp",
+      "directory": "demos/01-banking-code/rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-39-50Z",
+      "recordedAt": "2026-09-17T14:40:22.890Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "38f04e537bfab3a67e98613ff7f5de36da6b6235ec3725e5d03dbae088695aee",
+        "scenarios/SC-105/verdict.yaml": "6efc902b6709b06e57575503d110fd451eecb45d9e6e842e4c031676e8dd9765",
+        "scenarios/SC-105/snapshot.yaml": "fbba109e3215665141fc6ba8652df66956ebabe34a2510a3b3678f4a2192792d",
+        "scenarios/SC-105/request.json": "3ddc9eb1fe287b30870972d9a43ed816582257af7196d92b68599ded6b398705",
+        "scenarios/SC-105/response.json": "868b2d346d5061c5f10f1169b232948531cdb037c3b895be0bc824d89a5bba3b",
+        "scenarios/SC-105/artifacts/01-demo-evidence-ef07914b-19f3-49df-bd82-c54b193fa15b.json": "920ea6a23ff8e4c7c6e12400516c3b5bfa4dd07234ffa11ebb22a7bbd40cb651"
+      }
+    },
+    {
+      "id": "banking-agent/journeys",
+      "directory": "demos/02-banking-no-code/rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-36-45Z",
+      "recordedAt": "2026-09-17T14:38:03.211Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "7b5457c4d446b1d3dfbd5935a59696eb7142cfb1f5fe6307b13638761faa64f6",
+        "scenarios/SC-101/verdict.yaml": "065191c83bcf99a07ea2ed4d83a240f6c2aa3ba98068018c974ac7de04534e58",
+        "scenarios/SC-101/snapshot.yaml": "1b81e2d28be845b24a890d598b5964bfe73d262ea9771df1021967e0f1ceb49e",
+        "scenarios/SC-101/request.json": "da5991f917c42bcdefaf4729759b3f0eaa184bbc4488d233ab0058a5a03a68b1",
+        "scenarios/SC-101/response.json": "f1985d1b6d37d88dac08f501c945f924386343b7a1af42abb5b50753a38142ed",
+        "scenarios/SC-101/artifacts/01-demo-evidence-0c0bc9cb-65e4-4252-b865-9a0e4b68baf8.json": "007017862dc7b9e53fb7a2563bec3bd6163c9d6feb312e747e97ba409ce0d6d6",
+        "scenarios/SC-105/verdict.yaml": "50cdf40157f9026561e7b81bff74b6e938dcee905d7c0fe12074f9bf589634ae",
+        "scenarios/SC-105/snapshot.yaml": "027501c364ab5486f339dfabb82ac2aac8c7447ac137e11ed8c28d0731d38dff",
+        "scenarios/SC-105/request.json": "41185dbecb2c22a4de74941389e0da2cb33ac7c736ece7efebbd0a44ddf6c117",
+        "scenarios/SC-105/response.json": "81ef9c0569dc83b7fde34eaa19509c8b1932217eb29d430706337a92ae93ee6b",
+        "scenarios/SC-105/artifacts/01-demo-evidence-4db3186c-cfc8-4885-9629-c002b849b646.json": "9a5cd453f04778d33bed0fba7243ad92485e0d8aed0e0be89b3c2a17a2e98843",
+        "scenarios/SC-111/verdict.yaml": "1f5bfd182c06bfae57c3392b3ef3bda77ee06d74e75f412122e3fa04173d6d65",
+        "scenarios/SC-111/snapshot.yaml": "26b35b146b0192ba8e5edb002c8d31171d9812b39d4e475831ca5cdd715f0baa",
+        "scenarios/SC-111/request.json": "9cafbde457760346932a106ebe838a2ccb1422e54886edb1ce5961735bec6d9f",
+        "scenarios/SC-111/response.json": "163ffe6050e3f2afc3be250a08be2f0196bb8ea1ab27b9f9dd49ceec737db8e4",
+        "scenarios/SC-111/artifacts/01-demo-evidence-eaab5daa-b0d0-4c2e-8b87-4577c27dae99.json": "6db0aed811b24a940052db288ea60b3efec1e7c55f25a65d4700f06b494c5579"
+      }
+    },
+    {
+      "id": "banking-agent/before",
+      "directory": "demos/02-banking-no-code/rook/sample-runs/before",
+      "runId": "2026-09-17T14-38-16Z",
+      "recordedAt": "2026-09-17T14:38:46.188Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-117"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "78afc0040054785e967c68532d4b7cb4e09b41a13f87c602b67469c5da35b5c4",
+        "scenarios/SC-117/verdict.yaml": "20b32b37e4f8f6400c250136fe06c4773a930bc4cb73ed382716c56756a73feb",
+        "scenarios/SC-117/snapshot.yaml": "5ff0f306b2e34cb522598e260e381d55a9b1a05ba9a56fa6c252dda28032f08a",
+        "scenarios/SC-117/request.json": "0304d34b634c58baafd6e57468bf099216a052ca0421b281006d75ea55892a8a",
+        "scenarios/SC-117/response.json": "cdddf22f3072bd2e0c222c92086d26505b271fc53ea10fbb62f4637e6291101e",
+        "scenarios/SC-117/artifacts/01-demo-evidence-d7ffdef4-5c36-4fce-afa8-0d249f451d0e.json": "c973c0c45032ea66411908607ffea01f518605bf7266c85f8cdc81e68bf7067d"
+      }
+    },
+    {
+      "id": "banking-agent/after",
+      "directory": "demos/02-banking-no-code/rook/sample-runs/after",
+      "runId": "2026-09-17T14-39-02Z",
+      "recordedAt": "2026-09-17T14:39:29.677Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-117"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "6398a8a9ffeb83f20ede8723f1a74282ba991e26a3d61cff2bc90b49cf241186",
+        "scenarios/SC-117/verdict.yaml": "f141f16d50df918c26c358267c325a64598783bbdc34c8305b05b2e3381b1d7a",
+        "scenarios/SC-117/snapshot.yaml": "5ff0f306b2e34cb522598e260e381d55a9b1a05ba9a56fa6c252dda28032f08a",
+        "scenarios/SC-117/request.json": "0304d34b634c58baafd6e57468bf099216a052ca0421b281006d75ea55892a8a",
+        "scenarios/SC-117/response.json": "1c64081be1ceb46c00ae851b70fc9687e5174bc9f01f16e5e653cc6710690f97",
+        "scenarios/SC-117/artifacts/01-demo-evidence-10821dde-a602-4af4-a813-adc99f9e5fec.json": "10297607f962fde40e83788eee9d65c633acfcc26587bd034ace278215aceec5"
+      }
+    },
+    {
+      "id": "banking-agent/mcp",
+      "directory": "demos/02-banking-no-code/rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-39-49Z",
+      "recordedAt": "2026-09-17T14:40:38.179Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "74685f4f8892dd76c53187cd85d05ef9575b871cc1bd088fa4d8579e7ad9c3be",
+        "scenarios/SC-105/verdict.yaml": "484922cb3d58c427b18e584974dac79700a16b5e386a85e88ff04ca014fd71e9",
+        "scenarios/SC-105/snapshot.yaml": "027501c364ab5486f339dfabb82ac2aac8c7447ac137e11ed8c28d0731d38dff",
+        "scenarios/SC-105/request.json": "3ddc9eb1fe287b30870972d9a43ed816582257af7196d92b68599ded6b398705",
+        "scenarios/SC-105/response.json": "ce5fc7e69309858c6c452fcd5b2d28e8fe4dd27d7ebe88ebc232ea34a9bf9cce",
+        "scenarios/SC-105/artifacts/01-demo-evidence-fef8ce8c-7753-42f1-9c4d-6ac809f9d139.json": "ade843f73735451011de0843d1cadaf4a47a8f2a7c4f4b2a999e6fdb984409eb"
+      }
+    },
+    {
+      "id": "healthcare-agent-code/journeys",
+      "directory": "demos/03-healthcare-code/rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-40-29Z",
+      "recordedAt": "2026-09-17T14:42:03.836Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "f90d09f4ba0799f7d8fa17cdbbd347848983878e0ca39e718cefe310e826e9e9",
+        "scenarios/SC-101/verdict.yaml": "681ee0bbd0f9afcc7a15cfdb54678f62af5518c13c542fe0505ee0594205026f",
+        "scenarios/SC-101/snapshot.yaml": "5c39a40d1f3e0367f8e91953b2e0c6bc921ebac54ea1b5a3e2dc5a34271033ec",
+        "scenarios/SC-101/request.json": "8c5a40855dd01e773db547acea187f6387703b2fb8da0addbf16abd52adc8bb6",
+        "scenarios/SC-101/response.json": "fe90fceacdd2ab66d2a77144e79f72f189894093554490598e70a85c46a05a0b",
+        "scenarios/SC-101/artifacts/01-demo-evidence-3e1c1820-483b-4cfc-a7e7-dacfb823e912.json": "c157f3a3f27ee73d9367c5b6bbeeae64f75267664a27298e3aa6432543e20b04",
+        "scenarios/SC-105/verdict.yaml": "8c11b14289358be0b1dc986ff1c24f58d9532dd519405d696202748f65d500ec",
+        "scenarios/SC-105/snapshot.yaml": "aa6108cd251400a8c56d407eb644a3c9f035e29535d4033f97bf0ce8ec713559",
+        "scenarios/SC-105/request.json": "7f68c740d48d1b3d20ae6036d6c3ecfabf507f83fd4965c87c21dded83927c92",
+        "scenarios/SC-105/response.json": "0623966ca46a236e2eaf084cc61acc54e429aadba4e001b2a51c148ac5c03859",
+        "scenarios/SC-105/artifacts/01-demo-evidence-7fd33b4d-e411-46a0-b594-9d8415868ea4.json": "19dfc454e5346aa377d419d9217cb13cd7e20d5708865ef8ce57f6b668374654",
+        "scenarios/SC-111/verdict.yaml": "4659174a4d73fe5fc7d7fd1549120816162b0ff358536b29a9bf1b00b1ce20c8",
+        "scenarios/SC-111/snapshot.yaml": "256c28b499581c89b58a5ce1206e20a89dca1f5ddf74d7a52c0f4c3f6fb78537",
+        "scenarios/SC-111/request.json": "797a688d43ad2d4b2f9a39d64d549d30b45cc9298c395916ed8b22ead58c527d",
+        "scenarios/SC-111/response.json": "699f94faccbcdc50ae0f9ff9c6ccd95dca3f3b1a15278bc7f5de8f3aacee3b99",
+        "scenarios/SC-111/artifacts/01-demo-evidence-9d69c265-dce3-4493-b4cf-b8b3d40d1bf5.json": "c45078006e591b80024160ca602a8f7836fa4d362667c8bc42b540e6f45e2800"
+      }
+    },
+    {
+      "id": "healthcare-agent-code/before",
+      "directory": "demos/03-healthcare-code/rook/sample-runs/before",
+      "runId": "2026-09-17T14-42-09Z",
+      "recordedAt": "2026-09-17T14:42:53.007Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-103"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "4e4c854323d2f1afc02decdca59a5a62f98812557c59921cd7e91d053d709057",
+        "scenarios/SC-103/verdict.yaml": "fc3321cbce1857488322d065a97fce6e0d08023bd4503f986d078b66808bbc4c",
+        "scenarios/SC-103/snapshot.yaml": "9cb1dc6d6009ea6a1d88fec5a7e1d7b83dd17866333c643be1ba39f535f0431a",
+        "scenarios/SC-103/request.json": "fe27e8dfe8a2c5c96744c48bb6ee9e90859a4db41b95a999c2be0613e73b304c",
+        "scenarios/SC-103/response.json": "9487820e92a94dabf48df90c5d6ffdacaf506f7ecac7e43f0419e5ad43ddcdff",
+        "scenarios/SC-103/artifacts/01-demo-evidence-1f150dbd-6d4f-44b9-8df1-275d1aaa7045.json": "74c43bb5e6d0abfbb99318074d0d39350ceb914e7a82b584f6a66605281c886b"
+      }
+    },
+    {
+      "id": "healthcare-agent-code/after",
+      "directory": "demos/03-healthcare-code/rook/sample-runs/after",
+      "runId": "2026-09-17T14-42-58Z",
+      "recordedAt": "2026-09-17T14:43:40.425Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-103"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "6d0b6996216c460eb591c741689e97b186b843d8f300ac41a86cb7e164ba667a",
+        "scenarios/SC-103/verdict.yaml": "cf71bffb523d5a81921b2c7266a3ec36e42d75333395815f754f3cf058443213",
+        "scenarios/SC-103/snapshot.yaml": "9cb1dc6d6009ea6a1d88fec5a7e1d7b83dd17866333c643be1ba39f535f0431a",
+        "scenarios/SC-103/request.json": "fe27e8dfe8a2c5c96744c48bb6ee9e90859a4db41b95a999c2be0613e73b304c",
+        "scenarios/SC-103/response.json": "9c155632ae31dbadc2791bfe432edd121cebcb2f995d33f2fb0360fb4211455f",
+        "scenarios/SC-103/artifacts/01-demo-evidence-29d49335-e48d-426a-b15e-dfdd003c4af1.json": "be2881adc550eec4019d669e82c3072448aa908db8bbf1bb87fc259e05625965"
+      }
+    },
+    {
+      "id": "healthcare-agent-code/mcp",
+      "directory": "demos/03-healthcare-code/rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-43-46Z",
+      "recordedAt": "2026-09-17T14:44:20.759Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "b345ccf07262c5a50515f6747aa84f1b21070d351264dbe685cd1ccff58161be",
+        "scenarios/SC-105/verdict.yaml": "4f7a5b978730eee09b752ab837de3c5c67bfdb3eeb4a9194cd7140d38a0532eb",
+        "scenarios/SC-105/snapshot.yaml": "aa6108cd251400a8c56d407eb644a3c9f035e29535d4033f97bf0ce8ec713559",
+        "scenarios/SC-105/request.json": "9794f0022a62d29cffd70b643a94750278c46244e0f6efb77d201bb940ba2b78",
+        "scenarios/SC-105/response.json": "941dbe87a86afb3abd03b69ec20946a6a91e64bb29e8090aad091e337df7889a",
+        "scenarios/SC-105/artifacts/01-demo-evidence-740b904d-fccb-48bf-84be-4c49ef459600.json": "aad8521b9739b7d749cd6ceee1c904f01689fb8651de65b31e66a884a262b16e"
+      }
+    },
+    {
+      "id": "healthcare-agent/journeys",
+      "directory": "demos/04-healthcare-no-code/rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-40-57Z",
+      "recordedAt": "2026-09-17T14:42:18.107Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "45a3bddb3708c2f9841450f2f81d52d2f50a3e05aaa6ec877e9aa0caa89661f4",
+        "scenarios/SC-101/verdict.yaml": "c2d0740454089490845215e98d43c7adf0678d9f0d5c0d3cb6fff2edb44147a5",
+        "scenarios/SC-101/snapshot.yaml": "594883fb76169882d0aa228f196b8b63b864edf990447213f76894b0d8ceac6d",
+        "scenarios/SC-101/request.json": "8c5a40855dd01e773db547acea187f6387703b2fb8da0addbf16abd52adc8bb6",
+        "scenarios/SC-101/response.json": "cd45b831b58a60f2e204138f173133d6e5b40f365b234edfd0125112b3520efe",
+        "scenarios/SC-101/artifacts/01-demo-evidence-25c7419f-de6f-4996-a798-902129a0cc90.json": "b2fe8c66dbaedd017dc139a94b109a15922f10e3f5c26bc9f5b577a91073d61a",
+        "scenarios/SC-105/verdict.yaml": "a8ef2c621ea344202699403e9439ea587c34a6aae8bf7733c66989208454d7e1",
+        "scenarios/SC-105/snapshot.yaml": "8e56a79b416f1625d20d857718ab385cb98678a8255f0639b47805b53853ecd6",
+        "scenarios/SC-105/request.json": "7f68c740d48d1b3d20ae6036d6c3ecfabf507f83fd4965c87c21dded83927c92",
+        "scenarios/SC-105/response.json": "a66f17934ff3b533e46a7f6ed6ae98a858dc016b28960e320c30af8a66c17f98",
+        "scenarios/SC-105/artifacts/01-demo-evidence-e4be281d-1905-48b8-a295-7b1bad074d4f.json": "1bd1ffa9ff778162f0933b6a26f1a72ad269618f78b4c253ba7cafa1b4665c69",
+        "scenarios/SC-111/verdict.yaml": "52d7ea5048b2f9b47d5ba83c87012d403bdb48907fb0269f24f5069ed7a0aac1",
+        "scenarios/SC-111/snapshot.yaml": "bd1fdc33c21b0d7f1cbeb95e21a7aef632abe0d039bd2c292b238823ac3f5d3b",
+        "scenarios/SC-111/request.json": "797a688d43ad2d4b2f9a39d64d549d30b45cc9298c395916ed8b22ead58c527d",
+        "scenarios/SC-111/response.json": "3e5b7acb108586e491175f38a4cbb5639eeaad0dbe19c24e3d464af26ebd09c7",
+        "scenarios/SC-111/artifacts/01-demo-evidence-7151b270-ed23-4fd9-ae93-ca33b3cff174.json": "78675c73d9e3b1be865c6410d952a6f03aa8d8d4425aaef3de66bbf7c032bb0b"
+      }
+    },
+    {
+      "id": "healthcare-agent/before",
+      "directory": "demos/04-healthcare-no-code/rook/sample-runs/before",
+      "runId": "2026-09-17T14-42-29Z",
+      "recordedAt": "2026-09-17T14:43:00.078Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-103"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "eb36b2dbe94e4347b7b07c87ade25bf8154794b9499e291fb1444a554dacded9",
+        "scenarios/SC-103/verdict.yaml": "9f0d1dc17dec039fd86ff3aebafc1277cef45ec1cd98768feb3900e80e729f3d",
+        "scenarios/SC-103/snapshot.yaml": "95f8b1ab4f6fef34a5af3360ebcf628d39d6df166b346a4d6acc252916facc47",
+        "scenarios/SC-103/request.json": "fe27e8dfe8a2c5c96744c48bb6ee9e90859a4db41b95a999c2be0613e73b304c",
+        "scenarios/SC-103/response.json": "ecff1f850f90c7ffbb73a3874949a7550fd5a18b02452d3ceafeeb738dbcfdce",
+        "scenarios/SC-103/artifacts/01-demo-evidence-93c178e2-62b5-4fd7-9638-536e79bcdddf.json": "58457274ff29ece12320fb7bc50ca296b80e87fede7fb0bc1f5524498ca27fe6"
+      }
+    },
+    {
+      "id": "healthcare-agent/after",
+      "directory": "demos/04-healthcare-no-code/rook/sample-runs/after",
+      "runId": "2026-09-17T14-43-12Z",
+      "recordedAt": "2026-09-17T14:43:58.522Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-103"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "758ad743889b00a9555805aa969c5825e21cce8a5dcc6fc8190037de95ce04c4",
+        "scenarios/SC-103/verdict.yaml": "9655b317026ea39232e1eedb4bf72bb34e2c089a48b134eb9fd7c7e56864620c",
+        "scenarios/SC-103/snapshot.yaml": "95f8b1ab4f6fef34a5af3360ebcf628d39d6df166b346a4d6acc252916facc47",
+        "scenarios/SC-103/request.json": "fe27e8dfe8a2c5c96744c48bb6ee9e90859a4db41b95a999c2be0613e73b304c",
+        "scenarios/SC-103/response.json": "2565dcf29b88dc5ed8647be7574db6f5288b8bcfa8c489fad71897e1c46ff2f0",
+        "scenarios/SC-103/artifacts/01-demo-evidence-1966e219-605a-44c3-9b03-af326e982e4e.json": "c0c9d4c2602f9019fde4170ab3eed667f23b6fc237cc3a07fb0829b0070b4e12"
+      }
+    },
+    {
+      "id": "healthcare-agent/mcp",
+      "directory": "demos/04-healthcare-no-code/rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-44-10Z",
+      "recordedAt": "2026-09-17T14:44:36.685Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "5ab4033e53f8b2e9c88e9ed11e53d3996ef19b618fd788616e4f40ab9140c0c0",
+        "scenarios/SC-105/verdict.yaml": "5479c1f90e316268b770ab304e5df463b4af0c87239e06cfa7202085329b7684",
+        "scenarios/SC-105/snapshot.yaml": "8e56a79b416f1625d20d857718ab385cb98678a8255f0639b47805b53853ecd6",
+        "scenarios/SC-105/request.json": "9794f0022a62d29cffd70b643a94750278c46244e0f6efb77d201bb940ba2b78",
+        "scenarios/SC-105/response.json": "f7980ed7b26499a0bbc40600f3ac0c5a2c677c31b3dfa6a324f2f58469608a30",
+        "scenarios/SC-105/artifacts/01-demo-evidence-1144460a-7909-458f-b6fa-e952768b3e4a.json": "1610b7453331ff4585ca288cf513b291adb6e831beed438554048eb238bb44ef"
+      }
+    },
+    {
+      "id": "insurance-agent-code/journeys",
+      "directory": "demos/05-insurance-code/rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-44-26Z",
+      "recordedAt": "2026-09-17T14:45:40.534Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "c0859bded941a6c0ed26830d4a58a4017e3568ee612f5600117f429db03feb2f",
+        "scenarios/SC-101/verdict.yaml": "2cdffbf38c8341cb42fe1f87cb64b57b88de4dbe485e71b59015ee8eae6f8468",
+        "scenarios/SC-101/snapshot.yaml": "cd60f445628d309c0fcdbfe487348d7cb8082ef60941d6f24114022e817e5487",
+        "scenarios/SC-101/request.json": "bf5d618c7be92b109198fc11fd80fec2ba0d0d8d51474e4bdd97e95ecf64b793",
+        "scenarios/SC-101/response.json": "7233331300737eca84f4cd68365d16244de8ef829bf10909aafecba488ba09e2",
+        "scenarios/SC-101/artifacts/01-demo-evidence-016d1082-a691-46a3-aa4f-9c56582c561f.json": "896aa9cf422a877eb558fc4b8ea9e9467289aff86b5d90c768bd57bb4b2768f7",
+        "scenarios/SC-105/verdict.yaml": "b3d90f6d9460c1f5d73a3549a4e54bdc93b424040dfb02a8941d012db231052c",
+        "scenarios/SC-105/snapshot.yaml": "2d9345e10ca7abab9d0c37680468e6f612409baa33a9acfbb8f26669700e774a",
+        "scenarios/SC-105/request.json": "3620e6f82c54217615b484a8ed79b9dac66bb0a2260285f1d790452f0941cb1c",
+        "scenarios/SC-105/response.json": "fef523ac8c08cf9c2f55dc9b6bba69751cf1f942784529ba7ef3682fa522651c",
+        "scenarios/SC-105/artifacts/01-demo-evidence-e61215c7-74f1-430a-b4f8-dac3c9677a83.json": "2e431e0a122c0ba4d1602691d10c96960179249a734b3ff87ff1c17c0df9604c",
+        "scenarios/SC-111/verdict.yaml": "881e7f550b54e7616cca48430b673c2b5b5e4432eddf1146b2676f3a746f86cb",
+        "scenarios/SC-111/snapshot.yaml": "52dad71090e6d020791c04acf4c6b3a83fc7079f30db5c4854cb81247542e152",
+        "scenarios/SC-111/request.json": "3a8f9372494e755399f0254841137dca1d3d31ed4cbf7de6996f33e8840c835d",
+        "scenarios/SC-111/response.json": "88a0ed31da488289eeba30afa6f52645faa29870618e77d2b65382d57ce18392",
+        "scenarios/SC-111/artifacts/01-demo-evidence-3874f17f-bf17-4ac7-b5fc-a7d4db83aa53.json": "a0da992f310c630f644991566af7f868a21b0a7f84ce4f10a5f2a0fed179587a"
+      }
+    },
+    {
+      "id": "insurance-agent-code/before",
+      "directory": "demos/05-insurance-code/rook/sample-runs/before",
+      "runId": "2026-09-17T14-45-47Z",
+      "recordedAt": "2026-09-17T14:46:19.572Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "5becfeede6d0f578ecfddda667a19da1d0405148193ad9a237cd4eaf3f49e066",
+        "scenarios/SC-104/verdict.yaml": "4380befd45fd400b1e6b8f1ffc48f163b4dfdeb0140f8be3deef89127844e91d",
+        "scenarios/SC-104/snapshot.yaml": "dd80c11dd65aa96dd762af7482b4555eeec58a1a2428652f958e245dc0cb3692",
+        "scenarios/SC-104/request.json": "8d07f15d23c705f3ea84f33ace7f22833a9dbf224eef1b628f94d24f2543f6b9",
+        "scenarios/SC-104/response.json": "df9df978c6f9a2851d6411cd942fe57a35eaea0c3ab427148cf9d3da56ad7e5e",
+        "scenarios/SC-104/artifacts/01-demo-evidence-0035adde-3f5d-4532-8b08-c89719c7bd7e.json": "71dc2a032762e09e8329916b4419cfc9c12e08bd6ec02a217410f9099223a1c2"
+      }
+    },
+    {
+      "id": "insurance-agent-code/after",
+      "directory": "demos/05-insurance-code/rook/sample-runs/after",
+      "runId": "2026-09-17T14-46-27Z",
+      "recordedAt": "2026-09-17T14:46:58.438Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "330143de22ebd939c1a5d2c982872447e5259526bf71b8ab544d25c25c80d152",
+        "scenarios/SC-104/verdict.yaml": "8a8ef0b8aec9e6bdcaef8e8d676c60127b27dedd6f7206ca62634a10566b503f",
+        "scenarios/SC-104/snapshot.yaml": "dd80c11dd65aa96dd762af7482b4555eeec58a1a2428652f958e245dc0cb3692",
+        "scenarios/SC-104/request.json": "8d07f15d23c705f3ea84f33ace7f22833a9dbf224eef1b628f94d24f2543f6b9",
+        "scenarios/SC-104/response.json": "c90191cbbe56f9eceabbfcd09b894c64d9ea06b44b012120144cb70f7f0cc716",
+        "scenarios/SC-104/artifacts/01-demo-evidence-4a2b1f82-da51-4296-8875-4b9e04afd5e2.json": "d681d3e45f264f2532982269b13fa094bcea109315b1e01d04b6f35289348514"
+      }
+    },
+    {
+      "id": "insurance-agent-code/mcp",
+      "directory": "demos/05-insurance-code/rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-47-04Z",
+      "recordedAt": "2026-09-17T14:47:40.695Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "97aad050bc382577b9bc4adf851e9a95f1994d0b1c520a1d148e35084e41f759",
+        "scenarios/SC-105/verdict.yaml": "4268282c1df7d7dffec0c81a51f806478a49f57cb7c3309f10a4e9c673b95716",
+        "scenarios/SC-105/snapshot.yaml": "2d9345e10ca7abab9d0c37680468e6f612409baa33a9acfbb8f26669700e774a",
+        "scenarios/SC-105/request.json": "550c48f822aca0e6b353f2e85d81b924d9101ca74b4df8fda15d7c4b0ff4c0ce",
+        "scenarios/SC-105/response.json": "9a1f01b6ff48c414dc46a81380da0df31247922de1a7c9788eb99ff9a50633d7",
+        "scenarios/SC-105/artifacts/01-demo-evidence-b4d6810f-43a7-4f2a-97d0-553c31b4f48f.json": "c3e48f00223cb4662c6307459d35c3ec8fa64a922d16d8a04c542e850d7fdab2"
+      }
+    },
+    {
+      "id": "insurance-agent/journeys",
+      "directory": "demos/06-insurance-no-code/rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-44-48Z",
+      "recordedAt": "2026-09-17T14:46:06.459Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "dab742da46bdf1cf0807a6fe57b3437c5e0777a735a3ad028d7397cdf04b64f7",
+        "scenarios/SC-101/verdict.yaml": "9b1bdad1e5620ff008182d4a9384ce6f6524cb42579706b731d103b6f88d638c",
+        "scenarios/SC-101/snapshot.yaml": "cd60f445628d309c0fcdbfe487348d7cb8082ef60941d6f24114022e817e5487",
+        "scenarios/SC-101/request.json": "bf5d618c7be92b109198fc11fd80fec2ba0d0d8d51474e4bdd97e95ecf64b793",
+        "scenarios/SC-101/response.json": "1cc1fccf37990aad5c00abc84f2eacce28cffc551f948632c5f10923e72ed819",
+        "scenarios/SC-101/artifacts/01-demo-evidence-0efabb01-688c-47b6-a36b-9323b2231c2a.json": "4f56898b59407e3ca78f0135045c197e087420122f3a245c8ced976341f18500",
+        "scenarios/SC-105/verdict.yaml": "b9383df4d14fcb0411a23f7d8b259c5dd0f27d94c52bc0e87638631405c1fd1f",
+        "scenarios/SC-105/snapshot.yaml": "2d9345e10ca7abab9d0c37680468e6f612409baa33a9acfbb8f26669700e774a",
+        "scenarios/SC-105/request.json": "3620e6f82c54217615b484a8ed79b9dac66bb0a2260285f1d790452f0941cb1c",
+        "scenarios/SC-105/response.json": "375fee06f48dab8161002adacb23ecfc129af84e69b46a37b638108d8948854f",
+        "scenarios/SC-105/artifacts/01-demo-evidence-d7029a1f-9dcc-4b10-9b22-a4e360d6d145.json": "47c2626aa1d28a4446160b609a9b5c0f08831640e1d05ef62a7a7078965dfdcd",
+        "scenarios/SC-111/verdict.yaml": "bcfafade19ff13d2c94056fa73bf4a26a13c2857b83cc82c663467c83c93d951",
+        "scenarios/SC-111/snapshot.yaml": "52dad71090e6d020791c04acf4c6b3a83fc7079f30db5c4854cb81247542e152",
+        "scenarios/SC-111/request.json": "3a8f9372494e755399f0254841137dca1d3d31ed4cbf7de6996f33e8840c835d",
+        "scenarios/SC-111/response.json": "2ab844fc78722bc83053197b2aabf53c9ca68600509b5b5fd474a8c9213fcecc",
+        "scenarios/SC-111/artifacts/01-demo-evidence-0ede8b00-d106-4788-8478-34e43b16b980.json": "385a96e58bf82a3fb9751076a964c802af24780119d03092607f713691e81f31"
+      }
+    },
+    {
+      "id": "insurance-agent/before",
+      "directory": "demos/06-insurance-no-code/rook/sample-runs/before",
+      "runId": "2026-09-17T14-46-12Z",
+      "recordedAt": "2026-09-17T14:46:49.006Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "d94c6665f6a88371b4c92ad6d30d5e41fbad24cfe76be3296c7926c476b064f7",
+        "scenarios/SC-104/verdict.yaml": "7880226f528431caf9c1190db10599a31b10c891d0c16d4a87ec0d3ef3aa1353",
+        "scenarios/SC-104/snapshot.yaml": "dd80c11dd65aa96dd762af7482b4555eeec58a1a2428652f958e245dc0cb3692",
+        "scenarios/SC-104/request.json": "8d07f15d23c705f3ea84f33ace7f22833a9dbf224eef1b628f94d24f2543f6b9",
+        "scenarios/SC-104/response.json": "2192e93b9bc3628759334517c96c7318b4becc927caa9265637e90316574d3ff",
+        "scenarios/SC-104/artifacts/01-demo-evidence-2a1f80d8-7c5c-44f0-b058-72b9a8007cc2.json": "6787b6c2cb476b3b3da467fae98c920b24c112b16c90a776eefb76d87938b339"
+      }
+    },
+    {
+      "id": "insurance-agent/after",
+      "directory": "demos/06-insurance-no-code/rook/sample-runs/after",
+      "runId": "2026-09-17T14-47-00Z",
+      "recordedAt": "2026-09-17T14:47:30.455Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "6b451882fabc13a2306d1818ef409a14eb4b1bdd4cc459a91d66d3d040b2e38f",
+        "scenarios/SC-104/verdict.yaml": "364a7aebb0b00c0db0a900acb66c1fd29b9ad8a9e4dfd71d81d50aeb7bc5d0e7",
+        "scenarios/SC-104/snapshot.yaml": "dd80c11dd65aa96dd762af7482b4555eeec58a1a2428652f958e245dc0cb3692",
+        "scenarios/SC-104/request.json": "8d07f15d23c705f3ea84f33ace7f22833a9dbf224eef1b628f94d24f2543f6b9",
+        "scenarios/SC-104/response.json": "5e02e179487cf2863c9f348b79f893061ca8341f9b6b15e9f9827aa010fda531",
+        "scenarios/SC-104/artifacts/01-demo-evidence-efdfd3b4-e365-40fc-a1ea-bdbc197993bf.json": "b51955976636095986e569fdf4ad32cdb320b8845a74d56bf2380486daa0708a"
+      }
+    },
+    {
+      "id": "insurance-agent/mcp",
+      "directory": "demos/06-insurance-no-code/rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-47-44Z",
+      "recordedAt": "2026-09-17T14:48:19.379Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "03627ed5938c378a0bfeff3c76f8c4d54592da0302da44d0a348edd2191dcdb4",
+        "scenarios/SC-105/verdict.yaml": "73edd7687dbe2991f57e14a9fe204aecef76e8bbcd8244e68ea1f65a0751831f",
+        "scenarios/SC-105/snapshot.yaml": "2d9345e10ca7abab9d0c37680468e6f612409baa33a9acfbb8f26669700e774a",
+        "scenarios/SC-105/request.json": "550c48f822aca0e6b353f2e85d81b924d9101ca74b4df8fda15d7c4b0ff4c0ce",
+        "scenarios/SC-105/response.json": "749005f2ff787f7f81d7e70dc021c255c234ea3fc84f9c211286a74da086471a",
+        "scenarios/SC-105/artifacts/01-demo-evidence-cb6a86ce-90f5-495b-a364-f0cbb86bcf80.json": "f63ae24c417dd62899c1e6e4445b8c904dfea804847d6bcfffa22cd08ca1a625"
+      }
+    },
+    {
+      "id": "customer-support-agent-code/journeys",
+      "directory": "demos/07-customer-support-code/rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-47-46Z",
+      "recordedAt": "2026-09-17T14:49:05.414Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "0d1e096bb01c6090593275e781e81ce111b30be0d17230c5cabd0430abea385f",
+        "scenarios/SC-101/verdict.yaml": "c7e10d3b9d7f91cbdaac307741b2975ddee855fa8b986b785a1b832efa41a039",
+        "scenarios/SC-101/snapshot.yaml": "54ceeed3800ef22a45357e1f0ef72f33ebf5ebea4d867f995ac8aaa21ecaeb3d",
+        "scenarios/SC-101/request.json": "20ab3d539f143331f05ed6deddca12452cde176a6b912abb96b4c96cd5aac840",
+        "scenarios/SC-101/response.json": "8b2063a481fb6fc424e04a6b10d36466275a7c9f6741a60055c5d13ebd3fbe44",
+        "scenarios/SC-101/artifacts/01-demo-evidence-eea866d8-28ae-4038-8b35-75c079ca016a.json": "fa6ad516d0a88eec30cebcd25c49cf266e99e520bb8d1422b91b2e067cdae749",
+        "scenarios/SC-105/verdict.yaml": "979c8a2f19a596c47ade85c3c9b289be9b82858998fd020d36b8a68838bb6d9f",
+        "scenarios/SC-105/snapshot.yaml": "a16447134c71e6f0b9ffc1ace54502e7aeeb986a30093809cf9ba09476e54a58",
+        "scenarios/SC-105/request.json": "28813a35ce66cb6a69a31452e8e66fcf1ab9562b139b1077db02fc012d0804be",
+        "scenarios/SC-105/response.json": "ad1193f0a4cc7befa96eac2fd0351c6d6a21a7e4e136621dee880b4cc059647d",
+        "scenarios/SC-105/artifacts/01-demo-evidence-8cbf8b9b-cd28-4ff1-8c3f-76f9e43ce1eb.json": "cb36aee8c85ab2e661a49e68aac224c07abfed8668d9b369d6fbd9853b5fa131",
+        "scenarios/SC-111/verdict.yaml": "4a75e00c62807e93bb657c196a38312ee7ad9a0ba30130f4c0809cfae8df3112",
+        "scenarios/SC-111/snapshot.yaml": "3c62d2be20a7006189670d747a789437e97d11b00e60bf4d0a6b674c0afbb5fc",
+        "scenarios/SC-111/request.json": "f5c68c081daa71363f6de171322f1edc3226907a5bf65defe4767bd689e1da0b",
+        "scenarios/SC-111/response.json": "e7d20869ecbceacf4de94189edd07608e00eff78dc4607e593724ee0b7c0dbb8",
+        "scenarios/SC-111/artifacts/01-demo-evidence-6359b04c-30e6-4f73-8a05-27fb74eab0f0.json": "da3b9797096e7c3e06faef2858cb5bd6f58f975ced62b42528de8a7dc220a028"
+      }
+    },
+    {
+      "id": "customer-support-agent-code/before",
+      "directory": "demos/07-customer-support-code/rook/sample-runs/before",
+      "runId": "2026-09-17T14-49-14Z",
+      "recordedAt": "2026-09-17T14:49:48.765Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "ad3b9e604549593f6c3138a40368c569b1c73a9dbbfab7e09ad5ec966a7e7140",
+        "scenarios/SC-104/verdict.yaml": "16ef5525f69d38a03beb07844c209f504c97baa917f69f44e105bd6313f632bb",
+        "scenarios/SC-104/snapshot.yaml": "8d884baa8ec025ba2bcc61f771b7e5981b5c8e9e03cbadec9f4416ac8bf6fbd3",
+        "scenarios/SC-104/request.json": "f4e48486a8476c0c5eeb42f11094b49e904b35053812111c4e2f47dfec190be0",
+        "scenarios/SC-104/response.json": "4f384cb874f6d4c59aa5745047f6e9de88b49fd2f75fd46f3fe5ad654222ef1d",
+        "scenarios/SC-104/artifacts/01-demo-evidence-f497c40f-9d4c-492f-910d-6d0baae2d3d5.json": "f0648a729e8c4a666e824819ed8adf80eb66f82e63d4885c6ef382def22c92a6"
+      }
+    },
+    {
+      "id": "customer-support-agent-code/after",
+      "directory": "demos/07-customer-support-code/rook/sample-runs/after",
+      "runId": "2026-09-17T14-49-57Z",
+      "recordedAt": "2026-09-17T14:50:27.802Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "e7a1ea26e157fd8445ef90190e64a3ced6678f2fac2cdc88d8a8ccb11db8c7ae",
+        "scenarios/SC-104/verdict.yaml": "41732ea1765199e0eec4afdb7e8468d08b60767bbc0cb55e1dabaee3977d4bd2",
+        "scenarios/SC-104/snapshot.yaml": "8d884baa8ec025ba2bcc61f771b7e5981b5c8e9e03cbadec9f4416ac8bf6fbd3",
+        "scenarios/SC-104/request.json": "f4e48486a8476c0c5eeb42f11094b49e904b35053812111c4e2f47dfec190be0",
+        "scenarios/SC-104/response.json": "371be06f2a27af700f2673e0f99e40d14e1da004e17f4b3d1c0e662ed8c2dad5",
+        "scenarios/SC-104/artifacts/01-demo-evidence-e5351e8e-6c7e-4684-a906-c8db1eb4f8ce.json": "c2b64127eb7877d464311350ed8cbe6b74e9b43c68ddf0cc287007f0b8861437"
+      }
+    },
+    {
+      "id": "customer-support-agent-code/mcp",
+      "directory": "demos/07-customer-support-code/rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-50-33Z",
+      "recordedAt": "2026-09-17T14:51:03.362Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "ae6936939d50714c59ae7a833156d4323c1baa5ac7740722213a4e1ac5cc7f0b",
+        "scenarios/SC-105/verdict.yaml": "48b94adc73192c652fff7aeb3cad4fae6e61d43361c63998d8f10567dc241aeb",
+        "scenarios/SC-105/snapshot.yaml": "a16447134c71e6f0b9ffc1ace54502e7aeeb986a30093809cf9ba09476e54a58",
+        "scenarios/SC-105/request.json": "dca435b9fb8075c230b1f4d78888a7100562149b76a98f16fcd017aecfe57498",
+        "scenarios/SC-105/response.json": "58b61d9e9dcc7f989bb255b4e9a691851a2b3c06987f5934ce89a8117852776f",
+        "scenarios/SC-105/artifacts/01-demo-evidence-ea2962da-8b89-4d83-b1c3-5f93735f7212.json": "2b611aac84a07030ac6bbc4f15105c4be8775adddd49120b97834aec70fea8bb"
+      }
+    },
+    {
+      "id": "customer-support-agent/journeys",
+      "directory": "demos/08-customer-support-no-code/rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-48-25Z",
+      "recordedAt": "2026-09-17T14:49:26.855Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "08368222fef3bd8ce1bcae62db54990368106f676e0e11710953cfa09a864c56",
+        "scenarios/SC-101/verdict.yaml": "08660b2c22e395a297809fc411252b5e508b10518adfd7e5286d35b37e1c6745",
+        "scenarios/SC-101/snapshot.yaml": "7d0282797b53fdb6c89f541482c63fc9af2a12e7187afed0fabf4f1654f9a205",
+        "scenarios/SC-101/request.json": "20ab3d539f143331f05ed6deddca12452cde176a6b912abb96b4c96cd5aac840",
+        "scenarios/SC-101/response.json": "83f0964187a16a7ca00329720a46ee83c4e3613c70cc7e925722b13d261fcc6a",
+        "scenarios/SC-101/artifacts/01-demo-evidence-9305d3f1-37df-423c-b065-9324e89a6850.json": "9f6bbaacca9b5c73373ccc7b6001e15664127cc5a1657c60ec9d1a55a5d79d7a",
+        "scenarios/SC-105/verdict.yaml": "92739e07ec75a8138cf9b2fd37b0fb5c3f75fdddb21681035ed698cd4f3028fd",
+        "scenarios/SC-105/snapshot.yaml": "0dbeae8b4fef42ab86dd1e496b04d10cb678ea4881f4a7bda8aa93c787b86678",
+        "scenarios/SC-105/request.json": "28813a35ce66cb6a69a31452e8e66fcf1ab9562b139b1077db02fc012d0804be",
+        "scenarios/SC-105/response.json": "d96724c7381795e024729e3f03f1746b5b632d823eb7f10574ce95e0d960c8c3",
+        "scenarios/SC-105/artifacts/01-demo-evidence-a17ae158-923f-493f-a3f6-73c17487d15f.json": "3d5b4bdf50cdb561599a509a1c4db3c03f88595790f36431013c10817e73d407",
+        "scenarios/SC-111/verdict.yaml": "f4b92fa8cd6da0f953d87022d49d06193183e86c51fe764a4373c1d136e9e698",
+        "scenarios/SC-111/snapshot.yaml": "cc285257a3a65bdcf21565275a85bbaff0f057e6038e11aaa12ff3140f7bc14a",
+        "scenarios/SC-111/request.json": "f5c68c081daa71363f6de171322f1edc3226907a5bf65defe4767bd689e1da0b",
+        "scenarios/SC-111/response.json": "b6e648029bd70430fe82d8d1e79166f9cc5d94b19c376ee4176067194886b7ee",
+        "scenarios/SC-111/artifacts/01-demo-evidence-7ef0a761-2d41-403b-94dc-7ff7189d7057.json": "e1ae08e2145ebb81377761b9ec1afa2d3703fd038983f56c8a2eacae4869c57f"
+      }
+    },
+    {
+      "id": "customer-support-agent/before",
+      "directory": "demos/08-customer-support-no-code/rook/sample-runs/before",
+      "runId": "2026-09-17T14-49-37Z",
+      "recordedAt": "2026-09-17T14:50:17.297Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "27f295b2aff1a96d8a2fc1e0f315085a99db06a7d87f662fd2a31cae53707606",
+        "scenarios/SC-104/verdict.yaml": "8362f78913c0ea9242607c233d2472c13287803f770decf1bbdcb739536fa1ad",
+        "scenarios/SC-104/snapshot.yaml": "d6e13f7392968ab2dfb6f55591cecdc60e290ed541c96fb8397c3fd461ecac5a",
+        "scenarios/SC-104/request.json": "f4e48486a8476c0c5eeb42f11094b49e904b35053812111c4e2f47dfec190be0",
+        "scenarios/SC-104/response.json": "a3294b936c81c073846edfb01150d2f394806c0ba3ba567965d035c52d54dc31",
+        "scenarios/SC-104/artifacts/01-demo-evidence-711883cd-f486-4a65-bf32-dba1bff8ad8e.json": "4aad41f334c7a8fa8dea6a310dcc65817c9505ded2b10264e388e407aa310ddb"
+      }
+    },
+    {
+      "id": "customer-support-agent/after",
+      "directory": "demos/08-customer-support-no-code/rook/sample-runs/after",
+      "runId": "2026-09-17T14-50-29Z",
+      "recordedAt": "2026-09-17T14:51:08.371Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "2685703b18fdb4dc9c193e05c507e13e09140d512b3fa255fda1c625613b44f2",
+        "scenarios/SC-104/verdict.yaml": "02b2baf358a03c5edbf453377e932b7429f115bfe0372de0dfc5c4bd0bec2392",
+        "scenarios/SC-104/snapshot.yaml": "d6e13f7392968ab2dfb6f55591cecdc60e290ed541c96fb8397c3fd461ecac5a",
+        "scenarios/SC-104/request.json": "f4e48486a8476c0c5eeb42f11094b49e904b35053812111c4e2f47dfec190be0",
+        "scenarios/SC-104/response.json": "9014917794a7795ee5ee9175b1325ba1804b4a3ff3f8984800ff9bcb9c9272b8",
+        "scenarios/SC-104/artifacts/01-demo-evidence-860a6025-22ee-480c-84d7-e21e2989aba5.json": "24f91d2491f72d1e101bfdab312c7e21fffd53c40224368705fc42d6c79c25a0"
+      }
+    },
+    {
+      "id": "customer-support-agent/mcp",
+      "directory": "demos/08-customer-support-no-code/rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-51-19Z",
+      "recordedAt": "2026-09-17T14:51:43.375Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "d8b5de78012ccea7736ea39f042ad88b35e09f80d36a55a949b48616b418f495",
+        "scenarios/SC-105/verdict.yaml": "3e854ed435c0030438ec5ed539037c74437439de25e72ea61ec1ad6cac622ab1",
+        "scenarios/SC-105/snapshot.yaml": "0dbeae8b4fef42ab86dd1e496b04d10cb678ea4881f4a7bda8aa93c787b86678",
+        "scenarios/SC-105/request.json": "dca435b9fb8075c230b1f4d78888a7100562149b76a98f16fcd017aecfe57498",
+        "scenarios/SC-105/response.json": "d50c30822b30acc3e1970f6d722ad5dad0f55800f0006798d06e117e2faf23f6",
+        "scenarios/SC-105/artifacts/01-demo-evidence-d8bf752a-14cc-4b37-baf2-808a37d1002b.json": "1a433c34ccfb814dc6c667d94540d31a0b3796d60f516e99949e359c31823719"
+      }
+    },
+    {
+      "id": "banking-agent-code/recorded-unverified",
+      "directory": "demos/01-banking-code/rook/sample-runs/recorded-unverified",
+      "runId": "2026-09-16T12-18-15Z",
+      "recordedAt": "2026-09-16T12:19:32.749Z",
+      "model": "gemini-3.8-flash",
+      "profile": "banking-fixture",
+      "scenarios": [
+        "SC-001",
+        "SC-002"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "e124d48f7cda57b7b8859e149c19fb6e27de33777c50f4c7312caaad2afa6deb",
+        "scenarios/SC-001/verdict.yaml": "ab441dd15c44eee2a8f608542dfd12819af9170f29365cfd64a0405ecc7c12eb",
+        "scenarios/SC-001/snapshot.yaml": "997a574f153fbbdf1b2e4fcb6206bf77f1b6f5ed6fa2cfdbc5fa63b1a2cac521",
+        "scenarios/SC-001/request.json": "174a80327b6d82280d4f350de652400c641a7049dac69bfe21934639c88e9222",
+        "scenarios/SC-001/response.json": "cae7a5d5fa203926ffb8c0fc0fa0ddfe0bd5b662c13d7886cdd435c993d752f5",
+        "scenarios/SC-001/artifacts/01-demo-evidence.json": "f8346674743a92b7c8d537f6a417d87c8fb5ea8aa8df535ec113b9ec7a7f9db4",
+        "scenarios/SC-002/verdict.yaml": "7933dc50f877abd7cdff7ab8349e2d3502f82d48aff1f7c01795d5cc0fba9bb5",
+        "scenarios/SC-002/snapshot.yaml": "ad67d5302722d578cafb0c9e0df5594b66e3d41e5db486fee0d8f5ff8417d33a",
+        "scenarios/SC-002/request.json": "38f3eb9d999e889ebea9463c69f83bd122fa09a29d4d1fd4e6a64e820008f386",
+        "scenarios/SC-002/response.json": "e547f94fca5c8960c77f477c5109fc79a275af48233a7befae6fadb4502daa88",
+        "scenarios/SC-002/artifacts/01-demo-evidence.json": "504426cc082b70a311f1da8827d5a5fc41889bd50169114a9cb32a1d9de4dc17"
+      },
+      "notes": [
+        "Historical two-case banking run from 16 September; these SC-001/SC-002 identifiers belong to its original scenario collection. Its incomplete observation is retained to demonstrate a blocked gate."
+      ]
+    }
+  ]
+}

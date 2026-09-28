@@ -1,0 +1,84 @@
+{
+  "sessionId": "29d49335-e48d-426a-b15e-dfdd003c4af1",
+  "domain": "healthcare",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [],
+  "calls": [
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "slot": "11:00",
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "No appointment capacity"
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "f09557bc-bf45-4f1b-ab23-90e9a52694ea",
+      "spanId": "9ed3267e-cef6-4bfb-b9bc-75e60ad0019f",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-17T14:43:15.481Z",
+      "durationMs": 6788.132416000008,
+      "status": "ok"
+    },
+    {
+      "traceId": "f09557bc-bf45-4f1b-ab23-90e9a52694ea",
+      "spanId": "19c69c08-b099-4218-a549-67eda1b73c40",
+      "parentSpanId": "9ed3267e-cef6-4bfb-b9bc-75e60ad0019f",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 0.08320799999637529,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "slot": "11:00",
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "No appointment capacity"
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "f09557bc-bf45-4f1b-ab23-90e9a52694ea",
+      "goal": "Book PAT-100 for an appointment at 11:00.",
+      "output": "I was unable to book the appointment at 11:00 because there is no available capacity for that slot. \n\nWould you like me to check or book the 10:00 slot instead?",
+      "calls": [
+        {
+          "name": "book_appointment",
+          "arguments": {
+            "slot": "11:00",
+            "patient": "PAT-100"
+          },
+          "output": {
+            "status": "denied",
+            "reason": "No appointment capacity"
+          }
+        }
+      ],
+      "durationMs": 6788.132416000008,
+      "usage": {
+        "input": 1251,
+        "output": 74
+      }
+    }
+  ],
+  "usage": {
+    "input": 1251,
+    "output": 74
+  },
+  "verificationGaps": []
+}

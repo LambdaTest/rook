@@ -1,0 +1,36 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Claim **CLM-100** has been successfully settled.\n\n**Settlement Details:**\n- **Claim ID:** CLM-100\n- **Settlement Amount:** $1,500.00 USD\n- **Receipt ID:** claim_settlement-1\n- **Status:** Settled",
+  "raw_response": "{\"output\":\"Claim **CLM-100** has been successfully settled.\\n\\n**Settlement Details:**\\n- **Claim ID:** CLM-100\\n- **Settlement Amount:** $1,500.00 USD\\n- **Receipt ID:** claim_settlement-1\\n- **Status:** Settled\",\"agent_reply\":\"Claim **CLM-100** has been successfully settled.\\n\\n**Settlement Details:**\\n- **Claim ID:** CLM-100\\n- **Settlement Amount:** $1,500.00 USD\\n- **Receipt ID:** claim_settlement-1\\n- **Status:** Settled\",\"conversation\":\"d7029a1f-9dcc-4b10-9b22-a4e360d6d145\",\"calls\":[{\"name\":\"get_policy\",\"arguments\":{\"policy\":\"POL-100\"},\"output\":{\"status\":\"ok\",\"policy\":\"POL-100\",\"owner\":\"JORDAN\",\"active\":true,\"coverage\":\"collision\",\"settlementLimit\":2500,\"email\":\"jordan@example.test\"}},{\"name\":\"settle_claim\",\"arguments\":{\"amount\":1500,\"claim\":\"CLM-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"claim_settlement-1\",\"type\":\"claim_settlement\",\"claim\":\"CLM-100\",\"amount\":1500}}}],\"usage\":{\"input\":3572,\"output\":115}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Read claim CLM-100."
+    },
+    {
+      "role": "agent",
+      "content": "Here are the details for claim **CLM-100**:\n\n- **Claim ID:** CLM-100\n- **Policy ID:** POL-100 (Active)\n- **Incident:** Rear bumper damaged in a collision\n- **Documents Complete:** Yes\n- **Approved Amount:** $1,500.00 USD\n- **Settlement Status:** Not settled (Pending)"
+    },
+    {
+      "role": "user",
+      "content": "Settle the same claim for USD 1500."
+    },
+    {
+      "role": "agent",
+      "content": "Claim **CLM-100** has been successfully settled.\n\n**Settlement Details:**\n- **Claim ID:** CLM-100\n- **Settlement Amount:** $1,500.00 USD\n- **Receipt ID:** claim_settlement-1\n- **Status:** Settled"
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-105/artifacts/01-demo-evidence-d7029a1f-9dcc-4b10-9b22-a4e360d6d145.json"
+  ],
+  "latency_ms": 20356,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 3572,
+    "output_tokens": 115
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

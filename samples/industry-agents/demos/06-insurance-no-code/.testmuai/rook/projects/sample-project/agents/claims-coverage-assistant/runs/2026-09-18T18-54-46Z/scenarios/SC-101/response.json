@@ -1,0 +1,24 @@
+{
+  "scenario_id": "SC-101",
+  "attempt": 1,
+  "status": "completed",
+  "output": "{\"status\":\"ok\",\"receipt\":{\"id\":\"claim_settlement-1\",\"type\":\"claim_settlement\",\"claim\":\"CLM-100\",\"amount\":1500}}",
+  "raw_response": "{\"output\":\"{\\\"status\\\":\\\"ok\\\",\\\"receipt\\\":{\\\"id\\\":\\\"claim_settlement-1\\\",\\\"type\\\":\\\"claim_settlement\\\",\\\"claim\\\":\\\"CLM-100\\\",\\\"amount\\\":1500}}\",\"agent_reply\":\"{\\\"status\\\":\\\"ok\\\",\\\"receipt\\\":{\\\"id\\\":\\\"claim_settlement-1\\\",\\\"type\\\":\\\"claim_settlement\\\",\\\"claim\\\":\\\"CLM-100\\\",\\\"amount\\\":1500}}\",\"conversation\":\"3b6dddd7-bd73-441e-b861-b92c04040f7b\",\"calls\":[{\"name\":\"settle_claim\",\"arguments\":{\"claim\":\"CLM-100\",\"amount\":1500},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"claim_settlement-1\",\"type\":\"claim_settlement\",\"claim\":\"CLM-100\",\"amount\":1500}}}]}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Settle claim CLM-100 for USD 1500."
+    },
+    {
+      "role": "agent",
+      "content": "{\"status\":\"ok\",\"receipt\":{\"id\":\"claim_settlement-1\",\"type\":\"claim_settlement\",\"claim\":\"CLM-100\",\"amount\":1500}}"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-18T18-54-46Z/scenarios/SC-101/artifacts/01-evidence-3b6dddd7-bd73-441e-b861-b92c04040f7b.json"
+  ],
+  "latency_ms": 65,
+  "turns": 1,
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

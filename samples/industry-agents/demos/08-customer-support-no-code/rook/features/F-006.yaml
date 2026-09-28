@@ -1,0 +1,25 @@
+local_id: F-006
+name: Preserve order context across conversation turns
+user_story: >-
+  As Riley Morgan, I give the conversation the goals "Read ORD-100" and then "Refund the same order"
+  so that the second request uses the order identified in the first turn.
+expected_behaviour: >-
+  The assistant carries the order entity from a preceding lookup into the next turn and can act on
+  the same order without requiring the customer to repeat its reference.
+edge_cases:
+  - The second turn omits the order reference and relies on the preceding turn.
+  - A new conversation is not equivalent to the original session.
+validation_rules:
+  - The turns use the same conversation/session.
+  - Concurrent customer sessions must remain isolated.
+calls:
+  - get_order
+  - refund_order
+assumptions:
+  - Conversation context is preserved for subsequent chat turns in the same session.
+sources:
+  - 'PRD.md: Acceptance examples — CUSTOMER-SUPPORT-05'
+  - 'connection.md: execute'
+known_data:
+  - ORD-100
+confidence: null

@@ -1,0 +1,19 @@
+id: demo-dependency-error
+name: demo-dependency-error
+hooks:
+  prepare: scripts/demo-http.mjs
+  open: scripts/demo-http.mjs
+  execute: scripts/demo-http.mjs
+  close: scripts/demo-http.mjs
+  collect: scripts/demo-http.mjs
+env:
+  - variable: DEMO_BASE_URL
+  - variable: DEMO_ENGINE
+  - variable: DEMO_VARIANT
+capabilities:
+  multi_turn: true
+  calls: true
+  usage: false
+hook_env:
+  DEMO_FAULT: dependency_error
+concurrency: 1

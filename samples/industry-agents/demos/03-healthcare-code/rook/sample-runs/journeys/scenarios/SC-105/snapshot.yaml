@@ -1,0 +1,48 @@
+local_id: SC-105
+title: 'Harbor Care: Carry the customer context into the next turn'
+feature_id: F-001
+feature_revision_id: sha256:a45b57a39fe4a4dd06ae35f84eb7b2d49d38736e41f3513b841a1ce377e1b9c2
+goal: Read the same patient record again.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The reply uses the entity from the preceding turn. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    check: llm_judge
+forbidden: []
+why: Customers should not have to repeat themselves; context must stay in their session.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic healthcare session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - get_patient
+  subagents: []
+  services: []
+calls: []
+multi_turn: true
+setup_messages:
+  - Read PAT-100 record.
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - healthcare-05
+  - fault-none
+class: functional
+category: state_context
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

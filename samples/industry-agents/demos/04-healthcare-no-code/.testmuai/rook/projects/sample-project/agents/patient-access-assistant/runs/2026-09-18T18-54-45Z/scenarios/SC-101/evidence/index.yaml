@@ -1,0 +1,7 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/hook-state/demo-evidence.json
+    stored_as: 1-demo-evidence.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/response.json
+    stored_as: 2-response.json

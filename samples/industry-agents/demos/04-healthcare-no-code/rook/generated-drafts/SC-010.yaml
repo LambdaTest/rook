@@ -1,0 +1,52 @@
+local_id: SC-010
+title: Refuse appointment booking for PAT-100 in a fully booked slot
+feature_id: F-002
+feature_revision_id: sha256:56cb841ad3569160da9387882c37c75ab16b90965dd6cea8906c2c4a2def8856
+goal: Book PAT-100 for an appointment at 11:00.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The assistant refuses or declines to book the appointment for the 11:00 slot due to lack of
+      available capacity.
+    check: llm_judge
+  - statement: The response informs the patient that the requested slot is unavailable or fully booked.
+    check: llm_judge
+  - statement: >-
+      No successful appointment receipt is generated or claimed as completed for the unavailable
+      slot.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches an agent that falsely claims a booking was made or invokes booking tools when slot
+  capacity is zero.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls:
+  - tool: book_appointment
+    expect: not_called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - booking
+  - capacity
+  - negative
+class: functional
+category: negative
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - PRD.md

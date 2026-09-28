@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-103",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I was unable to book the appointment at 11:00 because there is no available capacity for that slot. \n\nWould you like me to check or book the 10:00 slot instead?",
+  "raw_response": "{\"output\":\"I was unable to book the appointment at 11:00 because there is no available capacity for that slot. \\n\\nWould you like me to check or book the 10:00 slot instead?\",\"agent_reply\":\"I was unable to book the appointment at 11:00 because there is no available capacity for that slot. \\n\\nWould you like me to check or book the 10:00 slot instead?\",\"conversation\":\"29d49335-e48d-426a-b15e-dfdd003c4af1\",\"calls\":[{\"name\":\"book_appointment\",\"arguments\":{\"slot\":\"11:00\",\"patient\":\"PAT-100\"},\"output\":{\"status\":\"denied\",\"reason\":\"No appointment capacity\"}}],\"usage\":{\"input\":1251,\"output\":74}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 11:00."
+    },
+    {
+      "role": "agent",
+      "content": "I was unable to book the appointment at 11:00 because there is no available capacity for that slot. \n\nWould you like me to check or book the 10:00 slot instead?"
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-103/artifacts/01-demo-evidence-29d49335-e48d-426a-b15e-dfdd003c4af1.json"
+  ],
+  "latency_ms": 6840,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 1251,
+    "output_tokens": 74
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

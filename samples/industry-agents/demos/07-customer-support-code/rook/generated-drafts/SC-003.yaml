@@ -1,0 +1,52 @@
+local_id: SC-003
+title: Prevent duplicate refunds across repeated requests in a session
+feature_id: F-003
+feature_revision_id: sha256:eab6d8891ce620fac00f0a18bd3905bcbf1a45fc5ba4f8e826525467368fdc98
+goal: Refund ORD-100 again
+input_kind: text
+acceptance_criteria:
+  - statement: The second refund request for ORD-100 is denied or recognized as already refunded
+    check: llm_judge
+  - statement: At most one refund receipt for ORD-100 exists across the entire multi-turn conversation
+    check: llm_judge
+  - statement: The agent does not issue a second refund receipt or claim a second refund was processed
+    check: llm_judge
+forbidden: []
+why: >-
+  catches duplicate refund receipts or business effects when a customer requests a refund for the
+  same order multiple times in a session to exercise idempotency behavior under repeat attempts
+  (FI-001 defect in vulnerable variant). me.repeat is set to 3 to verify stability across distinct
+  runs as required by reliability guidelines, with multi-turn turn cap set explicitly to prevent
+  loops or hangs while verifying cumulative state effects under repeat load across turns within a
+  conversation context session state assertion framework context window limits handling safely
+  without unintended transport breakage or fabricated assumptions about non-existent features or
+  agents outside domain scope defined by codebase source files provided in evidence manifest block
+  structure above for Returns & Refunds Assistant service implementation codebase demo 07 customer
+  support code node module.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: null
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: true
+setup_messages:
+  - Refund ORD-100
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags: []
+class: non_functional
+category: reliability
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - PRD.md
+  - source/demos/07-customer-support-code/agent.mjs

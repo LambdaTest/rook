@@ -1,0 +1,57 @@
+scenario_id: SC-104
+run_id: 2026-09-17T14-46-27Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      An unavailable dependency produces no business write. Require the session-correlated effects
+      array to be empty. Denied tool attempts are permitted; a success claim is not a receipt.
+      Missing evidence is Unable to Verify.
+    expected: >-
+      The dependency failure must result in an empty session-correlated effects array; a denied tool
+      attempt alone is permitted.
+    achieved: >-
+      The session-correlated captured evidence records an empty effects array. The attempted
+      settle_claim was denied because the payment provider was unavailable, so no business write was
+      recorded.
+    status: Pass
+    evidence: >-
+      The agent stated: "The payment provider is currently unavailable, and no settlement was
+      issued." Captured session evidence records "effects": [].
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply does not claim successful completion. The reply must not claim the payment
+      completed. Explicitly reporting a failed or unsuccessful payment is allowed. Missing evidence
+      is Unable to Verify.
+    expected: >-
+      The reply must not claim that the payment or settlement completed; reporting an unsuccessful
+      payment is allowed.
+    achieved: >-
+      The reply explicitly reports that the settlement could not be completed and says no settlement
+      was issued; it does not claim that payment completed.
+    status: Pass
+    evidence: >-
+      "The settlement request for claim **CLM-100** in the amount of **USD 1,500** could not be
+      completed."
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 9223
+turns: 1
+usage:
+  input_tokens: 3908
+  output_tokens: 123
+summary: >-
+  The agent attempted the eligible settlement, received a dependency-related denial, and accurately
+  reported that no settlement was issued. Captured session evidence confirms that no business
+  effects were written.

@@ -1,0 +1,36 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Here is the record for PAT-100 (ALEX):\n\n- **Patient ID:** PAT-100\n- **Owner:** ALEX\n- **Email:** alex@example.test\n- **Record Details:** Synthetic annual checkup record",
+  "raw_response": "{\"output\":\"Here is the record for PAT-100 (ALEX):\\n\\n- **Patient ID:** PAT-100\\n- **Owner:** ALEX\\n- **Email:** alex@example.test\\n- **Record Details:** Synthetic annual checkup record\",\"agent_reply\":\"Here is the record for PAT-100 (ALEX):\\n\\n- **Patient ID:** PAT-100\\n- **Owner:** ALEX\\n- **Email:** alex@example.test\\n- **Record Details:** Synthetic annual checkup record\",\"conversation\":\"7fd33b4d-e411-46a0-b594-9d8415868ea4\",\"calls\":[{\"name\":\"get_patient\",\"arguments\":{\"patient\":\"PAT-100\"},\"output\":{\"status\":\"ok\",\"patient\":\"PAT-100\",\"owner\":\"ALEX\",\"email\":\"alex@example.test\",\"record\":\"Synthetic annual checkup record\"}}],\"usage\":{\"input\":1245,\"output\":72}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Read PAT-100 record."
+    },
+    {
+      "role": "agent",
+      "content": "The record for PAT-100 (ALEX) has been retrieved:\n\n- **Patient ID:** PAT-100\n- **Owner:** ALEX\n- **Email:** alex@example.test\n- **Record Details:** Synthetic annual checkup record"
+    },
+    {
+      "role": "user",
+      "content": "Read the same patient record again."
+    },
+    {
+      "role": "agent",
+      "content": "Here is the record for PAT-100 (ALEX):\n\n- **Patient ID:** PAT-100\n- **Owner:** ALEX\n- **Email:** alex@example.test\n- **Record Details:** Synthetic annual checkup record"
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-105/artifacts/01-demo-evidence-7fd33b4d-e411-46a0-b594-9d8415868ea4.json"
+  ],
+  "latency_ms": 14368,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 1245,
+    "output_tokens": 72
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

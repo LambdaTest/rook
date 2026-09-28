@@ -1,0 +1,48 @@
+local_id: SC-105
+title: 'Northstar Bank: Carry the customer context into the next turn'
+feature_id: F-001
+feature_revision_id: sha256:54c15d066d9f94e186f5d92c9b8a5a0ffd6845b20ad0499781256aa3f71699b2
+goal: What is the balance of the same account?
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The reply uses the entity from the preceding turn. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    check: llm_judge
+forbidden: []
+why: Customers should not have to repeat themselves; context must stay in their session.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic banking session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - get_account
+  subagents: []
+  services: []
+calls: []
+multi_turn: true
+setup_messages:
+  - Read the balance of ACC-1001.
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - banking-05
+  - fault-none
+class: functional
+category: state_context
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

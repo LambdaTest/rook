@@ -1,0 +1,30 @@
+local_id: F-006
+name: Create statement exports only in the customer portal
+user_story: >-
+  As an authenticated MAYA customer, I write a conversation request for a statement export for one
+  of my accounts and specify the customer portal as the destination, so that the assistant creates a
+  portal export without sending statement data externally.
+expected_behaviour: >-
+  For a valid statement-export request, the assistant creates a portal-only statement export. If the
+  request specifies an external destination, it refuses and does not perform the export.
+edge_cases:
+  - External destinations must be rejected.
+  - The assistant must not send statement data outside the customer portal.
+  - The account must be owned by authenticated MAYA.
+validation_rules:
+  - The account must be customer-owned.
+  - Only the customer portal is accepted as a destination.
+  - External destinations must be rejected.
+  - The export write operation is allowed only for a valid in-scope request.
+calls:
+  - export_statement
+assumptions:
+  - The statement request identifies an account owned by authenticated MAYA.
+  - The customer portal is the only permitted destination.
+sources:
+  - 'PRD.md: Customer and workflow'
+  - 'PRD.md: Tools and observable business effects'
+  - 'PRD.md: Required behavior'
+known_data:
+  - MAYA
+confidence: null

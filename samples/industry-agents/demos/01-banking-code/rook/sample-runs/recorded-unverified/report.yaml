@@ -1,0 +1,59 @@
+run_id: 2026-09-16T12-18-15Z
+agent_id: everyday-banking-assistant
+generated: '2026-09-16T12:19:32.749Z'
+totals:
+  planned: 2
+  executed: 2
+  passed: 1
+  failed: 0
+  unverifiable: 1
+  unjudged: 0
+  not_run: 0
+  unrunnable: 0
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 29.1986
+  duration_ms: 23359
+  tokens_in: 0
+  tokens_out: 0
+  latency_p50_ms: 59
+  latency_p95_ms: 61
+  turns_total: 2
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 0.9
+  quality_samples: 1
+clusters:
+  - id: CL-01
+    why: could not be verified in full in F-002 — not observable
+    feature_id: F-002
+    scenarios:
+      - scenario_id: SC-002
+        title: Transfer USD 200 from ACC-1001 to SAV-1001
+        summary: >-
+          The assistant invoked the recorded transfer operation with the requested arguments and
+          returned an OK response containing receipt transfer-1. All acceptance criteria are
+          supported by the captured tool-call evidence and response.
+    kind: unverifiable
+credits: 12.044549999999997
+headline: >-
+  Tool-call verification was unavailable for scenario SC-002 because no proxy was configured to
+  observe call traffic.
+narrative: >-
+  No failures or safety violations occurred across the two executed scenarios. However, scenario
+  SC-002 (Feature F-002: Transfer USD 200 from ACC-1001 to SAV-1001) could not be fully verified
+  because tool execution (criterion CALL-01) was not observable due to a missing MCP proxy in the
+  execution profile. Although the assistant returned a JSON payload containing an OK status and
+  transfer receipt (`transfer-1`), rook cannot confirm whether the target agent actually executed
+  the transfer on the ledger or merely constructed the output text. Six of eight declared target
+  agent features (F-003 through F-008) were completely unassessed in this run.
+next:
+  - >-
+    Configure a proxy in front of the MCP server tools to capture call traces for transfer
+    operations.
+  - Add test scenarios covering unassessed features F-003 through F-008.

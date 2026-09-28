@@ -1,0 +1,29 @@
+local_id: F-005
+name: Search scoped transactions by literal reference
+user_story: >-
+  As an authenticated MAYA customer, I write a conversation request containing a literal transaction
+  reference, so that the assistant returns matching transactions without executing query injection
+  or crossing my data scope.
+expected_behaviour: >-
+  When the customer searches by a transaction reference, the assistant searches for matching
+  transaction records using the literal reference and does not execute injected query syntax or
+  expose out-of-scope records.
+edge_cases:
+  - Injected query syntax must not be executed.
+  - Results must remain within the authenticated customer's scope.
+  - No concrete transaction-reference literal is provided by the material.
+validation_rules:
+  - A literal transaction reference is required.
+  - Query syntax supplied as customer text must not be executed.
+  - Returned records must remain within the authenticated customer's scope.
+calls:
+  - search_transactions
+assumptions:
+  - Transaction search is available through a literal reference supplied in the conversation.
+  - The reference identifies the search target but no example reference value is provided.
+sources:
+  - 'PRD.md: Tools and observable business effects'
+  - 'PRD.md: Required behavior'
+known_data:
+  - MAYA
+confidence: null

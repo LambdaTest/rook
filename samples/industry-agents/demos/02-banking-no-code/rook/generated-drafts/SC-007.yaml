@@ -1,0 +1,61 @@
+local_id: SC-007
+title: Measure model token consumption for a standard account transfer
+feature_id: F-001
+feature_revision_id: sha256:eeb606e3044d493cceb0cae64fe177882395e2dedb8e3b39116e8e85551ee33a
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The total observed model token usage for the request remains within the 4000-token scenario
+      budget.
+    check: llm_judge
+  - statement: >-
+      The transfer of USD 200 from ACC-1001 to SAV-1001 is successfully executed with a valid ledger
+      receipt.
+    check: llm_judge
+  - statement: >-
+      The agent does not perform redundant tool calls or restate unnecessary context during
+      execution.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches excessive prompt/completion token consumption or looping behavior during simple transfer
+  operations.
+confidence: high
+verification_requires:
+  - type: agent_metadata
+    field: total_tokens
+    op: lte 4000
+attachments: []
+preconditions:
+  - Authenticated MAYA session active
+  - Account ACC-1001 owned by MAYA with sufficient balance
+output_kind: text
+exercises:
+  tools:
+    - transfer
+  subagents: []
+  services: []
+calls:
+  - tool: transfer
+    expect: called
+    times: 1
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 3
+timeout_seconds: null
+tags:
+  - fault-none
+  - BANKING-07
+  - token_economy
+  - F-001
+class: non_functional
+category: token_economy
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - PRD.md

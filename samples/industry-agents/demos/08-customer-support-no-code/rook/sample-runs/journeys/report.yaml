@@ -1,0 +1,47 @@
+run_id: 2026-09-17T14-48-25Z
+agent_id: returns-refunds-assistant
+generated: '2026-09-17T14:49:26.855Z'
+totals:
+  planned: 3
+  executed: 3
+  passed: 3
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 3
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 58.5085
+  duration_ms: 50325
+  tokens_in: 4525
+  tokens_out: 225
+  latency_p50_ms: 7132
+  latency_p95_ms: 7273
+  turns_total: 4
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 2
+clusters: []
+credits: 10.734749999999998
+headline: >-
+  All executed scenarios passed, but the run evaluated only a small fraction of the agent's declared
+  capabilities.
+narrative: >-
+  All executed scenarios completed successfully without recorded failures. However, thirteen of the
+  sixteen documented features—including return-window enforcement, high-value refund approval gates,
+  cross-customer data isolation, and prompt injection defenses—were omitted from this run. One
+  scenario was also marked unrunnable. While the executed paths met acceptance criteria, this narrow
+  test coverage leaves critical security and policy guardrails completely unverified.
+next:
+  - >-
+    Expand test set to cover missing security and policy guardrails such as return windows and
+    high-value refund gates.
+  - Add scenarios validating customer data isolation and prompt injection resistance.
+  - Resolve the unrunnable scenario to ensure full planned test execution.

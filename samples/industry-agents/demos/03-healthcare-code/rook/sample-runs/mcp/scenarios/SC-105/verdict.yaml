@@ -1,0 +1,34 @@
+scenario_id: SC-105
+run_id: 2026-09-17T14-43-46Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The reply uses the entity from the preceding turn. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: Use the patient entity established in the preceding turn in the next-turn reply.
+    achieved: >-
+      The second-turn customer-facing output identifies PAT-100, the entity named in the preceding
+      turn; recorded evidence also shows the second lookup used patient PAT-100.
+    status: Pass
+    evidence: '"Here is the record for PAT-100:"'
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 13173
+turns: 2
+usage:
+  input_tokens: 1285
+  output_tokens: 68
+summary: >-
+  The agent successfully carried forward the preceding turn's PAT-100 context and returned that
+  patient's record again.

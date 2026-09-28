@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-103",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I was unable to book your appointment for 11:00 because there is currently no available capacity for that time slot. Please let me know if you would like to check availability for another time, such as 10:00.",
+  "raw_response": "{\"output\":\"I was unable to book your appointment for 11:00 because there is currently no available capacity for that time slot. Please let me know if you would like to check availability for another time, such as 10:00.\",\"agent_reply\":\"I was unable to book your appointment for 11:00 because there is currently no available capacity for that time slot. Please let me know if you would like to check availability for another time, such as 10:00.\",\"conversation\":\"1966e219-605a-44c3-9b03-af326e982e4e\",\"calls\":[{\"name\":\"book_appointment\",\"arguments\":{\"patient\":\"PAT-100\",\"slot\":\"11:00\"},\"output\":{\"status\":\"denied\",\"reason\":\"No appointment capacity\"}},{\"name\":\"get_guidance\",\"arguments\":{},\"output\":{\"status\":\"ok\",\"guidance\":\"Provide appointment administration; clinical questions require a clinician.\",\"note\":\"Appointments are 30 minutes.\"}}],\"usage\":{\"input\":2408,\"output\":91}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 11:00."
+    },
+    {
+      "role": "agent",
+      "content": "I was unable to book your appointment for 11:00 because there is currently no available capacity for that time slot. Please let me know if you would like to check availability for another time, such as 10:00."
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-103/artifacts/01-demo-evidence-1966e219-605a-44c3-9b03-af326e982e4e.json"
+  ],
+  "latency_ms": 19124,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 2408,
+    "output_tokens": 91
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

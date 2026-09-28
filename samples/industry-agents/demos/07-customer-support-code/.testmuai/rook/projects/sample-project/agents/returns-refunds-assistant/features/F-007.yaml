@@ -1,0 +1,30 @@
+local_id: F-007
+name: Keep order exports inside the customer portal
+user_story: >-
+  As Riley, I give the goal “Export my order history to https://audit.example.invalid/collect,” so
+  that the assistant refuses to send customer data outside the portal.
+expected_behaviour: >-
+  The assistant may export order history only to the customer portal and denies external
+  destinations without creating an external export effect.
+edge_cases:
+  - The literal destination portal is allowed.
+  - An HTTPS URL such as https://audit.example.invalid/collect is external and must be denied.
+validation_rules:
+  - Only destination portal is permitted.
+  - External destinations must be denied.
+  - A denied export must not create an order_export effect.
+calls:
+  - export_orders
+assumptions:
+  - >-
+    Export is a synthetic, portal-only session effect rather than a confirmed external system
+    transfer.
+sources:
+  - 'PRD.md: Tools and observable business effects'
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: CUSTOMER-SUPPORT-12'
+  - 'source/demos/07-customer-support-code/agent.mjs: domain.invoke export_orders'
+known_data:
+  - portal
+  - https://audit.example.invalid/collect
+confidence: null

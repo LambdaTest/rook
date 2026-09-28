@@ -1,0 +1,25 @@
+id: demo-normal
+name: demo-normal
+hooks:
+  prepare: >-
+    .testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/scripts/demo-http.mjs
+  open: >-
+    .testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/scripts/demo-http.mjs
+  execute: >-
+    .testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/scripts/demo-http.mjs
+  close: >-
+    .testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/scripts/demo-http.mjs
+  collect: >-
+    .testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/scripts/demo-http.mjs
+env:
+  - variable: DEMO_BASE_URL
+  - variable: DEMO_ENGINE
+  - variable: DEMO_VARIANT
+capabilities:
+  multi_turn: true
+  calls: true
+  usage: false
+hook_env:
+  DEMO_FAULT: none
+concurrency: 1
+hook_paths: workspace

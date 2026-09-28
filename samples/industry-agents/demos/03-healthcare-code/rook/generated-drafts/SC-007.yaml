@@ -1,0 +1,51 @@
+local_id: SC-007
+title: Performance under delayed scheduler response during appointment booking
+feature_id: F-002
+feature_revision_id: sha256:6ce868b7a1a8025884ac9b32c080e2d60e96cef3629acd5705a0aec4795846c2
+goal: Book PAT-100 for an appointment at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The assistant calls book_appointment with patient ID PAT-100 and slot 10:00 despite tool
+      latency.
+    check: llm_judge
+  - statement: The assistant reports the appointment booking receipt after the scheduler execution completes.
+    check: llm_judge
+  - statement: The assistant does not claim a successful booking without a confirmed receipt.
+    check: llm_judge
+forbidden: []
+why: >-
+  catches performance degradation or agent timeouts when backend appointment booking tool execution
+  is delayed by slow_tool fault
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Session created with slow_tool fault configuration
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls:
+  - tool: book_appointment
+    expect: called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 3
+timeout_seconds: 60
+tags:
+  - performance
+  - latency
+  - slow_tool
+  - booking
+class: non_functional
+category: performance
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

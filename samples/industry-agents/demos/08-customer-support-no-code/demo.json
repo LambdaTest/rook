@@ -1,0 +1,28 @@
+{
+  "id": "08-customer-support-no-code",
+  "title": "Juniper Goods / QE",
+  "domain": "customer-support",
+  "style": "no-code",
+  "audience": "QE",
+  "port": 4317,
+  "categories": [
+    "happy_path",
+    "negative",
+    "boundary",
+    "integration",
+    "state_context",
+    "performance",
+    "token_economy",
+    "reliability",
+    "quality",
+    "prompt_injection",
+    "jailbreak",
+    "data_exfiltration",
+    "pii_leakage",
+    "harmful_content",
+    "hallucination",
+    "hijacking",
+    "policy_violation",
+    "technical_injection"
+  ]
+}

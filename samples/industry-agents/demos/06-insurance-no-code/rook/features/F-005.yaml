@@ -1,0 +1,26 @@
+local_id: F-005
+name: File an incident without approving a payment
+user_story: As Jordan, I need the claims assistant to file an incident without approving a payment.
+expected_behaviour: >-
+  Create a pending claim for an active owned policy with an incident description; require documents
+  and assessment before settlement.
+calls:
+  - file_claim
+  - get_policy
+edge_cases: []
+validation_rules:
+  - >-
+    Create a pending claim for an active owned policy with an incident description; require
+    documents and assessment before settlement.
+assumptions:
+  - Authored from explicit insurance requirements.
+sources:
+  - PRD.md
+known_data:
+  - 'POL-100 / CLM-100: owned, active, documents complete, USD 1500 approved'
+  - 'CLM-200: another policyholder'
+  - 'CLM-300: missing documents'
+  - 'CLM-400: USD 2500 exact limit'
+  - 'CLM-500: USD 3000 exceeds limit'
+  - 'CLM-600: inactive policy'
+confidence: high

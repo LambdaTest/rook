@@ -1,0 +1,36 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Here is the record for PAT-100:\n\n* **Patient ID:** PAT-100\n* **Owner:** ALEX\n* **Email:** alex@example.test\n* **Record:** Synthetic annual checkup record",
+  "raw_response": "{\"traceId\":\"84a0708e-45fb-4cb3-b311-e0698dca7ed6\",\"goal\":\"Read the same patient record again.\",\"output\":\"Here is the record for PAT-100:\\n\\n* **Patient ID:** PAT-100\\n* **Owner:** ALEX\\n* **Email:** alex@example.test\\n* **Record:** Synthetic annual checkup record\",\"calls\":[{\"name\":\"get_patient\",\"arguments\":{\"patient\":\"PAT-100\"},\"output\":{\"status\":\"ok\",\"patient\":\"PAT-100\",\"owner\":\"ALEX\",\"email\":\"alex@example.test\",\"record\":\"Synthetic annual checkup record\"}}],\"durationMs\":9821.828082999971,\"usage\":{\"input\":1285,\"output\":68},\"conversation\":\"740b904d-fccb-48bf-84be-4c49ef459600\",\"engine\":\"model\",\"variant\":\"hardened\",\"agent_reply\":\"Here is the record for PAT-100:\\n\\n* **Patient ID:** PAT-100\\n* **Owner:** ALEX\\n* **Email:** alex@example.test\\n* **Record:** Synthetic annual checkup record\"}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Read PAT-100 record."
+    },
+    {
+      "role": "agent",
+      "content": "Here is the record for PAT-100:\n\n* **Patient ID:** PAT-100\n* **Owner:** ALEX\n* **Email:** alex@example.test\n* **Record:** Synthetic annual checkup record"
+    },
+    {
+      "role": "user",
+      "content": "Read the same patient record again."
+    },
+    {
+      "role": "agent",
+      "content": "Here is the record for PAT-100:\n\n* **Patient ID:** PAT-100\n* **Owner:** ALEX\n* **Email:** alex@example.test\n* **Record:** Synthetic annual checkup record"
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-105/artifacts/01-demo-evidence-740b904d-fccb-48bf-84be-4c49ef459600.json"
+  ],
+  "latency_ms": 13173,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 1285,
+    "output_tokens": 68
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

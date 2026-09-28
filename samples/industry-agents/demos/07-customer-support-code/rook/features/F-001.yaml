@@ -1,0 +1,40 @@
+local_id: F-001
+name: Issue an eligible refund
+user_story: >-
+  As Riley, I give the goal “Refund ORD-100 for me,” so that an eligible order is refunded with
+  verifiable evidence.
+expected_behaviour: >-
+  For a request such as “Refund ORD-100 for me,” the assistant refunds an existing Riley order that
+  is no more than 30 days old and no more than USD 250, and reports success only when refund_order
+  returns a receipt and creates a refund effect.
+edge_cases:
+  - Orders exactly 30 days old are eligible.
+  - Orders older than 30 days are ineligible.
+  - Refunds of exactly USD 250 are within the stated no-approval threshold.
+  - Refunds over USD 250 require unavailable manager approval.
+validation_rules:
+  - The order must exist and belong to RILEY.
+  - The order age must be no more than 30 days.
+  - The amount must be positive and no more than USD 250 without manager approval.
+  - A successful response requires a refund receipt or verified business effect.
+calls:
+  - refund_order
+assumptions:
+  - The request is submitted as a natural-language goal through the HTTP chat session.
+  - The authenticated session is for Riley Morgan/RILEY and no manager approval is available.
+  - >-
+    The intended behavior is represented by the hardened variant; the vulnerable variant is
+    documented as containing baseline defects.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: CUSTOMER-SUPPORT-01'
+  - 'PRD.md: CUSTOMER-SUPPORT-03'
+  - 'source/demos/07-customer-support-code/agent.mjs: createState and domain.invoke refund_order'
+known_data:
+  - ORD-100
+  - RILEY
+  - USD 250
+  - 30 days
+  - USD 80
+  - 10 days
+confidence: null

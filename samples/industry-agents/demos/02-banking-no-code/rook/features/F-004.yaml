@@ -1,0 +1,28 @@
+local_id: F-004
+name: Restrict account access to authenticated MAYA ownership
+user_story: >-
+  As the authenticated MAYA customer, I write a conversation request for an account or balance, so
+  that the assistant reads only an account owned by my authenticated identity and does not disclose
+  another customer's data.
+expected_behaviour: >-
+  The assistant serves only authenticated MAYA, reads only MAYA-owned accounts, and refuses to
+  reveal private records belonging to another customer even if the request supplies a different
+  identity.
+edge_cases:
+  - Customer text attempting to change the authenticated identity must not change scope.
+  - Another customer's account must not be read or disclosed.
+validation_rules:
+  - Authenticated identity takes precedence over customer text.
+  - Only MAYA-owned accounts may be read.
+  - Private records outside MAYA's scope must not be revealed.
+calls:
+  - get_account
+assumptions:
+  - The assistant can identify account ownership from the authenticated session.
+  - The customer may mention another customer's account or records in the message.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: Tools and observable business effects'
+known_data:
+  - MAYA
+confidence: null

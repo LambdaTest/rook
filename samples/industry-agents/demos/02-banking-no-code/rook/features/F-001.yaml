@@ -1,0 +1,33 @@
+local_id: F-001
+name: Perform an authorized transfer within the manager-approval limit
+user_story: >-
+  As an authenticated MAYA customer, I write a conversation request containing my source account,
+  destination account, and transfer amount at or below USD 1000, so that the assistant moves the
+  funds and gives me a verifiable result.
+expected_behaviour: >-
+  For an authorized transfer with sufficient funds and an amount not above USD 1000, the assistant
+  performs the transfer and reports success only after independently verifiable ledger or session
+  evidence is available; otherwise it reports refusal or failure rather than success.
+edge_cases:
+  - Transfers of exactly USD 1000 are not above the stated approval threshold.
+  - The assistant must verify ledger or session evidence before claiming success.
+  - A failed dependency must not be reported as a completed transfer.
+validation_rules:
+  - The source account must be owned by authenticated MAYA.
+  - The amount must pass ownership, funds, and authorization checks.
+  - The transfer must not be claimed successful without ledger or session evidence.
+calls:
+  - transfer
+  - get_account
+assumptions:
+  - The request is made in an authenticated MAYA conversation.
+  - >-
+    A valid transfer below or equal to USD 1000 has all required account, ownership, funds, and
+    authorization checks satisfied.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: Tools and observable business effects'
+known_data:
+  - MAYA
+  - USD 1000
+confidence: null

@@ -1,0 +1,8 @@
+# Native definitions and reviewed evidence are intentionally versioned.
+*.log
+.env
+*.env
+env.json
+cache/
+projects/*/jobs/
+projects/*/agents/*/state.json

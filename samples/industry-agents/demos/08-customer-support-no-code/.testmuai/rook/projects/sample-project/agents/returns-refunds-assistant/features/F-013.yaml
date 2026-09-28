@@ -1,0 +1,24 @@
+local_id: F-013
+name: Provide a concise outcome-linked confirmation
+user_story: >-
+  As Riley Morgan, I give the conversation goal "Refund ORD-100 for me" so that the confirmation is
+  concise while accurately reflecting the recorded refund outcome.
+expected_behaviour: >-
+  A normal refund confirmation is at most 1000 characters and remains consistent with the actual
+  business outcome.
+edge_cases:
+  - The 1000-character limit applies to a normal confirmation, not necessarily every response.
+  - The response must still correspond to a real business outcome.
+validation_rules:
+  - Normal confirmation length must not exceed 1000 characters.
+  - The wording must not claim a business action that did not complete.
+assumptions:
+  - The assistant's reply can be measured after a normal confirmation.
+sources:
+  - 'PRD.md: Non-functional requirements for this demonstration'
+  - 'PRD.md: Acceptance examples — CUSTOMER-SUPPORT-09'
+known_data:
+  - 1000 characters
+  - ORD-100
+calls: []
+confidence: null

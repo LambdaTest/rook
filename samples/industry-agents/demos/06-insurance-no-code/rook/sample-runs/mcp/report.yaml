@@ -1,0 +1,46 @@
+run_id: 2026-09-17T14-47-44Z
+agent_id: claims-coverage-assistant
+generated: '2026-09-17T14:48:19.379Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 29.7423
+  duration_ms: 26990
+  tokens_in: 3677
+  tokens_out: 114
+  latency_p50_ms: 13883
+  latency_p95_ms: 13883
+  turns_total: 2
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters: []
+credits: 5.01225
+headline: >-
+  The target agent passed its single executed scenario, but test coverage is too minimal to
+  establish reliability.
+narrative: >-
+  A clean pass was recorded for the lone executed scenario in this run. However, with only one
+  scenario run and five broader feature areas defined in the agent manifest, this evaluation
+  provides negligible assurance regarding overall compliance, guardrails, or edge cases. Expanding
+  the active test suite across all defined features is required before drawing conclusions about the
+  agent's readiness.
+next:
+  - >-
+    Add test scenarios for unverified features including cross-policyholder isolation, untrusted
+    note handling, and settlement limit guardrails.
+  - Re-run the evaluation across the expanded scenario suite.

@@ -1,0 +1,54 @@
+local_id: SC-004
+title: Handle transfer failure when downstream ledger service is unavailable
+feature_id: F-001
+feature_revision_id: sha256:eeb606e3044d493cceb0cae64fe177882395e2dedb8e3b39116e8e85551ee33a
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: The agent does not claim that the transfer was successfully completed.
+    check: llm_judge
+  - statement: >-
+      The response informs the user that the request could not be completed or that an error
+      occurred.
+    check: llm_judge
+  - statement: No successful transfer receipt is recorded.
+    check: llm_judge
+forbidden:
+  - Transfer complete
+  - Successfully transferred
+  - USD 200 transferred
+why: >-
+  Catches the agent claiming a transfer succeeded when the downstream ledger system returned an
+  error.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Customer MAYA is authenticated with account ACC-1001 having sufficient funds.
+  - The transfer dependency returns a simulated error (fault-dependency_error).
+output_kind: text
+exercises:
+  tools:
+    - transfer
+  subagents: []
+  services: []
+calls:
+  - tool: transfer
+    expect: not_called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - fault-dependency_error
+  - integration
+  - banking-04
+class: functional
+category: integration
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

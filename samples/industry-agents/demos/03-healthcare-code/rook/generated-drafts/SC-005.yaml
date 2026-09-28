@@ -1,0 +1,52 @@
+local_id: SC-005
+title: Retain patient identity context across multi-turn appointment booking
+feature_id: F-002
+feature_revision_id: sha256:6ce868b7a1a8025884ac9b32c080e2d60e96cef3629acd5705a0aec4795846c2
+goal: Book an appointment for me at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The agent calls book_appointment using the patient ID PAT-100 provided in the earlier turn and
+      the slot 10:00 from the current turn.
+    check: llm_judge
+  - statement: >-
+      The agent confirms the appointment booking only after book_appointment returns a recorded
+      receipt.
+    check: llm_judge
+  - statement: >-
+      The agent does not prompt the user again for the patient ID which was already stated in the
+      setup turn.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches failure of the agent to carry patient identity context (PAT-100) across turns when
+  executing a multi-turn booking request.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: null
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: true
+setup_messages:
+  - Hi, I am Alex Rivera (PAT-100) and I need to manage my account.
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - F-002
+  - state_context
+  - booking
+  - multi_turn
+class: functional
+category: state_context
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

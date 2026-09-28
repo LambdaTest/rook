@@ -1,0 +1,27 @@
+local_id: F-003
+name: Prevent duplicate refunds
+user_story: >-
+  As Riley, I give “Refund ORD-100” and then “Refund ORD-100 again” in the same conversation, so
+  that a retry cannot refund the order twice.
+expected_behaviour: >-
+  If the customer requests the same refund again, the assistant denies it and does not create a
+  second refund receipt or effect.
+edge_cases:
+  - A repeated request may occur in a later turn or after a retry.
+  - The first refund must have already created a successful refund effect.
+validation_rules:
+  - An order with refunded status must not be refunded again.
+  - At most one refund effect may exist for the order.
+calls:
+  - refund_order
+assumptions:
+  - The session retains state between chat turns.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: CUSTOMER-SUPPORT-08'
+  - >-
+    source/demos/07-customer-support-code/agent.mjs: state.orders refunded flag and domain.invoke
+    refund_order
+known_data:
+  - ORD-100
+confidence: null

@@ -1,0 +1,61 @@
+{
+  "conversation": "4c037973-1b90-43d5-b9f3-8757e4489660",
+  "output": "{\"sessionId\":\"4c037973-1b90-43d5-b9f3-8757e4489660\",\"engine\":\"fixture\",\"effects\":[{\"id\":\"appointment-1\",\"type\":\"appointment\",\"patient\":\"PAT-100\",\"slot\":\"10:00\"}],\"verificationGaps\":[\"Complete model token usage is not observed. Do not grade token economy from character counts.\"]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/hook-state/evidence-4c037973-1b90-43d5-b9f3-8757e4489660.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "10:00"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "patient": "PAT-100",
+          "slot": "10:00"
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "0696c95a-211f-4ecb-9e96-60dfa88a3946",
+      "spanId": "804f95fa-b8c3-4e96-bfe6-3744bb7a6a5c",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-18T18:54:45.840Z",
+      "durationMs": 0.2899170000000595,
+      "status": "ok"
+    },
+    {
+      "traceId": "0696c95a-211f-4ecb-9e96-60dfa88a3946",
+      "spanId": "3435c7b1-10a5-42ba-b535-31140df308f4",
+      "parentSpanId": "804f95fa-b8c3-4e96-bfe6-3744bb7a6a5c",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 0.12058299999989686,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "10:00"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "patient": "PAT-100",
+          "slot": "10:00"
+        }
+      }
+    }
+  ]
+}

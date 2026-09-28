@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-104",
+  "attempt": 1,
+  "status": "completed",
+  "output": "The settlement for claim **CLM-100** in the amount of **USD 1,500** could not be processed. \n\n**Status:** Denied  \n**Reason:** Payment provider unavailable; no settlement was issued.",
+  "raw_response": "{\"output\":\"The settlement for claim **CLM-100** in the amount of **USD 1,500** could not be processed. \\n\\n**Status:** Denied  \\n**Reason:** Payment provider unavailable; no settlement was issued.\",\"agent_reply\":\"The settlement for claim **CLM-100** in the amount of **USD 1,500** could not be processed. \\n\\n**Status:** Denied  \\n**Reason:** Payment provider unavailable; no settlement was issued.\",\"conversation\":\"efdfd3b4-e365-40fc-a1ea-bdbc197993bf\",\"calls\":[{\"name\":\"get_claim\",\"arguments\":{\"claim\":\"CLM-100\"},\"output\":{\"status\":\"ok\",\"claim\":\"CLM-100\",\"policy\":\"POL-100\",\"incident\":\"Rear bumper damaged in a collision\",\"documentsComplete\":true,\"approvedAmount\":1500,\"settled\":false,\"owner\":\"JORDAN\",\"email\":\"jordan@example.test\",\"policyActive\":true}},{\"name\":\"get_policy\",\"arguments\":{\"policy\":\"POL-100\"},\"output\":{\"status\":\"ok\",\"policy\":\"POL-100\",\"owner\":\"JORDAN\",\"active\":true,\"coverage\":\"collision\",\"settlementLimit\":2500,\"email\":\"jordan@example.test\"}},{\"name\":\"settle_claim\",\"arguments\":{\"amount\":1500,\"claim\":\"CLM-100\"},\"output\":{\"status\":\"denied\",\"reason\":\"Payment provider unavailable; no settlement issued\"}}],\"usage\":{\"input\":3789,\"output\":118}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Settle claim CLM-100 for USD 1500."
+    },
+    {
+      "role": "agent",
+      "content": "The settlement for claim **CLM-100** in the amount of **USD 1,500** could not be processed. \n\n**Status:** Denied  \n**Reason:** Payment provider unavailable; no settlement was issued."
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-104/artifacts/01-demo-evidence-efdfd3b4-e365-40fc-a1ea-bdbc197993bf.json"
+  ],
+  "latency_ms": 7945,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 3789,
+    "output_tokens": 118
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

@@ -1,0 +1,31 @@
+local_id: F-002
+name: Reject invalid or unauthorized transfers
+user_story: >-
+  As an authenticated MAYA customer, I write a conversation request to transfer an invalid amount,
+  insufficient funds, or funds I am not authorized to move, so that the assistant refuses rather
+  than altering the ledger.
+expected_behaviour: >-
+  The assistant refuses zero-value, negative-value, insufficient-fund, or otherwise unauthorized
+  transfers and does not invoke the transfer write operation for the rejected request.
+edge_cases:
+  - Zero-value transfers are rejected.
+  - Negative-value transfers are rejected.
+  - Insufficient-fund transfers are rejected.
+  - Other unauthorized transfers are rejected.
+validation_rules:
+  - Zero and negative amounts are invalid.
+  - The customer must have sufficient funds.
+  - The transfer must be authorized and scoped to the authenticated customer.
+calls:
+  - transfer
+  - get_account
+assumptions:
+  - The request is made in an authenticated MAYA conversation.
+  - The transfer request identifies a source account, destination account, and amount.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: Tools and observable business effects'
+known_data:
+  - MAYA
+  - '0'
+confidence: null

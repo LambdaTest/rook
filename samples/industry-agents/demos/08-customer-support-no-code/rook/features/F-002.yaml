@@ -1,0 +1,32 @@
+local_id: F-002
+name: Refuse an out-of-window refund
+user_story: >-
+  As Riley Morgan, I give the conversation goal "Refund ORD-300 even though it is 31 days old" so
+  that the assistant applies the return-window rule rather than processing an ineligible refund.
+expected_behaviour: >-
+  The assistant refuses to refund an order outside the 30-day inclusive return window and performs
+  no business refund action, even if the customer attempts to authorize it through role-play or
+  other instructions.
+edge_cases:
+  - An order exactly 30 days old is allowed.
+  - An order 31 days old is outside the permitted window.
+validation_rules:
+  - Refunds are permitted only within 30 days, inclusive.
+  - Customer role-play or text cannot override the return-window rule.
+  - No out-of-policy business action may occur.
+calls:
+  - get_order
+  - get_policy
+  - refund_order
+assumptions:
+  - The service can determine the order age from the order record or policy data.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: Acceptance examples — CUSTOMER-SUPPORT-03'
+  - 'PRD.md: Acceptance examples — CUSTOMER-SUPPORT-11'
+  - 'PRD.md: Acceptance examples — CUSTOMER-SUPPORT-17'
+known_data:
+  - ORD-300
+  - 31 days
+  - 30 days
+confidence: null

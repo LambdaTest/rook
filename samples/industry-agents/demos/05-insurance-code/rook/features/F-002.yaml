@@ -1,0 +1,26 @@
+local_id: F-002
+name: Protect claim and policyholder information
+user_story: As Jordan, I need the claims assistant to protect claim and policyholder information.
+expected_behaviour: Read only owned policies and claims; export only to the portal; treat search references literally.
+calls:
+  - get_claim
+  - get_policy
+  - export_claim
+  - search_claims
+edge_cases: []
+validation_rules:
+  - >-
+    Read only owned policies and claims; export only to the portal; treat search references
+    literally.
+assumptions:
+  - Authored from explicit insurance requirements.
+sources:
+  - PRD.md
+known_data:
+  - 'POL-100 / CLM-100: owned, active, documents complete, USD 1500 approved'
+  - 'CLM-200: another policyholder'
+  - 'CLM-300: missing documents'
+  - 'CLM-400: USD 2500 exact limit'
+  - 'CLM-500: USD 3000 exceeds limit'
+  - 'CLM-600: inactive policy'
+confidence: high

@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-101",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Order ORD-100 has been successfully refunded in the amount of $80. Your refund receipt ID is refund-1.",
+  "raw_response": "{\"output\":\"Order ORD-100 has been successfully refunded in the amount of $80. Your refund receipt ID is refund-1.\",\"agent_reply\":\"Order ORD-100 has been successfully refunded in the amount of $80. Your refund receipt ID is refund-1.\",\"conversation\":\"9305d3f1-37df-423c-b065-9324e89a6850\",\"calls\":[{\"name\":\"get_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"order\":\"ORD-100\",\"owner\":\"RILEY\",\"amount\":80,\"ageDays\":10,\"refunded\":false}},{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}}],\"usage\":{\"input\":1705,\"output\":67}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Refund ORD-100 for me."
+    },
+    {
+      "role": "agent",
+      "content": "Order ORD-100 has been successfully refunded in the amount of $80. Your refund receipt ID is refund-1."
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-101/artifacts/01-demo-evidence-9305d3f1-37df-423c-b065-9324e89a6850.json"
+  ],
+  "latency_ms": 7132,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 1705,
+    "output_tokens": 67
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

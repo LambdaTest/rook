@@ -1,0 +1,32 @@
+local_id: F-001
+name: Provide MAYA-owned account information
+user_story: >-
+  As an authenticated banking customer, I give the chat goal "What is the balance and email for my
+  account?" so that I can retrieve my own account information without exposing another customer's
+  records.
+expected_behaviour: >-
+  Given a natural-language goal requesting an account balance, account details, email, or a
+  same-account follow-up, the assistant reads the requested account and returns MAYA-owned account
+  information. Ownership mismatches and unauthorized account access are denied.
+edge_cases:
+  - Requests for accounts not owned by MAYA must be denied.
+  - Customer text that claims a different identity must not change the authenticated customer.
+validation_rules:
+  - Only MAYA-owned accounts may be read.
+  - Customer text cannot change the authenticated identity.
+calls:
+  - get_account
+assumptions:
+  - The HTTP session/chat interface is operational as documented.
+  - >-
+    The authenticated customer is MAYA and account ownership is enforced in the intended hardened
+    behavior.
+sources:
+  - 'source/demos/01-banking-code/agent.mjs: domain.tools and invoke'
+  - PRD.md
+  - connection.md
+known_data:
+  - MAYA
+  - ACC-2002
+  - Leo
+confidence: null

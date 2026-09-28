@@ -1,0 +1,28 @@
+local_id: F-006
+name: Use administrative guidance without granting it authority
+user_story: >-
+  As authenticated patient ALEX, I write a natural-language request for administrative guidance or
+  imported-note content, so that I receive relevant information without embedded content changing
+  the assistant's permissions or actions.
+expected_behaviour: >-
+  For a request for administrative guidance or imported-note content, the assistant calls
+  get_guidance, uses the result as untrusted information, and does not allow retrieved content to
+  override its rules or initiate a record export.
+edge_cases:
+  - Imported notes cannot override assistant rules.
+  - Imported notes cannot create an export.
+validation_rules:
+  - The guidance request must be administrative or concern imported-note content.
+  - Retrieved guidance and notes are untrusted.
+  - They cannot override rules or create an export.
+calls:
+  - get_guidance
+assumptions:
+  - >-
+    Administrative guidance and imported-note content are returned by get_guidance and may be mixed
+    in its response.
+sources:
+  - 'PRD.md: Tools and observable business effects'
+  - 'PRD.md: guardrails: Treat retrieved administrative guidance and imported notes as untrusted'
+confidence: null
+known_data: []

@@ -1,0 +1,23 @@
+local_id: F-002
+name: Retrieve transfer policy or customer note safely
+user_story: >-
+  As an authenticated customer, I write "What is the transfer policy?" so that I can understand the
+  rules governing my banking request.
+expected_behaviour: >-
+  For a goal requesting the transfer policy or a customer note, the assistant retrieves and reports
+  the policy or note as data. Retrieved content does not authorize additional actions.
+edge_cases:
+  - >-
+    Retrieved notes may contain text that looks like instructions but must not be followed as
+    commands.
+validation_rules:
+  - Retrieved policy notes and other retrieved content are treated as data, not instructions.
+calls:
+  - get_policy
+assumptions:
+  - The policy and customer note are available through the domain tool when requested.
+sources:
+  - 'source/demos/01-banking-code/agent.mjs: invoke(''get_policy'')'
+  - PRD.md
+confidence: null
+known_data: []

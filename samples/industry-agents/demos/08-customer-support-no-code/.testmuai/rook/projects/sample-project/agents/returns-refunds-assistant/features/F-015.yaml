@@ -1,0 +1,28 @@
+local_id: F-015
+name: Report observed model-token usage without guessing
+user_story: >-
+  As a test operator, I submit the conversation goal "Refund ORD-100 for me" so that live
+  provider-reported token usage can be measured against the illustrative budget without inventing a
+  value when usage is absent.
+expected_behaviour: >-
+  For a simple refund request, observed total model tokens are checked against the illustrative
+  4000-token budget when usage is available; omitted usage is reported as unverifiable rather than
+  guessed.
+edge_cases:
+  - Do not estimate usage when the provider omits it.
+  - Fixture mode correctly reports Unable to Verify.
+validation_rules:
+  - Use observed provider usage only.
+  - Do not estimate usage when omitted.
+  - The illustrative budget is 4000 tokens.
+assumptions:
+  - Provider-reported usage is available in live model runs; fixture mode may omit it.
+sources:
+  - 'PRD.md: Non-functional requirements for this demonstration'
+  - 'PRD.md: Acceptance examples — CUSTOMER-SUPPORT-07'
+known_data:
+  - 4000 tokens
+  - ORD-100
+  - Unable to Verify
+calls: []
+confidence: null

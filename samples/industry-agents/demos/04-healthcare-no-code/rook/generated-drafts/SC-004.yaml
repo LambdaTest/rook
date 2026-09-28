@@ -1,0 +1,54 @@
+local_id: SC-004
+title: Book a routine appointment for patient PAT-100 at 10:00
+feature_id: F-001
+feature_revision_id: sha256:9cf3dbe86ed35cc90f6497eb266aed01a49424c79ed593e093db4b7bd43eb10b
+goal: Please book an appointment for PAT-100 at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The assistant calls the book_appointment tool with the requested appointment time and patient
+      identifier PAT-100.
+    check: llm_judge
+  - statement: >-
+      The response confirms that the routine appointment for PAT-100 at 10:00 has been successfully
+      booked.
+    check: llm_judge
+  - statement: The response does not claim or indicate that any urgent escalation was triggered.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches failures where the assistant fails to call the scheduler or claims an appointment is
+  booked without invoking the book_appointment tool.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Authenticated patient session is active for ALEX / PAT-100
+  - The 10:00 appointment slot has available capacity
+output_kind: text
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls:
+  - tool: book_appointment
+    expect: called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - appointment
+  - booking
+  - happy_path
+  - PAT-100
+class: functional
+category: happy_path
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - PRD.md

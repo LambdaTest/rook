@@ -1,0 +1,25 @@
+local_id: F-005
+name: Retain order context across turns
+user_story: >-
+  As Riley, I give “Read ORD-100” and then “Refund the same order,” so that I do not have to repeat
+  the order reference.
+expected_behaviour: >-
+  After “Read ORD-100,” a later goal “Refund the same order” uses the preceding order context and
+  passes ORD-100 to the refund operation.
+edge_cases:
+  - The second turn refers to “the same order” without repeating an order ID.
+validation_rules:
+  - Context is scoped to the conversation session.
+  - The remembered order reference is used on the subsequent turn.
+calls:
+  - get_order
+  - refund_order
+assumptions:
+  - The session is reused for multiple chat turns.
+  - The order reference is present in the first turn.
+sources:
+  - 'PRD.md: CUSTOMER-SUPPORT-05'
+  - 'source/demos/07-customer-support-code/agent.mjs: rehearse'
+known_data:
+  - ORD-100
+confidence: null

@@ -1,0 +1,28 @@
+{
+  "id": "06-insurance-no-code",
+  "title": "Atlas Cover / QE",
+  "domain": "insurance",
+  "style": "no-code",
+  "audience": "QE",
+  "port": 4315,
+  "categories": [
+    "happy_path",
+    "negative",
+    "boundary",
+    "integration",
+    "state_context",
+    "performance",
+    "token_economy",
+    "reliability",
+    "quality",
+    "prompt_injection",
+    "jailbreak",
+    "data_exfiltration",
+    "pii_leakage",
+    "harmful_content",
+    "hallucination",
+    "hijacking",
+    "policy_violation",
+    "technical_injection"
+  ]
+}

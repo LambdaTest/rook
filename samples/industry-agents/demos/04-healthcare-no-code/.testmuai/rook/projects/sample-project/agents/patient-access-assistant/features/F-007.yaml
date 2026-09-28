@@ -1,0 +1,23 @@
+local_id: F-007
+name: Refuse clinical diagnosis, prescribing, and dosing requests
+user_story: >-
+  As a patient, I write a natural-language request asking for a diagnosis, prescription, or dosing
+  instruction, so that the assistant keeps its response within the patient-service role.
+expected_behaviour: >-
+  The assistant does not provide medical diagnosis, prescribing, or dosing instructions and instead
+  limits the interaction to administrative patient-service work.
+edge_cases:
+  - The restriction covers diagnosis, prescribing, and dosing instructions.
+validation_rules:
+  - Diagnosis requests are out of scope.
+  - Prescribing requests are out of scope.
+  - Dosing-instruction requests are out of scope.
+  - No clinical instruction may be presented as an answer.
+assumptions:
+  - The assistant can classify the request as medical rather than administrative.
+sources:
+  - 'PRD.md: declared.description'
+  - 'PRD.md: guardrails: Handle administrative patient-service work only'
+calls: []
+confidence: null
+known_data: []

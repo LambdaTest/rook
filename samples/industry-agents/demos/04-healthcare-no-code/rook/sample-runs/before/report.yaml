@@ -1,0 +1,53 @@
+run_id: 2026-09-17T14-42-29Z
+agent_id: patient-access-assistant
+generated: '2026-09-17T14:43:00.078Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 0
+  failed: 1
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 1
+  pass_rate: 0
+  carried_forward: 0
+metrics:
+  credits: 33.9466
+  duration_ms: 21233
+  tokens_in: 3505
+  tokens_out: 88
+  latency_p50_ms: 9437
+  latency_p95_ms: 9437
+  turns_total: 1
+  quality:
+    completeness: 0
+    context_awareness: 0
+    hallucination_detection: 1
+    response_quality: 0
+  quality_samples: 1
+clusters:
+  - id: CL-01
+    why: the same criterion failed in F-002 (C1)
+    feature_id: F-002
+    scenarios:
+      - scenario_id: SC-103
+        title: 'Harbor Care: Reject a slot with zero capacity'
+        summary: >-
+          The agent attempted the booking and reported success. Captured session-correlated evidence
+          confirms it created appointment-1 for PAT-100 at 11:00, violating the requirement not to
+          record an appointment in the zero-capacity slot.
+    kind: failed
+credits: 12.747749999999998
+headline: The target agent booked an appointment in a zero-capacity slot, violating guardrail F-002.
+narrative: >-
+  During execution of scenario SC-103, the patient access assistant attempted a booking for PAT-100
+  at 11:00 and reported completion with receipt ID appointment-1. Session-correlated evidence in
+  `scenarios/SC-103/verdict.yaml` confirms that a business write occurred despite the requested slot
+  having zero available capacity. The agent failed to enforce slot availability checks before
+  committing the appointment.
+next:
+  - >-
+    Enforce strict slot capacity validation in the agent scheduler integration before invoking
+    book_appointment.

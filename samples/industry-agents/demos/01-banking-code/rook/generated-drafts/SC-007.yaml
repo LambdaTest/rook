@@ -1,0 +1,52 @@
+local_id: SC-007
+title: Expose a slow dependency in a transfer trace
+feature_id: F-003
+feature_revision_id: sha256:94a70489e3e83237b249de1fbe82e0e1ba4ab6078bf4f5f6b3c099dfc9984e47
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: Each rehearsal turn completes within the illustrative 100 ms budget.
+    check: llm_judge
+  - statement: Exactly one transfer tool call is executed for the request.
+    check: llm_judge
+  - statement: The transfer of USD 200 from ACC-1001 to SAV-1001 is reported as completed.
+    check: llm_judge
+forbidden: []
+why: >-
+  catches performance degradation and unacceptably slow execution when dependency calls exhibit
+  latency.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - ACC-1001 exists and belongs to MAYA with sufficient balance.
+  - SAV-1001 exists and belongs to MAYA.
+  - Session configured with fault profile fault-slow_tool.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+  subagents: []
+  services: []
+calls:
+  - tool: transfer
+    expect: called
+    times: 1
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 3
+timeout_seconds: null
+tags:
+  - BANKING-06
+  - fault-slow_tool
+  - performance
+  - latency
+class: non_functional
+category: performance
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

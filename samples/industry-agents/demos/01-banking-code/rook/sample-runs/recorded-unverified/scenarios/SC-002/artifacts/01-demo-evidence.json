@@ -1,0 +1,107 @@
+{
+  "sessionId": "33ce2d00-5b06-4190-9472-e84de9de2b92",
+  "domain": "banking",
+  "engine": "fixture",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [
+    {
+      "id": "transfer-1",
+      "type": "transfer",
+      "from": "ACC-1001",
+      "to": "SAV-1001",
+      "amount": 200
+    }
+  ],
+  "calls": [
+    {
+      "name": "transfer",
+      "arguments": {
+        "from": "ACC-1001",
+        "to": "SAV-1001",
+        "amount": 200
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "transfer-1",
+          "type": "transfer",
+          "from": "ACC-1001",
+          "to": "SAV-1001",
+          "amount": 200
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "1609ddae-98e2-44b0-b184-2e3967a147ab",
+      "spanId": "dcc1a014-d86d-490f-bed3-5d71d4c48eee",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-16T12:19:25.640Z",
+      "durationMs": 0.09516699996311218,
+      "status": "ok"
+    },
+    {
+      "traceId": "1609ddae-98e2-44b0-b184-2e3967a147ab",
+      "spanId": "b4b561b3-165c-406e-babf-f87abc25ef7c",
+      "parentSpanId": "dcc1a014-d86d-490f-bed3-5d71d4c48eee",
+      "kind": "tool",
+      "name": "transfer",
+      "durationMs": 0.05133300001034513,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "from": "ACC-1001",
+        "to": "SAV-1001",
+        "amount": 200
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "transfer-1",
+          "type": "transfer",
+          "from": "ACC-1001",
+          "to": "SAV-1001",
+          "amount": 200
+        }
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "1609ddae-98e2-44b0-b184-2e3967a147ab",
+      "goal": "Transfer USD 200 from ACC-1001 to SAV-1001.",
+      "output": "{\"status\":\"ok\",\"receipt\":{\"id\":\"transfer-1\",\"type\":\"transfer\",\"from\":\"ACC-1001\",\"to\":\"SAV-1001\",\"amount\":200}}",
+      "calls": [
+        {
+          "name": "transfer",
+          "arguments": {
+            "from": "ACC-1001",
+            "to": "SAV-1001",
+            "amount": 200
+          },
+          "output": {
+            "status": "ok",
+            "receipt": {
+              "id": "transfer-1",
+              "type": "transfer",
+              "from": "ACC-1001",
+              "to": "SAV-1001",
+              "amount": 200
+            }
+          }
+        }
+      ],
+      "durationMs": 0.09516699996311218
+    }
+  ],
+  "verificationGaps": [
+    "Complete model token usage is not observed. Do not grade token economy from character counts."
+  ]
+}

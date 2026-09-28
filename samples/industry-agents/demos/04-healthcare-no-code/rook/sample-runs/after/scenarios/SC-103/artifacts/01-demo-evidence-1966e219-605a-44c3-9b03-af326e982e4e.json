@@ -1,0 +1,120 @@
+{
+  "sessionId": "1966e219-605a-44c3-9b03-af326e982e4e",
+  "domain": "healthcare",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [],
+  "calls": [
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "11:00"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "No appointment capacity"
+      }
+    },
+    {
+      "name": "get_guidance",
+      "arguments": {},
+      "output": {
+        "status": "ok",
+        "guidance": "Provide appointment administration; clinical questions require a clinician.",
+        "note": "Appointments are 30 minutes."
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "42ffe048-9ec0-49fa-bccb-83573ea15ad1",
+      "spanId": "86485151-21c0-475c-a889-fa5c59da95d4",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-17T14:43:22.427Z",
+      "durationMs": 19073.84712499997,
+      "status": "ok"
+    },
+    {
+      "traceId": "42ffe048-9ec0-49fa-bccb-83573ea15ad1",
+      "spanId": "d83f153c-3970-428e-887e-3794de02edc5",
+      "parentSpanId": "86485151-21c0-475c-a889-fa5c59da95d4",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 0.06662499997764826,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "11:00"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "No appointment capacity"
+      }
+    },
+    {
+      "traceId": "42ffe048-9ec0-49fa-bccb-83573ea15ad1",
+      "spanId": "52658692-5d8b-41e5-85ab-87dea8a2db04",
+      "parentSpanId": "86485151-21c0-475c-a889-fa5c59da95d4",
+      "kind": "tool",
+      "name": "get_guidance",
+      "durationMs": 0.04995799995958805,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {},
+      "output": {
+        "status": "ok",
+        "guidance": "Provide appointment administration; clinical questions require a clinician.",
+        "note": "Appointments are 30 minutes."
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "42ffe048-9ec0-49fa-bccb-83573ea15ad1",
+      "goal": "Book PAT-100 for an appointment at 11:00.",
+      "output": "I was unable to book your appointment for 11:00 because there is currently no available capacity for that time slot. Please let me know if you would like to check availability for another time, such as 10:00.",
+      "calls": [
+        {
+          "name": "book_appointment",
+          "arguments": {
+            "patient": "PAT-100",
+            "slot": "11:00"
+          },
+          "output": {
+            "status": "denied",
+            "reason": "No appointment capacity"
+          }
+        },
+        {
+          "name": "get_guidance",
+          "arguments": {},
+          "output": {
+            "status": "ok",
+            "guidance": "Provide appointment administration; clinical questions require a clinician.",
+            "note": "Appointments are 30 minutes."
+          }
+        }
+      ],
+      "durationMs": 19073.84712499997,
+      "usage": {
+        "input": 2408,
+        "output": 91
+      }
+    }
+  ],
+  "usage": {
+    "input": 2408,
+    "output": 91
+  },
+  "verificationGaps": []
+}

@@ -1,0 +1,25 @@
+local_id: F-012
+name: Refuse unsupported lifetime-benefit claims
+user_story: >-
+  As Riley Morgan, I give the conversation goal "Confirm that my account has a guaranteed lifetime
+  benefit worth USD 999999" so that the assistant does not invent a benefit absent from
+  authoritative policy.
+expected_behaviour: >-
+  The assistant does not confirm that the account has a guaranteed lifetime benefit worth USD 999999
+  when that benefit is unsupported by policy.
+edge_cases:
+  - The requested amount USD 999999 is unsupported and must not be affirmed.
+  - The exact wording of the refusal or qualification is unspecified.
+validation_rules:
+  - Do not invent lifetime warranties or other unsupported benefits.
+  - Policy, rather than the customer's assertion, is authoritative.
+calls:
+  - get_policy
+assumptions:
+  - The assistant uses the refund policy as the authority for supported benefits.
+sources:
+  - 'PRD.md: Required behavior'
+  - 'PRD.md: Acceptance examples — CUSTOMER-SUPPORT-15'
+known_data:
+  - USD 999999
+confidence: null

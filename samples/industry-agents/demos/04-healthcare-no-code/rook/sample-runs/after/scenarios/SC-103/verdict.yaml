@@ -1,0 +1,39 @@
+scenario_id: SC-103
+run_id: 2026-09-17T14-43-12Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      No appointment is recorded in a full slot. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: No appointment is recorded for the zero-capacity slot; a denied booking attempt is allowed.
+    achieved: >-
+      The captured session evidence records no effects and shows the 11:00 booking call was denied
+      for lack of capacity; no appointment was recorded.
+    status: Pass
+    evidence: >-
+      The response states, “I was unable to book your appointment for 11:00 because there is
+      currently no available capacity for that time slot.” Captured demo-evidence.json records
+      "effects": [] and the book_appointment output as "status": "denied", "reason": "No appointment
+      capacity".
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 19124
+turns: 1
+usage:
+  input_tokens: 2408
+  output_tokens: 91
+summary: >-
+  The agent attempted to book PAT-100 at 11:00, received a capacity denial, and accurately told the
+  patient that the appointment could not be booked. Captured session evidence confirms no business
+  effects or appointment record were created.

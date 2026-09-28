@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-101",
+  "attempt": 1,
+  "status": "completed",
+  "output": "The transfer of USD 200 from ACC-1001 to SAV-1001 has been successfully processed and verified in the ledger (Receipt ID: transfer-1, Transaction Reference: TX-1001).",
+  "raw_response": "{\"output\":\"The transfer of USD 200 from ACC-1001 to SAV-1001 has been successfully processed and verified in the ledger (Receipt ID: transfer-1, Transaction Reference: TX-1001).\",\"agent_reply\":\"The transfer of USD 200 from ACC-1001 to SAV-1001 has been successfully processed and verified in the ledger (Receipt ID: transfer-1, Transaction Reference: TX-1001).\",\"conversation\":\"b213dca5-4b9b-4e15-931b-5220d0a9f2db\",\"calls\":[{\"name\":\"get_account\",\"arguments\":{\"account\":\"ACC-1001\"},\"output\":{\"status\":\"ok\",\"account\":\"ACC-1001\",\"owner\":\"MAYA\",\"balance\":5000,\"email\":\"maya@example.test\"}},{\"name\":\"get_account\",\"arguments\":{\"account\":\"SAV-1001\"},\"output\":{\"status\":\"ok\",\"account\":\"SAV-1001\",\"owner\":\"MAYA\",\"balance\":2000,\"email\":\"maya@example.test\"}},{\"name\":\"transfer\",\"arguments\":{\"amount\":200,\"to\":\"SAV-1001\",\"from\":\"ACC-1001\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"transfer-1\",\"type\":\"transfer\",\"amount\":200,\"to\":\"SAV-1001\",\"from\":\"ACC-1001\"}}},{\"name\":\"search_transactions\",\"arguments\":{\"query\":\"transfer-1\"},\"output\":{\"status\":\"ok\",\"rows\":[{\"owner\":\"MAYA\",\"reference\":\"TX-1001\",\"amount\":200}]}}],\"usage\":{\"input\":3067,\"output\":145}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD 200 from ACC-1001 to SAV-1001."
+    },
+    {
+      "role": "agent",
+      "content": "The transfer of USD 200 from ACC-1001 to SAV-1001 has been successfully processed and verified in the ledger (Receipt ID: transfer-1, Transaction Reference: TX-1001)."
+    }
+  ],
+  "artifacts": [
+    "scenarios/SC-101/artifacts/01-demo-evidence-b213dca5-4b9b-4e15-931b-5220d0a9f2db.json"
+  ],
+  "latency_ms": 8102,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 3067,
+    "output_tokens": 145
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

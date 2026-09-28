@@ -1,0 +1,81 @@
+version: 1
+id: 2026-09-18T18-54-45Z
+agent_id: patient-access-assistant
+created: '2026-09-18T18:54:45.666Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-normal
+  profile_revision: sha256:4eae330977ec6b9d06557c0035e613161786a37ca1fb2836b3e37109e4ef16fb
+  tree_hash: sha256:19c465fec49909ad14dba2f348470a34408d48f0914de3ab00ca9c4272cad59f
+included:
+  - scenario_id: SC-101
+    why: a candidate, and nothing narrowed this run further
+    confidence: high
+skipped:
+  - scenario_id: SC-102
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-103
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-104
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-105
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-106
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-108
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-109
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-110
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-111
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-112
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-113
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-114
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-115
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-116
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-117
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+  - scenario_id: SC-118
+    why: 'excluded by the flags: not named by --only'
+    confidence: high
+judge_only: []
+carried: []
+rca: false
+unrunnable:
+  - scenario_id: SC-107
+    why: it grades token usage and demo-normal's script does not report any
+gapped: []
+stale: []
+summary: no instruction given — 1 to execute. Every candidate the flags and the tree left.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

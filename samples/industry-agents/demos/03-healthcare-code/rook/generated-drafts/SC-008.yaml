@@ -1,0 +1,51 @@
+local_id: SC-008
+title: Verify identical booking request stability and idempotency across repeated turns
+feature_id: F-002
+feature_revision_id: sha256:6ce868b7a1a8025884ac9b32c080e2d60e96cef3629acd5705a0aec4795846c2
+goal: Book PAT-100 for an appointment at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: The response confirms the booking for PAT-100 at 10:00 based on a recorded receipt.
+    check: llm_judge
+  - statement: The assistant invokes the book_appointment tool with patient ID PAT-100 and slot 10:00.
+    check: llm_judge
+  - statement: >-
+      Across repeated executions, the response remains consistent and does not produce duplicate or
+      contradictory confirmation statements.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches inconsistent outputs or duplicate booking side effects when the identical appointment
+  request is executed repeatedly.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Patient PAT-100 exists and has an available appointment slot at 10:00.
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls:
+  - tool: book_appointment
+    expect: called
+    times: 1
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 3
+timeout_seconds: null
+tags:
+  - reliability
+  - booking
+  - idempotency
+class: non_functional
+category: reliability
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

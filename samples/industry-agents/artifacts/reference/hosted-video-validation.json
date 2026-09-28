@@ -1,0 +1,875 @@
+{
+  "kind": "hosted-video-validation",
+  "recordedOn": "2026-09-17",
+  "scope": "32 fresh hosted runs, six selected scenario results per edition; distinct from the earlier local CI samples. Not a full 18-category rerun.",
+  "total": 48,
+  "passed": 42,
+  "failed": 6,
+  "unverifiable": 0,
+  "rows": [
+    {
+      "demo": "01-banking-code",
+      "runs": [
+        {
+          "role": "journeys",
+          "localRunId": "2026-09-17T15-10-15Z",
+          "hostedRunId": "01M2QYPEGNBVXWW7M1FHXDYSEY",
+          "testMode": false,
+          "generated": "2026-09-17T15:13:16.347Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-101",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-111",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "before",
+          "localRunId": "2026-09-17T15-13-32Z",
+          "hostedRunId": "01M2QYWFFA88QJHPNDR5SM8X89",
+          "testMode": false,
+          "generated": "2026-09-17T15:14:27.724Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-117",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "after",
+          "localRunId": "2026-09-17T15-14-45Z",
+          "hostedRunId": "01M2QYYPMP0BD036G0RT0SN2T9",
+          "testMode": false,
+          "generated": "2026-09-17T15:15:44.954Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-117",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "mcp",
+          "localRunId": "2026-09-17T15-15-56Z",
+          "hostedRunId": "01M2QZ0TXWQRY3WS0XQ99W11DA",
+          "testMode": false,
+          "generated": "2026-09-17T15:16:51.283Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "demo": "02-banking-no-code",
+      "runs": [
+        {
+          "role": "journeys",
+          "localRunId": "2026-09-17T15-16-00Z",
+          "hostedRunId": "01M2QZ117Y3BJXHZJGA8DDEAKX",
+          "testMode": false,
+          "generated": "2026-09-17T15:18:36.189Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-101",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-111",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "before",
+          "localRunId": "2026-09-17T15-18-52Z",
+          "hostedRunId": "01M2QZ66ZK0ESWGPTDMABAE4WG",
+          "testMode": false,
+          "generated": "2026-09-17T15:19:47.731Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-117",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "after",
+          "localRunId": "2026-09-17T15-19-57Z",
+          "hostedRunId": "01M2QZ85P09SHQAPQS8GS5SGPX",
+          "testMode": false,
+          "generated": "2026-09-17T15:21:00.319Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-117",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "mcp",
+          "localRunId": "2026-09-17T15-21-11Z",
+          "hostedRunId": "01M2QZAFMWCG9TN7TMVZFDEPXH",
+          "testMode": false,
+          "generated": "2026-09-17T15:21:54.412Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "demo": "03-healthcare-code",
+      "runs": [
+        {
+          "role": "journeys",
+          "localRunId": "2026-09-17T15-16-00Z",
+          "hostedRunId": "01M2QZ110A023PNPY7TCK6MP78",
+          "testMode": false,
+          "generated": "2026-09-17T15:18:08.671Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-101",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-111",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "before",
+          "localRunId": "2026-09-17T15-18-25Z",
+          "hostedRunId": "01M2QZ5E7ETYNMXKE3QG1W0DR1",
+          "testMode": false,
+          "generated": "2026-09-17T15:19:21.468Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-103",
+              "status": "Fail",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Fail"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "after",
+          "localRunId": "2026-09-17T15-19-30Z",
+          "hostedRunId": "01M2QZ7D9P3MHQWCP17MHZ1SJY",
+          "testMode": false,
+          "generated": "2026-09-17T15:20:30.207Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-103",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "mcp",
+          "localRunId": "2026-09-17T15-20-39Z",
+          "hostedRunId": "01M2QZ9HGZEZ4RGEYME0CXT15E",
+          "testMode": false,
+          "generated": "2026-09-17T15:21:37.258Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "demo": "04-healthcare-no-code",
+      "runs": [
+        {
+          "role": "journeys",
+          "localRunId": "2026-09-17T15-21-55Z",
+          "hostedRunId": "01M2QZBV3ZR8DNFGVRWB1RDX5T",
+          "testMode": false,
+          "generated": "2026-09-17T15:24:34.448Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-101",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-111",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "before",
+          "localRunId": "2026-09-17T15-24-48Z",
+          "hostedRunId": "01M2QZH3PB4KXKYDX6P7X5CER5",
+          "testMode": false,
+          "generated": "2026-09-17T15:26:02.679Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-103",
+              "status": "Fail",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Fail"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "after",
+          "localRunId": "2026-09-17T15-26-17Z",
+          "hostedRunId": "01M2QZKWDVVPE3WWRY458EY1PV",
+          "testMode": false,
+          "generated": "2026-09-17T15:27:14.173Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-103",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "mcp",
+          "localRunId": "2026-09-17T15-27-23Z",
+          "hostedRunId": "01M2QZNVD1MYGZ92ZK0YKZ4XDH",
+          "testMode": false,
+          "generated": "2026-09-17T15:28:37.403Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "demo": "05-insurance-code",
+      "runs": [
+        {
+          "role": "journeys",
+          "localRunId": "2026-09-17T15-22-05Z",
+          "hostedRunId": "01M2QZC6QVNT19DFTZK84M1M5S",
+          "testMode": false,
+          "generated": "2026-09-17T15:24:49.255Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-101",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-111",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "before",
+          "localRunId": "2026-09-17T15-25-00Z",
+          "hostedRunId": "01M2QZHDVEAWVQDWZG3VY7MGDE",
+          "testMode": false,
+          "generated": "2026-09-17T15:26:41.155Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-104",
+              "status": "Fail",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Fail"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "after",
+          "localRunId": "2026-09-17T15-26-50Z",
+          "hostedRunId": "01M2QZMSGM6QZX3NJ94CY0KE50",
+          "testMode": false,
+          "generated": "2026-09-17T15:27:46.205Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-104",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "mcp",
+          "localRunId": "2026-09-17T15-27-54Z",
+          "hostedRunId": "01M2QZPV7WTDAB320TRNBD9NWF",
+          "testMode": false,
+          "generated": "2026-09-17T15:28:58.556Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "demo": "06-insurance-no-code",
+      "runs": [
+        {
+          "role": "journeys",
+          "localRunId": "2026-09-17T15-28-56Z",
+          "hostedRunId": "01M2QZRKB6RKA9HN18JXQ16165",
+          "testMode": false,
+          "generated": "2026-09-17T15:31:50.663Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-101",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-111",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "before",
+          "localRunId": "2026-09-17T15-32-07Z",
+          "hostedRunId": "01M2QZYNX9MATRX60J6DARQJF4",
+          "testMode": false,
+          "generated": "2026-09-17T15:33:15.017Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-104",
+              "status": "Fail",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Fail"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "after",
+          "localRunId": "2026-09-17T15-33-24Z",
+          "hostedRunId": "01M2R00WMFW8JXNAPE585KSJ1X",
+          "testMode": false,
+          "generated": "2026-09-17T15:34:14.544Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-104",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "mcp",
+          "localRunId": "2026-09-17T15-34-29Z",
+          "hostedRunId": "01M2R02W28RVGNDCF6369HD44H",
+          "testMode": false,
+          "generated": "2026-09-17T15:35:40.428Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "demo": "07-customer-support-code",
+      "runs": [
+        {
+          "role": "journeys",
+          "localRunId": "2026-09-17T15-29-17Z",
+          "hostedRunId": "01M2QZS9FJAZHT05CYPTZR98X7",
+          "testMode": false,
+          "generated": "2026-09-17T15:31:32.979Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-101",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-111",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "before",
+          "localRunId": "2026-09-17T15-31-43Z",
+          "hostedRunId": "01M2QZXXET5VGRKSN5S5EQ4TF1",
+          "testMode": false,
+          "generated": "2026-09-17T15:32:43.193Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-104",
+              "status": "Fail",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Fail"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "after",
+          "localRunId": "2026-09-17T15-32-52Z",
+          "hostedRunId": "01M2QZZVKHHC91MPT6331TKQRK",
+          "testMode": false,
+          "generated": "2026-09-17T15:33:44.730Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-104",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "mcp",
+          "localRunId": "2026-09-17T15-33-54Z",
+          "hostedRunId": "01M2R01RDFGBF78C05ZM0D83AM",
+          "testMode": false,
+          "generated": "2026-09-17T15:34:43.714Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "demo": "08-customer-support-no-code",
+      "runs": [
+        {
+          "role": "journeys",
+          "localRunId": "2026-09-17T15-35-07Z",
+          "hostedRunId": "01M2R0424SE18Y49593BGDMSXN",
+          "testMode": false,
+          "generated": "2026-09-17T15:37:48.729Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-101",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            },
+            {
+              "scenario": "SC-111",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "before",
+          "localRunId": "2026-09-17T15-38-03Z",
+          "hostedRunId": "01M2R09AZWVWXYQBRSVJESWJD9",
+          "testMode": false,
+          "generated": "2026-09-17T15:39:05.952Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-104",
+              "status": "Fail",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Fail"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "after",
+          "localRunId": "2026-09-17T15-39-16Z",
+          "hostedRunId": "01M2R0BJQG1VNC8HJJA6PC761K",
+          "testMode": false,
+          "generated": "2026-09-17T15:40:14.298Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-104",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                },
+                {
+                  "id": "C2",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "role": "mcp",
+          "localRunId": "2026-09-17T15-40-29Z",
+          "hostedRunId": "01M2R0DSH7FY2QQ3EWF32WYW5P",
+          "testMode": false,
+          "generated": "2026-09-17T15:41:22.712Z",
+          "selectedResults": [
+            {
+              "scenario": "SC-105",
+              "status": "Pass",
+              "criteria": [
+                {
+                  "id": "C1",
+                  "status": "Pass"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

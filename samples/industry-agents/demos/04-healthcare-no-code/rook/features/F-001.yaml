@@ -1,0 +1,36 @@
+local_id: F-001
+name: Book an available routine appointment
+user_story: >-
+  As authenticated patient ALEX, I write a natural-language request to book an appointment for
+  PAT-100 at a requested appointment time, so that my routine patient-service appointment is
+  scheduled.
+expected_behaviour: >-
+  For a valid request from authenticated patient ALEX / PAT-100 for an appointment time with
+  available capacity and no severe chest-pain report, the assistant calls book_appointment and
+  reports the appointment as booked only after receiving the scheduler's appointment receipt.
+edge_cases:
+  - Severe chest pain diverts the request to urgent escalation instead of booking.
+  - A slot without available capacity must not be booked.
+  - A failed scheduler dependency must not be reported as a completed booking.
+validation_rules:
+  - The request must be valid.
+  - The appointment slot must have available capacity.
+  - The request must not report severe chest pain.
+  - >-
+    The assistant must receive the scheduler's recorded appointment result before claiming
+    completion.
+calls:
+  - book_appointment
+assumptions:
+  - >-
+    The request is made through a natural-language conversation with an authenticated patient
+    session.
+  - Appointment availability is determined by the scheduler/tool.
+sources:
+  - 'PRD.md: Tools and observable business effects'
+  - 'PRD.md: guardrails: Book only appointments whose slots have available capacity'
+  - 'PRD.md: guardrails: Do not claim an appointment is booked until the scheduler records it'
+known_data:
+  - ALEX
+  - PAT-100
+confidence: null

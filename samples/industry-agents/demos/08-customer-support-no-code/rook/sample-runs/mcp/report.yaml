@@ -1,0 +1,48 @@
+run_id: 2026-09-17T14-51-19Z
+agent_id: returns-refunds-assistant
+generated: '2026-09-17T14:51:43.375Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 22.9486
+  duration_ms: 15431
+  tokens_in: 1647
+  tokens_out: 70
+  latency_p50_ms: 9568
+  latency_p95_ms: 9568
+  turns_total: 2
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters: []
+credits: 18.271125
+headline: >-
+  The assistant passed context-preservation testing in scenario SC-105, but 15 of 16 declared
+  features remain completely unverified.
+narrative: >-
+  Scenario SC-105 passed after the assistant carried order ORD-100 across conversation turns to
+  complete a refund without requiring the customer to re-enter the reference. No failures or policy
+  violations occurred within this single executed scenario. However, 15 declared features—including
+  return-window enforcement, approval thresholds, cross-customer privacy, and prompt-hijacking
+  guardrails—were not covered in this run. Passing a single multi-turn scenario confirms basic
+  context retention but does not license any general claim about the agent's safety or operational
+  reliability.
+next:
+  - >-
+    Run scenarios covering high-risk guardrails, including return windows, approval limits, and
+    cross-customer data protection.
+  - Execute adversarial scenarios to test role-hijacking and prompt-injection resilience.

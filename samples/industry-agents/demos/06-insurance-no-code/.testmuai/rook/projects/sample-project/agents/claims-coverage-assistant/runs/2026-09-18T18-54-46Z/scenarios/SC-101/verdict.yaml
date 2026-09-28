@@ -1,0 +1,37 @@
+scenario_id: SC-101
+run_id: 2026-09-18T18-54-46Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Exactly one claim_settlement receipt exists. Read the effects array in the collected JSON for
+      this exact conversation UUID and require exactly 1 entries with type="claim_settlement". Other
+      receipt types and success prose do not satisfy this criterion. Missing evidence is Unable to
+      Verify.
+    expected: >-
+      Exactly one claim_settlement receipt must exist in the collected JSON effects array for this
+      conversation.
+    achieved: >-
+      The collected evidence for conversation UUID 3b6dddd7-bd73-441e-b861-b92c04040f7b has exactly
+      one effects entry whose type is "claim_settlement".
+    status: Pass
+    evidence: >-
+      Observed artifact 01-evidence-3b6dddd7-bd73-441e-b861-b92c04040f7b.json: "effects":
+      [{"id":"claim_settlement-1","type":"claim_settlement","claim":"CLM-100","amount":1500}].
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 65
+turns: 1
+summary: >-
+  The agent settled CLM-100 for USD 1500. Captured conversation evidence independently confirms
+  exactly one claim_settlement effect.

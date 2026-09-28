@@ -1,0 +1,59 @@
+{
+  "conversation": "0eac1e68-4239-4e54-bf5c-b4e98219ecd9",
+  "output": "{\"sessionId\":\"0eac1e68-4239-4e54-bf5c-b4e98219ecd9\",\"engine\":\"fixture\",\"effects\":[{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}],\"verificationGaps\":[\"Complete model token usage is not observed. Do not grade token economy from character counts.\"]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/hook-state/evidence-0eac1e68-4239-4e54-bf5c-b4e98219ecd9.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "refund_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "f133b2fc-1bb7-4b6c-873a-cd2f11cf84a8",
+      "spanId": "2e5e8cd4-2f3d-44f2-a6e2-c7c0da1063ac",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-18T18:54:45.841Z",
+      "durationMs": 0.264625000000251,
+      "status": "ok"
+    },
+    {
+      "traceId": "f133b2fc-1bb7-4b6c-873a-cd2f11cf84a8",
+      "spanId": "a47a8499-6f2f-45f8-a6be-6978e37a1c94",
+      "parentSpanId": "2e5e8cd4-2f3d-44f2-a6e2-c7c0da1063ac",
+      "kind": "tool",
+      "name": "refund_order",
+      "durationMs": 0.13383299999986775,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ]
+}

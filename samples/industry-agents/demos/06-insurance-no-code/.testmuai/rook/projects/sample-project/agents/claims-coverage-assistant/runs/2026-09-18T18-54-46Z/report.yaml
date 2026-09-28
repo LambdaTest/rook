@@ -1,0 +1,43 @@
+run_id: 2026-09-18T18-54-46Z
+agent_id: claims-coverage-assistant
+generated: '2026-09-18T18:54:59.627Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 30.833
+  duration_ms: 13320
+  tokens_in: 0
+  tokens_out: 0
+  latency_p50_ms: 65
+  latency_p95_ms: 65
+  turns_total: 1
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters: []
+credits: 5.09925
+headline: The single executed scenario passed, but a minimal test set provides weak assurance overall.
+narrative: >-
+  A single scenario was executed in this run and passed successfully. However, one scenario was
+  marked unrunnable and not executed. With only one scenario tested out of five defined
+  capabilities, this run does not establish general operational reliability or full policy
+  compliance for the agent.
+next:
+  - Investigate and resolve the unrunnable scenario setup to enable execution.
+  - >-
+    Expand scenario execution across remaining features (F-001 through F-005) to establish
+    meaningful assurance.

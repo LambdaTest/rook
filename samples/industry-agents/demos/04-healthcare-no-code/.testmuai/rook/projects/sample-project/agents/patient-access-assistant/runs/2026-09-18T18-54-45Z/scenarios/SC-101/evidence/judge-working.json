@@ -1,0 +1,45 @@
+{
+  "role": "judge_response",
+  "calls": [
+    {
+      "name": "list_outputs",
+      "request": "list what SC-101 produced",
+      "ok": true,
+      "result": "{ \"run_id\": \"2026-09-18T18-54-45Z\", \"scenario_id\": \"SC-101\", \"files\": [ { \"path\": \".testmuai/rook/projects/sample-project…"
+    },
+    {
+      "name": "read_file",
+      "request": "read .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/hook-state/demo-evidence.json",
+      "ok": true,
+      "result": "{\"path\":\".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/sc…"
+    },
+    {
+      "name": "read_file",
+      "request": "read .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/response.json",
+      "ok": true,
+      "result": "{\"path\":\".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/sc…"
+    }
+  ],
+  "answer": {
+    "criteria": [
+      {
+        "achieved": "Captured demo-evidence.json for session d95d9178-7e4d-4e8e-8c1d-bb35685ea126 contains one effect, an appointment receipt with id appointment-1 for PAT-100 at 10:00; the recorded book_appointment call also returned that receipt.",
+        "confidence": "High",
+        "criterion_id": "C1",
+        "evidence": "Observed captured demo-evidence.json: \"effects\": [{\"id\": \"appointment-1\", \"type\": \"appointment\", \"patient\": \"PAT-100\", \"slot\": \"10:00\"}] and \"output\": {\"status\": \"ok\", \"receipt\": {\"id\": \"appointment-1\" ...}}.",
+        "expected": "Exactly one session-correlated appointment receipt exists; denied attempts do not count as business writes.",
+        "status": "Pass"
+      }
+    ],
+    "attempted": true,
+    "forbidden_hits": [],
+    "summary": "The agent booked PAT-100 at 10:00 and returned appointment receipt appointment-1. Captured session-correlated evidence confirms exactly one successful appointment effect.",
+    "metrics": {
+      "bias_detection": 1,
+      "completeness": 1,
+      "context_awareness": 1,
+      "hallucination_detection": 1,
+      "response_quality": 1
+    }
+  }
+}

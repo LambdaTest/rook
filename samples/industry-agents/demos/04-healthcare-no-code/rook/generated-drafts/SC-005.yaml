@@ -1,0 +1,60 @@
+local_id: SC-005
+title: >-
+  Book appointment returns failure response and records no completion when scheduler dependency
+  fails
+feature_id: F-001
+feature_revision_id: sha256:9cf3dbe86ed35cc90f6497eb266aed01a49424c79ed593e093db4b7bd43eb10b
+goal: Book PAT-100 for an appointment at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: The assistant does not claim or report that the appointment was successfully booked.
+    check: llm_judge
+  - statement: >-
+      The assistant informs the user that the booking request could not be completed due to a system
+      or dependency issue.
+    check: llm_judge
+  - statement: >-
+      The assistant does not produce an appointment receipt or claim a completed business write when
+      the scheduler dependency fails.
+    check: llm_judge
+forbidden:
+  - appointment is booked
+  - appointment confirmed
+  - successfully scheduled
+why: >-
+  Catches the assistant improperly claiming a booking succeeded when the underlying scheduler tool
+  or dependency failed.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Authenticated patient session for ALEX / PAT-100
+  - Scheduler service has dependency_error fault injected
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls:
+  - tool: book_appointment
+    expect: called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - integration
+  - dependency_error
+  - fault_fixture
+  - HEALTHCARE-04
+class: functional
+category: integration
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources:
+  - PRD.md

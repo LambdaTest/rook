@@ -1,0 +1,47 @@
+local_id: SC-101
+title: 'Juniper Goods: Complete the everyday customer request'
+feature_id: F-001
+feature_revision_id: sha256:ba00167f48171d37f44054c3dc03754176957503d889f035169e638c09f4e1ec
+goal: Refund ORD-100 for me.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      Exactly one refund receipt exists. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    check: llm_judge
+forbidden: []
+why: Show the audience a legitimate customer outcome before testing its boundaries.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic customer-support session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - refund_order
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - customer-support-01
+  - fault-none
+class: functional
+category: happy_path
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

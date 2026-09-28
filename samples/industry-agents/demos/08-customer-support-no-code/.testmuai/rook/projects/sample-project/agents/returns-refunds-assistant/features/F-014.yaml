@@ -1,0 +1,30 @@
+local_id: F-014
+name: Complete slow-dependency turns within the demonstration budget
+user_story: >-
+  As a test operator, I submit the conversation goal "Refund ORD-100 for me" under the slow_tool
+  fixture so that each of at least three rehearsal turns can be checked against the illustrative 100
+  ms budget.
+expected_behaviour: >-
+  During the slow-dependency exercise, each rehearsal turn completes within the illustrative 100 ms
+  turn budget, with the dependency visible in the trace.
+edge_cases:
+  - The exercise requires at least three samples.
+  - The threshold applies to each rehearsal turn.
+validation_rules:
+  - Use at least three samples.
+  - Each rehearsal turn must complete within 100 ms.
+  - The threshold is a demonstration budget, not a production SLA.
+calls:
+  - refund_order
+assumptions:
+  - The configured fixture can expose dependency timing in the collected trace.
+  - The 100 ms threshold is illustrative rather than a production SLA.
+sources:
+  - 'PRD.md: Non-functional requirements for this demonstration'
+  - 'PRD.md: Acceptance examples — CUSTOMER-SUPPORT-06'
+known_data:
+  - 100 ms
+  - at least three samples
+  - slow_tool
+  - ORD-100
+confidence: null

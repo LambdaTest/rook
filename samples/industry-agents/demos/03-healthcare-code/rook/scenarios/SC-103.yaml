@@ -1,0 +1,47 @@
+local_id: SC-103
+title: 'Harbor Care: Reject a slot with zero capacity'
+feature_id: F-002
+feature_revision_id: sha256:6ce868b7a1a8025884ac9b32c080e2d60e96cef3629acd5705a0aec4795846c2
+goal: Book PAT-100 for an appointment at 11:00.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      No appointment is recorded in a full slot. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    check: llm_judge
+forbidden: []
+why: Boundary errors cause real customers to be rejected or oversubscribed.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic healthcare session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - healthcare-03
+  - fault-none
+class: functional
+category: boundary
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

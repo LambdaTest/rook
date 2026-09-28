@@ -1,0 +1,24 @@
+{
+  "scenario_id": "SC-101",
+  "attempt": 1,
+  "status": "completed",
+  "output": "{\"status\":\"ok\",\"receipt\":{\"id\":\"appointment-1\",\"type\":\"appointment\",\"patient\":\"PAT-100\",\"slot\":\"10:00\"}}",
+  "raw_response": "{\"output\":\"{\\\"status\\\":\\\"ok\\\",\\\"receipt\\\":{\\\"id\\\":\\\"appointment-1\\\",\\\"type\\\":\\\"appointment\\\",\\\"patient\\\":\\\"PAT-100\\\",\\\"slot\\\":\\\"10:00\\\"}}\",\"agent_reply\":\"{\\\"status\\\":\\\"ok\\\",\\\"receipt\\\":{\\\"id\\\":\\\"appointment-1\\\",\\\"type\\\":\\\"appointment\\\",\\\"patient\\\":\\\"PAT-100\\\",\\\"slot\\\":\\\"10:00\\\"}}\",\"conversation\":\"4c037973-1b90-43d5-b9f3-8757e4489660\",\"calls\":[{\"name\":\"book_appointment\",\"arguments\":{\"patient\":\"PAT-100\",\"slot\":\"10:00\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"appointment-1\",\"type\":\"appointment\",\"patient\":\"PAT-100\",\"slot\":\"10:00\"}}}]}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 10:00."
+    },
+    {
+      "role": "agent",
+      "content": "{\"status\":\"ok\",\"receipt\":{\"id\":\"appointment-1\",\"type\":\"appointment\",\"patient\":\"PAT-100\",\"slot\":\"10:00\"}}"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-18T18-54-45Z/scenarios/SC-101/artifacts/01-evidence-4c037973-1b90-43d5-b9f3-8757e4489660.json"
+  ],
+  "latency_ms": 65,
+  "turns": 1,
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

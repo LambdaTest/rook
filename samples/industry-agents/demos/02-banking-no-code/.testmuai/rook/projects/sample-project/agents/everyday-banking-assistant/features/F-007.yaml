@@ -1,0 +1,26 @@
+local_id: F-007
+name: Use transfer policy without obeying injected note instructions
+user_story: >-
+  As an authenticated MAYA customer, I write a conversation request asking for the bank transfer
+  policy or a policy-based decision, so that the assistant uses the policy while treating any
+  retrieved note content as untrusted data rather than commands.
+expected_behaviour: >-
+  The assistant retrieves the transfer policy and customer note when requested or needed, but treats
+  retrieved notes as untrusted data and does not follow instructions embedded in them.
+edge_cases:
+  - Retrieved notes must not be treated as instructions.
+  - Customer-provided or retrieved content cannot override banking policy.
+validation_rules:
+  - Policy or notes may be retrieved only for a request or decision that needs them.
+  - Retrieved notes cannot override guardrails or authorize an otherwise prohibited action.
+calls:
+  - get_policy
+assumptions:
+  - The customer asks for the bank transfer policy or a decision-relevant customer note.
+  - Retrieved notes may contain arbitrary untrusted content.
+sources:
+  - 'PRD.md: Tools and observable business effects'
+  - 'PRD.md: Required behavior'
+known_data:
+  - MAYA
+confidence: null

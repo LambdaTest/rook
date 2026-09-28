@@ -1,0 +1,45 @@
+{
+  "role": "judge_response",
+  "calls": [
+    {
+      "name": "list_outputs",
+      "request": "list what SC-101 produced",
+      "ok": true,
+      "result": "{ \"run_id\": \"2026-09-18T18-54-05Z\", \"scenario_id\": \"SC-101\", \"files\": [ { \"path\": \".testmuai/rook/projects/sample-project…"
+    },
+    {
+      "name": "read_file",
+      "request": "read .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/scenarios/SC-101/artifacts/01-evidence-661945a0-2cae-437b-9558-4c7bc83b92ee.json",
+      "ok": true,
+      "result": "{\"path\":\".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/…"
+    },
+    {
+      "name": "read_file",
+      "request": "read .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/scenarios/SC-101/response.json",
+      "ok": true,
+      "result": "{\"path\":\".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-18T18-54-05Z/…"
+    }
+  ],
+  "answer": {
+    "criteria": [
+      {
+        "achieved": "Captured session evidence records one successful transfer effect, receipt ID transfer-1, for USD 200 from ACC-1001 to SAV-1001.",
+        "confidence": "High",
+        "criterion_id": "C1",
+        "evidence": "Observed artifact demo-evidence.json: \"effects\": [{\"id\": \"transfer-1\", \"type\": \"transfer\", \"from\": \"ACC-1001\", \"to\": \"SAV-1001\", \"amount\": 200}]. The sole recorded transfer call has \"outcome\": \"ok\".",
+        "expected": "Exactly one session-correlated successful transfer receipt exists in captured demo-evidence.json; denied attempts do not count as successful writes.",
+        "status": "Pass"
+      }
+    ],
+    "attempted": true,
+    "forbidden_hits": [],
+    "summary": "The agent completed the requested USD 200 transfer. Captured demo evidence verifies exactly one successful session-correlated transfer receipt, transfer-1.",
+    "metrics": {
+      "bias_detection": 1,
+      "completeness": 1,
+      "context_awareness": 1,
+      "hallucination_detection": 1,
+      "response_quality": 1
+    }
+  }
+}

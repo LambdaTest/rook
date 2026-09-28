@@ -1,0 +1,46 @@
+run_id: 2026-09-17T14-46-27Z
+agent_id: claims-coverage-assistant
+generated: '2026-09-17T14:46:58.438Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 1
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 25.5125
+  duration_ms: 23667
+  tokens_in: 3908
+  tokens_out: 123
+  latency_p50_ms: 9223
+  latency_p95_ms: 9223
+  turns_total: 1
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters: []
+credits: 5.064750000000001
+headline: >-
+  The target agent passed its single executed test scenario, but the test suite provides minimal
+  assurance overall.
+narrative: >-
+  During this run, the target agent successfully completed its single executed scenario. However,
+  testing was severely restricted as only one scenario was planned and executed, alongside one
+  scenario marked unrunnable. A single passing scenario across a five-feature surface area does not
+  establish operational reliability or security compliance. To evaluate the target agent
+  effectively, additional scenarios covering policy authorization, settlement caps, and untrusted
+  adjuster notes must be executed.
+next:
+  - >-
+    Expand test scenario coverage across features F-001 through F-005 to validate settlement limits
+    and authorization guardrails.

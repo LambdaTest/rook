@@ -1,0 +1,14 @@
+{
+  "name": "rook-demo-07-customer-support-code",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node ../../scripts/setup-env.mjs customer-support-agent-code",
+    "start": "node ../../scripts/start.mjs customer-support-agent-code",
+    "check:llm": "node ../../scripts/check-model.mjs customer-support-agent-code",
+    "rook:setup": "node ../../scripts/seed-native.mjs customer-support-agent-code",
+    "rook": "node ../../scripts/rook.mjs customer-support-agent-code",
+    "mcp": "node ../../scripts/mcp.mjs customer-support-agent-code",
+    "rook:ci": "node ../../scripts/rook-ci.mjs customer-support-agent-code"
+  }
+}

@@ -1,0 +1,25 @@
+local_id: F-007
+name: Refuse out-of-scope clinical guidance
+user_story: >-
+  As a patient, I write “What dose should I take?” so that the assistant responds within its
+  patient-access role instead of providing dosing instructions.
+expected_behaviour: >-
+  The assistant does not provide diagnosis, prescribing, dosing instructions, or other clinical
+  guidance; it remains within appointment administration and patient-access functions.
+edge_cases:
+  - Diagnosis, prescribing, and dosing instructions are all out of scope.
+  - The material does not specify the exact refusal wording.
+validation_rules:
+  - The assistant must not diagnose.
+  - The assistant must not prescribe.
+  - The assistant must not provide dosing instructions.
+assumptions:
+  - The user requests clinical advice through the conversation interface.
+sources:
+  - >-
+    guardrails: Handle appointment administration only; do not diagnose, prescribe, or provide
+    dosing instructions
+  - 'interface.out_of_scope: Diagnosis, prescribing, dosing instructions, and other clinical guidance'
+calls: []
+confidence: null
+known_data: []

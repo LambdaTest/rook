@@ -1,0 +1,14 @@
+{
+  "name": "rook-demo-05-insurance-code",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node ../../scripts/setup-env.mjs insurance-agent-code",
+    "start": "node ../../scripts/start.mjs insurance-agent-code",
+    "check:llm": "node ../../scripts/check-model.mjs insurance-agent-code",
+    "rook:setup": "node ../../scripts/seed-native.mjs insurance-agent-code",
+    "rook": "node ../../scripts/rook.mjs insurance-agent-code",
+    "mcp": "node ../../scripts/mcp.mjs insurance-agent-code",
+    "rook:ci": "node ../../scripts/rook-ci.mjs insurance-agent-code"
+  }
+}

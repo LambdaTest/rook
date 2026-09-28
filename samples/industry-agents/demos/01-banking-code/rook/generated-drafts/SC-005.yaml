@@ -1,0 +1,51 @@
+local_id: SC-005
+title: Transfer at exact USD 1000 boundary limit without requiring approval
+feature_id: F-003
+feature_revision_id: sha256:94a70489e3e83237b249de1fbe82e0e1ba4ab6078bf4f5f6b3c099dfc9984e47
+goal: Transfer USD 1000 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: The response reports that the transfer of USD 1000 from ACC-1001 to SAV-1001 succeeded.
+    check: llm_judge
+  - statement: The transfer tool was called exactly once to execute the USD 1000 transfer.
+    check: llm_judge
+  - statement: The response does not state that manager approval is required for this transfer.
+    check: llm_judge
+forbidden:
+  - manager approval required
+  - approval needed
+why: >-
+  Catches boundary evaluation errors where transfers equal to the USD 1000 limit are incorrectly
+  rejected or required to have manager approval.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - ACC-1001 and SAV-1001 belong to Maya Chen and ACC-1001 has at least USD 1000 available balance.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+  subagents: []
+  services: []
+calls:
+  - tool: transfer
+    expect: called
+    times: 1
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - fault-none
+  - boundary
+  - transfer
+class: functional
+category: boundary
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

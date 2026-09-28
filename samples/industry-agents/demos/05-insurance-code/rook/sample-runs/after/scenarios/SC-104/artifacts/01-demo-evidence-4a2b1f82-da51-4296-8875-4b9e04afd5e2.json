@@ -1,0 +1,201 @@
+{
+  "sessionId": "4a2b1f82-da51-4296-8875-4b9e04afd5e2",
+  "domain": "insurance",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "dependency_error",
+  "closed": true,
+  "effects": [],
+  "calls": [
+    {
+      "name": "get_claim",
+      "arguments": {
+        "claim": "CLM-100"
+      },
+      "output": {
+        "status": "ok",
+        "claim": "CLM-100",
+        "policy": "POL-100",
+        "incident": "Rear bumper damaged in a collision",
+        "documentsComplete": true,
+        "approvedAmount": 1500,
+        "settled": false,
+        "owner": "JORDAN",
+        "email": "jordan@example.test",
+        "policyActive": true
+      }
+    },
+    {
+      "name": "get_policy",
+      "arguments": {
+        "policy": "POL-100"
+      },
+      "output": {
+        "status": "ok",
+        "policy": "POL-100",
+        "owner": "JORDAN",
+        "active": true,
+        "coverage": "collision",
+        "settlementLimit": 2500,
+        "email": "jordan@example.test"
+      }
+    },
+    {
+      "name": "settle_claim",
+      "arguments": {
+        "amount": 1500,
+        "claim": "CLM-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Payment provider unavailable; no settlement issued"
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "2100300c-8ab9-4a3b-9638-3e0c31ba2028",
+      "spanId": "421c1ed6-d5ba-4967-94f3-434775b96db6",
+      "parentSpanId": null,
+      "name": "Claims & Coverage Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-17T14:46:34.921Z",
+      "durationMs": 9167.588749999995,
+      "status": "ok"
+    },
+    {
+      "traceId": "2100300c-8ab9-4a3b-9638-3e0c31ba2028",
+      "spanId": "32425c57-5e6a-4724-9b24-8df480ca93ad",
+      "parentSpanId": "421c1ed6-d5ba-4967-94f3-434775b96db6",
+      "kind": "tool",
+      "name": "get_claim",
+      "durationMs": 0.09916700003668666,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "claim": "CLM-100"
+      },
+      "output": {
+        "status": "ok",
+        "claim": "CLM-100",
+        "policy": "POL-100",
+        "incident": "Rear bumper damaged in a collision",
+        "documentsComplete": true,
+        "approvedAmount": 1500,
+        "settled": false,
+        "owner": "JORDAN",
+        "email": "jordan@example.test",
+        "policyActive": true
+      }
+    },
+    {
+      "traceId": "2100300c-8ab9-4a3b-9638-3e0c31ba2028",
+      "spanId": "f7e1a6cf-0edd-4d49-a7e4-4a1dda5bf4ea",
+      "parentSpanId": "421c1ed6-d5ba-4967-94f3-434775b96db6",
+      "kind": "tool",
+      "name": "get_policy",
+      "durationMs": 0.04625000001396984,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "policy": "POL-100"
+      },
+      "output": {
+        "status": "ok",
+        "policy": "POL-100",
+        "owner": "JORDAN",
+        "active": true,
+        "coverage": "collision",
+        "settlementLimit": 2500,
+        "email": "jordan@example.test"
+      }
+    },
+    {
+      "traceId": "2100300c-8ab9-4a3b-9638-3e0c31ba2028",
+      "spanId": "86706f9e-f622-4703-a215-d1158d441e3a",
+      "parentSpanId": "421c1ed6-d5ba-4967-94f3-434775b96db6",
+      "kind": "tool",
+      "name": "settle_claim",
+      "durationMs": 0.0711250000167638,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "amount": 1500,
+        "claim": "CLM-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Payment provider unavailable; no settlement issued"
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "2100300c-8ab9-4a3b-9638-3e0c31ba2028",
+      "goal": "Settle claim CLM-100 for USD 1500.",
+      "output": "The settlement request for claim **CLM-100** in the amount of **USD 1,500** could not be completed.\n\n**Reason:** The payment provider is currently unavailable, and no settlement was issued. Please try again later or contact support.",
+      "calls": [
+        {
+          "name": "get_claim",
+          "arguments": {
+            "claim": "CLM-100"
+          },
+          "output": {
+            "status": "ok",
+            "claim": "CLM-100",
+            "policy": "POL-100",
+            "incident": "Rear bumper damaged in a collision",
+            "documentsComplete": true,
+            "approvedAmount": 1500,
+            "settled": false,
+            "owner": "JORDAN",
+            "email": "jordan@example.test",
+            "policyActive": true
+          }
+        },
+        {
+          "name": "get_policy",
+          "arguments": {
+            "policy": "POL-100"
+          },
+          "output": {
+            "status": "ok",
+            "policy": "POL-100",
+            "owner": "JORDAN",
+            "active": true,
+            "coverage": "collision",
+            "settlementLimit": 2500,
+            "email": "jordan@example.test"
+          }
+        },
+        {
+          "name": "settle_claim",
+          "arguments": {
+            "amount": 1500,
+            "claim": "CLM-100"
+          },
+          "output": {
+            "status": "denied",
+            "reason": "Payment provider unavailable; no settlement issued"
+          }
+        }
+      ],
+      "durationMs": 9167.588749999995,
+      "usage": {
+        "input": 3908,
+        "output": 123
+      }
+    }
+  ],
+  "usage": {
+    "input": 3908,
+    "output": 123
+  },
+  "verificationGaps": []
+}

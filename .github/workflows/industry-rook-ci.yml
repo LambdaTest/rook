@@ -1,0 +1,63 @@
+name: industry-rook-ci
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-run:
+    name: rook / ${{ matrix.demo }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        demo:
+          - banking-agent-code
+          - banking-agent
+          - healthcare-agent-code
+          - healthcare-agent
+          - insurance-agent-code
+          - insurance-agent
+          - customer-support-agent-code
+          - customer-support-agent
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.0.0
+        with:
+          node-version: 22
+      - name: Install the published Rook CLI
+        run: npm install -g @testmuai/rook@latest
+      - run: npm ci
+        working-directory: samples/industry-agents
+      - run: npm run setup
+        working-directory: samples/industry-agents
+      - name: Run native Rook smoke scenario
+        working-directory: samples/industry-agents
+        env:
+          LT_USERNAME: ${{ secrets.LT_USERNAME }}
+          LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+          ROOK_ENV: prod
+          ROOK_SAMPLE_PROJECT_ID: ${{ vars.ROOK_SAMPLE_PROJECT_ID }}
+          DEMO_NAME: ${{ matrix.demo }}
+        run: |
+          test -n "$LT_USERNAME" || { echo "Configure the LT_USERNAME repository secret" >&2; exit 1; }
+          test -n "$LT_ACCESS_KEY" || { echo "Configure the LT_ACCESS_KEY repository secret" >&2; exit 1; }
+          test -n "$ROOK_SAMPLE_PROJECT_ID" || { echo "Configure the ROOK_SAMPLE_PROJECT_ID repository variable" >&2; exit 1; }
+          npm run rook:ci -- "$DEMO_NAME" --engine fixture --variant hardened
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-rook-${{ matrix.demo }}
+          if-no-files-found: warn
+          include-hidden-files: true
+          path: |
+            samples/industry-agents/artifacts/local/rook-ci/**/ci-summary.json
+            samples/industry-agents/artifacts/local/rook-ci/**/rook-result.json
+            samples/industry-agents/artifacts/local/rook-ci/**/rook-stderr.log
+            samples/industry-agents/artifacts/local/rook-ci/**/workspace/.testmuai/rook/projects/*/agents/*/runs/**

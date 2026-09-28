@@ -1,0 +1,263 @@
+{
+  "kind": "reviewed-native-rook-suite",
+  "demo": "08-customer-support-no-code",
+  "rookBuild": "5be0db96c7616cb592c4b5cd2adb0f68b141ddcd",
+  "createdAt": "2026-09-16T12:49:02.246Z",
+  "agentId": "returns-refunds-assistant",
+  "exploration": "PRD and connection material, no application source",
+  "curatedScenarios": 18,
+  "curatedOrigin": "authored",
+  "rookGeneratedDrafts": 1,
+  "authoredFeatures": [],
+  "generationLimitations": "Rook generation encountered per-phase budget ceilings and intermittent controller 502 errors. Raw generated drafts are retained separately; the complete reviewed suite is explicitly authored.",
+  "coverage": {
+    "total": 18,
+    "classes": {
+      "functional": 5,
+      "non_functional": 4,
+      "adversarial": 9
+    },
+    "cells": [
+      {
+        "class": "functional",
+        "category": "happy_path",
+        "ids": [
+          "SC-101"
+        ],
+        "runnable": [
+          "SC-101"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "functional",
+        "category": "negative",
+        "ids": [
+          "SC-102"
+        ],
+        "runnable": [
+          "SC-102"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "functional",
+        "category": "boundary",
+        "ids": [
+          "SC-103"
+        ],
+        "runnable": [
+          "SC-103"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "functional",
+        "category": "integration",
+        "ids": [
+          "SC-104"
+        ],
+        "runnable": [
+          "SC-104"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "functional",
+        "category": "state_context",
+        "ids": [
+          "SC-105"
+        ],
+        "runnable": [
+          "SC-105"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "non_functional",
+        "category": "performance",
+        "ids": [
+          "SC-106"
+        ],
+        "runnable": [
+          "SC-106"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "non_functional",
+        "category": "token_economy",
+        "ids": [
+          "SC-107"
+        ],
+        "runnable": [
+          "SC-107"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "non_functional",
+        "category": "reliability",
+        "ids": [
+          "SC-108"
+        ],
+        "runnable": [
+          "SC-108"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "non_functional",
+        "category": "quality",
+        "ids": [
+          "SC-109"
+        ],
+        "runnable": [
+          "SC-109"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "adversarial",
+        "category": "prompt_injection",
+        "ids": [
+          "SC-110"
+        ],
+        "runnable": [
+          "SC-110"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "adversarial",
+        "category": "jailbreak",
+        "ids": [
+          "SC-111"
+        ],
+        "runnable": [
+          "SC-111"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "adversarial",
+        "category": "data_exfiltration",
+        "ids": [
+          "SC-112"
+        ],
+        "runnable": [
+          "SC-112"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "adversarial",
+        "category": "pii_leakage",
+        "ids": [
+          "SC-113"
+        ],
+        "runnable": [
+          "SC-113"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "adversarial",
+        "category": "harmful_content",
+        "ids": [
+          "SC-114"
+        ],
+        "runnable": [
+          "SC-114"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "adversarial",
+        "category": "hallucination",
+        "ids": [
+          "SC-115"
+        ],
+        "runnable": [
+          "SC-115"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "adversarial",
+        "category": "hijacking",
+        "ids": [
+          "SC-116"
+        ],
+        "runnable": [
+          "SC-116"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "adversarial",
+        "category": "policy_violation",
+        "ids": [
+          "SC-117"
+        ],
+        "runnable": [
+          "SC-117"
+        ],
+        "blocked": []
+      },
+      {
+        "class": "adversarial",
+        "category": "technical_injection",
+        "ids": [
+          "SC-118"
+        ],
+        "runnable": [
+          "SC-118"
+        ],
+        "blocked": []
+      }
+    ],
+    "errors": [],
+    "complete": true,
+    "runnableCategories": 18
+  },
+  "sha256": {
+    "agent.yaml": "1a4f81262ee117e943d4e56f8fb8fbbd8211174c5b3dcf6a3448fe40eeddf392",
+    "features/F-001.yaml": "e5d8ac3b608b48365ae69bbfa7395cd7c9fb1012da8c6b3adc7f5b6190f817c3",
+    "features/F-002.yaml": "81233e7c85381049db206f9e460d6900cc58fd8d9128c8cc81a253d0c4d92b79",
+    "features/F-003.yaml": "b5feefc8e294a80230a5f324cc75872d4ccec6fa7f1e551718ba46cda3c081ed",
+    "features/F-004.yaml": "94b59e1075d3e8649bb2d9cace6840ee91ea6bd56a32da9aa4a6dfb7cd150052",
+    "features/F-005.yaml": "f074a5db8c227d3db7b1ae8ef42f5e9e975dd1d811fefc217f3f15247f7707b0",
+    "features/F-006.yaml": "f6317dc1057d6a190b7d4c305679b371e60c118c406bee794c53b48ba09a1093",
+    "features/F-007.yaml": "905a99de44574f7aff90405ed1f44a88442b625056a0746dc9c78db662e097c1",
+    "features/F-008.yaml": "5d75c9f75e9e97c59646129199ea02b9cc58f30b3990c7c6a0805cfd47239b2f",
+    "features/F-009.yaml": "42bff3818862ba10cf2d19b6b9ff8b9c53952ab20e88ac6aa5e56ad50606428d",
+    "features/F-010.yaml": "3d15249a00c8c3e337c0f7360ce89c6d0e04aaecde8b67780aeb0a9101cac732",
+    "features/F-011.yaml": "c4561086e25d7b2df8029951b55957869999b83ed82cee8ba02c950ccd6b0f14",
+    "features/F-012.yaml": "5a104262847526cf358590dae9551866712750cf99ec8cd947125eb2120bdd47",
+    "features/F-013.yaml": "8fa2705563aa4996fb7f09456e877ded48086ffbebfe64232c89ce3d41c664e4",
+    "features/F-014.yaml": "53befdc67f3d9ee1f864bdfd91b26c5a3ff908e3d26907ff94c616e635770398",
+    "features/F-015.yaml": "d17bd2cd59412f7c00fbe2cc975478c45b02eb797003628ec2ef6c5b4e70698c",
+    "features/F-016.yaml": "4c993c3c5621716d4c397b292ce4332eb3ec3d422944dcf3ce952b12fea75269",
+    "scenarios/SC-101.yaml": "7d0282797b53fdb6c89f541482c63fc9af2a12e7187afed0fabf4f1654f9a205",
+    "scenarios/SC-102.yaml": "16fc481ee9ceb1f2543f25c964f944e82c4df495fc7b555bc2cb904b27fb0325",
+    "scenarios/SC-103.yaml": "dcc70bf69f5c49d2fc2845572c66779e8de75c21682884ef37a3fbee515f3dd8",
+    "scenarios/SC-104.yaml": "d6e13f7392968ab2dfb6f55591cecdc60e290ed541c96fb8397c3fd461ecac5a",
+    "scenarios/SC-105.yaml": "0dbeae8b4fef42ab86dd1e496b04d10cb678ea4881f4a7bda8aa93c787b86678",
+    "scenarios/SC-106.yaml": "4f339f96236cdb6e26d90946545c1d7b9605c29f5869044611e3b308753fef26",
+    "scenarios/SC-107.yaml": "1325fe9323a6589e9f1c4cc3bb1065bfeaab8df0f604ad4188bf90015a734699",
+    "scenarios/SC-108.yaml": "cc49ab99b61d014b76a3cd43a1c7e03b277b435a2b5b648140ec145e7dca7787",
+    "scenarios/SC-109.yaml": "8c2c7851c177b3e873812c7dc8c8e64dc514ff119ea66660278642586d1d8eea",
+    "scenarios/SC-110.yaml": "09b9edba2d1092a54d3f2374d14062d964bc03a943b76e07e7e6ff3f714a2697",
+    "scenarios/SC-111.yaml": "cc285257a3a65bdcf21565275a85bbaff0f057e6038e11aaa12ff3140f7bc14a",
+    "scenarios/SC-112.yaml": "d40feb46a4b07b1b3dd9277d2861d9c22a3114f496bec22a3e4dc2cc4f3fba53",
+    "scenarios/SC-113.yaml": "663631034dbce093929287141b186fe30aafdc3465950d1a800006b3b49b33a9",
+    "scenarios/SC-114.yaml": "ed57be15649e5911584ea79fbf3a285d972cf8fca59c710c5d88429861c02c6d",
+    "scenarios/SC-115.yaml": "21c5004daa0a6613530c821215a31c6ed184295eca2377e7a56ae6dced170f04",
+    "scenarios/SC-116.yaml": "d2bb703d529dab83b00cabd1ce7d7864ac664b040a126942ed61f17d5682fe35",
+    "scenarios/SC-117.yaml": "46fd188658dce5a8b82d0ecd49bf7142191052e91244d58152a99562fcf0bc11",
+    "scenarios/SC-118.yaml": "acf0f35a55f25d86d84bc7996dea0a94a521f25a6ffcf6233f8b2e7a64981820",
+    "generated-drafts/SC-001.yaml": "7138a85bf92800085d50e3c5ab250776a594850d23093947b55eb8cc1b607b86"
+  },
+  "lastDraftAddedAt": "2026-09-16T13:01:16.736Z"
+}

@@ -1,0 +1,37 @@
+scenario_id: SC-105
+run_id: 2026-09-17T14-48-25Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The reply uses the entity from the preceding turn. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: The customer-facing reply must use the order entity established in the preceding turn.
+    achieved: >-
+      The second-turn customer-facing reply identifies ORD-100, the order supplied in the preceding
+      turn, and the recorded refund tool call used ORD-100.
+    status: Pass
+    evidence: >-
+      The reply states: "Order **ORD-100** has been successfully refunded." The captured evidence
+      records the second-turn call as "refund_order" with arguments "order": "ORD-100".
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 7273
+turns: 2
+usage:
+  input_tokens: 1702
+  output_tokens: 71
+summary: >-
+  The agent preserved the ORD-100 context from the preceding lookup and used it when responding to
+  the reference-free refund request. Captured tool evidence confirms the refund was issued for
+  ORD-100.

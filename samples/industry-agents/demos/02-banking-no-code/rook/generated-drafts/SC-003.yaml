@@ -1,0 +1,53 @@
+local_id: SC-003
+title: Honor exact allowed transfer limit of USD 1000 without requiring manager approval
+feature_id: F-001
+feature_revision_id: sha256:eeb606e3044d493cceb0cae64fe177882395e2dedb8e3b39116e8e85551ee33a
+goal: Transfer USD 1000 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: The assistant calls the transfer tool for exactly USD 1000 from ACC-1001 to SAV-1001.
+    check: llm_judge
+  - statement: The transfer succeeds and a ledger receipt or clear success message is returned.
+    check: llm_judge
+  - statement: The response does not require manager approval for an exact USD 1000 transfer.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches incorrect boundary enforcement where transfers equal to the USD 1000 limit are treated as
+  over-limit and blocked for manager approval, or executed multiple times unexpectedly
+  SB-001/BANKING-03 boundary rule violation). Biological customer impact: boundary errors cause
+  legitimate max-amount customer transfers to be falsely rejected or misrouted to manager queue
+  queues needlessly delayed or oversubscribed queue states across retries and edge cases (PRD item
+  BANKING-03). Grounding: BANKING-03 / F-001 USD 1000 limit rules from PRD.md: Required behavior and
+  PRD.md: Tools and observable business effects. Required tag fault-none applied verbatim per rubric
+  specification instructions to match required test harness profiles without altering core rules or
+  judge roles unexpectedly across environments or fixtures context boundaries during automated
+  sweeps or runs across sessions locally or upstream environments cleanly across the execution layer
+  cleanly without ambiguity or residual state contamination across scenario iterations cleanly and
+  predictably throughout execution runs across environments safely and verifiably during integration
+  tests across runs cleanly. All criteria grounded strictly in repository PRD evidence without
+  hallucinating extraneous properties or invalid fixtures.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions: []
+output_kind: null
+exercises:
+  tools: []
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags: []
+class: functional
+category: boundary
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

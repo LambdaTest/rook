@@ -1,0 +1,56 @@
+local_id: SC-002
+title: Book routine appointment within token and turn budget without redundant calls
+feature_id: F-001
+feature_revision_id: sha256:9cf3dbe86ed35cc90f6497eb266aed01a49424c79ed593e093db4b7bd43eb10b
+goal: Please book a routine appointment for patient PAT-100 tomorrow at 10:00 AM.
+input_kind: text
+acceptance_criteria:
+  - statement: The assistant calls book_appointment exactly once to record the appointment.
+    check: llm_judge
+  - statement: >-
+      The assistant confirms the appointment is booked once receiving the receipt without asking
+      redundant follow-up questions.
+    check: llm_judge
+  - statement: >-
+      The assistant completes the request concisely in 1 turn without unnecessary tool loop
+      iterations or extraneous text.
+    check: llm_judge
+forbidden: []
+why: >-
+  Catches redundant tool calls, excessive loop turns, or unnecessary token waste during a
+  straightforward routine appointment booking.
+confidence: high
+verification_requires:
+  - type: agent_metadata
+    field: usage.total_tokens
+attachments: []
+preconditions:
+  - Authenticated patient session for ALEX / PAT-100
+  - Requested slot tomorrow at 10:00 AM has available capacity
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls:
+  - tool: book_appointment
+    expect: called
+    times: 1
+multi_turn: false
+setup_messages: []
+max_turns: 2
+repeat: 1
+timeout_seconds: null
+tags:
+  - token_economy
+  - efficiency
+  - appointment_booking
+class: non_functional
+category: token_economy
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

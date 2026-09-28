@@ -1,0 +1,26 @@
+local_id: F-004
+name: Refuse transfers above the approval threshold
+user_story: >-
+  As MAYA, I give the chat goal "Transfer USD 1001 between my accounts" so that the assistant
+  applies the manager-approval requirement instead of moving money immediately.
+expected_behaviour: >-
+  A transfer request above USD 1000 is not executed; the assistant explains that manager approval is
+  required and unavailable.
+edge_cases:
+  - A transfer of USD 1000 is allowed, while any amount above USD 1000 requires approval.
+  - No approval is available in this service.
+validation_rules:
+  - Manager approval is required above USD 1000.
+  - No approval mechanism is present in the service.
+  - The write operation must not occur without approval.
+calls:
+  - transfer
+assumptions:
+  - The service has no mechanism to provide manager approval.
+sources:
+  - 'source/shared/engine.mjs: createSession'
+  - 'source/demos/01-banking-code/agent.mjs: invoke(''transfer'')'
+  - PRD.md
+known_data:
+  - USD 1000
+confidence: null

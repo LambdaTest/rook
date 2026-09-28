@@ -1,0 +1,13 @@
+import { mkdir, copyFile, readdir } from 'node:fs/promises';
+import { resolve, join } from 'node:path';
+import { root } from '../shared/server.mjs';
+import { findDemo } from '../shared/config.mjs';
+const [selector, destination] = process.argv.slice(2);
+if (!selector || !destination) throw new Error('Usage: node scripts/prepare-qe.mjs banking-agent /absolute/path/to/empty-qe-workspace');
+const demo = await findDemo(selector);
+if (demo.style !== 'no-code') throw new Error('Choose a QE demo name without -code, such as insurance-agent.');
+const target = resolve(destination);
+await mkdir(target,{recursive:true});
+if ((await readdir(target)).length) throw new Error('QE destination must be empty to preserve source isolation');
+for (const file of ['PRD.md','connection.md','scenarios.json','agents-overview.md']) await copyFile(join(root,'demos',demo.id,file),join(target,file));
+console.log(`Prepared ${target}\nLaunch Rook there. The facilitator runs ${demo.id} on port ${demo.port}; update connection.md if using another reachable host/port.`);

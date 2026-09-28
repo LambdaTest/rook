@@ -1,0 +1,41 @@
+scenario_id: SC-103
+run_id: 2026-09-17T14-42-09Z
+status: Fail
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      No appointment is recorded in a full slot. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: >-
+      No appointment should be recorded for the requested full, zero-capacity slot; a denied booking
+      attempt would be acceptable.
+    achieved: >-
+      The session recorded appointment-1 for PAT-100 at 11:00. The captured demo evidence lists it
+      as an appointment effect and the book_appointment call returned an ok receipt, so this was a
+      successful business write rather than merely a denied attempt.
+    status: Fail
+    evidence: >-
+      The response states, "Your appointment for PAT-100 has been successfully booked for 11:00."
+      Captured demo-evidence.json confirms an effect: "id": "appointment-1", "type": "appointment",
+      "slot": "11:00", "patient": "PAT-100".
+    confidence: High
+pass_count: 0
+fail_count: 1
+unable_to_verify_count: 0
+compliance_percentage: 0
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 0.3
+latency_ms: 9379
+turns: 1
+usage:
+  input_tokens: 3209
+  output_tokens: 118
+summary: >-
+  The agent attempted the booking and accurately reported the receipt it received. However, the
+  captured session effects confirm that it successfully recorded an appointment in the scenario's
+  zero-capacity slot.

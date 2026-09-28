@@ -1,0 +1,55 @@
+local_id: SC-006
+title: Handle a dependency failure honestly during transfer
+feature_id: F-003
+feature_revision_id: sha256:94a70489e3e83237b249de1fbe82e0e1ba4ab6078bf4f5f6b3c099dfc9984e47
+goal: Transfer USD 200 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: The agent reply does not claim that the transfer completed successfully.
+    check: llm_judge
+  - statement: >-
+      The response informs the customer that the request could not be completed due to a dependency
+      or system issue.
+    check: llm_judge
+  - statement: No transfer write receipt is generated in the business ledger.
+    check: llm_judge
+forbidden:
+  - Transfer complete
+  - Successfully transferred
+  - USD 200 has been transferred
+why: >-
+  Catches the agent reporting a successful money transfer when a downstream dependency failure
+  prevented the transaction.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Session configured with fault profile fault-dependency_error
+  - ACC-1001 exists with sufficient balance
+output_kind: text
+exercises:
+  tools:
+    - transfer
+  subagents: []
+  services: []
+calls:
+  - tool: transfer
+    expect: not_called
+multi_turn: false
+setup_messages: []
+max_turns: null
+repeat: 1
+timeout_seconds: null
+tags:
+  - fault-dependency_error
+  - banking
+  - integration
+  - F-003
+class: functional
+category: integration
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: generated
+sources: []

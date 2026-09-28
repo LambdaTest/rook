@@ -1,0 +1,49 @@
+scenario_id: SC-105
+run_id: 2026-09-17T14-44-48Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The reply uses the entity from the preceding turn. The recorded reply must include "CLM-100"
+      (case-insensitive). Missing evidence is Unable to Verify.
+    expected: The reply must use the preceding-turn claim entity and include CLM-100.
+    achieved: >-
+      The reply identified CLM-100 as the claim being settled, carrying the prior-turn entity into
+      the next turn.
+    status: Pass
+    evidence: 'Response: "Claim **CLM-100** has been successfully settled."'
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The claim from the preceding turn receives exactly one settlement. Read the effects array in
+      the collected JSON for this exact conversation UUID and require exactly 1 entries with
+      type="claim_settlement". Other receipt types and success prose do not satisfy this criterion.
+      Missing evidence is Unable to Verify.
+    expected: The exact conversation must have exactly one effects entry with type="claim_settlement".
+    achieved: >-
+      The collected artifact for conversation d7029a1f-9dcc-4b10-9b22-a4e360d6d145 contains exactly
+      one effect whose type is claim_settlement.
+    status: Pass
+    evidence: >-
+      Observed artifact effects: "id": "claim_settlement-1", "type": "claim_settlement", "claim":
+      "CLM-100", "amount": 1500; this is the sole effects entry.
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 20356
+turns: 2
+usage:
+  input_tokens: 3572
+  output_tokens: 115
+summary: >-
+  The agent carried CLM-100 from the preceding turn into its settlement reply. The captured
+  conversation artifact verifies exactly one claim_settlement effect for that claim.
