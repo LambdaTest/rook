@@ -44,7 +44,9 @@ Use the next command needed by the current state:
 Choose the profile's transport and command from the target's source or the
 user's invocation details; ask when unknown. See [profiles](references/profiles.md).
 Use `rook help <command>` for flags and [scenarios](references/scenarios.md) to
-scope a run with `--only`, classes, categories or tags.
+scope a run with `--only`, classes, categories or tags. When an agent has more
+than one profile, check the active profile with `rook profile` or pass
+`rook run --profile <id>` to select the intended target.
 
 ## Authorization and credits
 
@@ -57,7 +59,7 @@ concluding that an effect is unverifiable. Keep secrets as `${VAR}` references t
 `rook env set`, outside profiles and transcripts.
 
 Announce spending before `explore`, `generate`, `run`, `profile add|fix`, `ask`
-and `report --rca`. `profile test` invokes the target without Rook model credits.
+and `run|report --rca`. `profile test` invokes the target without Rook model credits.
 Use paid RCA only with user authorization. Track the user's budget across
 commands; do not assume the CLI enforces an aggregate task cap. Check its help
 for available limits. A null balance means unknown.
