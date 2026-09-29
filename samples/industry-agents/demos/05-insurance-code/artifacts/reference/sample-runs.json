@@ -1,0 +1,104 @@
+{
+  "kind": "recorded-rook-runs",
+  "exportedAt": "2026-09-17T14:55:52.294Z",
+  "notes": [
+    "Actual Rook output from model-backed demo agents. All business records are fictional.",
+    "Native report, verdict and scenario snapshots are preserved. Response artifact paths are made relative to the sample directory; request hook paths are made relative to the demo repository.",
+    "Only selected input, response and collected business evidence files are included. Credentials, hook state, local configuration and judge working files are excluded.",
+    "These focused runs do not cover all 18 categories. Native report counts for excluded or unrunnable scenarios are retained."
+  ],
+  "runs": [
+    {
+      "id": "insurance-agent-code/journeys",
+      "directory": "rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-44-26Z",
+      "recordedAt": "2026-09-17T14:45:40.534Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "c0859bded941a6c0ed26830d4a58a4017e3568ee612f5600117f429db03feb2f",
+        "scenarios/SC-101/verdict.yaml": "2cdffbf38c8341cb42fe1f87cb64b57b88de4dbe485e71b59015ee8eae6f8468",
+        "scenarios/SC-101/snapshot.yaml": "cd60f445628d309c0fcdbfe487348d7cb8082ef60941d6f24114022e817e5487",
+        "scenarios/SC-101/request.json": "bf5d618c7be92b109198fc11fd80fec2ba0d0d8d51474e4bdd97e95ecf64b793",
+        "scenarios/SC-101/response.json": "7233331300737eca84f4cd68365d16244de8ef829bf10909aafecba488ba09e2",
+        "scenarios/SC-101/artifacts/01-demo-evidence-016d1082-a691-46a3-aa4f-9c56582c561f.json": "896aa9cf422a877eb558fc4b8ea9e9467289aff86b5d90c768bd57bb4b2768f7",
+        "scenarios/SC-105/verdict.yaml": "b3d90f6d9460c1f5d73a3549a4e54bdc93b424040dfb02a8941d012db231052c",
+        "scenarios/SC-105/snapshot.yaml": "2d9345e10ca7abab9d0c37680468e6f612409baa33a9acfbb8f26669700e774a",
+        "scenarios/SC-105/request.json": "3620e6f82c54217615b484a8ed79b9dac66bb0a2260285f1d790452f0941cb1c",
+        "scenarios/SC-105/response.json": "fef523ac8c08cf9c2f55dc9b6bba69751cf1f942784529ba7ef3682fa522651c",
+        "scenarios/SC-105/artifacts/01-demo-evidence-e61215c7-74f1-430a-b4f8-dac3c9677a83.json": "2e431e0a122c0ba4d1602691d10c96960179249a734b3ff87ff1c17c0df9604c",
+        "scenarios/SC-111/verdict.yaml": "881e7f550b54e7616cca48430b673c2b5b5e4432eddf1146b2676f3a746f86cb",
+        "scenarios/SC-111/snapshot.yaml": "52dad71090e6d020791c04acf4c6b3a83fc7079f30db5c4854cb81247542e152",
+        "scenarios/SC-111/request.json": "3a8f9372494e755399f0254841137dca1d3d31ed4cbf7de6996f33e8840c835d",
+        "scenarios/SC-111/response.json": "88a0ed31da488289eeba30afa6f52645faa29870618e77d2b65382d57ce18392",
+        "scenarios/SC-111/artifacts/01-demo-evidence-3874f17f-bf17-4ac7-b5fc-a7d4db83aa53.json": "a0da992f310c630f644991566af7f868a21b0a7f84ce4f10a5f2a0fed179587a"
+      }
+    },
+    {
+      "id": "insurance-agent-code/before",
+      "directory": "rook/sample-runs/before",
+      "runId": "2026-09-17T14-45-47Z",
+      "recordedAt": "2026-09-17T14:46:19.572Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "5becfeede6d0f578ecfddda667a19da1d0405148193ad9a237cd4eaf3f49e066",
+        "scenarios/SC-104/verdict.yaml": "4380befd45fd400b1e6b8f1ffc48f163b4dfdeb0140f8be3deef89127844e91d",
+        "scenarios/SC-104/snapshot.yaml": "dd80c11dd65aa96dd762af7482b4555eeec58a1a2428652f958e245dc0cb3692",
+        "scenarios/SC-104/request.json": "8d07f15d23c705f3ea84f33ace7f22833a9dbf224eef1b628f94d24f2543f6b9",
+        "scenarios/SC-104/response.json": "df9df978c6f9a2851d6411cd942fe57a35eaea0c3ab427148cf9d3da56ad7e5e",
+        "scenarios/SC-104/artifacts/01-demo-evidence-0035adde-3f5d-4532-8b08-c89719c7bd7e.json": "71dc2a032762e09e8329916b4419cfc9c12e08bd6ec02a217410f9099223a1c2"
+      }
+    },
+    {
+      "id": "insurance-agent-code/after",
+      "directory": "rook/sample-runs/after",
+      "runId": "2026-09-17T14-46-27Z",
+      "recordedAt": "2026-09-17T14:46:58.438Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "330143de22ebd939c1a5d2c982872447e5259526bf71b8ab544d25c25c80d152",
+        "scenarios/SC-104/verdict.yaml": "8a8ef0b8aec9e6bdcaef8e8d676c60127b27dedd6f7206ca62634a10566b503f",
+        "scenarios/SC-104/snapshot.yaml": "dd80c11dd65aa96dd762af7482b4555eeec58a1a2428652f958e245dc0cb3692",
+        "scenarios/SC-104/request.json": "8d07f15d23c705f3ea84f33ace7f22833a9dbf224eef1b628f94d24f2543f6b9",
+        "scenarios/SC-104/response.json": "c90191cbbe56f9eceabbfcd09b894c64d9ea06b44b012120144cb70f7f0cc716",
+        "scenarios/SC-104/artifacts/01-demo-evidence-4a2b1f82-da51-4296-8875-4b9e04afd5e2.json": "d681d3e45f264f2532982269b13fa094bcea109315b1e01d04b6f35289348514"
+      }
+    },
+    {
+      "id": "insurance-agent-code/mcp",
+      "directory": "rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-47-04Z",
+      "recordedAt": "2026-09-17T14:47:40.695Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "97aad050bc382577b9bc4adf851e9a95f1994d0b1c520a1d148e35084e41f759",
+        "scenarios/SC-105/verdict.yaml": "4268282c1df7d7dffec0c81a51f806478a49f57cb7c3309f10a4e9c673b95716",
+        "scenarios/SC-105/snapshot.yaml": "2d9345e10ca7abab9d0c37680468e6f612409baa33a9acfbb8f26669700e774a",
+        "scenarios/SC-105/request.json": "550c48f822aca0e6b353f2e85d81b924d9101ca74b4df8fda15d7c4b0ff4c0ce",
+        "scenarios/SC-105/response.json": "9a1f01b6ff48c414dc46a81380da0df31247922de1a7c9788eb99ff9a50633d7",
+        "scenarios/SC-105/artifacts/01-demo-evidence-b4d6810f-43a7-4f2a-97d0-553c31b4f48f.json": "c3e48f00223cb4662c6307459d35c3ec8fa64a922d16d8a04c542e850d7fdab2"
+      }
+    }
+  ]
+}

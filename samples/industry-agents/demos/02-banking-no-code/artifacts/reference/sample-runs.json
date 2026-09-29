@@ -1,0 +1,104 @@
+{
+  "kind": "recorded-rook-runs",
+  "exportedAt": "2026-09-17T14:55:52.294Z",
+  "notes": [
+    "Actual Rook output from model-backed demo agents. All business records are fictional.",
+    "Native report, verdict and scenario snapshots are preserved. Response artifact paths are made relative to the sample directory; request hook paths are made relative to the demo repository.",
+    "Only selected input, response and collected business evidence files are included. Credentials, hook state, local configuration and judge working files are excluded.",
+    "These focused runs do not cover all 18 categories. Native report counts for excluded or unrunnable scenarios are retained."
+  ],
+  "runs": [
+    {
+      "id": "banking-agent/journeys",
+      "directory": "rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-36-45Z",
+      "recordedAt": "2026-09-17T14:38:03.211Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "7b5457c4d446b1d3dfbd5935a59696eb7142cfb1f5fe6307b13638761faa64f6",
+        "scenarios/SC-101/verdict.yaml": "065191c83bcf99a07ea2ed4d83a240f6c2aa3ba98068018c974ac7de04534e58",
+        "scenarios/SC-101/snapshot.yaml": "1b81e2d28be845b24a890d598b5964bfe73d262ea9771df1021967e0f1ceb49e",
+        "scenarios/SC-101/request.json": "da5991f917c42bcdefaf4729759b3f0eaa184bbc4488d233ab0058a5a03a68b1",
+        "scenarios/SC-101/response.json": "f1985d1b6d37d88dac08f501c945f924386343b7a1af42abb5b50753a38142ed",
+        "scenarios/SC-101/artifacts/01-demo-evidence-0c0bc9cb-65e4-4252-b865-9a0e4b68baf8.json": "007017862dc7b9e53fb7a2563bec3bd6163c9d6feb312e747e97ba409ce0d6d6",
+        "scenarios/SC-105/verdict.yaml": "50cdf40157f9026561e7b81bff74b6e938dcee905d7c0fe12074f9bf589634ae",
+        "scenarios/SC-105/snapshot.yaml": "027501c364ab5486f339dfabb82ac2aac8c7447ac137e11ed8c28d0731d38dff",
+        "scenarios/SC-105/request.json": "41185dbecb2c22a4de74941389e0da2cb33ac7c736ece7efebbd0a44ddf6c117",
+        "scenarios/SC-105/response.json": "81ef9c0569dc83b7fde34eaa19509c8b1932217eb29d430706337a92ae93ee6b",
+        "scenarios/SC-105/artifacts/01-demo-evidence-4db3186c-cfc8-4885-9629-c002b849b646.json": "9a5cd453f04778d33bed0fba7243ad92485e0d8aed0e0be89b3c2a17a2e98843",
+        "scenarios/SC-111/verdict.yaml": "1f5bfd182c06bfae57c3392b3ef3bda77ee06d74e75f412122e3fa04173d6d65",
+        "scenarios/SC-111/snapshot.yaml": "26b35b146b0192ba8e5edb002c8d31171d9812b39d4e475831ca5cdd715f0baa",
+        "scenarios/SC-111/request.json": "9cafbde457760346932a106ebe838a2ccb1422e54886edb1ce5961735bec6d9f",
+        "scenarios/SC-111/response.json": "163ffe6050e3f2afc3be250a08be2f0196bb8ea1ab27b9f9dd49ceec737db8e4",
+        "scenarios/SC-111/artifacts/01-demo-evidence-eaab5daa-b0d0-4c2e-8b87-4577c27dae99.json": "6db0aed811b24a940052db288ea60b3efec1e7c55f25a65d4700f06b494c5579"
+      }
+    },
+    {
+      "id": "banking-agent/before",
+      "directory": "rook/sample-runs/before",
+      "runId": "2026-09-17T14-38-16Z",
+      "recordedAt": "2026-09-17T14:38:46.188Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-117"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "78afc0040054785e967c68532d4b7cb4e09b41a13f87c602b67469c5da35b5c4",
+        "scenarios/SC-117/verdict.yaml": "20b32b37e4f8f6400c250136fe06c4773a930bc4cb73ed382716c56756a73feb",
+        "scenarios/SC-117/snapshot.yaml": "5ff0f306b2e34cb522598e260e381d55a9b1a05ba9a56fa6c252dda28032f08a",
+        "scenarios/SC-117/request.json": "0304d34b634c58baafd6e57468bf099216a052ca0421b281006d75ea55892a8a",
+        "scenarios/SC-117/response.json": "cdddf22f3072bd2e0c222c92086d26505b271fc53ea10fbb62f4637e6291101e",
+        "scenarios/SC-117/artifacts/01-demo-evidence-d7ffdef4-5c36-4fce-afa8-0d249f451d0e.json": "c973c0c45032ea66411908607ffea01f518605bf7266c85f8cdc81e68bf7067d"
+      }
+    },
+    {
+      "id": "banking-agent/after",
+      "directory": "rook/sample-runs/after",
+      "runId": "2026-09-17T14-39-02Z",
+      "recordedAt": "2026-09-17T14:39:29.677Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-117"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "6398a8a9ffeb83f20ede8723f1a74282ba991e26a3d61cff2bc90b49cf241186",
+        "scenarios/SC-117/verdict.yaml": "f141f16d50df918c26c358267c325a64598783bbdc34c8305b05b2e3381b1d7a",
+        "scenarios/SC-117/snapshot.yaml": "5ff0f306b2e34cb522598e260e381d55a9b1a05ba9a56fa6c252dda28032f08a",
+        "scenarios/SC-117/request.json": "0304d34b634c58baafd6e57468bf099216a052ca0421b281006d75ea55892a8a",
+        "scenarios/SC-117/response.json": "1c64081be1ceb46c00ae851b70fc9687e5174bc9f01f16e5e653cc6710690f97",
+        "scenarios/SC-117/artifacts/01-demo-evidence-10821dde-a602-4af4-a813-adc99f9e5fec.json": "10297607f962fde40e83788eee9d65c633acfcc26587bd034ace278215aceec5"
+      }
+    },
+    {
+      "id": "banking-agent/mcp",
+      "directory": "rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-39-49Z",
+      "recordedAt": "2026-09-17T14:40:38.179Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "74685f4f8892dd76c53187cd85d05ef9575b871cc1bd088fa4d8579e7ad9c3be",
+        "scenarios/SC-105/verdict.yaml": "484922cb3d58c427b18e584974dac79700a16b5e386a85e88ff04ca014fd71e9",
+        "scenarios/SC-105/snapshot.yaml": "027501c364ab5486f339dfabb82ac2aac8c7447ac137e11ed8c28d0731d38dff",
+        "scenarios/SC-105/request.json": "3ddc9eb1fe287b30870972d9a43ed816582257af7196d92b68599ded6b398705",
+        "scenarios/SC-105/response.json": "ce5fc7e69309858c6c452fcd5b2d28e8fe4dd27d7ebe88ebc232ea34a9bf9cce",
+        "scenarios/SC-105/artifacts/01-demo-evidence-fef8ce8c-7753-42f1-9c4d-6ac809f9d139.json": "ade843f73735451011de0843d1cadaf4a47a8f2a7c4f4b2a999e6fdb984409eb"
+      }
+    }
+  ]
+}

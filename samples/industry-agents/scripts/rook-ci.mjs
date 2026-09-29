@@ -15,7 +15,11 @@ const readYaml = async file => yaml.load(await readFile(file, 'utf8'));
 
 export async function nativeWorkspace(directory) {
   const base = join(directory, '.testmuai/rook');
-  const { active_project_id: projectId } = JSON.parse(await readFile(join(base, 'settings.json')));
+  // The portable template is separate from a user's active project selection.
+  let settings;
+  try { settings = await readFile(join(base, 'sample-settings.json')); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; settings = await readFile(join(base, 'settings.json')); }
+  const { active_project_id: projectId } = JSON.parse(settings);
   if (!segment.test(projectId)) throw new Error('Invalid native project ID');
   const project = join(base, 'projects', projectId);
   const agentId = (await readFile(join(project, 'active'), 'utf8')).trim();

@@ -6,15 +6,14 @@ You'll need Node.js 22 or later, [Rook](https://github.com/LambdaTest/rook), and
 
 ## Start the app
 
-From the collection root (`samples/industry-agents`):
+From this demo folder:
 
 ```bash
 npm ci
-cd demos/01-banking-code
 npm run setup
 ```
 
-`npm ci` installs the packages needed by the application using the repository's saved versions. Run it once for a fresh checkout. Setup creates this folder's .env without changing existing settings.
+`npm ci` installs the packages needed by the application using this folder's saved versions. Run it once for a fresh checkout. Setup creates this folder's .env without changing existing settings.
 
 Add your key to .env:
 
@@ -38,10 +37,10 @@ Open **http://127.0.0.1:4310**, or the address printed in the terminal. Keep it 
 
 ## Open interactive Rook
 
-In a second terminal at the collection root (`samples/industry-agents`), prepare a fresh workspace:
+In a second terminal in this demo folder, prepare a fresh workspace:
 
 ```bash
-npm run rook:prepare -- banking-agent-code /tmp/banking-agent-code
+npm run rook:prepare -- /tmp/banking-agent-code
 cd /tmp/banking-agent-code
 rook login
 rook project create "Agent Assurance"
@@ -64,7 +63,7 @@ Inside Rook, explore the supplied material, generate and review scenarios, then 
 
 Use an ID from the generated scenarios. Files and run evidence stay under `.testmuai/rook/`. The `--test` run stays out of the hosted timeline. To share a separate run, use `/sync`, then `/run` without `--test`, then `/ui` for the hosted Web UI.
 
-The [interactive guide](../../docs/testing-with-rook.md) covers service conditions, MCP and repair comparisons. For the supplied 18-case pack, run `npm run rook:setup` and `npm run rook` from the selected edition's folder.
+The [interactive guide](docs/testing-with-rook.md) covers service conditions, MCP and repair comparisons. For the supplied 18-case pack, run `npm run rook:setup` and `npm run rook` from the selected edition's folder.
 
 ## Common questions
 
@@ -76,6 +75,6 @@ The [interactive guide](../../docs/testing-with-rook.md) covers service conditio
 | What if the provider returns an error? | Check your key, account permissions and available quota. |
 | The port is already in use. | Run `export DEMO_PORT=14320` in both terminals before starting the app and Rook. |
 | Rook says the workspace is not empty. | Choose an empty folder for exploration, or reopen the existing workspace with `rook`. |
-| Can I share my configuration? | Share .env.example. Your .env, conversations and local reports are excluded from Git. |
+| Can I share my configuration? | Share .env.example. Your .env and private machine data stay local; the portable .testmuai sample and reviewed evidence are versioned. |
 
-For another provider, a separate workspace or connection changes, see [integration details](../../docs/rook-integration.md).
+For another provider, a separate workspace or connection changes, see [integration details](docs/rook-integration.md).

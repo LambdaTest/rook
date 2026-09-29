@@ -4,6 +4,7 @@ import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID, timingSafeEqual } from 'node:crypto';
 import { domains } from './registry.mjs';
+import { demoDirectory } from './config.mjs';
 import { createSession, executeTurn, evidence } from './engine.mjs';
 
 export const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -14,7 +15,8 @@ const safeError = (message, status = 400) => Object.assign(new Error(message), {
 export async function startServer(options = {}) {
   const demoId = options.demoId ?? process.env.DEMO_ID ?? '01-banking-code';
   if (!/^[0-9]{2}-[a-z-]+$/.test(demoId)) throw new Error('Invalid demo ID');
-  const manifest = JSON.parse(await readFile(join(root, 'demos', demoId, 'demo.json'), 'utf8'));
+  const directory = demoDirectory({ id: demoId });
+  const manifest = JSON.parse(await readFile(join(directory, 'demo.json'), 'utf8'));
   const domain = domains[manifest.domain];
   if (!domain) throw new Error('Unknown demo domain');
   const engine = options.engine ?? process.env.DEMO_ENGINE ?? 'fixture';
@@ -69,7 +71,7 @@ export async function startServer(options = {}) {
         if (received.length !== expected.length || !timingSafeEqual(received, expected)) throw safeError('Bearer token required', 401);
       }
       if (path === '/api/demo' && req.method === 'GET') {
-        const scenarios = JSON.parse(await readFile(join(root, 'demos', demoId, 'scenarios.json'), 'utf8'));
+        const scenarios = JSON.parse(await readFile(join(directory, 'scenarios.json'), 'utf8'));
         return send(200, { ...manifest, name: domain.name, agent: domain.agent, accent: domain.accent, persona: domain.persona, mission: domain.mission, starter: domain.starter, policy: domain.policy, scenarios });
       }
       if (path === '/api/sessions' && req.method === 'POST') {

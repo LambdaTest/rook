@@ -43,27 +43,28 @@ This starts the application, runs Rook headlessly against SC-101 and gates its f
 
 ## Start an application
 
-You need Node.js 22 or later, Rook and an OpenAI API key. From a fresh checkout:
+You need Node.js 22 or later, Rook and an OpenAI API key. Each edition is a standalone package. Copy its entire folder, including hidden files such as .testmuai, or enter it in this checkout:
 
 ```bash
+cd demos/05-insurance-code
 npm ci
-npm run setup -- insurance-agent-code
+npm run setup
 ```
 
-`npm ci` installs the saved package versions. Add `MODEL_API_KEY` to `demos/05-insurance-code/.env`; the model and URLs are already configured. An exported key also works and takes priority.
+`npm ci` installs the saved package versions. Add `MODEL_API_KEY` to this folder's `.env`; the model and URLs are already configured. An exported key also works and takes priority.
 
 ```bash
-npm start -- insurance-agent-code
+npm start
 ```
 
-Open the printed address. Meet the customer, inspect the tools and follow the agent diagram before testing. Use any edition name from the table in place of `insurance-agent-code`.
+Open the printed address. Meet the customer, inspect the tools and follow the agent diagram before testing. Select any edition folder from the table. Each owns its runtime, web assets, scripts, docs and dependency lockfile; there is no parent or sibling runtime dependency.
 
 ## Discover and test in interactive Rook
 
-Keep the application running. Prepare an empty workspace in a second terminal:
+Keep the application running. In a second terminal in the same demo folder, prepare an empty workspace:
 
 ```bash
-npm run rook:prepare -- insurance-agent-code /tmp/insurance-agent-code
+npm run rook:prepare -- /tmp/insurance-agent-code
 cd /tmp/insurance-agent-code
 rook login
 rook project create "Agent Assurance — Insurance"
@@ -107,3 +108,9 @@ All customer records and business systems are fictional. Model requests and Rook
 Imported from [rook-demo at ea9e746](https://github.com/4DvAnCeBoY/rook-demo/tree/ea9e746fe4267cd70665aeb22ab7e4540c188178). [import-provenance.json](import-provenance.json) records the original source hashes; runtime, documentation and CI integration are adapted here. The immutable artifact list is checked byte for byte before replay. See [recorded checks and limits](docs/verification.md) for the source recordings' scope.
 
 The prepared authored pack is for local `--test` runs. This import uses the installed CLI's native behavior and does not include the original synchronization adapter. Use newly explored/generated definitions for the optional hosted workflow.
+
+## Maintain standalone editions
+
+Run `npm run demos:build` in the collection root after changing a runtime template or shared authoring script, and commit the materialized edition files. This authoring step is not needed to run a copied demo. `npm run test:standalone` installs and runs every edition in a temporary folder with no parent checkout.
+
+The tracked `.testmuai/rook/projects/sample-project` definitions and recorded runs travel with each demo. Setup and rebuilds never clear existing `.testmuai` state. `sample-settings.json` selects the CI template without replacing personal settings. Use a complete-directory copy, not a `*` wildcard that omits dotfiles. Fresh CI runs use separate output directories.

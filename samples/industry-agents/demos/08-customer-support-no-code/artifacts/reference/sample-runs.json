@@ -1,0 +1,104 @@
+{
+  "kind": "recorded-rook-runs",
+  "exportedAt": "2026-09-17T14:55:52.294Z",
+  "notes": [
+    "Actual Rook output from model-backed demo agents. All business records are fictional.",
+    "Native report, verdict and scenario snapshots are preserved. Response artifact paths are made relative to the sample directory; request hook paths are made relative to the demo repository.",
+    "Only selected input, response and collected business evidence files are included. Credentials, hook state, local configuration and judge working files are excluded.",
+    "These focused runs do not cover all 18 categories. Native report counts for excluded or unrunnable scenarios are retained."
+  ],
+  "runs": [
+    {
+      "id": "customer-support-agent/journeys",
+      "directory": "rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-48-25Z",
+      "recordedAt": "2026-09-17T14:49:26.855Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "08368222fef3bd8ce1bcae62db54990368106f676e0e11710953cfa09a864c56",
+        "scenarios/SC-101/verdict.yaml": "08660b2c22e395a297809fc411252b5e508b10518adfd7e5286d35b37e1c6745",
+        "scenarios/SC-101/snapshot.yaml": "7d0282797b53fdb6c89f541482c63fc9af2a12e7187afed0fabf4f1654f9a205",
+        "scenarios/SC-101/request.json": "20ab3d539f143331f05ed6deddca12452cde176a6b912abb96b4c96cd5aac840",
+        "scenarios/SC-101/response.json": "83f0964187a16a7ca00329720a46ee83c4e3613c70cc7e925722b13d261fcc6a",
+        "scenarios/SC-101/artifacts/01-demo-evidence-9305d3f1-37df-423c-b065-9324e89a6850.json": "9f6bbaacca9b5c73373ccc7b6001e15664127cc5a1657c60ec9d1a55a5d79d7a",
+        "scenarios/SC-105/verdict.yaml": "92739e07ec75a8138cf9b2fd37b0fb5c3f75fdddb21681035ed698cd4f3028fd",
+        "scenarios/SC-105/snapshot.yaml": "0dbeae8b4fef42ab86dd1e496b04d10cb678ea4881f4a7bda8aa93c787b86678",
+        "scenarios/SC-105/request.json": "28813a35ce66cb6a69a31452e8e66fcf1ab9562b139b1077db02fc012d0804be",
+        "scenarios/SC-105/response.json": "d96724c7381795e024729e3f03f1746b5b632d823eb7f10574ce95e0d960c8c3",
+        "scenarios/SC-105/artifacts/01-demo-evidence-a17ae158-923f-493f-a3f6-73c17487d15f.json": "3d5b4bdf50cdb561599a509a1c4db3c03f88595790f36431013c10817e73d407",
+        "scenarios/SC-111/verdict.yaml": "f4b92fa8cd6da0f953d87022d49d06193183e86c51fe764a4373c1d136e9e698",
+        "scenarios/SC-111/snapshot.yaml": "cc285257a3a65bdcf21565275a85bbaff0f057e6038e11aaa12ff3140f7bc14a",
+        "scenarios/SC-111/request.json": "f5c68c081daa71363f6de171322f1edc3226907a5bf65defe4767bd689e1da0b",
+        "scenarios/SC-111/response.json": "b6e648029bd70430fe82d8d1e79166f9cc5d94b19c376ee4176067194886b7ee",
+        "scenarios/SC-111/artifacts/01-demo-evidence-7ef0a761-2d41-403b-94dc-7ff7189d7057.json": "e1ae08e2145ebb81377761b9ec1afa2d3703fd038983f56c8a2eacae4869c57f"
+      }
+    },
+    {
+      "id": "customer-support-agent/before",
+      "directory": "rook/sample-runs/before",
+      "runId": "2026-09-17T14-49-37Z",
+      "recordedAt": "2026-09-17T14:50:17.297Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "27f295b2aff1a96d8a2fc1e0f315085a99db06a7d87f662fd2a31cae53707606",
+        "scenarios/SC-104/verdict.yaml": "8362f78913c0ea9242607c233d2472c13287803f770decf1bbdcb739536fa1ad",
+        "scenarios/SC-104/snapshot.yaml": "d6e13f7392968ab2dfb6f55591cecdc60e290ed541c96fb8397c3fd461ecac5a",
+        "scenarios/SC-104/request.json": "f4e48486a8476c0c5eeb42f11094b49e904b35053812111c4e2f47dfec190be0",
+        "scenarios/SC-104/response.json": "a3294b936c81c073846edfb01150d2f394806c0ba3ba567965d035c52d54dc31",
+        "scenarios/SC-104/artifacts/01-demo-evidence-711883cd-f486-4a65-bf32-dba1bff8ad8e.json": "4aad41f334c7a8fa8dea6a310dcc65817c9505ded2b10264e388e407aa310ddb"
+      }
+    },
+    {
+      "id": "customer-support-agent/after",
+      "directory": "rook/sample-runs/after",
+      "runId": "2026-09-17T14-50-29Z",
+      "recordedAt": "2026-09-17T14:51:08.371Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-dependency-error",
+      "scenarios": [
+        "SC-104"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "2685703b18fdb4dc9c193e05c507e13e09140d512b3fa255fda1c625613b44f2",
+        "scenarios/SC-104/verdict.yaml": "02b2baf358a03c5edbf453377e932b7429f115bfe0372de0dfc5c4bd0bec2392",
+        "scenarios/SC-104/snapshot.yaml": "d6e13f7392968ab2dfb6f55591cecdc60e290ed541c96fb8397c3fd461ecac5a",
+        "scenarios/SC-104/request.json": "f4e48486a8476c0c5eeb42f11094b49e904b35053812111c4e2f47dfec190be0",
+        "scenarios/SC-104/response.json": "9014917794a7795ee5ee9175b1325ba1804b4a3ff3f8984800ff9bcb9c9272b8",
+        "scenarios/SC-104/artifacts/01-demo-evidence-860a6025-22ee-480c-84d7-e21e2989aba5.json": "24f91d2491f72d1e101bfdab312c7e21fffd53c40224368705fc42d6c79c25a0"
+      }
+    },
+    {
+      "id": "customer-support-agent/mcp",
+      "directory": "rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-51-19Z",
+      "recordedAt": "2026-09-17T14:51:43.375Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "d8b5de78012ccea7736ea39f042ad88b35e09f80d36a55a949b48616b418f495",
+        "scenarios/SC-105/verdict.yaml": "3e854ed435c0030438ec5ed539037c74437439de25e72ea61ec1ad6cac622ab1",
+        "scenarios/SC-105/snapshot.yaml": "0dbeae8b4fef42ab86dd1e496b04d10cb678ea4881f4a7bda8aa93c787b86678",
+        "scenarios/SC-105/request.json": "dca435b9fb8075c230b1f4d78888a7100562149b76a98f16fcd017aecfe57498",
+        "scenarios/SC-105/response.json": "d50c30822b30acc3e1970f6d722ad5dad0f55800f0006798d06e117e2faf23f6",
+        "scenarios/SC-105/artifacts/01-demo-evidence-d8bf752a-14cc-4b37-baf2-808a37d1002b.json": "1a433c34ccfb814dc6c667d94540d31a0b3796d60f516e99949e359c31823719"
+      }
+    }
+  ]
+}

@@ -82,7 +82,7 @@ Use **/explore**, **/generate**, **/profile add** and **/profile test** in Rookâ
 
 Sharing is optional: **/sync** records the project definition upstream. A subsequent run without **--test** records its results in the hosted timeline; **/ui** opens that Web UI. This is a new shared run, not an upload of the earlier local run. Select a scenario to see its criteria, customer request, reply and evidence. Keep Pass, Fail and Unable to Verify distinct.
 
-See [insurance validation](../../docs/insurance-validation.md) for actual Rook findings, tested workflows and remaining limits.
+See [insurance validation](docs/insurance-validation.md) for actual Rook findings, tested workflows and remaining limits.
 
 | Class | Scenario categories |
 |---|---|

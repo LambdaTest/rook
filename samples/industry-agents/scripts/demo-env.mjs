@@ -15,14 +15,15 @@ DEMO_BASE_URL=http://127.0.0.1:${demo.port}
 export function demoPackage(demo) {
   const selector = demoName(demo);
   return {
-    name: `rook-demo-${demo.id}`, private: true, type: 'module',
+    name: `rook-demo-${demo.id}`, private: true, type: 'module', engines: { node: '>=22' },
+    dependencies: { '@modelcontextprotocol/sdk': '1.30.0', 'js-yaml': '4.3.2', zod: '^3.25.0' },
     scripts: {
-      setup: `node ../../scripts/setup-env.mjs ${selector}`,
-      start: `node ../../scripts/start.mjs ${selector}`,
-      'check:llm': `node ../../scripts/check-model.mjs ${selector}`,
-      'rook:setup': `node ../../scripts/seed-native.mjs ${selector}`,
-      rook: `node ../../scripts/rook.mjs ${selector}`,
-      mcp: `node ../../scripts/mcp.mjs ${selector}`,
+      setup: `node scripts/setup-env.mjs ${selector}`,
+      start: `node scripts/start.mjs ${selector}`,
+      'check:llm': `node scripts/check-model.mjs ${selector}`,
+      'rook:setup': `node scripts/seed-native.mjs ${selector}`,
+      rook: `node scripts/rook.mjs ${selector}`,
+      mcp: `node scripts/mcp.mjs ${selector}`,
     },
   };
 }

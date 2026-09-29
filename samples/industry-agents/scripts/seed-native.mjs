@@ -28,9 +28,13 @@ for (const dir of ['features', 'scenarios']) {
 await mkdir(join(target, 'scripts'));
 await mkdir(join(target, 'profiles'));
 await copyFile(join(root, 'shared', 'rook-hook.mjs'), join(target, 'scripts', 'demo-http.mjs'));
+for (const file of ['rook-mcp-hook.mjs', 'mcp.mjs']) await copyFile(join(root, 'shared', file), join(target, 'scripts', file));
+// MCP SDK resolution must remain inside the prepared workspace.
+await copyFile(join(root, 'package.json'), join(directory, 'package.json'));
+await copyFile(join(root, 'package-lock.json'), join(directory, 'package-lock.json'));
 const profiles = [['demo-normal', 'none'], ['demo-dependency-error', 'dependency_error'], ['demo-slow-tool', 'slow_tool'], ['demo-poisoned-context', 'poisoned_context'], ['demo-mcp', 'none']];
 for (const [id, fault] of profiles) {
-  const script = id === 'demo-mcp' ? join(root, 'shared', 'rook-mcp-hook.mjs') : 'scripts/demo-http.mjs';
+  const script = id === 'demo-mcp' ? 'scripts/rook-mcp-hook.mjs' : 'scripts/demo-http.mjs';
   const profile = { id, name: id, hooks: Object.fromEntries(['prepare','open','execute','close','collect'].map(phase => [phase, script])),
     env: ['DEMO_BASE_URL','DEMO_VARIANT','DEMO_ENGINE', ...(process.env.DEMO_API_TOKEN ? ['DEMO_API_TOKEN'] : [])].map(variable => ({ variable })),
     capabilities: { multi_turn: true, calls: true, usage: false }, hook_env: { DEMO_FAULT: fault }, concurrency: 1 };

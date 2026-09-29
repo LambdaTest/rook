@@ -2,13 +2,23 @@
   "name": "rook-demo-01-banking-code",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "setup": "node ../../scripts/setup-env.mjs banking-agent-code",
-    "start": "node ../../scripts/start.mjs banking-agent-code",
-    "check:llm": "node ../../scripts/check-model.mjs banking-agent-code",
-    "rook:setup": "node ../../scripts/seed-native.mjs banking-agent-code",
-    "rook": "node ../../scripts/rook.mjs banking-agent-code",
-    "mcp": "node ../../scripts/mcp.mjs banking-agent-code",
-    "rook:ci": "node ../../scripts/rook-ci.mjs banking-agent-code"
+    "setup": "node scripts/setup-env.mjs banking-agent-code",
+    "start": "node scripts/start.mjs banking-agent-code",
+    "check:llm": "node scripts/check-model.mjs banking-agent-code",
+    "rook:prepare": "node scripts/prepare-rook.mjs banking-agent-code",
+    "rook:setup": "node scripts/seed-native.mjs banking-agent-code",
+    "rook": "node scripts/rook.mjs banking-agent-code",
+    "mcp": "node scripts/mcp.mjs banking-agent-code",
+    "rook:ci": "node scripts/rook-ci.mjs banking-agent-code",
+    "samples:check": "node scripts/sample-runs.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "js-yaml": "4.3.2",
+    "zod": "^3.25.0"
   }
 }

@@ -24,7 +24,9 @@
     "rook:coverage": "node scripts/check-native.mjs",
     "rook:ci": "node scripts/rook-ci.mjs",
     "samples:check": "node scripts/sample-runs.mjs",
-    "check:source": "node scripts/verify-import.mjs"
+    "check:source": "node scripts/verify-import.mjs",
+    "demos:build": "node scripts/build-standalone.mjs",
+    "test:standalone": "node --test tests/standalone.test.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",

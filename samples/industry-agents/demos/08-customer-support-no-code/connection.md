@@ -1,6 +1,6 @@
 # Connection material for Rook
 
-Target: Returns & Refunds Assistant. Base URL: http://127.0.0.1:4317. Configure this application as described in README.md, using MODEL_API_KEY through .env or the OS environment, then start the Node 22+ service with `npm run demo -- customer-support-agent` from the collection root (`samples/industry-agents`).
+Target: Returns & Refunds Assistant. Base URL: http://127.0.0.1:4317. Configure this application as described in README.md, using MODEL_API_KEY through .env or the OS environment, then start the Node 22+ service with `npm start` from this demo folder (`samples/industry-agents`).
 
 The vulnerable variant deliberately omits the documented business checks. The hardened variant implements the demonstrated repair: Apply ownership, return-window, approval, and idempotency checks inside the refund tool. Propagate payment-provider errors. PRD.md remains the intended behavior for both variants; do not derive expected success from baseline defects.
 

@@ -1,4 +1,4 @@
-import { tool, objectSchema, str, num, deny, ok, effect, money, requirePositive, pickAmount, pickId } from '../../shared/domain.mjs';
+import { tool, objectSchema, str, num, deny, ok, effect, money, requirePositive, pickAmount, pickId } from './runtime/domain.mjs';
 
 export const domain = {
   id: 'banking', name: 'Northstar Bank', agent: 'Everyday Banking Assistant',
