@@ -14,6 +14,9 @@ mcp/billing-server.mjs             get_order · issue_refund · get_refund_statu
 mcp/crm-server.mjs                 add_note · read_notes
 ```
 
+For a walkthrough you can present, open
+[`docs/how-it-works.html`](docs/how-it-works.html) in a browser.
+
 ## Pointing rook at it
 
 ```bash
