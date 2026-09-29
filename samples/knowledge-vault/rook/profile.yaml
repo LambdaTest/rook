@@ -1,0 +1,16 @@
+# knowledge-vault — base profile (grounding + multi-turn).
+# A profile names the runner script Rook executes; scripts/ask.mjs reads the
+# goal on stdin, POSTs /v1/ask, and prints the Rook envelope on stdout.
+# Point the script's KV_URL at a twin to flip verdicts: :9601 buggy · :9602
+# leaky · :9603 rbac-off.
+id: knowledge-vault
+name: knowledge-vault
+hooks:
+  execute: scripts/ask.mjs
+env: []
+capabilities:
+  multi_turn: true
+  calls: true
+  usage: true
+hook_env: null
+concurrency: null

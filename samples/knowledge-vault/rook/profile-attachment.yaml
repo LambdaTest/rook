@@ -1,0 +1,14 @@
+# knowledge-vault — file-attachment profile (text+file input).
+# scripts/ask-attachment.mjs hands the agent a document to read and summarise;
+# the path defaults to the shipped docs/handbook-excerpt.md (override KV_ATTACHMENT).
+id: knowledge-vault-attach
+name: knowledge-vault-attach
+hooks:
+  execute: scripts/ask-attachment.mjs
+env: []
+capabilities:
+  multi_turn: false
+  calls: true
+  usage: true
+hook_env: null
+concurrency: null

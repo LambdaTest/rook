@@ -1,0 +1,15 @@
+# knowledge-vault — MCP transport profile (stdio JSON-RPC).
+# scripts/mcp-search.mjs drives the vault MCP server declared in .mcp.json
+# (through the recording proxy) and calls the `search` tool with the goal, so
+# retrieval is exercised grey-box over MCP.
+id: knowledge-vault-mcp
+name: knowledge-vault-mcp
+hooks:
+  execute: scripts/mcp-search.mjs
+env: []
+capabilities:
+  multi_turn: false
+  calls: true
+  usage: false
+hook_env: null
+concurrency: null

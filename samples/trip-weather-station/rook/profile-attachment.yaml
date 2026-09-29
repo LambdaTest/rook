@@ -1,0 +1,14 @@
+# trip-weather-station — file-attachment profile (text+file input).
+# scripts/ask-attachment.mjs hands the agent an itinerary to read and summarise;
+# the path defaults to the shipped docs/sample-itinerary.md (override TWS_ATTACHMENT).
+id: trip-weather-station-attach
+name: trip-weather-station-attach
+hooks:
+  execute: scripts/ask-attachment.mjs
+env: []
+capabilities:
+  multi_turn: false
+  calls: true
+  usage: true
+hook_env: null
+concurrency: null

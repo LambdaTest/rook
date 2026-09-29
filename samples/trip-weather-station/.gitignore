@@ -1,0 +1,3 @@
+# The local SQLite database + tool trace are generated at runtime (seeded from
+# corpus.mjs). The weather fixtures live in src/, so they are committed.
+data/

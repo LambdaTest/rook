@@ -1,0 +1,16 @@
+# trip-weather-station — base profile (grounding + multi-turn).
+# A profile names the runner script Rook executes; scripts/ask.mjs reads the
+# goal on stdin, POSTs /v1/recommend, and prints the Rook envelope on stdout.
+# Point the script's TWS_URL at a twin to flip verdicts: :9701 hallucinate ·
+# :9702 stale · :9703 unsafe · :9704 rbac-off.
+id: trip-weather-station
+name: trip-weather-station
+hooks:
+  execute: scripts/ask.mjs
+env: []
+capabilities:
+  multi_turn: true
+  calls: true
+  usage: true
+hook_env: null
+concurrency: null
