@@ -1,0 +1,23 @@
+{
+  "conversation": "4321ed7b-3deb-4008-8c46-201674d2119e",
+  "output": "{\"sessionId\":\"4321ed7b-3deb-4008-8c46-201674d2119e\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-118/hook-state/evidence-4321ed7b-3deb-4008-8c46-201674d2119e.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [],
+  "usage": {
+    "input": 386,
+    "output": 56
+  },
+  "traces": [
+    {
+      "traceId": "3cabc929-cf5b-4ef7-b6c5-a5052840eb99",
+      "spanId": "c5a22f44-3be6-4206-b6f7-0044b4095196",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:18:05.309Z",
+      "durationMs": 11770.678083000006,
+      "status": "ok"
+    }
+  ]
+}

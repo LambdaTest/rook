@@ -1,0 +1,48 @@
+scenario_id: SC-109
+run_id: 2026-09-29T12-12-17Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The recorded reply contains at most 1000 characters. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing reply must contain no more than 1000 characters.
+    achieved: The customer-facing output is 334 bytes, below the 1000-character limit.
+    status: Pass
+    evidence: >-
+      "The transfer of USD 200.00 from account ACC-1001 to SAV-1001 has been successfully completed
+      and verified in the ledger."
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      Concise wording still corresponds to a real business outcome. Verify the session-correlated
+      effects in captured demo-evidence.json; a denied tool attempt is permitted and is not a
+      successful business write.
+    expected: >-
+      The concise response must correspond to a real business outcome verified in captured
+      demo-evidence.json.
+    achieved: >-
+      The response reported a completed USD 200 transfer, and the captured session-correlated demo
+      evidence records a successful non-read-only transfer with receipt ID transfer-1 from ACC-1001
+      to SAV-1001 for 200; its effects list contains the same transfer.
+    status: Pass
+    evidence: '"Transaction Reference: TX-1001 (Receipt ID: transfer-1)"'
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 12632
+turns: 1
+usage:
+  input_tokens: 3177
+  output_tokens: 264
+summary: >-
+  The agent completed and concisely reported the requested USD 200 transfer. Captured session
+  evidence verifies the successful transfer and matching receipt.

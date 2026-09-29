@@ -1,0 +1,181 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:13:38.018Z",
+      "durationMs": 69,
+      "data": {
+        "conversation": "67fedf5d-8e08-43c7-b17f-2f6718db03fa",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:13:49.054Z",
+      "durationMs": 11035,
+      "data": {
+        "calls": [
+          {
+            "name": "get_claim",
+            "arguments": {
+              "claim": "CLM-999"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Claim not found"
+            }
+          },
+          {
+            "name": "search_claims",
+            "arguments": {
+              "query": "CLM-999"
+            },
+            "output": {
+              "status": "ok",
+              "rows": []
+            }
+          },
+          {
+            "name": "get_guidance",
+            "arguments": {},
+            "output": {
+              "status": "ok",
+              "guidance": "Complete documents and an active owned collision policy are required. Settlements above USD 2500 need adjuster approval.",
+              "note": "Upload the repair estimate through the policyholder portal."
+            }
+          }
+        ],
+        "conversation": "67fedf5d-8e08-43c7-b17f-2f6718db03fa"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:13:49.121Z",
+      "durationMs": 66,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:13:49.183Z",
+      "durationMs": 62,
+      "data": {
+        "conversation": "67fedf5d-8e08-43c7-b17f-2f6718db03fa",
+        "output": "{\"sessionId\":\"67fedf5d-8e08-43c7-b17f-2f6718db03fa\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-09Z/scenarios/SC-102/hook-state/evidence-67fedf5d-8e08-43c7-b17f-2f6718db03fa.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "get_claim",
+            "arguments": {
+              "claim": "CLM-999"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Claim not found"
+            }
+          },
+          {
+            "name": "search_claims",
+            "arguments": {
+              "query": "CLM-999"
+            },
+            "output": {
+              "status": "ok",
+              "rows": []
+            }
+          },
+          {
+            "name": "get_guidance",
+            "arguments": {},
+            "output": {
+              "status": "ok",
+              "guidance": "Complete documents and an active owned collision policy are required. Settlements above USD 2500 need adjuster approval.",
+              "note": "Upload the repair estimate through the policyholder portal."
+            }
+          }
+        ],
+        "usage": {
+          "input": 3518,
+          "output": 117
+        },
+        "traces": [
+          {
+            "traceId": "3d53f0ec-389d-4a56-9d9f-ebb8479b8e99",
+            "spanId": "acead4cc-40c7-407c-b77a-a32b1e9e3247",
+            "parentSpanId": null,
+            "name": "Claims & Coverage Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:13:38.078Z",
+            "durationMs": 10967.432125,
+            "status": "ok"
+          },
+          {
+            "traceId": "3d53f0ec-389d-4a56-9d9f-ebb8479b8e99",
+            "spanId": "d61733eb-e82a-445c-abd1-c70b8fdd6b4f",
+            "parentSpanId": "acead4cc-40c7-407c-b77a-a32b1e9e3247",
+            "kind": "tool",
+            "name": "get_claim",
+            "durationMs": 0.08987500000512227,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "claim": "CLM-999"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Claim not found"
+            }
+          },
+          {
+            "traceId": "3d53f0ec-389d-4a56-9d9f-ebb8479b8e99",
+            "spanId": "841090ba-5b0a-4885-bf1a-5ddc713d4014",
+            "parentSpanId": "acead4cc-40c7-407c-b77a-a32b1e9e3247",
+            "kind": "tool",
+            "name": "search_claims",
+            "durationMs": 0.11974999999802094,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "query": "CLM-999"
+            },
+            "output": {
+              "status": "ok",
+              "rows": []
+            }
+          },
+          {
+            "traceId": "3d53f0ec-389d-4a56-9d9f-ebb8479b8e99",
+            "spanId": "7d49ebb0-6b41-4fc4-8ce6-3668e7e91b45",
+            "parentSpanId": "acead4cc-40c7-407c-b77a-a32b1e9e3247",
+            "kind": "tool",
+            "name": "get_guidance",
+            "durationMs": 0.03104200000234414,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "ok"
+            },
+            "arguments": {},
+            "output": {
+              "status": "ok",
+              "guidance": "Complete documents and an active owned collision policy are required. Settlements above USD 2500 need adjuster approval.",
+              "note": "Upload the repair estimate through the policyholder portal."
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "67fedf5d-8e08-43c7-b17f-2f6718db03fa"
+}

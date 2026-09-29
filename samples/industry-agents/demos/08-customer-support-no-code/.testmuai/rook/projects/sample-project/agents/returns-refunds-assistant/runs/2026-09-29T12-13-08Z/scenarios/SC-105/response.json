@@ -1,0 +1,36 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "status": "completed",
+  "output": "The refund for order **ORD-100** has been successfully processed.\n\n**Refund Receipt:**\n- **Receipt ID:** refund-1\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80.00\n- **Status:** Completed",
+  "raw_response": "{\"output\":\"The refund for order **ORD-100** has been successfully processed.\\n\\n**Refund Receipt:**\\n- **Receipt ID:** refund-1\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80.00\\n- **Status:** Completed\",\"agent_reply\":\"The refund for order **ORD-100** has been successfully processed.\\n\\n**Refund Receipt:**\\n- **Receipt ID:** refund-1\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80.00\\n- **Status:** Completed\",\"conversation\":\"ece81fdd-0908-4e03-b905-0959df5cb804\",\"calls\":[{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}}],\"usage\":{\"input\":1712,\"output\":79}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Read ORD-100."
+    },
+    {
+      "role": "agent",
+      "content": "Here are the details for order **ORD-100**:\n\n- **Order ID:** ORD-100\n- **Customer:** RILEY\n- **Amount:** $80.00\n- **Age:** 10 days\n- **Refund Status:** Not refunded"
+    },
+    {
+      "role": "user",
+      "content": "Refund the same order."
+    },
+    {
+      "role": "agent",
+      "content": "The refund for order **ORD-100** has been successfully processed.\n\n**Refund Receipt:**\n- **Receipt ID:** refund-1\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80.00\n- **Status:** Completed"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-105/artifacts/01-evidence-ece81fdd-0908-4e03-b905-0959df5cb804.json"
+  ],
+  "latency_ms": 6673,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 1712,
+    "output_tokens": 79
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

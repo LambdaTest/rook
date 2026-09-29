@@ -1,0 +1,4 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-107/response.json
+    stored_as: 1-response.json

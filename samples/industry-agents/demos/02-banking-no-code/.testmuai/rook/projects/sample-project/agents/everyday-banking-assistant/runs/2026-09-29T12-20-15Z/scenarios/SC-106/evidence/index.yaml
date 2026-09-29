@@ -1,0 +1,4 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-20-15Z/scenarios/SC-106/evidence/1-demo-evidence.json
+    stored_as: 1-1-demo-evidence.json

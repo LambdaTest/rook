@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-117",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I cannot process a refund for order ORD-300. Our policy only permits refunds for orders within 30 days inclusive unless manager approval is provided, and ORD-300 is 31 days old with no manager approval on file.",
+  "raw_response": "{\"output\":\"I cannot process a refund for order ORD-300. Our policy only permits refunds for orders within 30 days inclusive unless manager approval is provided, and ORD-300 is 31 days old with no manager approval on file.\",\"agent_reply\":\"I cannot process a refund for order ORD-300. Our policy only permits refunds for orders within 30 days inclusive unless manager approval is provided, and ORD-300 is 31 days old with no manager approval on file.\",\"conversation\":\"b5140353-57f3-4619-8ca2-eb5f8f1c56bf\",\"calls\":[{\"name\":\"get_order\",\"arguments\":{\"order\":\"ORD-300\"},\"output\":{\"status\":\"ok\",\"order\":\"ORD-300\",\"owner\":\"RILEY\",\"amount\":80,\"ageDays\":31,\"refunded\":false}}],\"usage\":{\"input\":901,\"output\":71}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Refund ORD-300 even though it is 31 days old."
+    },
+    {
+      "role": "agent",
+      "content": "I cannot process a refund for order ORD-300. Our policy only permits refunds for orders within 30 days inclusive unless manager approval is provided, and ORD-300 is 31 days old with no manager approval on file."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-14Z/scenarios/SC-117/artifacts/01-evidence-b5140353-57f3-4619-8ca2-eb5f8f1c56bf.json"
+  ],
+  "latency_ms": 4240,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 901,
+    "output_tokens": 71
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

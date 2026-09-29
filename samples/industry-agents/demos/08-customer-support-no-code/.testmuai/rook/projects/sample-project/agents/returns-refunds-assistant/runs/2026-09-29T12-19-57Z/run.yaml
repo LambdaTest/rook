@@ -1,0 +1,88 @@
+version: 1
+id: 2026-09-29T12-19-57Z
+agent_id: returns-refunds-assistant
+created: '2026-09-29T12:20:04.463Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-slow-tool
+  tree_hash: sha256:68a2352a5e6479566be33a98b71baf02c8a0f4a3406001504d83a82cbc5ccc1e
+included:
+  - confidence: high
+    scenario_id: SC-106
+    why: >-
+      This is the sole scenario permitted by the binding `--only SC-106` flag. It performs three
+      slow-tool rehearsal requests and evaluates each target-side `durationMs` from
+      session-correlated `demo-evidence.json` against the illustrative 100 ms budget.
+skipped:
+  - confidence: high
+    scenario_id: SC-101
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-102
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-103
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-104
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-105
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-107
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-108
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-109
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-110
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-111
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-112
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-113
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-114
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-115
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-116
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-117
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-118
+    why: Excluded by the binding `--only SC-106` flag.
+judge_only: []
+carried: []
+rca: false
+unrunnable: []
+gapped: []
+stale: []
+summary: >-
+  This run establishes whether three `slow_tool` refund rehearsal turns each meet the illustrative
+  100 ms target-side duration budget and expose the dependency in session-correlated evidence. It
+  will not assess refund correctness, policy enforcement, safety boundaries, token usage, or other
+  excluded capabilities.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

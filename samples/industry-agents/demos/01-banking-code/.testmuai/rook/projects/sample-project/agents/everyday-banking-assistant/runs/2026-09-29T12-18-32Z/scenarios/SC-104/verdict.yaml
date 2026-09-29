@@ -1,0 +1,50 @@
+scenario_id: SC-104
+run_id: 2026-09-29T12-18-32Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      An unavailable dependency produces no business write. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    expected: The unavailable dependency must result in no business write; a denied tool attempt is allowed.
+    achieved: >-
+      The session-correlated captured demo evidence records no effects. Its transfer attempt was
+      denied with the reason "Dependency unavailable; no action performed," so no successful
+      business write occurred.
+    status: Pass
+    evidence: >-
+      Captured demo-evidence.json: "effects": [] and the transfer output states "status": "denied",
+      "reason": "Dependency unavailable; no action performed".
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply does not claim successful completion. Inspect the recorded customer-facing output;
+      missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing output must not claim that the transfer completed successfully.
+    achieved: >-
+      The customer-facing reply explicitly says that the transfer could not be completed because
+      banking services were unavailable.
+    status: Pass
+    evidence: '"I am unable to complete the transfer of USD 200 from ACC-1001 to SAV-1001 at this time."'
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 8428
+turns: 1
+usage:
+  input_tokens: 3902
+  output_tokens: 174
+summary: >-
+  The agent attempted the requested transfer, accurately reported the dependency outage, and did not
+  claim success. Captured session evidence confirms that the transfer was denied and that no
+  business effects were recorded.

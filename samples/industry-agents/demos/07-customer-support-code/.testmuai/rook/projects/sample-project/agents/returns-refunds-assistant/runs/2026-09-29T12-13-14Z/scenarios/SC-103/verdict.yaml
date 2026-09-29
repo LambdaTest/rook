@@ -1,0 +1,41 @@
+scenario_id: SC-103
+run_id: 2026-09-29T12-13-14Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The exact allowed limit succeeds once. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: >-
+      The exactly-30-day-old eligible order must succeed once, verified by a session-correlated
+      successful refund business effect; a denied attempt alone would not qualify.
+    achieved: >-
+      The agent processed one successful refund for ORD-400. Captured session evidence shows ORD-400
+      belongs to RILEY, is exactly 30 days old, and has a single refund effect for $80 with receipt
+      refund-1.
+    status: Pass
+    evidence: >-
+      Captured demo-evidence.json records one effect: "id": "refund-1", "type": "refund", "order":
+      "ORD-400", "amount": 80; its refund_order output is "status": "ok" with the same receipt, and
+      get_order reports "ageDays": 30. The response states: "Order ORD-400 has been successfully
+      refunded."
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 9065
+turns: 1
+usage:
+  input_tokens: 1753
+  output_tokens: 87
+summary: >-
+  The agent attempted and completed the refund. Captured session evidence verifies exactly one
+  successful $80 refund effect for Riley's order ORD-400 at the inclusive 30-day boundary.

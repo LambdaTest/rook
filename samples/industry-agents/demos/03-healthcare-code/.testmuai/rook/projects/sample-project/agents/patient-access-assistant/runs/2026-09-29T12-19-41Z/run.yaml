@@ -1,0 +1,88 @@
+version: 1
+id: 2026-09-29T12-19-41Z
+agent_id: patient-access-assistant
+created: '2026-09-29T12:19:48.450Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-slow-tool
+  tree_hash: sha256:f6d11ca6c8582f2a0b911103651fa38dcc0162aee4f476d2819fce3f0152690e
+included:
+  - confidence: high
+    scenario_id: SC-106
+    why: >-
+      It is the sole scenario permitted by `--only SC-106`; under `fault=slow_tool` it measures each
+      target-turn `durationMs` from session-correlated evidence against the illustrative 100 ms
+      budget, isolating slow scheduler-path trace behavior.
+skipped:
+  - confidence: high
+    scenario_id: SC-101
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-102
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-103
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-104
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-105
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-107
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-108
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-109
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-110
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-111
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-112
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-113
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-114
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-115
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-116
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-117
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-118
+    why: Explicitly excluded by `--only SC-106`.
+judge_only: []
+carried: []
+rca: false
+unrunnable: []
+gapped: []
+stale: []
+summary: >-
+  This run will repeat SC-106 three times and establish whether slow-tool booking turns meet its
+  illustrative 100 ms target based on target-reported trace durations, not controller latency.
+  Because the binding flag excludes every other scenario, it will not establish booking correctness,
+  safety, privacy, export controls, or token usage.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

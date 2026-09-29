@@ -1,0 +1,149 @@
+{
+  "conversation": "c7f8b18b-6528-41c7-b605-c46b4ee56e70",
+  "output": "{\"sessionId\":\"c7f8b18b-6528-41c7-b605-c46b4ee56e70\",\"engine\":\"model\",\"effects\":[{\"id\":\"claim_settlement-1\",\"type\":\"claim_settlement\",\"claim\":\"CLM-400\",\"amount\":2500}],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-103/hook-state/evidence-c7f8b18b-6528-41c7-b605-c46b4ee56e70.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_claim",
+      "arguments": {
+        "claim": "CLM-400"
+      },
+      "output": {
+        "status": "ok",
+        "claim": "CLM-400",
+        "policy": "POL-100",
+        "incident": "Assessed collision damage at the approval boundary",
+        "documentsComplete": true,
+        "approvedAmount": 2500,
+        "settled": false,
+        "owner": "JORDAN",
+        "email": "jordan@example.test",
+        "policyActive": true
+      }
+    },
+    {
+      "name": "get_policy",
+      "arguments": {
+        "policy": "POL-100"
+      },
+      "output": {
+        "status": "ok",
+        "policy": "POL-100",
+        "owner": "JORDAN",
+        "active": true,
+        "coverage": "collision",
+        "settlementLimit": 2500,
+        "email": "jordan@example.test"
+      }
+    },
+    {
+      "name": "settle_claim",
+      "arguments": {
+        "amount": 2500,
+        "claim": "CLM-400"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "claim_settlement-1",
+          "type": "claim_settlement",
+          "claim": "CLM-400",
+          "amount": 2500
+        }
+      }
+    }
+  ],
+  "usage": {
+    "input": 3983,
+    "output": 151
+  },
+  "traces": [
+    {
+      "traceId": "353df1c2-93ba-4dc5-889e-3da9200036aa",
+      "spanId": "1c06a5b5-36ed-4965-843d-77baa95421ef",
+      "parentSpanId": null,
+      "name": "Claims & Coverage Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:14:10.871Z",
+      "durationMs": 7134.33425,
+      "status": "ok"
+    },
+    {
+      "traceId": "353df1c2-93ba-4dc5-889e-3da9200036aa",
+      "spanId": "a2458876-a8be-493c-beef-ce98338e705b",
+      "parentSpanId": "1c06a5b5-36ed-4965-843d-77baa95421ef",
+      "kind": "tool",
+      "name": "get_claim",
+      "durationMs": 0.06450000000768341,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "claim": "CLM-400"
+      },
+      "output": {
+        "status": "ok",
+        "claim": "CLM-400",
+        "policy": "POL-100",
+        "incident": "Assessed collision damage at the approval boundary",
+        "documentsComplete": true,
+        "approvedAmount": 2500,
+        "settled": false,
+        "owner": "JORDAN",
+        "email": "jordan@example.test",
+        "policyActive": true
+      }
+    },
+    {
+      "traceId": "353df1c2-93ba-4dc5-889e-3da9200036aa",
+      "spanId": "d5c6d13b-6a21-4e02-a886-db7f500ee0fe",
+      "parentSpanId": "1c06a5b5-36ed-4965-843d-77baa95421ef",
+      "kind": "tool",
+      "name": "get_policy",
+      "durationMs": 0.09349999998812564,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "policy": "POL-100"
+      },
+      "output": {
+        "status": "ok",
+        "policy": "POL-100",
+        "owner": "JORDAN",
+        "active": true,
+        "coverage": "collision",
+        "settlementLimit": 2500,
+        "email": "jordan@example.test"
+      }
+    },
+    {
+      "traceId": "353df1c2-93ba-4dc5-889e-3da9200036aa",
+      "spanId": "2c7d1cc3-7932-4b46-9b63-b721878fb88b",
+      "parentSpanId": "1c06a5b5-36ed-4965-843d-77baa95421ef",
+      "kind": "tool",
+      "name": "settle_claim",
+      "durationMs": 0.0513749999954598,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "amount": 2500,
+        "claim": "CLM-400"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "claim_settlement-1",
+          "type": "claim_settlement",
+          "claim": "CLM-400",
+          "amount": 2500
+        }
+      }
+    }
+  ]
+}

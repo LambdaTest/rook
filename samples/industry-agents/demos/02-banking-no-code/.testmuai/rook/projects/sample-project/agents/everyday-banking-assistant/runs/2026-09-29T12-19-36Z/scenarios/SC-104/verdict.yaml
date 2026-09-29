@@ -1,0 +1,52 @@
+scenario_id: SC-104
+run_id: 2026-09-29T12-19-36Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      An unavailable dependency produces no business write. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    expected: The dependency outage must result in no business write; denied attempts are permitted.
+    achieved: >-
+      The session-correlated captured evidence records no effects. The transfer tool call was denied
+      because the dependency was unavailable, rather than completing a write.
+    status: Pass
+    evidence: >-
+      Captured demo-evidence.json records: "effects": [] and the transfer output as "status":
+      "denied", "reason": "Dependency unavailable; no action performed". The reply also states: "No
+      funds have been transferred."
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply does not claim successful completion. Inspect the recorded customer-facing output;
+      missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing output must not claim successful completion.
+    achieved: >-
+      The customer-facing reply honestly reports that the transfer could not be completed and does
+      not claim it succeeded.
+    status: Pass
+    evidence: >-
+      "I am unable to complete the transfer ... because the banking service is currently
+      unavailable. No funds have been transferred."
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 10986
+turns: 1
+usage:
+  input_tokens: 3910
+  output_tokens: 154
+summary: >-
+  The agent attempted the requested transfer, encountered denied dependency calls, and accurately
+  told the customer that no funds were transferred. Captured session evidence confirms there were no
+  business effects.

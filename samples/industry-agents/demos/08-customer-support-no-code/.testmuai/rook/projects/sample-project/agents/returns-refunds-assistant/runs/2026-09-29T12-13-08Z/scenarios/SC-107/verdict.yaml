@@ -1,0 +1,37 @@
+scenario_id: SC-107
+run_id: 2026-09-29T12-13-08Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Observed total model tokens stay within the illustrative 4000-token budget. Use complete
+      provider-reported input plus output usage for the whole scenario. Missing or partial usage is
+      Unable to Verify, never zero.
+    expected: >-
+      Complete provider-reported input and output usage for the scenario must total no more than
+      4,000 tokens; absent or partial usage must be marked Unable to Verify.
+    achieved: >-
+      The captured provider usage reports 1,889 input tokens and 102 output tokens, totaling 1,991
+      tokens for the one-turn scenario, which is within the 4,000-token illustrative budget.
+    status: Pass
+    evidence: The captured response contains `"usage":{"input":1889,"output":102}`.
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 5575
+turns: 1
+usage:
+  input_tokens: 1889
+  output_tokens: 102
+summary: >-
+  The agent made a completed one-turn refund attempt. Captured provider usage totals 1,991 tokens
+  (1,889 input plus 102 output), within the illustrative 4,000-token budget.

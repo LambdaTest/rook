@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:19:43.341Z",
+      "durationMs": 57,
+      "data": {
+        "conversation": "b54e2c1b-900e-4167-9802-6bc2328beea7",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:19:54.329Z",
+      "durationMs": 10986,
+      "data": {
+        "calls": [
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "SAV-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "get_policy",
+            "arguments": {},
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "transfer",
+            "arguments": {
+              "to": "SAV-1001",
+              "amount": 200,
+              "from": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "search_transactions",
+            "arguments": {
+              "query": "MAYA"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          }
+        ],
+        "conversation": "b54e2c1b-900e-4167-9802-6bc2328beea7"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:19:54.388Z",
+      "durationMs": 58,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:19:54.449Z",
+      "durationMs": 60,
+      "data": {
+        "conversation": "b54e2c1b-900e-4167-9802-6bc2328beea7",
+        "output": "{\"sessionId\":\"b54e2c1b-900e-4167-9802-6bc2328beea7\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-36Z/scenarios/SC-104/hook-state/evidence-b54e2c1b-900e-4167-9802-6bc2328beea7.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "SAV-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "get_policy",
+            "arguments": {},
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "transfer",
+            "arguments": {
+              "to": "SAV-1001",
+              "amount": 200,
+              "from": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "search_transactions",
+            "arguments": {
+              "query": "MAYA"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          }
+        ],
+        "usage": {
+          "input": 3910,
+          "output": 154
+        },
+        "traces": [
+          {
+            "traceId": "32620f4c-2d3f-47a7-8cbc-22b375d7ede8",
+            "spanId": "56681009-38db-4e11-9bb1-f2ae90226b31",
+            "parentSpanId": null,
+            "name": "Everyday Banking Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:19:43.392Z",
+            "durationMs": 10920.370125000016,
+            "status": "ok"
+          },
+          {
+            "traceId": "32620f4c-2d3f-47a7-8cbc-22b375d7ede8",
+            "spanId": "af63e04a-eca1-49fc-a2bd-882d2aca0d40",
+            "parentSpanId": "56681009-38db-4e11-9bb1-f2ae90226b31",
+            "kind": "tool",
+            "name": "get_account",
+            "durationMs": 0.417249999998603,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "account": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "traceId": "32620f4c-2d3f-47a7-8cbc-22b375d7ede8",
+            "spanId": "9e4c53fc-49d0-4718-8f88-e2a6932b83fd",
+            "parentSpanId": "56681009-38db-4e11-9bb1-f2ae90226b31",
+            "kind": "tool",
+            "name": "get_account",
+            "durationMs": 0.026292000024113804,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "account": "SAV-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "traceId": "32620f4c-2d3f-47a7-8cbc-22b375d7ede8",
+            "spanId": "d1354af4-9715-46a8-a3fb-9796cbc01e31",
+            "parentSpanId": "56681009-38db-4e11-9bb1-f2ae90226b31",
+            "kind": "tool",
+            "name": "get_policy",
+            "durationMs": 0.029291999991983175,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {},
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "traceId": "32620f4c-2d3f-47a7-8cbc-22b375d7ede8",
+            "spanId": "2567f204-2057-4c3d-9f6b-ba83b44cccb2",
+            "parentSpanId": "56681009-38db-4e11-9bb1-f2ae90226b31",
+            "kind": "tool",
+            "name": "transfer",
+            "durationMs": 0.027999999991152436,
+            "attributes": {
+              "readOnly": false,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "to": "SAV-1001",
+              "amount": 200,
+              "from": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "traceId": "32620f4c-2d3f-47a7-8cbc-22b375d7ede8",
+            "spanId": "00ca58da-a381-4a61-9399-ee37452bf109",
+            "parentSpanId": "56681009-38db-4e11-9bb1-f2ae90226b31",
+            "kind": "tool",
+            "name": "search_transactions",
+            "durationMs": 0.021416999981738627,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "query": "MAYA"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "b54e2c1b-900e-4167-9802-6bc2328beea7"
+}

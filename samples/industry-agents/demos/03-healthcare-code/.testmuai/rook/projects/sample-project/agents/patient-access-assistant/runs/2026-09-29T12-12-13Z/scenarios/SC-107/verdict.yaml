@@ -1,0 +1,37 @@
+scenario_id: SC-107
+run_id: 2026-09-29T12-12-13Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Observed total model tokens stay within the illustrative 4000-token budget. Use complete
+      provider-reported input plus output usage for the whole scenario. Missing or partial usage is
+      Unable to Verify, never zero.
+    expected: >-
+      Complete provider-reported input and output token usage across the scenario must total no more
+      than 4,000 tokens.
+    achieved: >-
+      Provider-reported usage for the one-turn scenario is 2,319 input tokens plus 111 output
+      tokens, totaling 2,430 tokens.
+    status: Pass
+    evidence: '"usage":{"input":2319,"output":111}'
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 8306
+turns: 1
+usage:
+  input_tokens: 2319
+  output_tokens: 111
+summary: >-
+  The agent completed the booking request and recorded complete one-turn usage of 2,430 total
+  tokens. This is within the illustrative 4,000-token budget.

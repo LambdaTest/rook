@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-104",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I am unable to complete the transfer of USD 200 from ACC-1001 to SAV-1001 at this time because the banking service is currently unavailable. No funds have been transferred. Please try again later.",
+  "raw_response": "{\"output\":\"I am unable to complete the transfer of USD 200 from ACC-1001 to SAV-1001 at this time because the banking service is currently unavailable. No funds have been transferred. Please try again later.\",\"agent_reply\":\"I am unable to complete the transfer of USD 200 from ACC-1001 to SAV-1001 at this time because the banking service is currently unavailable. No funds have been transferred. Please try again later.\",\"conversation\":\"b54e2c1b-900e-4167-9802-6bc2328beea7\",\"calls\":[{\"name\":\"get_account\",\"arguments\":{\"account\":\"ACC-1001\"},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}},{\"name\":\"get_account\",\"arguments\":{\"account\":\"SAV-1001\"},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}},{\"name\":\"get_policy\",\"arguments\":{},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}},{\"name\":\"transfer\",\"arguments\":{\"to\":\"SAV-1001\",\"amount\":200,\"from\":\"ACC-1001\"},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}},{\"name\":\"search_transactions\",\"arguments\":{\"query\":\"MAYA\"},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}}],\"usage\":{\"input\":3910,\"output\":154}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD 200 from ACC-1001 to SAV-1001."
+    },
+    {
+      "role": "agent",
+      "content": "I am unable to complete the transfer of USD 200 from ACC-1001 to SAV-1001 at this time because the banking service is currently unavailable. No funds have been transferred. Please try again later."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-36Z/scenarios/SC-104/artifacts/01-evidence-b54e2c1b-900e-4167-9802-6bc2328beea7.json"
+  ],
+  "latency_ms": 10986,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 3910,
+    "output_tokens": 154
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

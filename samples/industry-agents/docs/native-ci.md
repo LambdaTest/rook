@@ -1,5 +1,7 @@
 # Native Rook runs in CI
 
+The separate [29 September model-backed recording](../FULL-COVERAGE.md) covers all 18 categories in all eight demos and retains its failures and verification gaps. Verify those records with `npm run evidence:check`.
+
 Every edition includes `.testmuai/rook/settings.json` and a project folder containing an active agent, features, 18 authored scenarios, four HTTP profiles, portable hooks and a recorded native `runs/<run-id>/` example. [native-ci-runs.json](../native-ci-runs.json) records eight smoke runs captured on 18 September 2026 and their file hashes. Each executed **SC-101 only** against a hardened fixture target, with authenticated Rook evaluation; all eight passed. The remaining categories are outside this smoke result.
 
 ## Environment and keys

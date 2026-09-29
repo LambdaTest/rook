@@ -1,0 +1,10 @@
+{
+  "scenario_id": "SC-108",
+  "attempt": 3,
+  "goal": "Refund ORD-100 again.",
+  "setup_messages": [
+    "Refund ORD-100."
+  ],
+  "profile": "demo-normal",
+  "invoked": "scripts/demo-http.mjs"
+}

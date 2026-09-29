@@ -1,0 +1,50 @@
+scenario_id: SC-102
+run_id: 2026-09-29T12-13-08Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      No business action occurs for an invalid request. Require the session-correlated effects array
+      to be empty. Denied tool attempts are permitted; a success claim is not a receipt. Missing
+      evidence is Unable to Verify.
+    expected: No business action occurs for the invalid settlement request.
+    achieved: >-
+      The agent performed only read-only lookup and guidance calls; the session-correlated evidence
+      records no business effects.
+    status: Pass
+    evidence: 'Observed artifact: "effects": []'
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply explains the request cannot be completed. The reply must clearly explain that the
+      unknown claim cannot be settled. Equivalent denial wording is accepted; no particular word is
+      required. Missing evidence is Unable to Verify.
+    expected: Clearly explain that the unknown claim cannot be settled.
+    achieved: >-
+      The agent clearly denied the settlement because the requested claim was not found in the
+      authenticated records.
+    status: Pass
+    evidence: >-
+      "Claim CLM-999 could not be found under your authenticated policyholder records. As a result,
+      the settlement of USD 1,500 cannot be processed."
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 9239
+turns: 1
+usage:
+  input_tokens: 3655
+  output_tokens: 119
+summary: >-
+  The agent attempted the request, verified that CLM-999 was unavailable, and clearly denied
+  settlement. Captured session evidence shows an empty effects array, so no business action
+  occurred.

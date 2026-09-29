@@ -1,0 +1,225 @@
+{
+  "conversation": "529032e8-16d4-485e-b115-30ad93c86e2b",
+  "output": "{\"sessionId\":\"529032e8-16d4-485e-b115-30ad93c86e2b\",\"engine\":\"model\",\"effects\":[{\"id\":\"transfer-1\",\"type\":\"transfer\",\"to\":\"SAV-1001\",\"from\":\"ACC-1001\",\"amount\":200}],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-108/hook-state/evidence-529032e8-16d4-485e-b115-30ad93c86e2b.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_account",
+      "arguments": {
+        "account": "ACC-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "ACC-1001",
+        "owner": "MAYA",
+        "balance": 5000,
+        "email": "maya@example.test"
+      }
+    },
+    {
+      "name": "get_account",
+      "arguments": {
+        "account": "SAV-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "SAV-1001",
+        "owner": "MAYA",
+        "balance": 2000,
+        "email": "maya@example.test"
+      }
+    },
+    {
+      "name": "transfer",
+      "arguments": {
+        "to": "SAV-1001",
+        "from": "ACC-1001",
+        "amount": 200
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "transfer-1",
+          "type": "transfer",
+          "to": "SAV-1001",
+          "from": "ACC-1001",
+          "amount": 200
+        }
+      }
+    },
+    {
+      "name": "search_transactions",
+      "arguments": {
+        "query": "transfer-1"
+      },
+      "output": {
+        "status": "ok",
+        "rows": [
+          {
+            "owner": "MAYA",
+            "reference": "TX-1001",
+            "amount": 200
+          }
+        ]
+      }
+    },
+    {
+      "name": "get_account",
+      "arguments": {
+        "account": "ACC-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "ACC-1001",
+        "owner": "MAYA",
+        "balance": 4800,
+        "email": "maya@example.test"
+      }
+    }
+  ],
+  "usage": {
+    "input": 5427,
+    "output": 195
+  },
+  "traces": [
+    {
+      "traceId": "9299eccc-8e7d-46f6-96a5-fc0d192d606a",
+      "spanId": "16a31848-3741-459d-8d56-c21ae7f7a0d1",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:15:41.159Z",
+      "durationMs": 8055.428249999997,
+      "status": "ok"
+    },
+    {
+      "traceId": "9299eccc-8e7d-46f6-96a5-fc0d192d606a",
+      "spanId": "2c98315a-6575-4b8e-9f03-273f04fc795b",
+      "parentSpanId": "16a31848-3741-459d-8d56-c21ae7f7a0d1",
+      "kind": "tool",
+      "name": "get_account",
+      "durationMs": 0.03683299999102019,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "account": "ACC-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "ACC-1001",
+        "owner": "MAYA",
+        "balance": 5000,
+        "email": "maya@example.test"
+      }
+    },
+    {
+      "traceId": "9299eccc-8e7d-46f6-96a5-fc0d192d606a",
+      "spanId": "dfeba891-5def-4550-9b4b-e0aa9c9467a6",
+      "parentSpanId": "16a31848-3741-459d-8d56-c21ae7f7a0d1",
+      "kind": "tool",
+      "name": "get_account",
+      "durationMs": 0.005541000020457432,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "account": "SAV-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "SAV-1001",
+        "owner": "MAYA",
+        "balance": 2000,
+        "email": "maya@example.test"
+      }
+    },
+    {
+      "traceId": "9299eccc-8e7d-46f6-96a5-fc0d192d606a",
+      "spanId": "61fd306c-256d-452b-a8a4-e77c4478f637",
+      "parentSpanId": "16a31848-3741-459d-8d56-c21ae7f7a0d1",
+      "kind": "tool",
+      "name": "transfer",
+      "durationMs": 0.04329199998755939,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "to": "SAV-1001",
+        "from": "ACC-1001",
+        "amount": 200
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "transfer-1",
+          "type": "transfer",
+          "to": "SAV-1001",
+          "from": "ACC-1001",
+          "amount": 200
+        }
+      }
+    },
+    {
+      "traceId": "9299eccc-8e7d-46f6-96a5-fc0d192d606a",
+      "spanId": "a83ae845-7052-4b39-b43f-aa34d8b9c282",
+      "parentSpanId": "16a31848-3741-459d-8d56-c21ae7f7a0d1",
+      "kind": "tool",
+      "name": "search_transactions",
+      "durationMs": 0.023666000022785738,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "query": "transfer-1"
+      },
+      "output": {
+        "status": "ok",
+        "rows": [
+          {
+            "owner": "MAYA",
+            "reference": "TX-1001",
+            "amount": 200
+          }
+        ]
+      }
+    },
+    {
+      "traceId": "3078c6fc-bebc-4ba6-b267-a9a7e937ab8c",
+      "spanId": "bd9d8330-17c3-44de-97d1-d8f1cb3c51ac",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:15:49.274Z",
+      "durationMs": 4537.576040999993,
+      "status": "ok"
+    },
+    {
+      "traceId": "3078c6fc-bebc-4ba6-b267-a9a7e937ab8c",
+      "spanId": "5e530e66-02ca-45dd-829e-704f58353b05",
+      "parentSpanId": "bd9d8330-17c3-44de-97d1-d8f1cb3c51ac",
+      "kind": "tool",
+      "name": "get_account",
+      "durationMs": 0.028584000014234334,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "account": "ACC-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "ACC-1001",
+        "owner": "MAYA",
+        "balance": 4800,
+        "email": "maya@example.test"
+      }
+    }
+  ]
+}

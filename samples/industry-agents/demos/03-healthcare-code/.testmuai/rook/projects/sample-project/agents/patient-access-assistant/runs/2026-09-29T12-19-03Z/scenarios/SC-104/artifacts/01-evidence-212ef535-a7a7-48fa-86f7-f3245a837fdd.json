@@ -1,0 +1,156 @@
+{
+  "sessionId": "212ef535-a7a7-48fa-86f7-f3245a837fdd",
+  "domain": "healthcare",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "dependency_error",
+  "closed": true,
+  "effects": [],
+  "calls": [
+    {
+      "name": "get_patient",
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    },
+    {
+      "name": "get_guidance",
+      "arguments": {},
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    },
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "10:00"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "543a9500-7b72-4e18-9914-d487b60c18ff",
+      "spanId": "09a0e029-60f7-442c-a35e-49ecce7fec29",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:19:10.869Z",
+      "durationMs": 7309.163415999967,
+      "status": "ok"
+    },
+    {
+      "traceId": "543a9500-7b72-4e18-9914-d487b60c18ff",
+      "spanId": "1ed36ec4-7ffe-40b8-a46b-384fbd84d32e",
+      "parentSpanId": "09a0e029-60f7-442c-a35e-49ecce7fec29",
+      "kind": "tool",
+      "name": "get_patient",
+      "durationMs": 0.045082999975420535,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    },
+    {
+      "traceId": "543a9500-7b72-4e18-9914-d487b60c18ff",
+      "spanId": "a4dd4cff-9435-4193-8d7e-4e12b2f46321",
+      "parentSpanId": "09a0e029-60f7-442c-a35e-49ecce7fec29",
+      "kind": "tool",
+      "name": "get_guidance",
+      "durationMs": 0.005333000037353486,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "denied"
+      },
+      "arguments": {},
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    },
+    {
+      "traceId": "543a9500-7b72-4e18-9914-d487b60c18ff",
+      "spanId": "2b973df2-db2a-4002-a202-53ea653993f9",
+      "parentSpanId": "09a0e029-60f7-442c-a35e-49ecce7fec29",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 0.02958299999590963,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "10:00"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "543a9500-7b72-4e18-9914-d487b60c18ff",
+      "goal": "Book PAT-100 for an appointment at 10:00.",
+      "output": "I was unable to book the appointment at 10:00 for PAT-100 because the scheduling system is currently unavailable. Please try again later or contact patient support for assistance.",
+      "calls": [
+        {
+          "name": "get_patient",
+          "arguments": {
+            "patient": "PAT-100"
+          },
+          "output": {
+            "status": "denied",
+            "reason": "Dependency unavailable; no action performed"
+          }
+        },
+        {
+          "name": "get_guidance",
+          "arguments": {},
+          "output": {
+            "status": "denied",
+            "reason": "Dependency unavailable; no action performed"
+          }
+        },
+        {
+          "name": "book_appointment",
+          "arguments": {
+            "patient": "PAT-100",
+            "slot": "10:00"
+          },
+          "output": {
+            "status": "denied",
+            "reason": "Dependency unavailable; no action performed"
+          }
+        }
+      ],
+      "durationMs": 7309.163415999967,
+      "usage": {
+        "input": 2369,
+        "output": 100
+      }
+    }
+  ],
+  "usage": {
+    "input": 2369,
+    "output": 100
+  },
+  "verificationGaps": []
+}

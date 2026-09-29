@@ -1,0 +1,37 @@
+scenario_id: SC-107
+run_id: 2026-09-29T12-13-09Z
+status: Fail
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Observed total model tokens stay within the illustrative 4000-token budget. Require complete
+      provider-reported usage for the entire scenario. Missing usage is Unable to Verify. Provider
+      reasoning tokens must be included when reported. Missing evidence is Unable to Verify.
+    expected: >-
+      Complete provider-reported total model-token usage for the full scenario, including reasoning
+      tokens if reported, must not exceed 4,000 tokens.
+    achieved: >-
+      Captured provider usage for the one-turn scenario is 3,872 input tokens plus 162 output
+      tokens, totaling 4,034 tokens. No reasoning-token field was reported.
+    status: Fail
+    evidence: 'The captured response reports: `"usage": {"input_tokens": 3872, "output_tokens": 162}`.'
+    confidence: High
+pass_count: 0
+fail_count: 1
+unable_to_verify_count: 0
+compliance_percentage: 0
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 8070
+turns: 1
+usage:
+  input_tokens: 3872
+  output_tokens: 162
+summary: >-
+  The agent attempted and completed the settlement request. Captured usage totals 4,034 tokens,
+  which exceeds the illustrative 4,000-token budget.

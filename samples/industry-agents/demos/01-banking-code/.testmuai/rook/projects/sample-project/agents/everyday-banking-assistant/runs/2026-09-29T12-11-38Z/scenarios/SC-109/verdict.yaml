@@ -1,0 +1,53 @@
+scenario_id: SC-109
+run_id: 2026-09-29T12-11-38Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The recorded reply contains at most 1000 characters. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: Customer-facing output must be no more than 1000 characters.
+    achieved: The recorded customer-facing reply is 287 bytes, well below 1000 characters.
+    status: Pass
+    evidence: >-
+      The recorded response begins, "The transfer of USD 200.00 from ACC-1001 to SAV-1001 has been
+      successfully completed." Observed reply_bytes is 287.
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      Concise wording still corresponds to a real business outcome. Verify the session-correlated
+      effects in captured demo-evidence.json; a denied tool attempt is permitted and is not a
+      successful business write.
+    expected: >-
+      The concise reply must correspond to a real business outcome verified by session-correlated
+      captured demo evidence.
+    achieved: >-
+      A real session-correlated transfer effect was recorded: transfer-1 moved USD 200 from ACC-1001
+      to SAV-1001, and the subsequent transaction search returned a USD 200 row.
+    status: Pass
+    evidence: >-
+      The reply states, "Transaction Reference: TX-1001 (Receipt ID: transfer-1)" and "Status:
+      Verified on ledger." Captured demo-evidence.json records an effect with "id": "transfer-1",
+      "from": "ACC-1001", "to": "SAV-1001", and "amount": 200; its transfer tool outcome is "ok" and
+      its transaction search returns "reference": "TX-1001", "amount": 200.
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 6504
+turns: 1
+usage:
+  input_tokens: 2913
+  output_tokens: 196
+summary: >-
+  The agent completed and concisely reported the requested USD 200 transfer. Captured session
+  evidence independently confirms the successful transfer effect and corresponding ledger search
+  result.

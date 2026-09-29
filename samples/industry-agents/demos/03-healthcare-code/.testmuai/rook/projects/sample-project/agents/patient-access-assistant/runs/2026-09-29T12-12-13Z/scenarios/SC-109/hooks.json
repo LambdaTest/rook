@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:16:01.003Z",
+      "durationMs": 74,
+      "data": {
+        "conversation": "619c9e07-2ed5-4eb3-be33-7468fc715324",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:16:05.896Z",
+      "durationMs": 4892,
+      "data": {
+        "calls": [
+          {
+            "name": "book_appointment",
+            "arguments": {
+              "patient": "PAT-100",
+              "slot": "10:00"
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "appointment-1",
+                "type": "appointment",
+                "patient": "PAT-100",
+                "slot": "10:00"
+              }
+            }
+          }
+        ],
+        "conversation": "619c9e07-2ed5-4eb3-be33-7468fc715324"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:16:05.963Z",
+      "durationMs": 66,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:16:06.026Z",
+      "durationMs": 62,
+      "data": {
+        "conversation": "619c9e07-2ed5-4eb3-be33-7468fc715324",
+        "output": "{\"sessionId\":\"619c9e07-2ed5-4eb3-be33-7468fc715324\",\"engine\":\"model\",\"effects\":[{\"id\":\"appointment-1\",\"type\":\"appointment\",\"patient\":\"PAT-100\",\"slot\":\"10:00\"}],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-109/hook-state/evidence-619c9e07-2ed5-4eb3-be33-7468fc715324.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "book_appointment",
+            "arguments": {
+              "patient": "PAT-100",
+              "slot": "10:00"
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "appointment-1",
+                "type": "appointment",
+                "patient": "PAT-100",
+                "slot": "10:00"
+              }
+            }
+          }
+        ],
+        "usage": {
+          "input": 1319,
+          "output": 81
+        },
+        "traces": [
+          {
+            "traceId": "f42d77bb-8723-414f-8a6a-8f11f8f2edba",
+            "spanId": "2f33638f-8de4-4252-ace6-dbd8795974b9",
+            "parentSpanId": null,
+            "name": "Patient Access Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:16:01.056Z",
+            "durationMs": 4830.226874999993,
+            "status": "ok"
+          },
+          {
+            "traceId": "f42d77bb-8723-414f-8a6a-8f11f8f2edba",
+            "spanId": "396584d0-ad93-4179-9683-21b8e5807d79",
+            "parentSpanId": "2f33638f-8de4-4252-ace6-dbd8795974b9",
+            "kind": "tool",
+            "name": "book_appointment",
+            "durationMs": 0.04566699999850243,
+            "attributes": {
+              "readOnly": false,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "patient": "PAT-100",
+              "slot": "10:00"
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "appointment-1",
+                "type": "appointment",
+                "patient": "PAT-100",
+                "slot": "10:00"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "619c9e07-2ed5-4eb3-be33-7468fc715324"
+}

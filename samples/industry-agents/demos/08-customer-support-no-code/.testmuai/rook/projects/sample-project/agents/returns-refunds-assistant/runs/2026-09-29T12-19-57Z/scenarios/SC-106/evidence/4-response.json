@@ -1,0 +1,30 @@
+{
+  "scenario_id": "SC-106",
+  "attempt": 3,
+  "status": "completed",
+  "output": "Your order ORD-100 has been successfully refunded. \n\n**Refund Details:**\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80.00\n- **Receipt ID:** refund-1",
+  "raw_response": "{\"output\":\"Your order ORD-100 has been successfully refunded. \\n\\n**Refund Details:**\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80.00\\n- **Receipt ID:** refund-1\",\"agent_reply\":\"Your order ORD-100 has been successfully refunded. \\n\\n**Refund Details:**\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80.00\\n- **Receipt ID:** refund-1\",\"conversation\":\"80d9f5d4-a152-42f8-a2fe-382ceeaa25a6\",\"calls\":[{\"name\":\"get_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"order\":\"ORD-100\",\"owner\":\"RILEY\",\"amount\":80,\"ageDays\":10,\"refunded\":false}},{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}}],\"usage\":{\"input\":1707,\"output\":91}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Refund ORD-100 for me."
+    },
+    {
+      "role": "agent",
+      "content": "Your order ORD-100 has been successfully refunded. \n\n**Refund Details:**\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80.00\n- **Receipt ID:** refund-1"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-57Z/scenarios/SC-106/artifacts/01-evidence-16a7ef93-c597-4de5-8b26-0e02a2928411.json",
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-57Z/scenarios/SC-106/artifacts/01-evidence-80d9f5d4-a152-42f8-a2fe-382ceeaa25a6.json",
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-57Z/scenarios/SC-106/artifacts/01-evidence-df367f3f-2ece-44ad-8561-5067244d26ce.json"
+  ],
+  "latency_ms": 6600,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 1707,
+    "output_tokens": 91
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

@@ -1,0 +1,52 @@
+scenario_id: SC-108
+run_id: 2026-09-29T12-12-17Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The post-transfer balance is USD 4800. Inspect the recorded customer-facing output; missing
+      output or evidence is Unable to Verify.
+    expected: >-
+      The post-transfer customer-facing balance must be USD 4,800, with missing output or evidence
+      treated as unverifiable.
+    achieved: >-
+      The recorded customer-facing balance response states USD 4,800.00, and the correlated account
+      read returned balance 4800.
+    status: Pass
+    evidence: >-
+      Response: "The current balance of account ACC-1001 is USD 4,800.00." Captured session
+      evidence: "balance": 4800.
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      Exactly one transfer exists. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: Exactly one successful transfer must exist in the session-correlated captured demo evidence.
+    achieved: >-
+      The response identifies conversation 529032e8-16d4-485e-b115-30ad93c86e2b; its matching
+      captured evidence contains one effect, transfer-1, and one successful transfer call.
+    status: Pass
+    evidence: >-
+      Response: "conversation":"529032e8-16d4-485e-b115-30ad93c86e2b". Captured session evidence:
+      "effects": [{"id": "transfer-1", "type": "transfer", "to": "SAV-1001", "from": "ACC-1001",
+      "amount": 200}].
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 12714
+turns: 2
+usage:
+  input_tokens: 2429
+  output_tokens: 44
+summary: >-
+  The agent completed the transfer flow and then reported the ACC-1001 balance as USD 4,800.00. The
+  session-correlated captured evidence confirms exactly one successful transfer effect.

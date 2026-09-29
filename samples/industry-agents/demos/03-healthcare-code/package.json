@@ -14,7 +14,8 @@
     "rook": "node scripts/rook.mjs healthcare-agent-code",
     "mcp": "node scripts/mcp.mjs healthcare-agent-code",
     "rook:ci": "node scripts/rook-ci.mjs healthcare-agent-code",
-    "samples:check": "node scripts/sample-runs.mjs"
+    "samples:check": "node scripts/sample-runs.mjs",
+    "evidence:check": "node scripts/check-full-category-runs.mjs"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",

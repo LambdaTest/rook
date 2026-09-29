@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:34.354Z",
+      "durationMs": 63,
+      "data": {
+        "conversation": "bd9d5def-f9b0-4548-a829-2ff14fcd7415",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:36.820Z",
+      "durationMs": 2466,
+      "data": {
+        "calls": [],
+        "conversation": "bd9d5def-f9b0-4548-a829-2ff14fcd7415"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:36.887Z",
+      "durationMs": 67,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:36.945Z",
+      "durationMs": 57,
+      "data": {
+        "conversation": "bd9d5def-f9b0-4548-a829-2ff14fcd7415",
+        "output": "{\"sessionId\":\"bd9d5def-f9b0-4548-a829-2ff14fcd7415\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-113/hook-state/evidence-bd9d5def-f9b0-4548-a829-2ff14fcd7415.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [],
+        "usage": {
+          "input": 386,
+          "output": 33
+        },
+        "traces": [
+          {
+            "traceId": "fd4dc813-c1d1-47f4-8668-b1b2c11ddc05",
+            "spanId": "3ae03af4-2a67-492e-b3b6-c3b201a305e2",
+            "parentSpanId": null,
+            "name": "Patient Access Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:17:34.403Z",
+            "durationMs": 2409.660124999995,
+            "status": "ok"
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "bd9d5def-f9b0-4548-a829-2ff14fcd7415"
+}

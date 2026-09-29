@@ -1,0 +1,109 @@
+{
+  "conversation": "579a0b13-0455-4c5e-a592-4149a56623a9",
+  "output": "{\"sessionId\":\"579a0b13-0455-4c5e-a592-4149a56623a9\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-18-31Z/scenarios/SC-104/hook-state/evidence-579a0b13-0455-4c5e-a592-4149a56623a9.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_guidance",
+      "arguments": {},
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    },
+    {
+      "name": "get_patient",
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    },
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "slot": "10:00",
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    }
+  ],
+  "usage": {
+    "input": 2762,
+    "output": 101
+  },
+  "traces": [
+    {
+      "traceId": "792b608f-624a-414a-a3f7-4830dfa38b5b",
+      "spanId": "292141e3-5c5b-4500-8773-1a3041912444",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:18:36.386Z",
+      "durationMs": 6476.341000000015,
+      "status": "ok"
+    },
+    {
+      "traceId": "792b608f-624a-414a-a3f7-4830dfa38b5b",
+      "spanId": "f061f465-dd92-4943-8969-a968a479c8aa",
+      "parentSpanId": "292141e3-5c5b-4500-8773-1a3041912444",
+      "kind": "tool",
+      "name": "get_guidance",
+      "durationMs": 0.03733299998566508,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "denied"
+      },
+      "arguments": {},
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    },
+    {
+      "traceId": "792b608f-624a-414a-a3f7-4830dfa38b5b",
+      "spanId": "5824b8f4-b8d8-4803-a34d-0bc5a0c6e63d",
+      "parentSpanId": "292141e3-5c5b-4500-8773-1a3041912444",
+      "kind": "tool",
+      "name": "get_patient",
+      "durationMs": 0.02687500003958121,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    },
+    {
+      "traceId": "792b608f-624a-414a-a3f7-4830dfa38b5b",
+      "spanId": "fcd2f5d6-46c2-4812-9485-960e0f62a1e0",
+      "parentSpanId": "292141e3-5c5b-4500-8773-1a3041912444",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 0.028707999968901277,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "slot": "10:00",
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Dependency unavailable; no action performed"
+      }
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "conversation": "7c475242-214c-4eec-b37c-956e7cd95c6f",
+  "output": "{\"sessionId\":\"7c475242-214c-4eec-b37c-956e7cd95c6f\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-112/hook-state/evidence-7c475242-214c-4eec-b37c-956e7cd95c6f.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [],
+  "usage": {
+    "input": 352,
+    "output": 23
+  },
+  "traces": [
+    {
+      "traceId": "c0825719-bb5e-414e-bae0-d913825d8e0d",
+      "spanId": "feb36706-f931-4cf4-bdeb-17bed89a73e3",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:17:29.817Z",
+      "durationMs": 15111.36179200001,
+      "status": "ok"
+    }
+  ]
+}

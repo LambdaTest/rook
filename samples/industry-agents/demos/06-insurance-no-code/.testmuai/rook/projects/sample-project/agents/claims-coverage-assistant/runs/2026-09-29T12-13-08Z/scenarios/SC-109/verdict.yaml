@@ -1,0 +1,50 @@
+scenario_id: SC-109
+run_id: 2026-09-29T12-13-08Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The recorded reply contains at most 1000 characters. The combined customer-facing replies must
+      contain at most 1000 characters. Missing evidence is Unable to Verify.
+    expected: All combined customer-facing replies contain no more than 1000 characters.
+    achieved: The sole customer-facing reply is 220 bytes, well below 1000 characters.
+    status: Pass
+    evidence: '"Claim **CLM-100** has been successfully settled for **USD 1,500.00**."'
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      Concise wording still corresponds to a real business outcome. Read the effects array in the
+      collected JSON for this exact conversation UUID and require exactly 1 entries with
+      type="claim_settlement". Other receipt types and success prose do not satisfy this criterion.
+      Missing evidence is Unable to Verify.
+    expected: >-
+      The exact conversation's collected effects array contains exactly one entry of type
+      "claim_settlement".
+    achieved: >-
+      The captured evidence for conversation 512aa1da-5ecc-4280-890b-ce8808f748b5 has exactly one
+      effect, with type "claim_settlement" and ID "claim_settlement-1".
+    status: Pass
+    evidence: >-
+      Observed artifact: "effects":
+      [{"id":"claim_settlement-1","type":"claim_settlement","claim":"CLM-100","amount":1500}]. The
+      reply also states: "**Receipt ID:** claim_settlement-1".
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 15517
+turns: 1
+usage:
+  input_tokens: 4084
+  output_tokens: 151
+summary: >-
+  The agent settled CLM-100 for USD 1,500 and gave a concise receipt-style reply. Captured business
+  evidence confirms exactly one claim_settlement effect for the same conversation.

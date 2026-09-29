@@ -1,0 +1,13 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-108/response.json
+    stored_as: 1-response.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-108/artifacts/01-evidence-48a99b84-412c-499c-ab7d-d6f9282a76d0.json
+    stored_as: 2-01-evidence-48a99b84-412c-499c-ab7d-d6f9282a76d0.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-108/artifacts/01-evidence-529032e8-16d4-485e-b115-30ad93c86e2b.json
+    stored_as: 3-01-evidence-529032e8-16d4-485e-b115-30ad93c86e2b.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-108/artifacts/01-evidence-f97670ae-93e6-4e4b-b25a-1317979fc47b.json
+    stored_as: 4-01-evidence-f97670ae-93e6-4e4b-b25a-1317979fc47b.json

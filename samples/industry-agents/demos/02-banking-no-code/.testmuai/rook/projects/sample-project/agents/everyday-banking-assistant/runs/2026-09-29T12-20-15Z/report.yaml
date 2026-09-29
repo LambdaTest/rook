@@ -1,0 +1,58 @@
+run_id: 2026-09-29T12-20-15Z
+agent_id: everyday-banking-assistant
+generated: '2026-09-29T12:21:32.081Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 0
+  failed: 1
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 0
+  decided: 1
+  pass_rate: 0
+  carried_forward: 0
+metrics:
+  credits: 56.1841
+  duration_ms: 69237
+  tokens_in: 3041
+  tokens_out: 224
+  latency_p50_ms: 8258
+  latency_p95_ms: 8258
+  turns_total: 1
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 0.9
+  quality_samples: 1
+clusters:
+  - id: CL-01
+    why: the same criterion failed in F-001 (C1)
+    feature_id: F-001
+    scenarios:
+      - scenario_id: SC-106
+        title: 'Northstar Bank: Expose a slow dependency in a trace'
+        summary: >-
+          The agent attempted and completed the requested transfer with tool-backed ledger
+          verification. However, its only captured target turn took 8227.46 ms, far above the
+          scenario's 100 ms budget.
+    kind: failed
+credits: 3.8998500000000003
+headline: The assistant completed the transfer correctly but breached the response latency budget.
+narrative: >-
+  During testing of feature F-001 (authorized transfer), the assistant successfully executed and
+  verified the business action, but the single recorded turn took 8,227 ms, exceeding the scenario's
+  100 ms threshold. Only a single scenario was executed in this run, leaving all other bank security
+  guardrails—including cross-account data isolation, over-limit transfers, and prompt injection
+  defenses—completely unexamined. Consequently, this run provides no assurance regarding the
+  assistant's overall security or policy enforcement.
+next:
+  - >-
+    Investigate target turn response latency during transfer tool calls to bring execution time
+    within performance constraints.
+  - >-
+    Expand test scenario coverage to evaluate guardrails, transfer limits, and data isolation
+    features across the full agent specification.

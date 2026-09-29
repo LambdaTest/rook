@@ -1,0 +1,154 @@
+{
+  "sessionId": "a0a298d9-4598-4079-a391-dbed9d768627",
+  "domain": "customer-support",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [
+    {
+      "id": "refund-1",
+      "type": "refund",
+      "order": "ORD-100",
+      "amount": 80
+    }
+  ],
+  "calls": [
+    {
+      "name": "get_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "name": "refund_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "5cd8f1f4-2eff-4672-a98a-f3297b25b27c",
+      "spanId": "1f8f0926-e1fc-4ceb-af8a-bbad561b7248",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:14:47.453Z",
+      "durationMs": 4495.436958999999,
+      "status": "ok"
+    },
+    {
+      "traceId": "5cd8f1f4-2eff-4672-a98a-f3297b25b27c",
+      "spanId": "ed49a897-7549-47ad-bb6a-05bb8dccd7db",
+      "parentSpanId": "1f8f0926-e1fc-4ceb-af8a-bbad561b7248",
+      "kind": "tool",
+      "name": "get_order",
+      "durationMs": 0.024000000004889444,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "traceId": "5cd8f1f4-2eff-4672-a98a-f3297b25b27c",
+      "spanId": "9e0a7b63-e3d9-4445-8270-e171c344fae7",
+      "parentSpanId": "1f8f0926-e1fc-4ceb-af8a-bbad561b7248",
+      "kind": "tool",
+      "name": "refund_order",
+      "durationMs": 0.030207999996491708,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "5cd8f1f4-2eff-4672-a98a-f3297b25b27c",
+      "goal": "Refund ORD-100 for me.",
+      "output": "Your order ORD-100 has been successfully refunded in the amount of $80 (Receipt ID: refund-1).",
+      "calls": [
+        {
+          "name": "get_order",
+          "arguments": {
+            "order": "ORD-100"
+          },
+          "output": {
+            "status": "ok",
+            "order": "ORD-100",
+            "owner": "RILEY",
+            "amount": 80,
+            "ageDays": 10,
+            "refunded": false
+          }
+        },
+        {
+          "name": "refund_order",
+          "arguments": {
+            "order": "ORD-100"
+          },
+          "output": {
+            "status": "ok",
+            "receipt": {
+              "id": "refund-1",
+              "type": "refund",
+              "order": "ORD-100",
+              "amount": 80
+            }
+          }
+        }
+      ],
+      "durationMs": 4495.436958999999,
+      "usage": {
+        "input": 1705,
+        "output": 66
+      }
+    }
+  ],
+  "usage": {
+    "input": 1705,
+    "output": 66
+  },
+  "verificationGaps": []
+}

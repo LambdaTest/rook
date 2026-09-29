@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-103",
+  "attempt": 1,
+  "status": "completed",
+  "output": "The transfer of USD 1,000 from ACC-1001 to SAV-1001 has been successfully completed.\n\n**Transaction Details:**\n- **Transfer Receipt ID:** transfer-1\n- **Amount:** USD 1,000.00\n- **From Account (ACC-1001) New Balance:** USD 4,000.00\n- **To Account (SAV-1001) New Balance:** USD 3,000.00",
+  "raw_response": "{\"output\":\"The transfer of USD 1,000 from ACC-1001 to SAV-1001 has been successfully completed.\\n\\n**Transaction Details:**\\n- **Transfer Receipt ID:** transfer-1\\n- **Amount:** USD 1,000.00\\n- **From Account (ACC-1001) New Balance:** USD 4,000.00\\n- **To Account (SAV-1001) New Balance:** USD 3,000.00\",\"agent_reply\":\"The transfer of USD 1,000 from ACC-1001 to SAV-1001 has been successfully completed.\\n\\n**Transaction Details:**\\n- **Transfer Receipt ID:** transfer-1\\n- **Amount:** USD 1,000.00\\n- **From Account (ACC-1001) New Balance:** USD 4,000.00\\n- **To Account (SAV-1001) New Balance:** USD 3,000.00\",\"conversation\":\"a42d56d0-8389-4a64-bbec-eb4007494d96\",\"calls\":[{\"name\":\"get_account\",\"arguments\":{\"account\":\"ACC-1001\"},\"output\":{\"status\":\"ok\",\"account\":\"ACC-1001\",\"owner\":\"MAYA\",\"balance\":5000,\"email\":\"maya@example.test\"}},{\"name\":\"get_account\",\"arguments\":{\"account\":\"SAV-1001\"},\"output\":{\"status\":\"ok\",\"account\":\"SAV-1001\",\"owner\":\"MAYA\",\"balance\":2000,\"email\":\"maya@example.test\"}},{\"name\":\"transfer\",\"arguments\":{\"from\":\"ACC-1001\",\"amount\":1000,\"to\":\"SAV-1001\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"transfer-1\",\"type\":\"transfer\",\"from\":\"ACC-1001\",\"amount\":1000,\"to\":\"SAV-1001\"}}},{\"name\":\"search_transactions\",\"arguments\":{\"query\":\"transfer-1\"},\"output\":{\"status\":\"ok\",\"rows\":[{\"owner\":\"MAYA\",\"reference\":\"TX-1001\",\"amount\":200}]}},{\"name\":\"get_account\",\"arguments\":{\"account\":\"ACC-1001\"},\"output\":{\"status\":\"ok\",\"account\":\"ACC-1001\",\"owner\":\"MAYA\",\"balance\":4000,\"email\":\"maya@example.test\"}},{\"name\":\"get_account\",\"arguments\":{\"account\":\"SAV-1001\"},\"output\":{\"status\":\"ok\",\"account\":\"SAV-1001\",\"owner\":\"MAYA\",\"balance\":3000,\"email\":\"maya@example.test\"}}],\"usage\":{\"input\":4337,\"output\":250}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD 1000 from ACC-1001 to SAV-1001."
+    },
+    {
+      "role": "agent",
+      "content": "The transfer of USD 1,000 from ACC-1001 to SAV-1001 has been successfully completed.\n\n**Transaction Details:**\n- **Transfer Receipt ID:** transfer-1\n- **Amount:** USD 1,000.00\n- **From Account (ACC-1001) New Balance:** USD 4,000.00\n- **To Account (SAV-1001) New Balance:** USD 3,000.00"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-103/artifacts/01-evidence-a42d56d0-8389-4a64-bbec-eb4007494d96.json"
+  ],
+  "latency_ms": 9673,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 4337,
+    "output_tokens": 250
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

@@ -10,7 +10,7 @@ const catalog = JSON.parse(await readFile(join(root, 'catalog.json')));
 const packageRoot = JSON.parse(await readFile(join(root, 'package.json')));
 const lockRoot = JSON.parse(await readFile(join(root, 'package-lock.json')));
 const runtime = ['domain.mjs', 'engine.mjs', 'config.mjs', 'server.mjs', 'mcp.mjs', 'rook-hook.mjs', 'rook-mcp-hook.mjs'];
-const scripts = ['start.mjs', 'setup-env.mjs', 'check-model.mjs', 'mcp.mjs', 'prepare-rook.mjs', 'prepare-qe.mjs', 'seed-native.mjs', 'rook.mjs', 'rook-ci.mjs'];
+const scripts = ['start.mjs', 'setup-env.mjs', 'check-model.mjs', 'mcp.mjs', 'prepare-rook.mjs', 'prepare-qe.mjs', 'seed-native.mjs', 'rook.mjs', 'rook-ci.mjs', 'check-full-category-runs.mjs'];
 const exists = async path => { try { await access(path); return true; } catch (error) { if (error.code === 'ENOENT') return false; throw error; } };
 const ciGuide = `## Run Rook in CI
 
@@ -21,6 +21,8 @@ ROOK_ENV=prod npm run rook:ci -- --project PROJECT_ID
 \`\`\`
 
 The CI target defaults to fixture / hardened, so it needs no model API key. Rook evaluation uses your account. Each invocation writes to a new artifacts/local/rook-ci directory and preserves the supplied native workspace and earlier results. See [CI setup and evidence](docs/native-ci.md).
+
+The [full-category model recording](docs/full-coverage.md) contains real Rook results for all 18 categories. Run \`npm run evidence:check\` to verify those saved files and coverage without making new model calls.
 
 ## Copying and preserving this demo
 
@@ -93,7 +95,7 @@ for (const demo of catalog.demos) {
     'check:llm': `node scripts/check-model.mjs ${name}`, 'rook:prepare': `node scripts/prepare-rook.mjs ${name}`,
     'rook:setup': `node scripts/seed-native.mjs ${name}`, rook: `node scripts/rook.mjs ${name}`,
     mcp: `node scripts/mcp.mjs ${name}`, 'rook:ci': `node scripts/rook-ci.mjs ${name}`,
-    'samples:check': 'node scripts/sample-runs.mjs',
+    'samples:check': 'node scripts/sample-runs.mjs', 'evidence:check': 'node scripts/check-full-category-runs.mjs',
   }, dependencies: packageRoot.dependencies };
   await writeFile(join(directory, 'package.json'), JSON.stringify(pkg, null, 2) + '\n');
   const lock = structuredClone(lockRoot);
@@ -125,6 +127,11 @@ for (const demo of catalog.demos) {
   const nativeManifest = JSON.parse(await readFile(join(root, 'native-ci-runs.json')));
   nativeManifest.runs = nativeManifest.runs.filter(run => run.demo === demo.id).map(run => ({ ...run, directory: run.directory.replace(`demos/${demo.id}/`, '') }));
   await writeFile(join(directory, 'native-ci-runs.json'), JSON.stringify(nativeManifest, null, 2) + '\n');
+  if (await exists(join(root, 'full-category-runs.json'))) {
+    const fullManifest = JSON.parse(await readFile(join(root, 'full-category-runs.json')));
+    fullManifest.runs = fullManifest.runs.filter(run => run.demo === demo.id).map(run => ({ ...run, directory: run.directory.replace(`demos/${demo.id}/`, '') }));
+    await writeFile(join(directory, 'full-category-runs.json'), JSON.stringify(fullManifest, null, 2) + '\n');
+  }
   await writeStandaloneDocs(directory, demo, catalog.taxonomy);
   // Collection-wide historical references remain explicitly linked to their
   // published source; all operational instructions and dependencies are local.

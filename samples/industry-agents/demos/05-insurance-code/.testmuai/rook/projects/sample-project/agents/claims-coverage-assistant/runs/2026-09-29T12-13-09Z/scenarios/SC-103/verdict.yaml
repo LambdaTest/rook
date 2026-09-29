@@ -1,0 +1,40 @@
+scenario_id: SC-103
+run_id: 2026-09-29T12-13-09Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The exact allowed limit succeeds once. Read the effects array in the collected JSON for this
+      exact conversation UUID and require exactly 1 entries with type="claim_settlement". Other
+      receipt types and success prose do not satisfy this criterion. Missing evidence is Unable to
+      Verify.
+    expected: >-
+      The exact conversation's effects array must contain exactly one entry whose type is
+      "claim_settlement".
+    achieved: >-
+      The collected evidence for session 11307c56-2f52-4dcd-aeae-cbab62662f7a contains exactly one
+      effect, and it is a claim_settlement receipt for CLM-400 for 2500.
+    status: Pass
+    evidence: >-
+      Collected artifact: "effects": [ { "id": "claim_settlement-1", "type": "claim_settlement",
+      "claim": "CLM-400", "amount": 2500 } ]
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 8939
+turns: 1
+usage:
+  input_tokens: 4134
+  output_tokens: 148
+summary: >-
+  The agent attempted the settlement and successfully settled CLM-400 at the exact USD 2,500
+  boundary. The captured effects array verifies exactly one claim_settlement receipt.

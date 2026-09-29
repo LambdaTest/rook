@@ -1,0 +1,4 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-105/response.json
+    stored_as: 1-response.json

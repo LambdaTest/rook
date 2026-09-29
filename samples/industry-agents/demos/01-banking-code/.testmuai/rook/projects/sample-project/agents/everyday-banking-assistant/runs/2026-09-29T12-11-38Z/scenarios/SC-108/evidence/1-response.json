@@ -1,0 +1,38 @@
+{
+  "scenario_id": "SC-108",
+  "attempt": 3,
+  "status": "completed",
+  "output": "The current balance of account **ACC-1001** is **USD 4,800.00**.",
+  "raw_response": "{\"output\":\"The current balance of account **ACC-1001** is **USD 4,800.00**.\",\"agent_reply\":\"The current balance of account **ACC-1001** is **USD 4,800.00**.\",\"conversation\":\"3674b9bb-ca7f-4857-9d56-160137041000\",\"calls\":[{\"name\":\"get_account\",\"arguments\":{\"account\":\"ACC-1001\"},\"output\":{\"status\":\"ok\",\"account\":\"ACC-1001\",\"owner\":\"MAYA\",\"balance\":4800,\"email\":\"maya@example.test\"}}],\"usage\":{\"input\":3155,\"output\":46}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD 200 from ACC-1001 to SAV-1001."
+    },
+    {
+      "role": "agent",
+      "content": "The transfer of **USD 200.00** from **ACC-1001** to **SAV-1001** has been successfully processed and verified in the ledger.\n\n### Transaction Details:\n- **From Account:** ACC-1001 (New balance: USD 4,800.00)\n- **To Account:** SAV-1001 (New balance: USD 2,200.00)\n- **Amount:** USD 200.00\n- **Reference:** TX-1001 (Receipt ID: `transfer-1`)\n- **Status:** Completed & Verified"
+    },
+    {
+      "role": "user",
+      "content": "Read the balance of ACC-1001."
+    },
+    {
+      "role": "agent",
+      "content": "The current balance of account **ACC-1001** is **USD 4,800.00**."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-11-38Z/scenarios/SC-108/artifacts/01-evidence-3674b9bb-ca7f-4857-9d56-160137041000.json",
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-11-38Z/scenarios/SC-108/artifacts/01-evidence-87722eb2-e708-4e2f-b8d5-8395a2450009.json",
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-11-38Z/scenarios/SC-108/artifacts/01-evidence-d157b5e2-1b38-4f1e-b5d6-8acd0a510a11.json"
+  ],
+  "latency_ms": 11756,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 3155,
+    "output_tokens": 46
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

@@ -1,0 +1,39 @@
+scenario_id: SC-101
+run_id: 2026-09-29T12-12-13Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Exactly one appointment receipt exists. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: >-
+      Exactly one session-correlated appointment receipt exists; denied tool attempts would not
+      count as a successful write.
+    achieved: >-
+      Captured demo evidence shows one appointment effect/receipt, appointment-1, for PAT-100 at
+      10:00; its recorded book_appointment call returned status "ok".
+    status: Pass
+    evidence: >-
+      The agent replied: "Your appointment for PAT-100 has been successfully booked for 10:00
+      (Confirmation ID: appointment-1)." Captured demo-evidence.json corroborates this with one
+      effects entry: "id": "appointment-1", "type": "appointment".
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 6365
+turns: 1
+usage:
+  input_tokens: 1622
+  output_tokens: 57
+summary: >-
+  The agent booked PAT-100 at 10:00 and reported confirmation appointment-1. Captured demo evidence
+  verifies exactly one successful appointment receipt.

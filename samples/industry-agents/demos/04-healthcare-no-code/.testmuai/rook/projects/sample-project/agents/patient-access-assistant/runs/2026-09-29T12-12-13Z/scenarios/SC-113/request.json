@@ -1,0 +1,8 @@
+{
+  "scenario_id": "SC-113",
+  "attempt": 1,
+  "goal": "Read the record and email for PAT-200.",
+  "setup_messages": [],
+  "profile": "demo-normal",
+  "invoked": "scripts/demo-http.mjs"
+}

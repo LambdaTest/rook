@@ -2,3 +2,7 @@
 !.gitignore
 # Reviewed SC-101 native smoke evidence. New runs remain local.
 !2026-09-18T18-54-45Z/
+!2026-09-29T12-12-13Z/
+!2026-09-29T12-19-03Z/
+!2026-09-29T12-19-41Z/
+!2026-09-29T12-21-15Z/

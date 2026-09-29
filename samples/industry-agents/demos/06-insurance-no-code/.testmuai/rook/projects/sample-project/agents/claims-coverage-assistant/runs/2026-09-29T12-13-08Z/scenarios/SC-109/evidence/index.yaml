@@ -1,0 +1,7 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-109/response.json
+    stored_as: 1-response.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-109/artifacts/01-evidence-512aa1da-5ecc-4280-890b-ce8808f748b5.json
+    stored_as: 2-01-evidence-512aa1da-5ecc-4280-890b-ce8808f748b5.json

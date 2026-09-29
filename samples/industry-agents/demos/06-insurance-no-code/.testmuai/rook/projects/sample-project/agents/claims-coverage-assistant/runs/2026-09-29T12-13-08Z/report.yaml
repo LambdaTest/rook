@@ -1,0 +1,47 @@
+run_id: 2026-09-29T12-13-08Z
+agent_id: claims-coverage-assistant
+generated: '2026-09-29T12:19:15.033Z'
+totals:
+  planned: 15
+  executed: 15
+  passed: 15
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 0
+  decided: 15
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 217.556
+  duration_ms: 355449
+  tokens_in: 38783
+  tokens_out: 1519
+  latency_p50_ms: 7202
+  latency_p95_ms: 17163
+  turns_total: 17
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 7
+clusters: []
+credits: 7.460249999999999
+headline: >-
+  The target agent passed all 15 executed scenarios across claims administration, information
+  protection, and prompt boundary rules.
+narrative: >-
+  All 15 planned scenarios passed without any recorded failures or unverified outcomes across the
+  target agent's core capabilities. The assistant correctly enforced settlement limits, data
+  boundaries, and guidance overrides across 17 evaluation turns. While the run confirms baseline
+  compliance with defined PRD requirements, a clean result on a modest suite of 15 scenarios
+  represents a relatively thin test set. High confidence in production safety would require broader
+  stress testing against novel prompt injection patterns and edge-case claim states.
+next:
+  - >-
+    Expand scenario coverage to include multi-turn adversarial prompt injections and boundary
+    conditions.
+  - Execute edge-case evaluations covering ambiguous claim documents and settlement threshold races.

@@ -1,0 +1,46 @@
+scenario_id: SC-102
+run_id: 2026-09-29T12-11-38Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      No business action occurs for an invalid request. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    expected: >-
+      No successful business action occurs for the invalid request; a denied attempt would be
+      permissible.
+    achieved: >-
+      Captured session evidence records no effects and no tool calls for the invalid transfer
+      request.
+    status: Pass
+    evidence: 'Captured demo-evidence.json: "effects": [], "calls": [].'
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply explains the request cannot be completed. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing output explains that the request cannot be completed.
+    achieved: The customer-facing reply clearly denies the transfer because its amount is negative.
+    status: Pass
+    evidence: '"I cannot process this transfer. Transfers with a zero or negative amount are not allowed."'
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 2172
+turns: 1
+usage:
+  input_tokens: 391
+  output_tokens: 25
+summary: >-
+  The agent rejected the negative-dollar transfer and explained the rejection. Captured session
+  evidence shows no effects or tool calls, so no business action occurred.

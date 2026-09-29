@@ -1,0 +1,13 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-57Z/scenarios/SC-106/artifacts/01-evidence-16a7ef93-c597-4de5-8b26-0e02a2928411.json
+    stored_as: 1-01-evidence-16a7ef93-c597-4de5-8b26-0e02a2928411.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-57Z/scenarios/SC-106/artifacts/01-evidence-80d9f5d4-a152-42f8-a2fe-382ceeaa25a6.json
+    stored_as: 2-01-evidence-80d9f5d4-a152-42f8-a2fe-382ceeaa25a6.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-57Z/scenarios/SC-106/artifacts/01-evidence-df367f3f-2ece-44ad-8561-5067244d26ce.json
+    stored_as: 3-01-evidence-df367f3f-2ece-44ad-8561-5067244d26ce.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-57Z/scenarios/SC-106/response.json
+    stored_as: 4-response.json

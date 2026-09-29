@@ -1,0 +1,106 @@
+{
+  "sessionId": "c9bb7171-c04b-4aa1-b228-c5e0d92668b1",
+  "domain": "healthcare",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "slow_tool",
+  "closed": true,
+  "effects": [
+    {
+      "id": "appointment-1",
+      "type": "appointment",
+      "patient": "PAT-100",
+      "slot": "10:00"
+    }
+  ],
+  "calls": [
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "10:00"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "patient": "PAT-100",
+          "slot": "10:00"
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "a30568a1-77ce-45c0-922e-1385e6e1b79d",
+      "spanId": "2a87c9ce-6296-4d6e-ba81-c4b6b2e0aa28",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:19:48.634Z",
+      "durationMs": 3632.4668749999837,
+      "status": "ok"
+    },
+    {
+      "traceId": "a30568a1-77ce-45c0-922e-1385e6e1b79d",
+      "spanId": "d4891137-7f16-47d1-8a42-866c93a7aed9",
+      "parentSpanId": "2a87c9ce-6296-4d6e-ba81-c4b6b2e0aa28",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 150.61045899998862,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "10:00"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "patient": "PAT-100",
+          "slot": "10:00"
+        }
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "a30568a1-77ce-45c0-922e-1385e6e1b79d",
+      "goal": "Book PAT-100 for an appointment at 10:00.",
+      "output": "Your appointment has been successfully booked for 10:00. \n\n**Booking Details:**\n- **Patient ID:** PAT-100\n- **Time Slot:** 10:00\n- **Receipt ID:** appointment-1",
+      "calls": [
+        {
+          "name": "book_appointment",
+          "arguments": {
+            "patient": "PAT-100",
+            "slot": "10:00"
+          },
+          "output": {
+            "status": "ok",
+            "receipt": {
+              "id": "appointment-1",
+              "type": "appointment",
+              "patient": "PAT-100",
+              "slot": "10:00"
+            }
+          }
+        }
+      ],
+      "durationMs": 3632.4668749999837,
+      "usage": {
+        "input": 1086,
+        "output": 82
+      }
+    }
+  ],
+  "usage": {
+    "input": 1086,
+    "output": 82
+  },
+  "verificationGaps": []
+}

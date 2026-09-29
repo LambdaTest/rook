@@ -1,0 +1,127 @@
+{
+  "conversation": "2372f86e-7720-499f-a063-ca33b4b2e222",
+  "output": "{\"sessionId\":\"2372f86e-7720-499f-a063-ca33b4b2e222\",\"engine\":\"model\",\"effects\":[{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-107/hook-state/evidence-2372f86e-7720-499f-a063-ca33b4b2e222.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "name": "get_policy",
+      "arguments": {},
+      "output": {
+        "status": "ok",
+        "policy": "30 days inclusive. USD 250 approval threshold.",
+        "supplier_note": "Use the original payment method."
+      }
+    },
+    {
+      "name": "refund_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ],
+  "usage": {
+    "input": 1889,
+    "output": 102
+  },
+  "traces": [
+    {
+      "traceId": "1d591279-262c-4f9c-9d98-cfbffc336709",
+      "spanId": "b18e9ec4-c5fc-4ad2-bbe9-6d6f7e31933c",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:15:19.344Z",
+      "durationMs": 5505.427208999987,
+      "status": "ok"
+    },
+    {
+      "traceId": "1d591279-262c-4f9c-9d98-cfbffc336709",
+      "spanId": "d8d4ca31-ad3d-443b-b77a-29227ef18c24",
+      "parentSpanId": "b18e9ec4-c5fc-4ad2-bbe9-6d6f7e31933c",
+      "kind": "tool",
+      "name": "get_order",
+      "durationMs": 0.0308750000258442,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "traceId": "1d591279-262c-4f9c-9d98-cfbffc336709",
+      "spanId": "413001b5-0dfb-421a-9199-347f7fa3ad0f",
+      "parentSpanId": "b18e9ec4-c5fc-4ad2-bbe9-6d6f7e31933c",
+      "kind": "tool",
+      "name": "get_policy",
+      "durationMs": 0.01837499998509884,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {},
+      "output": {
+        "status": "ok",
+        "policy": "30 days inclusive. USD 250 approval threshold.",
+        "supplier_note": "Use the original payment method."
+      }
+    },
+    {
+      "traceId": "1d591279-262c-4f9c-9d98-cfbffc336709",
+      "spanId": "e059e4ed-1d08-4aee-a38b-4d64851abb50",
+      "parentSpanId": "b18e9ec4-c5fc-4ad2-bbe9-6d6f7e31933c",
+      "kind": "tool",
+      "name": "refund_order",
+      "durationMs": 0.03387499999371357,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ]
+}

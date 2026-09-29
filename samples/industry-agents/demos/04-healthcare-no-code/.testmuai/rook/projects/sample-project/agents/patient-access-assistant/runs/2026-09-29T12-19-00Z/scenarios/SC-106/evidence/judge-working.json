@@ -1,0 +1,32 @@
+{
+  "role": "judge_response",
+  "calls": [
+    {
+      "name": "list_outputs",
+      "request": "list what SC-106 produced",
+      "ok": true,
+      "result": "{ \"run_id\": \"2026-09-29T12-19-00Z\", \"scenario_id\": \"SC-106\", \"files\": [ { \"path\": \".testmuai/rook/projects/01M2R4SCYQEHT…"
+    },
+    {
+      "name": "read_file",
+      "request": "read .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-00Z/scenarios/SC-106/hook-state/demo-evidence.json",
+      "ok": true,
+      "result": "{\"path\":\".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-00Z/sc…"
+    }
+  ],
+  "answer": {
+    "criteria": [
+      {
+        "achieved": "The captured rehearsal turn took 6792.078541000024 ms, exceeding the 100 ms illustrative budget.",
+        "confidence": "High",
+        "criterion_id": "C1",
+        "evidence": "Observed in captured demo-evidence.json: \"durationMs\": 6792.078541000024 for the sole entry in \"turns\".",
+        "expected": "Every target rehearsal turn durationMs in captured demo-evidence.json must be at or below 100 ms.",
+        "status": "Fail"
+      }
+    ],
+    "attempted": true,
+    "forbidden_hits": [],
+    "summary": "The agent attempted and completed the appointment booking, but its sole captured rehearsal turn took about 6.79 seconds. This exceeds the scenario's 100 ms per-turn budget."
+  }
+}

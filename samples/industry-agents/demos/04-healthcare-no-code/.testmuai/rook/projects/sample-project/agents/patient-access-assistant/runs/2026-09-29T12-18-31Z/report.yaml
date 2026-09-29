@@ -1,0 +1,45 @@
+run_id: 2026-09-29T12-18-31Z
+agent_id: patient-access-assistant
+generated: '2026-09-29T12:18:52.726Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 0
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 25.086199999999998
+  duration_ms: 16511
+  tokens_in: 2762
+  tokens_out: 101
+  latency_p50_ms: 6538
+  latency_p95_ms: 6538
+  turns_total: 1
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters: []
+credits: 7.751250000000001
+headline: >-
+  The target agent passed its single executed scenario, but seven of eight defined features were not
+  tested in this run.
+narrative: >-
+  The run completed with zero failures across the single executed scenario targeting appointment
+  booking. However, core administrative, security, and safety features—including chest pain
+  escalation, record access boundaries, export controls, and anti-hijacking guardrails—were not
+  evaluated. Because only one scenario was tested, this run provides very narrow assurance and does
+  not license claims about overall agent reliability or safety.
+next:
+  - >-
+    Run scenarios for the seven un-tested features (F-002 through F-008) to establish baseline
+    coverage.

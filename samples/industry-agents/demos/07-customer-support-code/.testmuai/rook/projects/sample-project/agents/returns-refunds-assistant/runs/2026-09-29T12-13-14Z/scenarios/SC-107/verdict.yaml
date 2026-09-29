@@ -1,0 +1,41 @@
+scenario_id: SC-107
+run_id: 2026-09-29T12-13-14Z
+status: Fail
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Observed total model tokens stay within the illustrative 4000-token budget. Use complete
+      provider-reported input plus output usage for the whole scenario. Missing or partial usage is
+      Unable to Verify, never zero.
+    expected: >-
+      The sum of complete provider-reported input and output tokens for the whole scenario must be
+      no more than 4,000 tokens.
+    achieved: >-
+      Three captured model sessions report complete usage: 1,705 input + 66 output, 1,728 input + 68
+      output, and 1,787 input + 89 output tokens, totaling 5,443 tokens across the scenario
+      attempts.
+    status: Fail
+    evidence: >-
+      The response identifies this as "attempt": 3 and reports the final attempt's complete usage as
+      "input_tokens": 1728, "output_tokens": 68. The three captured session-evidence artifacts
+      report the other complete input/output usage values.
+    confidence: High
+pass_count: 0
+fail_count: 1
+unable_to_verify_count: 0
+compliance_percentage: 0
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 7148
+turns: 1
+usage:
+  input_tokens: 1728
+  output_tokens: 68
+summary: >-
+  The agent attempted and completed the refund request. Complete usage is available for all three
+  captured model sessions, but their combined 5,443 tokens exceed the 4,000-token budget.

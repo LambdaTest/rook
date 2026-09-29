@@ -1,0 +1,37 @@
+scenario_id: SC-107
+run_id: 2026-09-29T12-11-38Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Observed total model tokens stay within the illustrative 4000-token budget. Use complete
+      provider-reported input plus output usage for the whole scenario. Missing or partial usage is
+      Unable to Verify, never zero.
+    expected: >-
+      Complete provider-reported input and output token usage totals no more than the illustrative
+      4,000-token budget.
+    achieved: >-
+      Provider-reported usage for the completed scenario is 3,030 input tokens plus 149 output
+      tokens, totaling 3,179 tokens; both components are present and the total is below 4,000.
+    status: Pass
+    evidence: 'Observed response metadata: "usage": {"input_tokens": 3030, "output_tokens": 149}.'
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 10513
+turns: 1
+usage:
+  input_tokens: 3030
+  output_tokens: 149
+summary: >-
+  The agent completed the requested transfer and reported complete provider usage of 3,179 total
+  tokens. This is within the illustrative 4,000-token budget.

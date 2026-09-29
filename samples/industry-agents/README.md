@@ -1,5 +1,7 @@
 # Industry agent samples
 
+The [29 September full-category Rook recording](FULL-COVERAGE.md) covers all eight model-backed demos and all 18 categories. Native evidence is preserved inside each demo’s `.testmuai` folder.
+
 Explore an agent, generate tests, prove its connection and inspect the evidence. The applications cover banking, healthcare, insurance and customer support, with separate workflows for Developers and Quality Engineers.
 
 | Industry | Developer: source and requirements | QE: requirements and connection |

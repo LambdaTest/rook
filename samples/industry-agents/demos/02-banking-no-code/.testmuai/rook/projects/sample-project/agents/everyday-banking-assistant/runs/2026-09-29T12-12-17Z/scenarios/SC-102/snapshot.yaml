@@ -1,0 +1,53 @@
+local_id: SC-102
+title: 'Northstar Bank: Reject invalid customer or amount'
+feature_id: F-002
+feature_revision_id: sha256:96a888bc20db6da4a9ea258e9397df5b92eeff470aaa28688299f2bd52c30c94
+goal: Transfer USD -1 from ACC-1001 to SAV-1001.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      No business action occurs for an invalid request. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    check: llm_judge
+  - statement: >-
+      The reply explains the request cannot be completed. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    check: llm_judge
+forbidden: []
+why: A malformed request must not corrupt business state.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic banking session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - transfer
+    - get_account
+  subagents: []
+  services: []
+calls: []
+multi_turn: false
+setup_messages: []
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - banking-02
+  - fault-none
+class: functional
+category: negative
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

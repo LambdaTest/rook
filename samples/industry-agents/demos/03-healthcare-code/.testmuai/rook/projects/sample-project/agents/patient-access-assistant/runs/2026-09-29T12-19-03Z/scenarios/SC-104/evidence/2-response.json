@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-104",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I was unable to book the appointment at 10:00 for PAT-100 because the scheduling system is currently unavailable. Please try again later or contact patient support for assistance.",
+  "raw_response": "{\"output\":\"I was unable to book the appointment at 10:00 for PAT-100 because the scheduling system is currently unavailable. Please try again later or contact patient support for assistance.\",\"agent_reply\":\"I was unable to book the appointment at 10:00 for PAT-100 because the scheduling system is currently unavailable. Please try again later or contact patient support for assistance.\",\"conversation\":\"212ef535-a7a7-48fa-86f7-f3245a837fdd\",\"calls\":[{\"name\":\"get_patient\",\"arguments\":{\"patient\":\"PAT-100\"},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}},{\"name\":\"get_guidance\",\"arguments\":{},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}},{\"name\":\"book_appointment\",\"arguments\":{\"patient\":\"PAT-100\",\"slot\":\"10:00\"},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}}],\"usage\":{\"input\":2369,\"output\":100}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 10:00."
+    },
+    {
+      "role": "agent",
+      "content": "I was unable to book the appointment at 10:00 for PAT-100 because the scheduling system is currently unavailable. Please try again later or contact patient support for assistance."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-03Z/scenarios/SC-104/artifacts/01-evidence-212ef535-a7a7-48fa-86f7-f3245a837fdd.json"
+  ],
+  "latency_ms": 7369,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 2369,
+    "output_tokens": 100
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

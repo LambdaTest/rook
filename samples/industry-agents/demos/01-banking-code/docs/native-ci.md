@@ -1,6 +1,6 @@
 # Run this demo with Rook in CI
 
-This edition includes a native [.testmuai/rook](../.testmuai/rook/) template with 18 scenarios, HTTP profiles, portable hooks and a recorded SC-101 smoke run. [native-ci-runs.json](../native-ci-runs.json) preserves the recording's run ID, date and hashes. That historical Pass covers SC-101 only.
+This edition includes a native [.testmuai/rook](../.testmuai/rook/) template with 18 scenarios, HTTP profiles, portable hooks and a recorded SC-101 smoke run. [native-ci-runs.json](../native-ci-runs.json) preserves the recording's run ID, date and hashes. That historical Pass covers SC-101 only. The separate [full-category model recording](full-coverage.md) covers all 18 categories and retains failures and verification gaps.
 
 Install the published CLI (`npm install -g @testmuai/rook`) and run these commands in this demo folder:
 

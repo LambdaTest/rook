@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-104",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I attempted to process the refund for order **ORD-100**, but the refund could not be issued because the payment provider is currently unavailable. Please try again later.",
+  "raw_response": "{\"output\":\"I attempted to process the refund for order **ORD-100**, but the refund could not be issued because the payment provider is currently unavailable. Please try again later.\",\"agent_reply\":\"I attempted to process the refund for order **ORD-100**, but the refund could not be issued because the payment provider is currently unavailable. Please try again later.\",\"conversation\":\"ce45a37d-3540-4cd1-b47e-8c30bb642156\",\"calls\":[{\"name\":\"get_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"order\":\"ORD-100\",\"owner\":\"RILEY\",\"amount\":80,\"ageDays\":10,\"refunded\":false}},{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"denied\",\"reason\":\"Payment provider unavailable; no refund issued\"}}],\"usage\":{\"input\":1679,\"output\":75}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Refund ORD-100 for me."
+    },
+    {
+      "role": "agent",
+      "content": "I attempted to process the refund for order **ORD-100**, but the refund could not be issued because the payment provider is currently unavailable. Please try again later."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-21Z/scenarios/SC-104/artifacts/01-evidence-ce45a37d-3540-4cd1-b47e-8c30bb642156.json"
+  ],
+  "latency_ms": 6118,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 1679,
+    "output_tokens": 75
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

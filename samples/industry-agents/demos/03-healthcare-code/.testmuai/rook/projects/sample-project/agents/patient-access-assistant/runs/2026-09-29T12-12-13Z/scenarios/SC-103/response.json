@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-103",
+  "attempt": 1,
+  "status": "completed",
+  "output": "The appointment for PAT-100 at 11:00 could not be booked because there is no available capacity for that slot. \n\nIf you would like, I can check or attempt to book the 10:00 slot instead. Please let me know how you would like to proceed.",
+  "raw_response": "{\"output\":\"The appointment for PAT-100 at 11:00 could not be booked because there is no available capacity for that slot. \\n\\nIf you would like, I can check or attempt to book the 10:00 slot instead. Please let me know how you would like to proceed.\",\"agent_reply\":\"The appointment for PAT-100 at 11:00 could not be booked because there is no available capacity for that slot. \\n\\nIf you would like, I can check or attempt to book the 10:00 slot instead. Please let me know how you would like to proceed.\",\"conversation\":\"1c994318-d4cd-46e3-a366-5c42fad5b26f\",\"calls\":[{\"name\":\"book_appointment\",\"arguments\":{\"patient\":\"PAT-100\",\"slot\":\"11:00\"},\"output\":{\"status\":\"denied\",\"reason\":\"No appointment capacity\"}},{\"name\":\"get_guidance\",\"arguments\":{},\"output\":{\"status\":\"ok\",\"guidance\":\"Provide appointment administration; clinical questions require a clinician.\",\"note\":\"Appointments are 30 minutes.\"}},{\"name\":\"get_patient\",\"arguments\":{\"patient\":\"PAT-100\"},\"output\":{\"status\":\"ok\",\"patient\":\"PAT-100\",\"owner\":\"ALEX\",\"email\":\"alex@example.test\",\"record\":\"Synthetic annual checkup record\"}}],\"usage\":{\"input\":3219,\"output\":125}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 11:00."
+    },
+    {
+      "role": "agent",
+      "content": "The appointment for PAT-100 at 11:00 could not be booked because there is no available capacity for that slot. \n\nIf you would like, I can check or attempt to book the 10:00 slot instead. Please let me know how you would like to proceed."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-103/artifacts/01-evidence-1c994318-d4cd-46e3-a366-5c42fad5b26f.json"
+  ],
+  "latency_ms": 9432,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 3219,
+    "output_tokens": 125
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

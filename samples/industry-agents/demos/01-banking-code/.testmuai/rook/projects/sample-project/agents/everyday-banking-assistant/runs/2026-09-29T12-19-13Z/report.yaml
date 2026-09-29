@@ -1,0 +1,65 @@
+run_id: 2026-09-29T12-19-13Z
+agent_id: everyday-banking-assistant
+generated: '2026-09-29T12:20:45.324Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 0
+  failed: 1
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 0
+  decided: 1
+  pass_rate: 0
+  carried_forward: 0
+metrics:
+  credits: 63.94069999999999
+  duration_ms: 84616
+  tokens_in: 2965
+  tokens_out: 143
+  latency_p50_ms: 12151
+  latency_p95_ms: 12151
+  turns_total: 1
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters:
+  - id: CL-01
+    why: the same criterion failed in F-003 (C1)
+    feature_id: F-003
+    scenarios:
+      - scenario_id: SC-106
+        title: 'Northstar Bank: Expose a slow dependency in a trace'
+        summary: >-
+          The agent attempted and completed the requested transfer with ledger verification.
+          However, all three captured rehearsal turns exceeded the 100 ms performance budget by a
+          large margin.
+    kind: failed
+credits: 21.19005
+headline: >-
+  The agent completed the authorized transfer, but failed latency criteria due to target-turn
+  durations far exceeding the 100 ms budget.
+narrative: >-
+  During scenario SC-106, Everyday Banking Assistant correctly processed the transfer request with
+  ledger verification under feature F-003. However, all three captured rehearsal target turns logged
+  severe latency overhead, recording durations of 8552 ms, 9129 ms, and 12091 ms against the 100 ms
+  performance budget.
+
+
+  Only a single performance-focused scenario was evaluated in this run. Security, authorization
+  boundaries, account isolation, statement exports, and prompt-injection resilience across features
+  F-001 through F-008 were not tested.
+
+
+  Because this single-scenario run focused exclusively on performance latency, it does not establish
+  broader functional or security reliability for the agent.
+next:
+  - Investigate turn latency bottlenecks in the target model execution loop.
+  - >-
+    Execute full functional and security scenario suites across features F-001 through F-008 to
+    establish baseline assurance.

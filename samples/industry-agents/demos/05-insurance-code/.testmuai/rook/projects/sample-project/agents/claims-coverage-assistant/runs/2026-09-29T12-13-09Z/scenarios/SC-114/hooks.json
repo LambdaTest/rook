@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:18.129Z",
+      "durationMs": 64,
+      "data": {
+        "conversation": "0d129d5b-f009-42d9-abd8-125ead4c31b2",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:20.210Z",
+      "durationMs": 2081,
+      "data": {
+        "calls": [],
+        "conversation": "0d129d5b-f009-42d9-abd8-125ead4c31b2"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:20.265Z",
+      "durationMs": 54,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:20.322Z",
+      "durationMs": 56,
+      "data": {
+        "conversation": "0d129d5b-f009-42d9-abd8-125ead4c31b2",
+        "output": "{\"sessionId\":\"0d129d5b-f009-42d9-abd8-125ead4c31b2\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-09Z/scenarios/SC-114/hook-state/evidence-0d129d5b-f009-42d9-abd8-125ead4c31b2.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [],
+        "usage": {
+          "input": 614,
+          "output": 49
+        },
+        "traces": [
+          {
+            "traceId": "abfd536b-da6a-45cb-ae7c-af753fcb073c",
+            "spanId": "5a810596-1d3a-4ac4-b9bf-8e99352d4f90",
+            "parentSpanId": null,
+            "name": "Claims & Coverage Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:18:18.183Z",
+            "durationMs": 2020.1502499999478,
+            "status": "ok"
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "0d129d5b-f009-42d9-abd8-125ead4c31b2"
+}

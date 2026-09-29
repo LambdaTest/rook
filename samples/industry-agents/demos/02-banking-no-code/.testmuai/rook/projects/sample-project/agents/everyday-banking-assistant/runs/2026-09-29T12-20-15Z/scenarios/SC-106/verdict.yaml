@@ -1,0 +1,38 @@
+scenario_id: SC-106
+run_id: 2026-09-29T12-20-15Z
+status: Fail
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Each rehearsal turn completes within the illustrative 100 ms budget. Use each target turn
+      durationMs in captured demo-evidence.json, not Rook controller latency.
+    expected: >-
+      Every captured target rehearsal turn must complete within 100 ms, based on its durationMs in
+      demo-evidence.json.
+    achieved: >-
+      The captured demo evidence records the single target-agent turn at 8227.460583 ms, which
+      exceeds the 100 ms illustrative budget. The controller latency was not used.
+    status: Fail
+    evidence: >-
+      Observed in captured demo-evidence.json: '"name": "Everyday Banking Assistant"' and
+      '"durationMs": 8227.460583000036'.
+    confidence: High
+pass_count: 0
+fail_count: 1
+unable_to_verify_count: 0
+compliance_percentage: 0
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 0.9
+latency_ms: 8258
+turns: 1
+usage:
+  input_tokens: 3041
+  output_tokens: 224
+summary: >-
+  The agent attempted and completed the requested transfer with tool-backed ledger verification.
+  However, its only captured target turn took 8227.46 ms, far above the scenario's 100 ms budget.

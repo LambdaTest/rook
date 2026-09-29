@@ -1,0 +1,87 @@
+version: 1
+id: 2026-09-29T12-19-03Z
+agent_id: patient-access-assistant
+created: '2026-09-29T12:19:10.688Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-dependency-error
+  tree_hash: sha256:997e67149d9147d6c0f8fd9695bc598bb7c3345d971493aa33e1e6b3e555d2e7
+included:
+  - confidence: high
+    scenario_id: SC-104
+    why: >-
+      Exercises the explicitly selected dependency-error booking path: the scenario requires
+      session-correlated evidence that no appointment write occurred and that the customer-facing
+      reply did not claim success.
+skipped:
+  - confidence: high
+    scenario_id: SC-101
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-102
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-103
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-105
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-106
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-107
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-108
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-109
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-110
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-111
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-112
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-113
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-114
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-115
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-116
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-117
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-118
+    why: Excluded by the binding --only SC-104 flag.
+judge_only: []
+carried: []
+rca: false
+unrunnable: []
+gapped: []
+stale: []
+summary: >-
+  This run establishes whether a failed appointment dependency causes neither a recorded business
+  write nor a false success claim for SC-104. It does not assess normal booking, capacity, privacy,
+  urgent escalation, exports, or other excluded behaviors.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

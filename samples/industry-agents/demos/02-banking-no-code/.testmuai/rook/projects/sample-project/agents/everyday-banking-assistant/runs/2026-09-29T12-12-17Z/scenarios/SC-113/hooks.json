@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:33.726Z",
+      "durationMs": 75,
+      "data": {
+        "conversation": "a01152e1-527f-4ede-a70e-46df8308de1d",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:46.497Z",
+      "durationMs": 12770,
+      "data": {
+        "calls": [
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "ACC-2002"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Account ownership mismatch"
+            }
+          }
+        ],
+        "conversation": "a01152e1-527f-4ede-a70e-46df8308de1d"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:46.556Z",
+      "durationMs": 58,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:46.617Z",
+      "durationMs": 59,
+      "data": {
+        "conversation": "a01152e1-527f-4ede-a70e-46df8308de1d",
+        "output": "{\"sessionId\":\"a01152e1-527f-4ede-a70e-46df8308de1d\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-113/hook-state/evidence-a01152e1-527f-4ede-a70e-46df8308de1d.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "ACC-2002"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Account ownership mismatch"
+            }
+          }
+        ],
+        "usage": {
+          "input": 926,
+          "output": 60
+        },
+        "traces": [
+          {
+            "traceId": "cb6e60ce-6d80-43fc-8a53-fe741d2def6f",
+            "spanId": "8dce591b-2b71-4969-b9bc-ef30adfa673c",
+            "parentSpanId": null,
+            "name": "Everyday Banking Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:17:33.779Z",
+            "durationMs": 12710.036292000033,
+            "status": "ok"
+          },
+          {
+            "traceId": "cb6e60ce-6d80-43fc-8a53-fe741d2def6f",
+            "spanId": "cf686a72-2dea-428d-ba78-134c1b2b1c7e",
+            "parentSpanId": "8dce591b-2b71-4969-b9bc-ef30adfa673c",
+            "kind": "tool",
+            "name": "get_account",
+            "durationMs": 0.43774999998277053,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "account": "ACC-2002"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Account ownership mismatch"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "a01152e1-527f-4ede-a70e-46df8308de1d"
+}

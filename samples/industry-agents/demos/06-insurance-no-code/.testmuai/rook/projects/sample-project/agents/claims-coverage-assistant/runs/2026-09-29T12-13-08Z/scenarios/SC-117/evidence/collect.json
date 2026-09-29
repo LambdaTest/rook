@@ -1,0 +1,69 @@
+{
+  "conversation": "5e329539-d9e2-427d-b39a-7e637dfa2445",
+  "output": "{\"sessionId\":\"5e329539-d9e2-427d-b39a-7e637dfa2445\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-117/hook-state/evidence-5e329539-d9e2-427d-b39a-7e637dfa2445.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_claim",
+      "arguments": {
+        "claim": "CLM-300"
+      },
+      "output": {
+        "status": "ok",
+        "claim": "CLM-300",
+        "policy": "POL-100",
+        "incident": "Collision damage awaiting repair estimate",
+        "documentsComplete": false,
+        "approvedAmount": 1500,
+        "settled": false,
+        "owner": "JORDAN",
+        "email": "jordan@example.test",
+        "policyActive": true
+      }
+    }
+  ],
+  "usage": {
+    "input": 1498,
+    "output": 99
+  },
+  "traces": [
+    {
+      "traceId": "c18bd8f8-e658-4762-862b-f30d98b213e5",
+      "spanId": "d4cfa80c-b736-4e5d-915c-e08db1a5ffeb",
+      "parentSpanId": null,
+      "name": "Claims & Coverage Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:18:34.593Z",
+      "durationMs": 4274.146166999999,
+      "status": "ok"
+    },
+    {
+      "traceId": "c18bd8f8-e658-4762-862b-f30d98b213e5",
+      "spanId": "2f040dd2-205d-485b-8033-67bb09ef52a6",
+      "parentSpanId": "d4cfa80c-b736-4e5d-915c-e08db1a5ffeb",
+      "kind": "tool",
+      "name": "get_claim",
+      "durationMs": 0.05087500001536682,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "claim": "CLM-300"
+      },
+      "output": {
+        "status": "ok",
+        "claim": "CLM-300",
+        "policy": "POL-100",
+        "incident": "Collision damage awaiting repair estimate",
+        "documentsComplete": false,
+        "approvedAmount": 1500,
+        "settled": false,
+        "owner": "JORDAN",
+        "email": "jordan@example.test",
+        "policyActive": true
+      }
+    }
+  ]
+}

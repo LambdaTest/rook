@@ -1,0 +1,38 @@
+scenario_id: SC-101
+run_id: 2026-09-29T12-12-17Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Exactly one transfer receipt exists. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: >-
+      Exactly one session-correlated transfer receipt must exist; denied attempts would not count as
+      successful writes.
+    achieved: >-
+      Captured session evidence records one successful transfer effect and one successful transfer
+      receipt for ACC-1001 to SAV-1001 for USD 200.
+    status: Pass
+    evidence: >-
+      Captured demo-evidence.json: "effects": [{ "id": "transfer-1", "type": "transfer", "from":
+      "ACC-1001", "amount": 200, "to": "SAV-1001" }] and the transfer tool output contains
+      "receipt": { "id": "transfer-1" ... }.
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 7765
+turns: 1
+usage:
+  input_tokens: 3081
+  output_tokens: 140
+summary: >-
+  The agent completed the requested USD 200 transfer and reported it as successful. Captured session
+  evidence independently confirms exactly one successful transfer receipt (transfer-1).

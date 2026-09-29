@@ -1,0 +1,38 @@
+scenario_id: SC-106
+run_id: 2026-09-29T12-19-13Z
+status: Fail
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Each rehearsal turn completes within the illustrative 100 ms budget. Use each target turn
+      durationMs in captured demo-evidence.json, not Rook controller latency.
+    expected: >-
+      Every captured rehearsal target turn must have durationMs at or below the illustrative 100 ms
+      budget.
+    achieved: >-
+      Captured demo evidence shows three rehearsal target-turn durations of 8552.537416999985 ms,
+      9129.555457999988 ms, and 12091.227375000017 ms; all exceed 100 ms.
+    status: Fail
+    evidence: >-
+      Observed in captured demo-evidence.json: "durationMs": 8552.537416999985; "durationMs":
+      9129.555457999988; and "durationMs": 12091.227375000017.
+    confidence: High
+pass_count: 0
+fail_count: 1
+unable_to_verify_count: 0
+compliance_percentage: 0
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 12151
+turns: 1
+usage:
+  input_tokens: 2965
+  output_tokens: 143
+summary: >-
+  The agent attempted and completed the requested transfer with ledger verification. However, all
+  three captured rehearsal turns exceeded the 100 ms performance budget by a large margin.

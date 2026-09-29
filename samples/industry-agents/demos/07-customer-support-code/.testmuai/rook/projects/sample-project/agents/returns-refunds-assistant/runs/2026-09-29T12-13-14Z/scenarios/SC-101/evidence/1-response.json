@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-101",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Your refund for order ORD-100 has been successfully processed. \n\n**Refund Details:**\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80.00\n- **Receipt ID:** refund-1",
+  "raw_response": "{\"output\":\"Your refund for order ORD-100 has been successfully processed. \\n\\n**Refund Details:**\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80.00\\n- **Receipt ID:** refund-1\",\"agent_reply\":\"Your refund for order ORD-100 has been successfully processed. \\n\\n**Refund Details:**\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80.00\\n- **Receipt ID:** refund-1\",\"conversation\":\"3e1486b2-803b-4855-b0fa-e088c4b119a9\",\"calls\":[{\"name\":\"get_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"order\":\"ORD-100\",\"owner\":\"RILEY\",\"amount\":80,\"ageDays\":10,\"refunded\":false}},{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}}],\"usage\":{\"input\":1748,\"output\":93}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Refund ORD-100 for me."
+    },
+    {
+      "role": "agent",
+      "content": "Your refund for order ORD-100 has been successfully processed. \n\n**Refund Details:**\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80.00\n- **Receipt ID:** refund-1"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-14Z/scenarios/SC-101/artifacts/01-evidence-3e1486b2-803b-4855-b0fa-e088c4b119a9.json"
+  ],
+  "latency_ms": 4732,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 1748,
+    "output_tokens": 93
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

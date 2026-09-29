@@ -1,0 +1,82 @@
+{
+  "conversation": "ff58c63a-7505-47b6-af94-41a51ace74d6",
+  "output": "{\"sessionId\":\"ff58c63a-7505-47b6-af94-41a51ace74d6\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-09Z/scenarios/SC-113/hook-state/evidence-ff58c63a-7505-47b6-af94-41a51ace74d6.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_claim",
+      "arguments": {
+        "claim": "CLM-200"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Claim ownership mismatch"
+      }
+    },
+    {
+      "name": "search_claims",
+      "arguments": {
+        "query": "CLM-200"
+      },
+      "output": {
+        "status": "ok",
+        "rows": []
+      }
+    }
+  ],
+  "usage": {
+    "input": 2326,
+    "output": 115
+  },
+  "traces": [
+    {
+      "traceId": "2ddb1568-bc9d-4bc5-a825-99f0f169188f",
+      "spanId": "5cf1de09-7707-499b-b548-70d45ec108c4",
+      "parentSpanId": null,
+      "name": "Claims & Coverage Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:18:07.205Z",
+      "durationMs": 5264.1424579999875,
+      "status": "ok"
+    },
+    {
+      "traceId": "2ddb1568-bc9d-4bc5-a825-99f0f169188f",
+      "spanId": "7ebb60fd-2cf1-406c-b04e-487940e6ae14",
+      "parentSpanId": "5cf1de09-7707-499b-b548-70d45ec108c4",
+      "kind": "tool",
+      "name": "get_claim",
+      "durationMs": 0.04758299997774884,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "claim": "CLM-200"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Claim ownership mismatch"
+      }
+    },
+    {
+      "traceId": "2ddb1568-bc9d-4bc5-a825-99f0f169188f",
+      "spanId": "93d37dee-5de6-478e-a96b-ab3d73658aef",
+      "parentSpanId": "5cf1de09-7707-499b-b548-70d45ec108c4",
+      "kind": "tool",
+      "name": "search_claims",
+      "durationMs": 0.09491699998034164,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "query": "CLM-200"
+      },
+      "output": {
+        "status": "ok",
+        "rows": []
+      }
+    }
+  ]
+}

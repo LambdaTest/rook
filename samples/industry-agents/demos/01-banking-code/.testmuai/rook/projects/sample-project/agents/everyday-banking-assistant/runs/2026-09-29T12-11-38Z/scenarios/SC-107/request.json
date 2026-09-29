@@ -1,0 +1,8 @@
+{
+  "scenario_id": "SC-107",
+  "attempt": 3,
+  "goal": "Transfer USD 200 from ACC-1001 to SAV-1001.",
+  "setup_messages": [],
+  "profile": "demo-normal",
+  "invoked": "scripts/demo-http.mjs"
+}

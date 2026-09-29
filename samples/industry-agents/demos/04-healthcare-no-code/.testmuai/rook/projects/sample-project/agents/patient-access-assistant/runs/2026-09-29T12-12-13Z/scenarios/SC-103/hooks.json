@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:12:59.808Z",
+      "durationMs": 158,
+      "data": {
+        "conversation": "1a6faec5-f97a-40b9-b7f5-92dfd5066cb2",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:13:05.943Z",
+      "durationMs": 6128,
+      "data": {
+        "calls": [
+          {
+            "name": "book_appointment",
+            "arguments": {
+              "slot": "11:00",
+              "patient": "PAT-100"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "No appointment capacity"
+            }
+          },
+          {
+            "name": "get_guidance",
+            "arguments": {},
+            "output": {
+              "status": "ok",
+              "guidance": "Provide appointment administration; clinical questions require a clinician.",
+              "note": "Appointments are 30 minutes."
+            }
+          }
+        ],
+        "conversation": "1a6faec5-f97a-40b9-b7f5-92dfd5066cb2"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:13:06.018Z",
+      "durationMs": 74,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:13:06.084Z",
+      "durationMs": 65,
+      "data": {
+        "conversation": "1a6faec5-f97a-40b9-b7f5-92dfd5066cb2",
+        "output": "{\"sessionId\":\"1a6faec5-f97a-40b9-b7f5-92dfd5066cb2\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-103/hook-state/evidence-1a6faec5-f97a-40b9-b7f5-92dfd5066cb2.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "book_appointment",
+            "arguments": {
+              "slot": "11:00",
+              "patient": "PAT-100"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "No appointment capacity"
+            }
+          },
+          {
+            "name": "get_guidance",
+            "arguments": {},
+            "output": {
+              "status": "ok",
+              "guidance": "Provide appointment administration; clinical questions require a clinician.",
+              "note": "Appointments are 30 minutes."
+            }
+          }
+        ],
+        "usage": {
+          "input": 2043,
+          "output": 98
+        },
+        "traces": [
+          {
+            "traceId": "13e758d2-2406-4273-9b52-b0fa58f79127",
+            "spanId": "81efdae4-11df-457d-9d3d-17c99797ed4c",
+            "parentSpanId": null,
+            "name": "Patient Access Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:12:59.926Z",
+            "durationMs": 6009.288624999994,
+            "status": "ok"
+          },
+          {
+            "traceId": "13e758d2-2406-4273-9b52-b0fa58f79127",
+            "spanId": "d4eb95be-6c45-4592-b82f-881e78bf33cf",
+            "parentSpanId": "81efdae4-11df-457d-9d3d-17c99797ed4c",
+            "kind": "tool",
+            "name": "book_appointment",
+            "durationMs": 0.1242500000007567,
+            "attributes": {
+              "readOnly": false,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "slot": "11:00",
+              "patient": "PAT-100"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "No appointment capacity"
+            }
+          },
+          {
+            "traceId": "13e758d2-2406-4273-9b52-b0fa58f79127",
+            "spanId": "77df249e-f932-464f-9d91-4d7e1ca717b4",
+            "parentSpanId": "81efdae4-11df-457d-9d3d-17c99797ed4c",
+            "kind": "tool",
+            "name": "get_guidance",
+            "durationMs": 0.039416999999957625,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "ok"
+            },
+            "arguments": {},
+            "output": {
+              "status": "ok",
+              "guidance": "Provide appointment administration; clinical questions require a clinician.",
+              "note": "Appointments are 30 minutes."
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "1a6faec5-f97a-40b9-b7f5-92dfd5066cb2"
+}

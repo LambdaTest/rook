@@ -1,0 +1,39 @@
+scenario_id: SC-101
+run_id: 2026-09-29T12-12-13Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Exactly one appointment receipt exists. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: >-
+      Exactly one successful appointment receipt must exist in the session-correlated captured
+      evidence.
+    achieved: >-
+      The captured session evidence shows one successful appointment effect, with receipt ID
+      appointment-1 for PAT-100 at 10:00.
+    status: Pass
+    evidence: >-
+      Observed in captured demo-evidence.json: "effects": [ { "id": "appointment-1", "type":
+      "appointment", "patient": "PAT-100", "slot": "10:00" } ] and the scheduler call output states
+      "status": "ok".
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 3948
+turns: 1
+usage:
+  input_tokens: 1165
+  output_tokens: 58
+summary: >-
+  The agent booked PAT-100 at 10:00 and reported receipt appointment-1. Captured session evidence
+  verifies exactly one appointment effect and a successful scheduler receipt.

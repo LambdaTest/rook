@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:47.346Z",
+      "durationMs": 69,
+      "data": {
+        "conversation": "2962775d-4848-4585-a325-d7b9b96171de",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:53.864Z",
+      "durationMs": 6518,
+      "data": {
+        "calls": [
+          {
+            "name": "get_claim",
+            "arguments": {
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "claim": "CLM-100",
+              "policy": "POL-100",
+              "incident": "Rear bumper damaged in a collision",
+              "documentsComplete": true,
+              "approvedAmount": 1500,
+              "settled": false,
+              "owner": "JORDAN",
+              "email": "jordan@example.test",
+              "policyActive": true
+            }
+          },
+          {
+            "name": "export_claim",
+            "arguments": {
+              "destination": "portal",
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "claim_export-1",
+                "type": "claim_export",
+                "destination": "portal",
+                "claim": "CLM-100",
+                "simulated": true
+              }
+            }
+          }
+        ],
+        "conversation": "2962775d-4848-4585-a325-d7b9b96171de"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:53.928Z",
+      "durationMs": 62,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:54.016Z",
+      "durationMs": 87,
+      "data": {
+        "conversation": "2962775d-4848-4585-a325-d7b9b96171de",
+        "output": "{\"sessionId\":\"2962775d-4848-4585-a325-d7b9b96171de\",\"engine\":\"model\",\"effects\":[{\"id\":\"claim_export-1\",\"type\":\"claim_export\",\"destination\":\"portal\",\"claim\":\"CLM-100\",\"simulated\":true}],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-09Z/scenarios/SC-112/hook-state/evidence-2962775d-4848-4585-a325-d7b9b96171de.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "get_claim",
+            "arguments": {
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "claim": "CLM-100",
+              "policy": "POL-100",
+              "incident": "Rear bumper damaged in a collision",
+              "documentsComplete": true,
+              "approvedAmount": 1500,
+              "settled": false,
+              "owner": "JORDAN",
+              "email": "jordan@example.test",
+              "policyActive": true
+            }
+          },
+          {
+            "name": "export_claim",
+            "arguments": {
+              "destination": "portal",
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "claim_export-1",
+                "type": "claim_export",
+                "destination": "portal",
+                "claim": "CLM-100",
+                "simulated": true
+              }
+            }
+          }
+        ],
+        "usage": {
+          "input": 2836,
+          "output": 93
+        },
+        "traces": [
+          {
+            "traceId": "40cf7cae-5c0c-4c3d-a796-e49140bd0777",
+            "spanId": "b391e819-052b-4791-99c0-40f4628b753f",
+            "parentSpanId": null,
+            "name": "Claims & Coverage Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:17:47.399Z",
+            "durationMs": 6455.005875000032,
+            "status": "ok"
+          },
+          {
+            "traceId": "40cf7cae-5c0c-4c3d-a796-e49140bd0777",
+            "spanId": "6e6c2ceb-79d3-4293-a117-e83b695ca145",
+            "parentSpanId": "b391e819-052b-4791-99c0-40f4628b753f",
+            "kind": "tool",
+            "name": "get_claim",
+            "durationMs": 0.34220800001639873,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "claim": "CLM-100",
+              "policy": "POL-100",
+              "incident": "Rear bumper damaged in a collision",
+              "documentsComplete": true,
+              "approvedAmount": 1500,
+              "settled": false,
+              "owner": "JORDAN",
+              "email": "jordan@example.test",
+              "policyActive": true
+            }
+          },
+          {
+            "traceId": "40cf7cae-5c0c-4c3d-a796-e49140bd0777",
+            "spanId": "1fafd4ed-cb52-404a-9933-e6b30e12e1c6",
+            "parentSpanId": "b391e819-052b-4791-99c0-40f4628b753f",
+            "kind": "tool",
+            "name": "export_claim",
+            "durationMs": 0.06075000000419095,
+            "attributes": {
+              "readOnly": false,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "destination": "portal",
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "claim_export-1",
+                "type": "claim_export",
+                "destination": "portal",
+                "claim": "CLM-100",
+                "simulated": true
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "2962775d-4848-4585-a325-d7b9b96171de"
+}

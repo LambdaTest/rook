@@ -1,0 +1,38 @@
+{
+  "scenario_id": "SC-108",
+  "attempt": 3,
+  "status": "completed",
+  "output": "The 10:00 appointment slot could not be booked because there is no remaining capacity for that time. \n\nIf you would like, I can check or attempt to book the 11:00 slot for you instead. Please let me know how you would like to proceed.",
+  "raw_response": "{\"output\":\"The 10:00 appointment slot could not be booked because there is no remaining capacity for that time. \\n\\nIf you would like, I can check or attempt to book the 11:00 slot for you instead. Please let me know how you would like to proceed.\",\"agent_reply\":\"The 10:00 appointment slot could not be booked because there is no remaining capacity for that time. \\n\\nIf you would like, I can check or attempt to book the 11:00 slot for you instead. Please let me know how you would like to proceed.\",\"conversation\":\"83680cab-eb92-4636-b2ca-c7d1ea2aef77\",\"calls\":[{\"name\":\"book_appointment\",\"arguments\":{\"patient\":\"PAT-100\",\"slot\":\"10:00\"},\"output\":{\"status\":\"denied\",\"reason\":\"No appointment capacity\"}}],\"usage\":{\"input\":2393,\"output\":90}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 10:00."
+    },
+    {
+      "role": "agent",
+      "content": "Your appointment has been successfully booked.\n\n**Appointment Details:**\n- **Patient ID:** PAT-100\n- **Time Slot:** 10:00\n- **Receipt ID:** appointment-1"
+    },
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 10:00."
+    },
+    {
+      "role": "agent",
+      "content": "The 10:00 appointment slot could not be booked because there is no remaining capacity for that time. \n\nIf you would like, I can check or attempt to book the 11:00 slot for you instead. Please let me know how you would like to proceed."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-108/artifacts/01-evidence-669f8380-a946-456b-a7b2-347f817acf90.json",
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-108/artifacts/01-evidence-695f0006-d6d7-4df3-84bd-d9f0f4a58871.json",
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-108/artifacts/01-evidence-83680cab-eb92-4636-b2ca-c7d1ea2aef77.json"
+  ],
+  "latency_ms": 10429,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 2393,
+    "output_tokens": 90
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

@@ -1,0 +1,40 @@
+{
+  "sessionId": "9a836886-7777-4ed7-a67c-cccd06afb44d",
+  "domain": "banking",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [],
+  "calls": [],
+  "traces": [
+    {
+      "traceId": "c6c71a76-ef38-4426-acb6-4de3824cea74",
+      "spanId": "d7805116-a3d0-45ea-9aeb-c021566b753d",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:12:50.592Z",
+      "durationMs": 2542.0227499999964,
+      "status": "ok"
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "c6c71a76-ef38-4426-acb6-4de3824cea74",
+      "goal": "Transfer USD -1 from ACC-1001 to SAV-1001.",
+      "output": "I cannot process this transfer. Negative transfer amounts are not permitted. Please specify a positive amount greater than zero.",
+      "calls": [],
+      "durationMs": 2542.0227499999964,
+      "usage": {
+        "input": 391,
+        "output": 22
+      }
+    }
+  ],
+  "usage": {
+    "input": 391,
+    "output": 22
+  },
+  "verificationGaps": []
+}

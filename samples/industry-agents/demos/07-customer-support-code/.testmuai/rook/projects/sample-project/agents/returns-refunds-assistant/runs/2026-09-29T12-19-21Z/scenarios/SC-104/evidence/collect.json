@@ -1,0 +1,90 @@
+{
+  "conversation": "ce45a37d-3540-4cd1-b47e-8c30bb642156",
+  "output": "{\"sessionId\":\"ce45a37d-3540-4cd1-b47e-8c30bb642156\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-21Z/scenarios/SC-104/hook-state/evidence-ce45a37d-3540-4cd1-b47e-8c30bb642156.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "name": "refund_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Payment provider unavailable; no refund issued"
+      }
+    }
+  ],
+  "usage": {
+    "input": 1679,
+    "output": 75
+  },
+  "traces": [
+    {
+      "traceId": "01f64d06-3204-4311-b711-8c0e3aac72e8",
+      "spanId": "d3e471b8-0c9a-4b4e-a74e-bb1fcc22bbc3",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:19:28.800Z",
+      "durationMs": 6057.200583000027,
+      "status": "ok"
+    },
+    {
+      "traceId": "01f64d06-3204-4311-b711-8c0e3aac72e8",
+      "spanId": "5f67d13d-900f-4ea9-a066-7b4da4d617b9",
+      "parentSpanId": "d3e471b8-0c9a-4b4e-a74e-bb1fcc22bbc3",
+      "kind": "tool",
+      "name": "get_order",
+      "durationMs": 0.1451660000020638,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "traceId": "01f64d06-3204-4311-b711-8c0e3aac72e8",
+      "spanId": "b637c358-3024-4345-8225-f3ad8f9f2914",
+      "parentSpanId": "d3e471b8-0c9a-4b4e-a74e-bb1fcc22bbc3",
+      "kind": "tool",
+      "name": "refund_order",
+      "durationMs": 0.039458999992348254,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Payment provider unavailable; no refund issued"
+      }
+    }
+  ]
+}

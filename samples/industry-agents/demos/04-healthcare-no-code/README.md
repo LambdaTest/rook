@@ -87,6 +87,8 @@ ROOK_ENV=prod npm run rook:ci -- --project PROJECT_ID
 
 The CI target defaults to fixture / hardened, so it needs no model API key. Rook evaluation uses your account. Each invocation writes to a new artifacts/local/rook-ci directory and preserves the supplied native workspace and earlier results. See [CI setup and evidence](docs/native-ci.md).
 
+The [full-category model recording](docs/full-coverage.md) contains real Rook results for all 18 categories. Run `npm run evidence:check` to verify those saved files and coverage without making new model calls.
+
 ## Copying and preserving this demo
 
 Copy this entire directory, including hidden files (for example, `cp -R /path/to/this-demo /path/to/new-demo`; avoid `this-demo/*`, which omits dotfiles). Then run `npm ci` and `npm run setup` inside the copy. No parent checkout, sibling demo, shared runtime directory or symlink is required.

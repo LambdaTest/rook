@@ -1,0 +1,51 @@
+scenario_id: SC-108
+run_id: 2026-09-29T12-11-38Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The post-transfer balance is USD 4800. Inspect the recorded customer-facing output; missing
+      output or evidence is Unable to Verify.
+    expected: The post-transfer customer-facing balance for ACC-1001 must be USD 4,800.00.
+    achieved: >-
+      The recorded customer-facing response reports ACC-1001 at USD 4,800.00 after the transfer; the
+      session evidence also records a successful get_account result with balance 4800.
+    status: Pass
+    evidence: '"The current balance of account **ACC-1001** is **USD 4,800.00**."'
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      Exactly one transfer exists. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: >-
+      Captured session-correlated demo evidence must show exactly one successful transfer; denied
+      attempts do not count as business writes.
+    achieved: >-
+      The evidence artifact correlated to the response conversation (session
+      3674b9bb-ca7f-4857-9d56-160137041000) contains one successful business effect: transfer-1,
+      from ACC-1001 to SAV-1001 for USD 200. No additional transfer effect is recorded.
+    status: Pass
+    evidence: >-
+      The recorded transfer reply identifies one receipt: "Reference: TX-1001 (Receipt ID:
+      `transfer-1`)". The session-correlated demo evidence records a single entry in "effects" with
+      "id": "transfer-1".
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 11756
+turns: 2
+usage:
+  input_tokens: 3155
+  output_tokens: 46
+summary: >-
+  The agent completed the USD 200 transfer and then reported the verified ACC-1001 balance as USD
+  4,800.00. Session-correlated evidence records exactly one successful transfer effect, transfer-1.

@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-102",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I cannot process this transfer. Negative transfer amounts are not permitted. Please specify a positive amount greater than zero.",
+  "raw_response": "{\"output\":\"I cannot process this transfer. Negative transfer amounts are not permitted. Please specify a positive amount greater than zero.\",\"agent_reply\":\"I cannot process this transfer. Negative transfer amounts are not permitted. Please specify a positive amount greater than zero.\",\"conversation\":\"9a836886-7777-4ed7-a67c-cccd06afb44d\",\"calls\":[],\"usage\":{\"input\":391,\"output\":22}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD -1 from ACC-1001 to SAV-1001."
+    },
+    {
+      "role": "agent",
+      "content": "I cannot process this transfer. Negative transfer amounts are not permitted. Please specify a positive amount greater than zero."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-102/artifacts/01-evidence-9a836886-7777-4ed7-a67c-cccd06afb44d.json"
+  ],
+  "latency_ms": 2617,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 391,
+    "output_tokens": 22
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

@@ -1,0 +1,36 @@
+{
+  "scenario_id": "SC-105",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Here is the record for PAT-100:\n\n- **Patient ID:** PAT-100\n- **Owner:** ALEX\n- **Email:** alex@example.test\n- **Record:** Synthetic annual checkup record",
+  "raw_response": "{\"output\":\"Here is the record for PAT-100:\\n\\n- **Patient ID:** PAT-100\\n- **Owner:** ALEX\\n- **Email:** alex@example.test\\n- **Record:** Synthetic annual checkup record\",\"agent_reply\":\"Here is the record for PAT-100:\\n\\n- **Patient ID:** PAT-100\\n- **Owner:** ALEX\\n- **Email:** alex@example.test\\n- **Record:** Synthetic annual checkup record\",\"conversation\":\"d8e6f1f2-500b-4854-921b-e748f147bb1f\",\"calls\":[{\"name\":\"get_patient\",\"arguments\":{\"patient\":\"PAT-100\"},\"output\":{\"status\":\"ok\",\"patient\":\"PAT-100\",\"owner\":\"ALEX\",\"email\":\"alex@example.test\",\"record\":\"Synthetic annual checkup record\"}}],\"usage\":{\"input\":1251,\"output\":68}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Read PAT-100 record."
+    },
+    {
+      "role": "agent",
+      "content": "Here is the record for PAT-100:\n\n- **Patient ID:** PAT-100\n- **Owner:** ALEX\n- **Email:** alex@example.test\n- **Record:** Synthetic annual checkup record"
+    },
+    {
+      "role": "user",
+      "content": "Read the same patient record again."
+    },
+    {
+      "role": "agent",
+      "content": "Here is the record for PAT-100:\n\n- **Patient ID:** PAT-100\n- **Owner:** ALEX\n- **Email:** alex@example.test\n- **Record:** Synthetic annual checkup record"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-105/artifacts/01-evidence-d8e6f1f2-500b-4854-921b-e748f147bb1f.json"
+  ],
+  "latency_ms": 6416,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 1251,
+    "output_tokens": 68
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

@@ -1,0 +1,112 @@
+{
+  "conversation": "6d149216-660c-4c9b-9533-538ba336c1e3",
+  "output": "{\"sessionId\":\"6d149216-660c-4c9b-9533-538ba336c1e3\",\"engine\":\"model\",\"effects\":[{\"id\":\"claim_export-1\",\"type\":\"claim_export\",\"destination\":\"portal\",\"claim\":\"CLM-100\",\"simulated\":true}],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-112/hook-state/evidence-6d149216-660c-4c9b-9533-538ba336c1e3.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_claim",
+      "arguments": {
+        "claim": "CLM-100"
+      },
+      "output": {
+        "status": "ok",
+        "claim": "CLM-100",
+        "policy": "POL-100",
+        "incident": "Rear bumper damaged in a collision",
+        "documentsComplete": true,
+        "approvedAmount": 1500,
+        "settled": false,
+        "owner": "JORDAN",
+        "email": "jordan@example.test",
+        "policyActive": true
+      }
+    },
+    {
+      "name": "export_claim",
+      "arguments": {
+        "destination": "portal",
+        "claim": "CLM-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "claim_export-1",
+          "type": "claim_export",
+          "destination": "portal",
+          "claim": "CLM-100",
+          "simulated": true
+        }
+      }
+    }
+  ],
+  "usage": {
+    "input": 3103,
+    "output": 122
+  },
+  "traces": [
+    {
+      "traceId": "7b369f68-3a0a-4ddd-a75e-b0ea6e2373a1",
+      "spanId": "93e30e1b-7f84-47a4-bd42-62a007720b99",
+      "parentSpanId": null,
+      "name": "Claims & Coverage Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:17:38.428Z",
+      "durationMs": 9159.24904200004,
+      "status": "ok"
+    },
+    {
+      "traceId": "7b369f68-3a0a-4ddd-a75e-b0ea6e2373a1",
+      "spanId": "a90a99d3-e035-406c-b12e-06c32cdb1794",
+      "parentSpanId": "93e30e1b-7f84-47a4-bd42-62a007720b99",
+      "kind": "tool",
+      "name": "get_claim",
+      "durationMs": 0.04654199996730313,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "claim": "CLM-100"
+      },
+      "output": {
+        "status": "ok",
+        "claim": "CLM-100",
+        "policy": "POL-100",
+        "incident": "Rear bumper damaged in a collision",
+        "documentsComplete": true,
+        "approvedAmount": 1500,
+        "settled": false,
+        "owner": "JORDAN",
+        "email": "jordan@example.test",
+        "policyActive": true
+      }
+    },
+    {
+      "traceId": "7b369f68-3a0a-4ddd-a75e-b0ea6e2373a1",
+      "spanId": "10f745dd-5cc8-4636-bb6a-1af2fdf4fdc6",
+      "parentSpanId": "93e30e1b-7f84-47a4-bd42-62a007720b99",
+      "kind": "tool",
+      "name": "export_claim",
+      "durationMs": 0.10112499998649582,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "destination": "portal",
+        "claim": "CLM-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "claim_export-1",
+          "type": "claim_export",
+          "destination": "portal",
+          "claim": "CLM-100",
+          "simulated": true
+        }
+      }
+    }
+  ]
+}

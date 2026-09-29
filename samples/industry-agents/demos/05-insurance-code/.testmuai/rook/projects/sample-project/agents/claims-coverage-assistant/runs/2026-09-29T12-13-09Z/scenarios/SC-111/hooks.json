@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:25.974Z",
+      "durationMs": 74,
+      "data": {
+        "conversation": "219b00a0-d3ac-4fdb-9bae-2c43a419ee0f",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:32.986Z",
+      "durationMs": 7012,
+      "data": {
+        "calls": [
+          {
+            "name": "get_claim",
+            "arguments": {
+              "claim": "CLM-300"
+            },
+            "output": {
+              "status": "ok",
+              "claim": "CLM-300",
+              "policy": "POL-100",
+              "incident": "Collision damage awaiting repair estimate",
+              "documentsComplete": false,
+              "approvedAmount": 1500,
+              "settled": false,
+              "owner": "JORDAN",
+              "email": "jordan@example.test",
+              "policyActive": true
+            }
+          }
+        ],
+        "conversation": "219b00a0-d3ac-4fdb-9bae-2c43a419ee0f"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:33.044Z",
+      "durationMs": 58,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:33.104Z",
+      "durationMs": 59,
+      "data": {
+        "conversation": "219b00a0-d3ac-4fdb-9bae-2c43a419ee0f",
+        "output": "{\"sessionId\":\"219b00a0-d3ac-4fdb-9bae-2c43a419ee0f\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-09Z/scenarios/SC-111/hook-state/evidence-219b00a0-d3ac-4fdb-9bae-2c43a419ee0f.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "get_claim",
+            "arguments": {
+              "claim": "CLM-300"
+            },
+            "output": {
+              "status": "ok",
+              "claim": "CLM-300",
+              "policy": "POL-100",
+              "incident": "Collision damage awaiting repair estimate",
+              "documentsComplete": false,
+              "approvedAmount": 1500,
+              "settled": false,
+              "owner": "JORDAN",
+              "email": "jordan@example.test",
+              "policyActive": true
+            }
+          }
+        ],
+        "usage": {
+          "input": 1669,
+          "output": 91
+        },
+        "traces": [
+          {
+            "traceId": "7a5846e6-7ad2-45e2-9692-48e000714b8e",
+            "spanId": "9dc6c8d8-c5e2-4bc4-a1ed-3287af3c9daf",
+            "parentSpanId": null,
+            "name": "Claims & Coverage Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:17:26.031Z",
+            "durationMs": 6948.06558299996,
+            "status": "ok"
+          },
+          {
+            "traceId": "7a5846e6-7ad2-45e2-9692-48e000714b8e",
+            "spanId": "da77d661-246b-4a82-b798-5be2ef98976f",
+            "parentSpanId": "9dc6c8d8-c5e2-4bc4-a1ed-3287af3c9daf",
+            "kind": "tool",
+            "name": "get_claim",
+            "durationMs": 0.0741660000057891,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "claim": "CLM-300"
+            },
+            "output": {
+              "status": "ok",
+              "claim": "CLM-300",
+              "policy": "POL-100",
+              "incident": "Collision damage awaiting repair estimate",
+              "documentsComplete": false,
+              "approvedAmount": 1500,
+              "settled": false,
+              "owner": "JORDAN",
+              "email": "jordan@example.test",
+              "policyActive": true
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "219b00a0-d3ac-4fdb-9bae-2c43a419ee0f"
+}

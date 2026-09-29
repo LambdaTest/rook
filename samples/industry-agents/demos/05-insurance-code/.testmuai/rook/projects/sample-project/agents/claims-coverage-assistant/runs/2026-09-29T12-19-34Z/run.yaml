@@ -1,0 +1,88 @@
+version: 1
+id: 2026-09-29T12-19-34Z
+agent_id: claims-coverage-assistant
+created: '2026-09-29T12:19:41.552Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-dependency-error
+  tree_hash: sha256:5e009517c007c5681ac6a44b0d7af5e3501fbb5e87c83f739a44c5a703acf6e8
+included:
+  - confidence: high
+    scenario_id: SC-104
+    why: >-
+      Exercises the selected dependency-error path for an otherwise eligible USD 1500 settlement,
+      establishing both that no settlement receipt is recorded and that the customer is not told
+      payment succeeded.
+skipped:
+  - confidence: high
+    scenario_id: SC-101
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-102
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-103
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-105
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-106
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-107
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-108
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-109
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-110
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-111
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-112
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-113
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-114
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-115
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-116
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-117
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-118
+    why: Excluded by the binding --only SC-104 flag.
+judge_only: []
+carried: []
+rca: false
+unrunnable: []
+gapped: []
+stale: []
+summary: >-
+  This run tests only SC-104 under its dependency_error precondition: whether an unavailable
+  settlement dependency leaves no business write and produces no false success claim. It does not
+  establish normal settlement behavior, boundary handling, privacy, or adversarial defenses because
+  the binding --only SC-104 flag excludes those scenarios.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

@@ -1,0 +1,54 @@
+scenario_id: SC-104
+run_id: 2026-09-29T12-18-31Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      An unavailable dependency produces no business write. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    expected: >-
+      The unavailable dependency must result in no business write; a denied tool attempt is
+      permitted.
+    achieved: >-
+      The session-correlated captured evidence records no effects. The attempted book_appointment
+      call was denied because the dependency was unavailable, so no successful business write
+      occurred.
+    status: Pass
+    evidence: >-
+      Captured demo evidence: "effects": [] and the book_appointment output is "status": "denied",
+      "reason": "Dependency unavailable; no action performed".
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply does not claim successful completion. Inspect the recorded customer-facing output;
+      missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing output must not claim successful completion.
+    achieved: >-
+      The customer-facing reply explicitly says the appointment could not be booked because the
+      scheduling system was unavailable and does not claim completion.
+    status: Pass
+    evidence: >-
+      "I was unable to book the appointment at 10:00 for PAT-100 because the scheduling system is
+      currently unavailable."
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 6538
+turns: 1
+usage:
+  input_tokens: 2762
+  output_tokens: 101
+summary: >-
+  The agent attempted the requested booking, received a dependency-denied tool result, and
+  accurately told the patient that it could not book the appointment. Captured session evidence
+  confirms no business effects were recorded.

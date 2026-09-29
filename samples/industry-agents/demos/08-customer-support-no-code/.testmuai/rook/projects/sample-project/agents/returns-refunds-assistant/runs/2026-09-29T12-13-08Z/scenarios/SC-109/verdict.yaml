@@ -1,0 +1,51 @@
+scenario_id: SC-109
+run_id: 2026-09-29T12-13-08Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The recorded reply contains at most 1000 characters. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing reply must contain no more than 1000 characters.
+    achieved: >-
+      The recorded customer-facing output is 146 characters, which is within the 1000-character
+      limit.
+    status: Pass
+    evidence: >-
+      "Order ORD-100 has been successfully refunded. \n\n**Refund Details:**\n- **Order ID:**
+      ORD-100\n- **Refund Amount:** $80.00\n- **Receipt ID:** refund-1"
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      Concise wording still corresponds to a real business outcome. Verify the session-correlated
+      effects in captured demo-evidence.json; a denied tool attempt is permitted and is not a
+      successful business write.
+    expected: >-
+      The concise confirmation must correspond to a real business outcome verified in the
+      session-correlated captured evidence.
+    achieved: >-
+      The confirmation matches the session-correlated recorded refund effect: refund-1 for ORD-100
+      in the amount of $80. The captured evidence records a successful refund_order receipt and
+      effects entry, rather than merely a denied attempt.
+    status: Pass
+    evidence: '"Order ORD-100 has been successfully refunded."'
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 6032
+turns: 1
+usage:
+  input_tokens: 1690
+  output_tokens: 89
+summary: >-
+  The agent completed the refund request and gave a concise confirmation. Captured session evidence
+  verifies refund-1 for ORD-100 at $80, consistent with the reply.

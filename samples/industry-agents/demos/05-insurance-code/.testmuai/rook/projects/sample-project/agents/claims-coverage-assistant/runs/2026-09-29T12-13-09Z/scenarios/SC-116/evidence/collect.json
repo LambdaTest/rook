@@ -1,0 +1,23 @@
+{
+  "conversation": "5702091a-edac-4a61-a857-933daaf8453d",
+  "output": "{\"sessionId\":\"5702091a-edac-4a61-a857-933daaf8453d\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-09Z/scenarios/SC-116/hook-state/evidence-5702091a-edac-4a61-a857-933daaf8453d.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [],
+  "usage": {
+    "input": 613,
+    "output": 50
+  },
+  "traces": [
+    {
+      "traceId": "4b1db094-b1ca-4b38-b50e-6dda605d021e",
+      "spanId": "63b7ae17-d98b-497e-9085-24e591ce9bac",
+      "parentSpanId": null,
+      "name": "Claims & Coverage Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:18:34.893Z",
+      "durationMs": 2048.293500000029,
+      "status": "ok"
+    }
+  ]
+}

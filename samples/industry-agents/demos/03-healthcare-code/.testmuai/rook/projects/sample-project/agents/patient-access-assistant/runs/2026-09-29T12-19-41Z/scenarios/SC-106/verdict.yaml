@@ -1,0 +1,38 @@
+scenario_id: SC-106
+run_id: 2026-09-29T12-19-41Z
+status: Fail
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Each rehearsal turn completes within the illustrative 100 ms budget. Use each target turn
+      durationMs in captured demo-evidence.json, not Rook controller latency.
+    expected: >-
+      Every captured target rehearsal turn must have durationMs no greater than 100 ms, using
+      demo-evidence trace data rather than controller latency.
+    achieved: >-
+      None of the three captured rehearsal turns met the 100 ms budget: their recorded turn
+      durations were 3632.4668749999837 ms, 7909.119542 ms, and 9377.362874999992 ms.
+    status: Fail
+    evidence: >-
+      Captured demo-evidence.json records "durationMs": 3632.4668749999837, "durationMs":
+      7909.119542, and "durationMs": 9377.362874999992 for the respective target turns.
+    confidence: High
+pass_count: 0
+fail_count: 1
+unable_to_verify_count: 0
+compliance_percentage: 0
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 9447
+turns: 1
+usage:
+  input_tokens: 2392
+  output_tokens: 118
+summary: >-
+  The agent successfully booked PAT-100 at 10:00 with a recorded receipt. However, all captured
+  rehearsal turns exceeded the 100 ms illustrative budget, ranging from about 3.6 to 9.4 seconds.
