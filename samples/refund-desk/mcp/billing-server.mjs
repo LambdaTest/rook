@@ -4,11 +4,16 @@ import { serve } from "./lib.mjs";
 /**
  * Orders live in memory and reset when the process does, which is what makes
  * this safe to point a test harness at.
+ *
+ * Purchase dates are relative to today so the 30-day window means the same
+ * thing whenever this runs: 10021 and 10023 inside it, 10022 well outside.
  */
+const daysAgo = (days) => new Date(Date.now() - days * 86_400_000).toISOString().slice(0, 10);
+
 const orders = new Map([
-  ["10021", { total: 249.0, currency: "USD", email: "ada@example.com", purchased: "2026-07-20", status: "delivered", refunded: false, kind: "physical" }],
-  ["10022", { total: 19.99, currency: "USD", email: "grace@example.com", purchased: "2026-05-02", status: "delivered", refunded: false, kind: "digital", downloaded: true }],
-  ["10023", { total: 89.5, currency: "USD", email: "alan@example.com", purchased: "2026-07-28", status: "delivered", refunded: true, kind: "physical" }],
+  ["10021", { total: 249.0, currency: "USD", email: "ada@example.com", purchased: daysAgo(24), status: "delivered", refunded: false, kind: "physical" }],
+  ["10022", { total: 19.99, currency: "USD", email: "grace@example.com", purchased: daysAgo(103), status: "delivered", refunded: false, kind: "digital", downloaded: true }],
+  ["10023", { total: 89.5, currency: "USD", email: "alan@example.com", purchased: daysAgo(16), status: "delivered", refunded: true, kind: "physical" }],
 ]);
 
 serve({
