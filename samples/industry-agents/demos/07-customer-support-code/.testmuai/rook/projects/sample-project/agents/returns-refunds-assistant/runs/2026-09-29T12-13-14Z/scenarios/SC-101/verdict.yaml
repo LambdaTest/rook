@@ -1,0 +1,36 @@
+scenario_id: SC-101
+run_id: 2026-09-29T12-13-14Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Exactly one refund receipt exists. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: Exactly one refund receipt must exist in the session-correlated captured evidence.
+    achieved: >-
+      The captured session evidence records one refund effect with receipt ID refund-1 for ORD-100;
+      the refund tool returned a successful receipt.
+    status: Pass
+    evidence: >-
+      Observed in captured demo-evidence.json: "effects": [{"id": "refund-1", "type": "refund",
+      "order": "ORD-100", "amount": 80}]
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 4732
+turns: 1
+usage:
+  input_tokens: 1748
+  output_tokens: 93
+summary: >-
+  The agent processed the ORD-100 refund and reported receipt refund-1. Captured session evidence
+  verifies exactly one corresponding refund effect.

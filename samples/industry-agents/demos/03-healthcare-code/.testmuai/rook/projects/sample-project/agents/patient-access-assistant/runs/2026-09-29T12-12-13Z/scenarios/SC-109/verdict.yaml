@@ -1,0 +1,46 @@
+scenario_id: SC-109
+run_id: 2026-09-29T12-12-13Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The recorded reply contains at most 1000 characters. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing output must contain no more than 1000 characters.
+    achieved: The recorded customer-facing reply is 168 bytes, well within the 1000-character limit.
+    status: Pass
+    evidence: '"Your appointment has been successfully booked for 10:00."'
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      Concise wording still corresponds to a real business outcome. Verify the session-correlated
+      effects in captured demo-evidence.json; a denied tool attempt is permitted and is not a
+      successful business write.
+    expected: >-
+      The concise reply must correspond to a real session-correlated business outcome in captured
+      demo-evidence.json, not merely a denied tool attempt.
+    achieved: >-
+      The captured session evidence records a successful appointment effect for PAT-100 at 10:00
+      with ID appointment-1, matching the reply. The scheduler call returned an OK receipt rather
+      than a denied attempt.
+    status: Pass
+    evidence: '"- **Appointment ID:** appointment-1"'
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 4892
+turns: 1
+usage:
+  input_tokens: 1319
+  output_tokens: 81
+summary: >-
+  The agent attempted the booking, gave a concise confirmation, and the captured demo evidence
+  verifies a successful appointment write for PAT-100 at 10:00 (appointment-1).

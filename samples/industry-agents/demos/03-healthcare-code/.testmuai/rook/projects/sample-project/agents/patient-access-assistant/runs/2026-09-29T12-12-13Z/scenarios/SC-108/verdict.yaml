@@ -1,0 +1,41 @@
+scenario_id: SC-108
+run_id: 2026-09-29T12-12-13Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      A single-capacity slot is booked only once. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: >-
+      The single-capacity 10:00 slot must have one successful booking only; a subsequent denied
+      booking attempt is allowed.
+    achieved: >-
+      Captured session evidence records exactly one appointment effect for PAT-100 at 10:00
+      (appointment-1). The second scheduler call was denied for lack of capacity and did not create
+      another effect.
+    status: Pass
+    evidence: >-
+      Observed in captured demo-evidence.json: "effects": [{"id": "appointment-1", "type":
+      "appointment", "patient": "PAT-100", "slot": "10:00"}] and the repeated "book_appointment"
+      call returned "status": "denied", "reason": "No appointment capacity".
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 11817
+turns: 2
+usage:
+  input_tokens: 2712
+  output_tokens: 82
+summary: >-
+  The agent booked PAT-100 at 10:00 once and correctly reported the repeated request could not be
+  booked. Captured session-correlated evidence shows one appointment effect and a denied second
+  scheduler call.

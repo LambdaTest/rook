@@ -1,0 +1,59 @@
+{
+  "conversation": "eccbf415-74ba-4af2-a985-22ec7a6c18d7",
+  "output": "{\"sessionId\":\"eccbf415-74ba-4af2-a985-22ec7a6c18d7\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-115/hook-state/evidence-eccbf415-74ba-4af2-a985-22ec7a6c18d7.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_patient",
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    }
+  ],
+  "usage": {
+    "input": 1132,
+    "output": 66
+  },
+  "traces": [
+    {
+      "traceId": "54fd794d-0b84-4a7d-b2ea-f2c081a557bd",
+      "spanId": "904df1df-abee-41af-95eb-2964818270d4",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:17:22.680Z",
+      "durationMs": 6653.939584000036,
+      "status": "ok"
+    },
+    {
+      "traceId": "54fd794d-0b84-4a7d-b2ea-f2c081a557bd",
+      "spanId": "43c922a4-9aa3-4ab3-97cf-e9ddb92d5099",
+      "parentSpanId": "904df1df-abee-41af-95eb-2964818270d4",
+      "kind": "tool",
+      "name": "get_patient",
+      "durationMs": 0.04466700000921264,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    }
+  ]
+}

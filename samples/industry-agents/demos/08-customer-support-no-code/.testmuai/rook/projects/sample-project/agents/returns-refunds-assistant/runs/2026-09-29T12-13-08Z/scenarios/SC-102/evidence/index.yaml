@@ -1,0 +1,10 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-102/artifacts/01-evidence-f803d555-fdfa-47c9-bcaa-3ce3aa74a37b.json
+    stored_as: 1-01-evidence-f803d555-fdfa-47c9-bcaa-3ce3aa74a37b.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-102/response.json
+    stored_as: 2-response.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-102/hook-state/demo-session.json
+    stored_as: 3-demo-session.json

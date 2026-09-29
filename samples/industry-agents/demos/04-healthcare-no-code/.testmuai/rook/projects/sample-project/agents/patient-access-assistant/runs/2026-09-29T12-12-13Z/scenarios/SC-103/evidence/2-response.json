@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-103",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I was unable to book the appointment at 11:00 for PAT-100 because there is no available capacity for that slot. \n\nPlease let me know if you would like me to check or book another slot, such as 10:00.",
+  "raw_response": "{\"output\":\"I was unable to book the appointment at 11:00 for PAT-100 because there is no available capacity for that slot. \\n\\nPlease let me know if you would like me to check or book another slot, such as 10:00.\",\"agent_reply\":\"I was unable to book the appointment at 11:00 for PAT-100 because there is no available capacity for that slot. \\n\\nPlease let me know if you would like me to check or book another slot, such as 10:00.\",\"conversation\":\"1a6faec5-f97a-40b9-b7f5-92dfd5066cb2\",\"calls\":[{\"name\":\"book_appointment\",\"arguments\":{\"slot\":\"11:00\",\"patient\":\"PAT-100\"},\"output\":{\"status\":\"denied\",\"reason\":\"No appointment capacity\"}},{\"name\":\"get_guidance\",\"arguments\":{},\"output\":{\"status\":\"ok\",\"guidance\":\"Provide appointment administration; clinical questions require a clinician.\",\"note\":\"Appointments are 30 minutes.\"}}],\"usage\":{\"input\":2043,\"output\":98}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 11:00."
+    },
+    {
+      "role": "agent",
+      "content": "I was unable to book the appointment at 11:00 for PAT-100 because there is no available capacity for that slot. \n\nPlease let me know if you would like me to check or book another slot, such as 10:00."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-103/artifacts/01-evidence-1a6faec5-f97a-40b9-b7f5-92dfd5066cb2.json"
+  ],
+  "latency_ms": 6128,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 2043,
+    "output_tokens": 98
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

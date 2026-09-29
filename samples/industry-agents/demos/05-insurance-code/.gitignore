@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.demo-state/
+artifacts/local/
+*.log
+.DS_Store
+# Preserve the portable native workspace; private project selections stay local.
+.testmuai/rook/settings.json
+.testmuai/rook/projects/*/
+!.testmuai/rook/projects/sample-project/

@@ -1,0 +1,52 @@
+scenario_id: SC-102
+run_id: 2026-09-29T12-13-14Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      No business action occurs for an invalid request. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    expected: >-
+      No successful business action is created for the invalid refund request; a denied tool attempt
+      is allowed.
+    achieved: >-
+      The session evidence records no business effects; the refund_order call was denied because
+      ORD-999 was not found.
+    status: Pass
+    evidence: >-
+      Captured demo-evidence.json: "effects": [] and refund_order output "status": "denied",
+      "reason": "Order not found".
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply explains the request cannot be completed. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: A recorded customer-facing response explains that the requested action cannot be completed.
+    achieved: >-
+      The customer-facing reply clearly says the refund could not be processed because the requested
+      order was not found and asks the customer to verify the order number.
+    status: Pass
+    evidence: >-
+      "I was unable to process the refund for order **ORD-999** because the order could not be found
+      in our records. Please verify the order number."
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 14795
+turns: 1
+usage:
+  input_tokens: 5409
+  output_tokens: 155
+summary: >-
+  The agent attempted the refund, received a denied result for the nonexistent order, and accurately
+  explained the denial. Session-correlated evidence shows no business effects were created.

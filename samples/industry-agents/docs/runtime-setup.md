@@ -7,12 +7,12 @@ You'll need Node.js 22 or later, [Rook](https://github.com/LambdaTest/rook), and
 From the collection root (`samples/industry-agents`):
 
 ```bash
-npm ci
 cd demos/01-banking-code
+npm ci
 npm run setup
 ```
 
-`npm ci` installs the packages needed by the application using the repository's saved versions. Run it once for a fresh checkout. Setup creates this folder's .env without changing existing settings.
+`npm ci` installs the packages needed by the application using this demo's saved versions. Run it once for a fresh checkout. Setup creates this folder's .env without changing existing settings.
 
 Add your key to .env:
 

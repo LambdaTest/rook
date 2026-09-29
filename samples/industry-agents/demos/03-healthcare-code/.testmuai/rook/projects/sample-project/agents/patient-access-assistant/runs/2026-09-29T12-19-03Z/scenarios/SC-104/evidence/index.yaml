@@ -1,0 +1,7 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-03Z/scenarios/SC-104/artifacts/01-evidence-212ef535-a7a7-48fa-86f7-f3245a837fdd.json
+    stored_as: 1-01-evidence-212ef535-a7a7-48fa-86f7-f3245a837fdd.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-03Z/scenarios/SC-104/response.json
+    stored_as: 2-response.json

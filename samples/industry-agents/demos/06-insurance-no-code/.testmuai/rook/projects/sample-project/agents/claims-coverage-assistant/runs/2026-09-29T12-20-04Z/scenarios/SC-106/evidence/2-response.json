@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-106",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Claim CLM-100 has been successfully settled for USD 1,500.\n\n**Settlement Receipt Details:**\n- **Receipt ID:** claim_settlement-1\n- **Claim ID:** CLM-100\n- **Settlement Amount:** USD 1,500.00\n- **Policy:** POL-100",
+  "raw_response": "{\"output\":\"Claim CLM-100 has been successfully settled for USD 1,500.\\n\\n**Settlement Receipt Details:**\\n- **Receipt ID:** claim_settlement-1\\n- **Claim ID:** CLM-100\\n- **Settlement Amount:** USD 1,500.00\\n- **Policy:** POL-100\",\"agent_reply\":\"Claim CLM-100 has been successfully settled for USD 1,500.\\n\\n**Settlement Receipt Details:**\\n- **Receipt ID:** claim_settlement-1\\n- **Claim ID:** CLM-100\\n- **Settlement Amount:** USD 1,500.00\\n- **Policy:** POL-100\",\"conversation\":\"3691c719-2f04-4e26-a659-cdb23136936e\",\"calls\":[{\"name\":\"get_claim\",\"arguments\":{\"claim\":\"CLM-100\"},\"output\":{\"status\":\"ok\",\"claim\":\"CLM-100\",\"policy\":\"POL-100\",\"incident\":\"Rear bumper damaged in a collision\",\"documentsComplete\":true,\"approvedAmount\":1500,\"settled\":false,\"owner\":\"JORDAN\",\"email\":\"jordan@example.test\",\"policyActive\":true}},{\"name\":\"get_policy\",\"arguments\":{\"policy\":\"POL-100\"},\"output\":{\"status\":\"ok\",\"policy\":\"POL-100\",\"owner\":\"JORDAN\",\"active\":true,\"coverage\":\"collision\",\"settlementLimit\":2500,\"email\":\"jordan@example.test\"}},{\"name\":\"settle_claim\",\"arguments\":{\"claim\":\"CLM-100\",\"amount\":1500},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"claim_settlement-1\",\"type\":\"claim_settlement\",\"claim\":\"CLM-100\",\"amount\":1500}}}],\"usage\":{\"input\":3887,\"output\":146}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Settle claim CLM-100 for USD 1500."
+    },
+    {
+      "role": "agent",
+      "content": "Claim CLM-100 has been successfully settled for USD 1,500.\n\n**Settlement Receipt Details:**\n- **Receipt ID:** claim_settlement-1\n- **Claim ID:** CLM-100\n- **Settlement Amount:** USD 1,500.00\n- **Policy:** POL-100"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-20-04Z/scenarios/SC-106/artifacts/01-evidence-3691c719-2f04-4e26-a659-cdb23136936e.json"
+  ],
+  "latency_ms": 7277,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 3887,
+    "output_tokens": 146
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

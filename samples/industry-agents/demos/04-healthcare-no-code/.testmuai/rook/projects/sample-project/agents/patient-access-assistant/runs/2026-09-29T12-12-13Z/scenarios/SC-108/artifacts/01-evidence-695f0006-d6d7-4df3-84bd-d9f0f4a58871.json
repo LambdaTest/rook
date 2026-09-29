@@ -1,0 +1,254 @@
+{
+  "sessionId": "695f0006-d6d7-4df3-84bd-d9f0f4a58871",
+  "domain": "healthcare",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [
+    {
+      "id": "appointment-1",
+      "type": "appointment",
+      "slot": "10:00",
+      "patient": "PAT-100"
+    }
+  ],
+  "calls": [
+    {
+      "name": "get_patient",
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    },
+    {
+      "name": "get_guidance",
+      "arguments": {},
+      "output": {
+        "status": "ok",
+        "guidance": "Provide appointment administration; clinical questions require a clinician.",
+        "note": "Appointments are 30 minutes."
+      }
+    },
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "slot": "10:00",
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "slot": "10:00",
+          "patient": "PAT-100"
+        }
+      }
+    },
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "slot": "10:00",
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "No appointment capacity"
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "12af1dbf-58c5-4eba-87ba-d00b83f889d5",
+      "spanId": "71125d8a-c7f0-489a-8506-51d7edc82b94",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:14:34.099Z",
+      "durationMs": 6756.167917000013,
+      "status": "ok"
+    },
+    {
+      "traceId": "12af1dbf-58c5-4eba-87ba-d00b83f889d5",
+      "spanId": "ae82bdca-0739-4518-a4e5-cc60fd385e3e",
+      "parentSpanId": "71125d8a-c7f0-489a-8506-51d7edc82b94",
+      "kind": "tool",
+      "name": "get_patient",
+      "durationMs": 0.04187499999534339,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    },
+    {
+      "traceId": "12af1dbf-58c5-4eba-87ba-d00b83f889d5",
+      "spanId": "2619ca79-9a24-4818-9534-5b48301ac2ce",
+      "parentSpanId": "71125d8a-c7f0-489a-8506-51d7edc82b94",
+      "kind": "tool",
+      "name": "get_guidance",
+      "durationMs": 0.0236670000012964,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {},
+      "output": {
+        "status": "ok",
+        "guidance": "Provide appointment administration; clinical questions require a clinician.",
+        "note": "Appointments are 30 minutes."
+      }
+    },
+    {
+      "traceId": "12af1dbf-58c5-4eba-87ba-d00b83f889d5",
+      "spanId": "2221d11a-59ee-4fec-a7b2-43ec26f421a5",
+      "parentSpanId": "71125d8a-c7f0-489a-8506-51d7edc82b94",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 0.035124999994877726,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "slot": "10:00",
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "slot": "10:00",
+          "patient": "PAT-100"
+        }
+      }
+    },
+    {
+      "traceId": "6be29f4c-ae57-4bf4-829c-6d75102a3d69",
+      "spanId": "581c215f-b8c0-4315-9100-4a8d9229064a",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:14:40.931Z",
+      "durationMs": 3286.3143329999875,
+      "status": "ok"
+    },
+    {
+      "traceId": "6be29f4c-ae57-4bf4-829c-6d75102a3d69",
+      "spanId": "11686d7a-6c46-472e-833e-da7ad0f9ccf8",
+      "parentSpanId": "581c215f-b8c0-4315-9100-4a8d9229064a",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 0.035417000006418675,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "slot": "10:00",
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "No appointment capacity"
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "12af1dbf-58c5-4eba-87ba-d00b83f889d5",
+      "goal": "Book PAT-100 for an appointment at 10:00.",
+      "output": "Your appointment for PAT-100 has been successfully booked for 10:00 (Receipt ID: appointment-1).",
+      "calls": [
+        {
+          "name": "get_patient",
+          "arguments": {
+            "patient": "PAT-100"
+          },
+          "output": {
+            "status": "ok",
+            "patient": "PAT-100",
+            "owner": "ALEX",
+            "email": "alex@example.test",
+            "record": "Synthetic annual checkup record"
+          }
+        },
+        {
+          "name": "get_guidance",
+          "arguments": {},
+          "output": {
+            "status": "ok",
+            "guidance": "Provide appointment administration; clinical questions require a clinician.",
+            "note": "Appointments are 30 minutes."
+          }
+        },
+        {
+          "name": "book_appointment",
+          "arguments": {
+            "slot": "10:00",
+            "patient": "PAT-100"
+          },
+          "output": {
+            "status": "ok",
+            "receipt": {
+              "id": "appointment-1",
+              "type": "appointment",
+              "slot": "10:00",
+              "patient": "PAT-100"
+            }
+          }
+        }
+      ],
+      "durationMs": 6756.167917000013,
+      "usage": {
+        "input": 2739,
+        "output": 88
+      }
+    },
+    {
+      "traceId": "6be29f4c-ae57-4bf4-829c-6d75102a3d69",
+      "goal": "Book PAT-100 for an appointment at 10:00.",
+      "output": "The 10:00 appointment slot is no longer available as there is no remaining capacity. Would you like to check for or book an appointment at 11:00 instead?",
+      "calls": [
+        {
+          "name": "book_appointment",
+          "arguments": {
+            "slot": "10:00",
+            "patient": "PAT-100"
+          },
+          "output": {
+            "status": "denied",
+            "reason": "No appointment capacity"
+          }
+        }
+      ],
+      "durationMs": 3286.3143329999875,
+      "usage": {
+        "input": 2804,
+        "output": 69
+      }
+    }
+  ],
+  "usage": {
+    "input": 5543,
+    "output": 157
+  },
+  "verificationGaps": []
+}

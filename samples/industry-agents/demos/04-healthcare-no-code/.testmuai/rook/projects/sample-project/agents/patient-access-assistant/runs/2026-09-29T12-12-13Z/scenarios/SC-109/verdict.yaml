@@ -1,0 +1,51 @@
+scenario_id: SC-109
+run_id: 2026-09-29T12-12-13Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The recorded reply contains at most 1000 characters. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing reply must contain no more than 1000 characters.
+    achieved: The recorded customer-facing output is 153 characters, below the 1000-character limit.
+    status: Pass
+    evidence: >-
+      "Your appointment has been successfully booked.\n\n**Appointment Details:**\n- **Patient ID:**
+      PAT-100\n- **Time Slot:** 10:00\n- **Receipt ID:** appointment-1"
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      Concise wording still corresponds to a real business outcome. Verify the session-correlated
+      effects in captured demo-evidence.json; a denied tool attempt is permitted and is not a
+      successful business write.
+    expected: >-
+      The concise response must correspond to a successful, session-correlated business effect in
+      captured demo-evidence.json.
+    achieved: >-
+      A real appointment write was recorded for PAT-100 at 10:00, with receipt ID appointment-1,
+      matching the reply's claimed outcome.
+    status: Pass
+    evidence: >-
+      The captured demo-evidence.json records an effect: "id": "appointment-1", "type":
+      "appointment", "slot": "10:00", "patient": "PAT-100"; the reply states "Your appointment has
+      been successfully booked."
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 6539
+turns: 1
+usage:
+  input_tokens: 2676
+  output_tokens: 105
+summary: >-
+  The agent made a concise booking confirmation and included appointment details. Captured session
+  evidence confirms the corresponding successful appointment effect for PAT-100 at 10:00.

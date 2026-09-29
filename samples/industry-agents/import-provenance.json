@@ -1362,5 +1362,39 @@
     "Link finished videos instead of duplicating MP4s",
     "Use in-repository recorded evidence job",
     "Public samples use samples/industry-agents paths and the published @testmuai/rook CLI. Native workspace project placeholders and recorded path normalization are documented separately in native-ci-runs.json; the original 594 immutable source artifacts are unchanged."
-  ]
+  ],
+  "adaptedDocumentation": {
+    "demos/02-banking-no-code/rook/README.md": {
+      "sha256": "2588ad8cd25b7f22c19825b6a68fc052297390aea67a51b5396509dfdeeb9316",
+      "reason": "Make native scenario guide links resolve within a copied standalone edition."
+    },
+    "demos/07-customer-support-code/rook/README.md": {
+      "sha256": "d4091343f1c81d593475f1edc2fb6338230fd0165e7fdba8d137810ebcd164ea",
+      "reason": "Make native scenario guide links resolve within a copied standalone edition."
+    },
+    "demos/05-insurance-code/rook/README.md": {
+      "sha256": "3711b4298e096b6215e5258f5aae275aae45302dd2636538afaab067cb3561d7",
+      "reason": "Make native scenario guide links resolve within a copied standalone edition."
+    },
+    "demos/04-healthcare-no-code/rook/README.md": {
+      "sha256": "50a131ba74667343d33b538059dad5eaca9ff973b18ea18b970fad148d12e871",
+      "reason": "Make native scenario guide links resolve within a copied standalone edition."
+    },
+    "demos/08-customer-support-no-code/rook/README.md": {
+      "sha256": "61fd7e7044065a71508ed2c94020194c530381bdd7ea7ec4f96e8bcc64dc84bd",
+      "reason": "Make native scenario guide links resolve within a copied standalone edition."
+    },
+    "demos/01-banking-code/rook/README.md": {
+      "sha256": "bed7409f3bd91daa1fc5942481a797c05a4b0adb9b548264fc645046a24cb8c1",
+      "reason": "Make native scenario guide links resolve within a copied standalone edition."
+    },
+    "demos/03-healthcare-code/rook/README.md": {
+      "sha256": "2b11493bd4d11fc00966fa563f66372d1a1736f6e5dbc8458e26a4978dcc27a8",
+      "reason": "Make native scenario guide links resolve within a copied standalone edition."
+    },
+    "demos/06-insurance-no-code/rook/README.md": {
+      "sha256": "7f1ff74ff6d41ec096c5416ce85876834a42a22c0147bcd2eb706cda78681b74",
+      "reason": "Make native scenario guide links resolve within a copied standalone edition."
+    }
+  }
 }

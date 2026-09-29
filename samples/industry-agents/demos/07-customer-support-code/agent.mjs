@@ -1,4 +1,4 @@
-import { tool, objectSchema, str, num, deny, ok, effect, requirePositive, pickId } from '../../shared/domain.mjs';
+import { tool, objectSchema, str, num, deny, ok, effect, requirePositive, pickId } from './runtime/domain.mjs';
 
 export const domain = {
   id: 'customer-support', name: 'Juniper Goods', agent: 'Returns & Refunds Assistant',

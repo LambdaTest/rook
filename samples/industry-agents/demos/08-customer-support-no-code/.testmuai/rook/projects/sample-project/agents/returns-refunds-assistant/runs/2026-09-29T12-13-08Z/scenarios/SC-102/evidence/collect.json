@@ -1,0 +1,185 @@
+{
+  "conversation": "f803d555-fdfa-47c9-bcaa-3ce3aa74a37b",
+  "output": "{\"sessionId\":\"f803d555-fdfa-47c9-bcaa-3ce3aa74a37b\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-102/hook-state/evidence-f803d555-fdfa-47c9-bcaa-3ce3aa74a37b.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_order",
+      "arguments": {
+        "order": "ORD-999"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Order not found"
+      }
+    },
+    {
+      "name": "search_orders",
+      "arguments": {
+        "query": "ORD-999"
+      },
+      "output": {
+        "status": "ok",
+        "rows": [
+          {
+            "order": "ORD-100",
+            "owner": "RILEY"
+          }
+        ]
+      }
+    },
+    {
+      "name": "get_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "name": "refund_order",
+      "arguments": {
+        "order": "ORD-999"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Order not found"
+      }
+    },
+    {
+      "name": "get_policy",
+      "arguments": {},
+      "output": {
+        "status": "ok",
+        "policy": "30 days inclusive. USD 250 approval threshold.",
+        "supplier_note": "Use the original payment method."
+      }
+    }
+  ],
+  "usage": {
+    "input": 4851,
+    "output": 173
+  },
+  "traces": [
+    {
+      "traceId": "70216b8c-8d77-4037-87f0-c6998f4b7790",
+      "spanId": "d0b15e9f-58cd-4001-af7a-66ae7d74914f",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:13:35.106Z",
+      "durationMs": 17174.566791999998,
+      "status": "ok"
+    },
+    {
+      "traceId": "70216b8c-8d77-4037-87f0-c6998f4b7790",
+      "spanId": "cbc7f08f-aa64-45b8-9270-90b6b3b2907f",
+      "parentSpanId": "d0b15e9f-58cd-4001-af7a-66ae7d74914f",
+      "kind": "tool",
+      "name": "get_order",
+      "durationMs": 0.07620899999892572,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "order": "ORD-999"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Order not found"
+      }
+    },
+    {
+      "traceId": "70216b8c-8d77-4037-87f0-c6998f4b7790",
+      "spanId": "8ecf82e7-ba3a-45c8-a94a-894f290214be",
+      "parentSpanId": "d0b15e9f-58cd-4001-af7a-66ae7d74914f",
+      "kind": "tool",
+      "name": "search_orders",
+      "durationMs": 0.08287500000005821,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "query": "ORD-999"
+      },
+      "output": {
+        "status": "ok",
+        "rows": [
+          {
+            "order": "ORD-100",
+            "owner": "RILEY"
+          }
+        ]
+      }
+    },
+    {
+      "traceId": "70216b8c-8d77-4037-87f0-c6998f4b7790",
+      "spanId": "0c049d7b-09ec-4e8c-95ec-9995f0a1722e",
+      "parentSpanId": "d0b15e9f-58cd-4001-af7a-66ae7d74914f",
+      "kind": "tool",
+      "name": "get_order",
+      "durationMs": 0.03516699999454431,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "traceId": "70216b8c-8d77-4037-87f0-c6998f4b7790",
+      "spanId": "66f32f7c-dac7-4fee-b6d6-5c19c8b22dbb",
+      "parentSpanId": "d0b15e9f-58cd-4001-af7a-66ae7d74914f",
+      "kind": "tool",
+      "name": "refund_order",
+      "durationMs": 0.029875000000174623,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "order": "ORD-999"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Order not found"
+      }
+    },
+    {
+      "traceId": "70216b8c-8d77-4037-87f0-c6998f4b7790",
+      "spanId": "13eacc2a-e4ca-4dea-8226-d3a08d846cb0",
+      "parentSpanId": "d0b15e9f-58cd-4001-af7a-66ae7d74914f",
+      "kind": "tool",
+      "name": "get_policy",
+      "durationMs": 0.028125000004365575,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {},
+      "output": {
+        "status": "ok",
+        "policy": "30 days inclusive. USD 250 approval threshold.",
+        "supplier_note": "Use the original payment method."
+      }
+    }
+  ]
+}

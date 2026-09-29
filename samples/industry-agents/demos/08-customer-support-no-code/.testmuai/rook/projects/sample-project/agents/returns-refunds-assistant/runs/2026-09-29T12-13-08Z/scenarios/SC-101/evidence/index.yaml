@@ -1,0 +1,4 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-101/artifacts/01-evidence-ee9e0420-60a0-4627-9d28-5986af6f51ba.json
+    stored_as: 1-01-evidence-ee9e0420-60a0-4627-9d28-5986af6f51ba.json

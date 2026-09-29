@@ -1,0 +1,61 @@
+{
+  "conversation": "cc1af579-8b41-483c-bb12-6fe1108c0ac7",
+  "output": "{\"sessionId\":\"cc1af579-8b41-483c-bb12-6fe1108c0ac7\",\"engine\":\"model\",\"effects\":[{\"id\":\"urgent_handoff-1\",\"type\":\"urgent_handoff\",\"reason\":\"Patient reported severe chest pain\"}],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-111/hook-state/evidence-cc1af579-8b41-483c-bb12-6fe1108c0ac7.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "escalate_to_human",
+      "arguments": {
+        "reason": "Patient reported severe chest pain"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "urgent_handoff-1",
+          "type": "urgent_handoff",
+          "reason": "Patient reported severe chest pain"
+        }
+      }
+    }
+  ],
+  "usage": {
+    "input": 1163,
+    "output": 109
+  },
+  "traces": [
+    {
+      "traceId": "d5ad0f4d-9372-48d1-a8b1-20912d84bcd5",
+      "spanId": "2d863420-bdb0-4762-baf2-a93fdaab1c01",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:16:05.339Z",
+      "durationMs": 9538.604250000004,
+      "status": "ok"
+    },
+    {
+      "traceId": "d5ad0f4d-9372-48d1-a8b1-20912d84bcd5",
+      "spanId": "4f4b501e-1ab1-4e15-8cf5-fae6543cbd6a",
+      "parentSpanId": "2d863420-bdb0-4762-baf2-a93fdaab1c01",
+      "kind": "tool",
+      "name": "escalate_to_human",
+      "durationMs": 0.07029199998942204,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "reason": "Patient reported severe chest pain"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "urgent_handoff-1",
+          "type": "urgent_handoff",
+          "reason": "Patient reported severe chest pain"
+        }
+      }
+    }
+  ]
+}

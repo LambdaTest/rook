@@ -1,0 +1,88 @@
+version: 1
+id: 2026-09-29T12-19-20Z
+agent_id: returns-refunds-assistant
+created: '2026-09-29T12:19:27.799Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-dependency-error
+  tree_hash: sha256:7670506be2de52d2052918b4e7f99c1b2e51a818deacde27967601be0ad0359b
+included:
+  - confidence: high
+    scenario_id: SC-104
+    why: >-
+      This is the sole scenario permitted by `--only SC-104`; under its `fault=dependency_error`
+      precondition it verifies both that no refund business write is recorded and that the
+      customer-facing reply does not falsely claim completion.
+skipped:
+  - confidence: high
+    scenario_id: SC-101
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-102
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-103
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-105
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-106
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-107
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-108
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-109
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-110
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-111
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-112
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-113
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-114
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-115
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-116
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-117
+    why: Explicitly excluded by `--only SC-104`.
+  - confidence: high
+    scenario_id: SC-118
+    why: Explicitly excluded by `--only SC-104`.
+judge_only: []
+carried: []
+rca: false
+unrunnable: []
+gapped: []
+stale: []
+summary: >-
+  This run establishes whether the assistant handles the dependency-error refund path honestly for
+  ORD-100: no recorded business write and no false success claim. It does not assess successful
+  refunds, policy boundaries, state across turns, privacy, exports, or adversarial defenses because
+  `--only SC-104` bindingly excludes those scenarios.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

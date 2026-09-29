@@ -1,0 +1,40 @@
+scenario_id: SC-107
+run_id: 2026-09-29T12-12-17Z
+status: Unable to Verify
+unverifiable_reason: not_observable
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Observed total model tokens stay within the illustrative 4000-token budget. Use complete
+      provider-reported input plus output usage for the whole scenario. Missing or partial usage is
+      Unable to Verify, never zero.
+    expected: >-
+      Complete provider-reported input plus output token usage for the scenario must total no more
+      than 4000 tokens.
+    achieved: >-
+      The agent produced a substantive transfer-success response, but no complete provider-reported
+      input and output token usage or total_tokens metadata was captured.
+    status: Unable to Verify
+    evidence: >-
+      Agent response: "The transfer of USD 200 from ACC-1001 to SAV-1001 has been successfully
+      processed and verified on the ledger (Reference: TX-1001 / Receipt ID: transfer-1)." Observed
+      data includes latency, turns, and reply bytes, but no provider token-usage fields.
+    confidence: High
+pass_count: 0
+fail_count: 0
+unable_to_verify_count: 1
+compliance_percentage: 0
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  response_quality: 1
+latency_ms: 6165
+turns: 1
+usage:
+  input_tokens: 2994
+  output_tokens: 144
+summary: >-
+  The agent attempted and returned a substantive response to the transfer request. The token-budget
+  criterion cannot be verified because complete provider-reported token usage was not captured.

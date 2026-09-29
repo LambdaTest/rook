@@ -1,0 +1,88 @@
+version: 1
+id: 2026-09-29T12-19-00Z
+agent_id: patient-access-assistant
+created: '2026-09-29T12:19:09.230Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-slow-tool
+  tree_hash: sha256:6bcd2a45fe0c0789dffe25fd3eac7447dc806473ec0e44eb78b07dd3b731b9a9
+included:
+  - confidence: high
+    scenario_id: SC-106
+    why: >-
+      This is the sole scenario explicitly selected by --only. Its slow_tool precondition and three
+      rehearsals measure each target-turn duration from session-correlated demo-evidence.json
+      against the illustrative 100 ms budget.
+skipped:
+  - confidence: high
+    scenario_id: SC-101
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-102
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-103
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-104
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-105
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-107
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-108
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-109
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-110
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-111
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-112
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-113
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-114
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-115
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-116
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-117
+    why: Excluded by the binding --only SC-106 flag.
+  - confidence: high
+    scenario_id: SC-118
+    why: Excluded by the binding --only SC-106 flag.
+judge_only: []
+carried: []
+rca: false
+unrunnable: []
+gapped: []
+stale: []
+summary: >-
+  This run establishes whether the slow-tool appointment rehearsal meets its illustrative per-turn
+  100 ms budget across three repetitions, using target durations rather than controller latency. It
+  does not assess appointment correctness, safety boundaries, privacy, exports, escalation, token
+  use, or other excluded scenarios.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

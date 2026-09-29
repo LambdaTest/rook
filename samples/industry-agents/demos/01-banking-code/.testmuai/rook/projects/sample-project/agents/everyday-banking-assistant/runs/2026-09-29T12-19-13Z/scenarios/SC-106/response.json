@@ -1,0 +1,30 @@
+{
+  "scenario_id": "SC-106",
+  "attempt": 3,
+  "status": "completed",
+  "output": "The transfer of USD 200 from ACC-1001 to SAV-1001 has been completed and verified on the ledger (Reference: TX-1001 / Receipt ID: transfer-1).",
+  "raw_response": "{\"output\":\"The transfer of USD 200 from ACC-1001 to SAV-1001 has been completed and verified on the ledger (Reference: TX-1001 / Receipt ID: transfer-1).\",\"agent_reply\":\"The transfer of USD 200 from ACC-1001 to SAV-1001 has been completed and verified on the ledger (Reference: TX-1001 / Receipt ID: transfer-1).\",\"conversation\":\"09d33bb2-4159-45a9-ba74-f31bfd0e6b40\",\"calls\":[{\"name\":\"get_account\",\"arguments\":{\"account\":\"ACC-1001\"},\"output\":{\"status\":\"ok\",\"account\":\"ACC-1001\",\"owner\":\"MAYA\",\"balance\":5000,\"email\":\"maya@example.test\"}},{\"name\":\"get_account\",\"arguments\":{\"account\":\"SAV-1001\"},\"output\":{\"status\":\"ok\",\"account\":\"SAV-1001\",\"owner\":\"MAYA\",\"balance\":2000,\"email\":\"maya@example.test\"}},{\"name\":\"transfer\",\"arguments\":{\"from\":\"ACC-1001\",\"amount\":200,\"to\":\"SAV-1001\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"transfer-1\",\"type\":\"transfer\",\"from\":\"ACC-1001\",\"amount\":200,\"to\":\"SAV-1001\"}}},{\"name\":\"search_transactions\",\"arguments\":{\"query\":\"transfer-1\"},\"output\":{\"status\":\"ok\",\"rows\":[{\"owner\":\"MAYA\",\"reference\":\"TX-1001\",\"amount\":200}]}}],\"usage\":{\"input\":2965,\"output\":143}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD 200 from ACC-1001 to SAV-1001."
+    },
+    {
+      "role": "agent",
+      "content": "The transfer of USD 200 from ACC-1001 to SAV-1001 has been completed and verified on the ledger (Reference: TX-1001 / Receipt ID: transfer-1)."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-13Z/scenarios/SC-106/artifacts/01-evidence-09d33bb2-4159-45a9-ba74-f31bfd0e6b40.json",
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-13Z/scenarios/SC-106/artifacts/01-evidence-bff9e1c3-50a1-4dbd-8909-60be0a8cf8eb.json",
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-13Z/scenarios/SC-106/artifacts/01-evidence-d007a9d7-012d-4cd3-8f88-0d4136a70e26.json"
+  ],
+  "latency_ms": 12151,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 2965,
+    "output_tokens": 143
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

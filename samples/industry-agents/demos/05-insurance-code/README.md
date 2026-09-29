@@ -4,15 +4,14 @@ Turn a claim conversation into a verified settlement.
 
 **Customer:** Jordan Ellis · policyholder reporting vehicle damage. **What could go wrong:** Unapproved or duplicate settlements, cross-policyholder disclosure, or a payment confirmation without a receipt.
 
-[Meet the agent and view its diagrams](agents-overview.md) · [Visual walkthrough](../../docs/demo-walkthrough.html)
+[Meet the agent and view its diagrams](agents-overview.md) · [Visual walkthrough](docs/demo-walkthrough.html)
 
 ## Start the application
 
-You'll need Node.js 22 or later, Rook, and an OpenAI API key. From the collection root (`samples/industry-agents`):
+You'll need Node.js 22 or later, Rook, and an OpenAI API key. From this demo folder:
 
 ```bash
 npm ci
-cd demos/05-insurance-code
 npm run setup
 ```
 
@@ -34,10 +33,10 @@ This edition lets Rook explore the implementation and requirements. Developers c
 
 ## Discover and test with Rook
 
-Keep the application running. In a second terminal at the collection root (`samples/industry-agents`), prepare a fresh workspace:
+Keep the application running. In a second terminal in this demo folder, prepare a fresh workspace:
 
 ```bash
-npm run rook:prepare -- insurance-agent-code /tmp/insurance-agent-code
+npm run rook:prepare -- /tmp/insurance-agent-code
 cd /tmp/insurance-agent-code
 rook login
 rook project create "Agent Assurance — Atlas Cover"
@@ -72,7 +71,7 @@ The `--test` run stays out of the hosted project timeline. For an optional share
 
 This executes a new run and records its results in the hosted Web UI. It does not upload the earlier `--test` run. Open **agent → run → scenario** to inspect criteria, the conversation and collected evidence. Use `/guide` for help and `/exit` to leave Rook.
 
-For a shorter session using the supplied 18 reviewed scenarios, prepare the existing pack with `npm run rook:setup` in this edition's folder, then `npm run rook`. See the [interactive workflow](../../docs/testing-with-rook.md) for before/after comparisons, multi-turn conversations, red-teaming and MCP.
+For a shorter session using the supplied 18 reviewed scenarios, prepare the existing pack with `npm run rook:setup` in this edition's folder, then `npm run rook`. See the [interactive workflow](docs/testing-with-rook.md) for before/after comparisons, multi-turn conversations, red-teaming and MCP.
 
 ## What's included
 
@@ -80,11 +79,20 @@ This edition has 18 categories across functional, non-functional and adversarial
 
 ## Run Rook in CI
 
-This edition includes a native [.testmuai/rook](.testmuai/rook/) workspace with 18 scenarios, portable HTTP hooks, profiles and a recorded native smoke run. From the collection root:
+This folder includes a portable [.testmuai/rook](.testmuai/rook/) template with 18 scenarios, HTTP profiles, hooks and a recorded native smoke run. After npm ci and npm run setup in this folder, provide your existing LT_USERNAME, LT_ACCESS_KEY and accessible Rook project:
 
 ```bash
-npm run setup -- insurance-agent-code
-ROOK_ENV=prod npm run rook:ci -- insurance-agent-code --project PROJECT_ID
+ROOK_ENV=prod npm run rook:ci -- --project PROJECT_ID
 ```
 
-Use the existing `LT_USERNAME` and `LT_ACCESS_KEY` environment variables. The CI target defaults to `fixture` / `hardened`, matching the other HTTP samples, so it needs no model API key. Rook performs authenticated evaluation. [Full CI setup, project selection and results](../../docs/native-ci.md).
+The CI target defaults to fixture / hardened, so it needs no model API key. Rook evaluation uses your account. Each invocation writes to a new artifacts/local/rook-ci directory and preserves the supplied native workspace and earlier results. See [CI setup and evidence](docs/native-ci.md).
+
+The [full-category model recording](docs/full-coverage.md) contains real Rook results for all 18 categories. Run `npm run evidence:check` to verify those saved files and coverage without making new model calls.
+
+## Copying and preserving this demo
+
+Copy this entire directory, including hidden files (for example, `cp -R /path/to/this-demo /path/to/new-demo`; avoid `this-demo/*`, which omits dotfiles). Then run `npm ci` and `npm run setup` inside the copy. No parent checkout, sibling demo, shared runtime directory or symlink is required.
+
+Keep `.testmuai/rook/`: it contains the reusable sample project and its recorded run. `sample-settings.json` selects the CI template independently of your personal `settings.json`. Setup and regeneration preserve existing settings, definitions and evidence. New exploration/prepared workspaces must be empty; attempts to reuse a nonempty destination fail without deleting it. The QE runtime is included for the facilitator, while `rook:prepare` exports only requirements and connection material to the QE workspace.
+
+The sample project and reviewed runs are versioned. Private project folders, account selection, credentials, caches and fresh CI output remain local. Before sharing a complete local copy, review its .env and private project data separately.

@@ -1,0 +1,7 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-11-38Z/scenarios/SC-111/response.json
+    stored_as: 1-response.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-11-38Z/scenarios/SC-111/artifacts/01-evidence-60aea8f7-08bf-459a-879c-d827aea7a563.json
+    stored_as: 2-01-evidence-60aea8f7-08bf-459a-879c-d827aea7a563.json

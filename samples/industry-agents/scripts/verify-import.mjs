@@ -16,7 +16,9 @@ export async function checkImportedArtifacts(base = root) {
     const local = relative(base, path);
     assert.ok(!isAbsolute(local) && local !== '..' && !local.startsWith('../'), 'Artifact path escapes sample directory');
     const actual = createHash('sha256').update(await readFile(path)).digest('hex');
-    assert.equal(actual, provenance.importedFiles[file], `${file}: imported evidence changed`);
+    const adaptation = provenance.adaptedDocumentation?.[file];
+    if (adaptation) assert.match(file, /^demos\/[^/]+\/rook\/README\.md$/, 'Only scenario-guide links may have documentation adaptations');
+    assert.equal(actual, adaptation?.sha256 ?? provenance.importedFiles[file], `${file}: imported evidence changed`);
   }
   const manifest = JSON.parse(await readFile(join(base, 'artifacts/reference/sample-runs.json')));
   const runs = manifest.runs.length;

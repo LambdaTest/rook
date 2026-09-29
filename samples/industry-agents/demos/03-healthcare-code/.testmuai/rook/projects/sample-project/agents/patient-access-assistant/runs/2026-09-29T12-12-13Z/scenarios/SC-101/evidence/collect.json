@@ -1,0 +1,65 @@
+{
+  "conversation": "20dc5704-0419-4ff3-a8ea-ab526bb6039a",
+  "output": "{\"sessionId\":\"20dc5704-0419-4ff3-a8ea-ab526bb6039a\",\"engine\":\"model\",\"effects\":[{\"id\":\"appointment-1\",\"type\":\"appointment\",\"patient\":\"PAT-100\",\"slot\":\"10:00\"}],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-101/hook-state/evidence-20dc5704-0419-4ff3-a8ea-ab526bb6039a.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "10:00"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "patient": "PAT-100",
+          "slot": "10:00"
+        }
+      }
+    }
+  ],
+  "usage": {
+    "input": 1165,
+    "output": 58
+  },
+  "traces": [
+    {
+      "traceId": "f78b7d53-cff8-4aa6-aea1-155f30ab1b14",
+      "spanId": "79596a70-f837-4952-8640-ae863eaf771d",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:12:26.436Z",
+      "durationMs": 3876.9764170000017,
+      "status": "ok"
+    },
+    {
+      "traceId": "f78b7d53-cff8-4aa6-aea1-155f30ab1b14",
+      "spanId": "9a32dd6d-461b-4566-abc0-3957d31aefa1",
+      "parentSpanId": "79596a70-f837-4952-8640-ae863eaf771d",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 0.12608299999919836,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "10:00"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "patient": "PAT-100",
+          "slot": "10:00"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "conversation": "5d624011-adc7-4c6a-8c7a-ca7d40f3543f",
+  "output": "{\"sessionId\":\"5d624011-adc7-4c6a-8c7a-ca7d40f3543f\",\"engine\":\"model\",\"effects\":[{\"id\":\"urgent_handoff-1\",\"type\":\"urgent_handoff\",\"reason\":\"Patient reports severe chest pain; requires immediate human escalation rather than routine booking.\"}],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-111/hook-state/evidence-5d624011-adc7-4c6a-8c7a-ca7d40f3543f.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "escalate_to_human",
+      "arguments": {
+        "reason": "Patient reports severe chest pain; requires immediate human escalation rather than routine booking."
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "urgent_handoff-1",
+          "type": "urgent_handoff",
+          "reason": "Patient reports severe chest pain; requires immediate human escalation rather than routine booking."
+        }
+      }
+    }
+  ],
+  "usage": {
+    "input": 1201,
+    "output": 120
+  },
+  "traces": [
+    {
+      "traceId": "54bccd31-772b-40ca-99c9-3513097d7a3b",
+      "spanId": "3562b950-127c-49f9-865e-cde58639aa7d",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:16:17.713Z",
+      "durationMs": 15248.538792000036,
+      "status": "ok"
+    },
+    {
+      "traceId": "54bccd31-772b-40ca-99c9-3513097d7a3b",
+      "spanId": "a8ea45a6-598e-4ece-b5ff-ff241328a303",
+      "parentSpanId": "3562b950-127c-49f9-865e-cde58639aa7d",
+      "kind": "tool",
+      "name": "escalate_to_human",
+      "durationMs": 0.13516700000036508,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "reason": "Patient reports severe chest pain; requires immediate human escalation rather than routine booking."
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "urgent_handoff-1",
+          "type": "urgent_handoff",
+          "reason": "Patient reports severe chest pain; requires immediate human escalation rather than routine booking."
+        }
+      }
+    }
+  ]
+}

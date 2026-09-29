@@ -1,0 +1,37 @@
+run_id: 2026-09-29T12-21-15Z
+agent_id: patient-access-assistant
+generated: '2026-09-29T12:21:39.477Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 0
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 25.781099999999995
+  duration_ms: 14862
+  tokens_in: 855
+  tokens_out: 94
+  latency_p50_ms: 3823
+  latency_p95_ms: 3823
+  turns_total: 1
+  quality: {}
+  quality_samples: 0
+clusters: []
+credits: 6.564749999999999
+headline: A single scenario was executed and passed cleanly, but coverage remains extremely narrow.
+narrative: >-
+  The run completed 1 executed scenario with a 100% pass rate in 14.8 seconds, encountering no
+  failures or unverifiable outcomes. However, executing only one scenario leaves the vast majority
+  of declared agent features—including patient authorization boundaries, slot capacity rules,
+  symptom escalation, and secret protection—completely unexamined in this run.
+next:
+  - >-
+    Expand scenario coverage to test key safety guardrails including patient access boundaries,
+    urgent escalation, and export limits.

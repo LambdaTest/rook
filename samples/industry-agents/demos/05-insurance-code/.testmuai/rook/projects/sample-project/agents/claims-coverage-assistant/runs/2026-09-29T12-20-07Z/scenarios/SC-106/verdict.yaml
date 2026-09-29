@@ -1,0 +1,34 @@
+scenario_id: SC-106
+run_id: 2026-09-29T12-20-07Z
+status: Fail
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Each rehearsal turn completes within the illustrative 100 ms budget. Each target turn
+      durationMs must be at most 100; use the collected target trace, not controller latency.
+      Missing evidence is Unable to Verify.
+    expected: >-
+      Every rehearsal target turn must have durationMs at or below 100 ms, using the collected
+      target trace.
+    achieved: >-
+      The collected target traces show three rehearsal turns with durations of 8556.65 ms, 6742.27
+      ms, and 7719.85 ms, all above 100 ms.
+    status: Fail
+    evidence: >-
+      Captured target trace: "durationMs": 8556.646750000014; other collected turns record
+      "durationMs": 6742.266790999973 and "durationMs": 7719.8452080000425.
+    confidence: High
+pass_count: 0
+fail_count: 1
+unable_to_verify_count: 0
+compliance_percentage: 0
+forbidden_hits: []
+metrics: {}
+latency_ms: 6812
+turns: 1
+usage:
+  input_tokens: 3832
+  output_tokens: 159
+summary: >-
+  The agent attempted and completed the claim-settlement task, but the collected target traces show
+  every rehearsal turn substantially exceeded the 100 ms budget.

@@ -1,0 +1,49 @@
+local_id: SC-105
+title: 'Juniper Goods: Carry the customer context into the next turn'
+feature_id: F-006
+feature_revision_id: sha256:e904559a892caa8dd3b4e89a9927e0c599a73ff70dcb7c141286239e9caa445d
+goal: Refund the same order.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      The reply uses the entity from the preceding turn. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    check: llm_judge
+forbidden: []
+why: Customers should not have to repeat themselves; context must stay in their session.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic customer-support session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - get_order
+    - refund_order
+  subagents: []
+  services: []
+calls: []
+multi_turn: true
+setup_messages:
+  - Read ORD-100.
+max_turns: 1
+repeat: 1
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - customer-support-05
+  - fault-none
+class: functional
+category: state_context
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

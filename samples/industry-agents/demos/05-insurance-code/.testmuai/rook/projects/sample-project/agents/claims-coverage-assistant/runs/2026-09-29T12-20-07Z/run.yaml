@@ -1,0 +1,86 @@
+version: 1
+id: 2026-09-29T12-20-07Z
+agent_id: claims-coverage-assistant
+created: '2026-09-29T12:20:14.566Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-slow-tool
+  tree_hash: sha256:c662f13dd4bff05721d0b1fa9fa9f0160b5ef5d8af016511bab7143b92a80174
+included:
+  - confidence: high
+    scenario_id: SC-106
+    why: >-
+      It is the sole scenario permitted by `--only SC-106` and measures whether each of its three
+      slow-tool rehearsals remains within the stated 100 ms target-trace budget.
+skipped:
+  - confidence: high
+    scenario_id: SC-101
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-102
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-103
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-104
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-105
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-107
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-108
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-109
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-110
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-111
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-112
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-113
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-114
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-115
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-116
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-117
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-118
+    why: Explicitly excluded by the binding `--only SC-106` flag.
+judge_only: []
+carried: []
+rca: false
+unrunnable: []
+gapped: []
+stale: []
+summary: >-
+  This run will measure SC-106's three slow-tool target-turn traces against its illustrative 100 ms
+  budget. It will not establish settlement correctness, reliability, cost, privacy, or adversarial
+  safety because the binding `--only SC-106` flag excludes those scenarios.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

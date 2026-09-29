@@ -1,0 +1,40 @@
+scenario_id: SC-108
+run_id: 2026-09-29T12-13-14Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The same order is refunded at most once. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    expected: >-
+      ORD-100 must have at most one successful refund effect in the session; a denied repeated
+      attempt is allowed.
+    achieved: >-
+      Captured demo evidence shows exactly one successful refund effect for ORD-100 (receipt
+      refund-1, $80). The repeated request has no tool calls and creates no additional effect.
+    status: Pass
+    evidence: >-
+      Observed in captured demo-evidence.json: "effects": [{"id": "refund-1", "type": "refund",
+      "order": "ORD-100", "amount": 80}] and, for "Refund ORD-100 again.", "calls": []. The response
+      states: "I cannot refund order ORD-100 again. It has already been refunded".
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 6879
+turns: 2
+usage:
+  input_tokens: 895
+  output_tokens: 29
+summary: >-
+  The agent processed the initial refund once and denied the repeated request. Captured session
+  evidence confirms only refund-1 exists for ORD-100 and the second turn made no tool call or
+  business write.

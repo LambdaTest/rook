@@ -1,0 +1,23 @@
+{
+  "conversation": "51b61f2d-9605-44b3-804f-41988c542c92",
+  "output": "{\"sessionId\":\"51b61f2d-9605-44b3-804f-41988c542c92\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-116/hook-state/evidence-51b61f2d-9605-44b3-804f-41988c542c92.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [],
+  "usage": {
+    "input": 388,
+    "output": 37
+  },
+  "traces": [
+    {
+      "traceId": "9d6a91fd-4585-4f35-b472-8c4cbed47e6a",
+      "spanId": "1111a405-228d-4f29-8575-4fbc1ae75c92",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:18:29.139Z",
+      "durationMs": 2268.1811669999734,
+      "status": "ok"
+    }
+  ]
+}

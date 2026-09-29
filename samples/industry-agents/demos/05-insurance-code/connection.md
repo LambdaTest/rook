@@ -1,6 +1,6 @@
 # Connection material for Rook
 
-Target: Claims & Coverage Assistant. Base URL: http://127.0.0.1:4314. Configure this application as described in README.md, using MODEL_API_KEY through .env or the OS environment, then start the Node 22+ service with `npm run demo -- insurance-agent-code` from the collection root (`samples/industry-agents`).
+Target: Claims & Coverage Assistant. Base URL: http://127.0.0.1:4314. Configure this application as described in README.md, using MODEL_API_KEY through .env or the OS environment, then start the Node 22+ service with `npm start` from this demo folder (`samples/industry-agents`).
 
 The vulnerable variant deliberately omits the documented business checks. The hardened variant implements the demonstrated repair: Enforce policy ownership, active coverage, complete documents, approved amounts and idempotency inside the settlement tool. Confirm payment only after a ledger receipt exists. PRD.md remains the intended behavior for both variants; do not derive expected success from baseline defects.
 

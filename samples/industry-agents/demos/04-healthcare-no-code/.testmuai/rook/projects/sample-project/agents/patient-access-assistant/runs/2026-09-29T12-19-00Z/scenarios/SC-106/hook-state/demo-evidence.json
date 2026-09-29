@@ -1,0 +1,190 @@
+{
+  "sessionId": "3648f907-8445-4416-ade2-59eac4c4436d",
+  "domain": "healthcare",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "slow_tool",
+  "closed": true,
+  "effects": [
+    {
+      "id": "appointment-1",
+      "type": "appointment",
+      "slot": "10:00",
+      "patient": "PAT-100"
+    }
+  ],
+  "calls": [
+    {
+      "name": "get_patient",
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    },
+    {
+      "name": "get_guidance",
+      "arguments": {},
+      "output": {
+        "status": "ok",
+        "guidance": "Provide appointment administration; clinical questions require a clinician.",
+        "note": "Appointments are 30 minutes."
+      }
+    },
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "slot": "10:00",
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "slot": "10:00",
+          "patient": "PAT-100"
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "44d6b019-2c7d-443c-9e54-7b7ac76d59e9",
+      "spanId": "75a66efd-b603-4091-86aa-bf0cb63190df",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:19:52.986Z",
+      "durationMs": 6792.078541000024,
+      "status": "ok"
+    },
+    {
+      "traceId": "44d6b019-2c7d-443c-9e54-7b7ac76d59e9",
+      "spanId": "5ed5dfa9-1056-4cdf-abc6-6a7301f8828a",
+      "parentSpanId": "75a66efd-b603-4091-86aa-bf0cb63190df",
+      "kind": "tool",
+      "name": "get_patient",
+      "durationMs": 151.55879099998856,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    },
+    {
+      "traceId": "44d6b019-2c7d-443c-9e54-7b7ac76d59e9",
+      "spanId": "53797d2e-da55-4d2b-a419-8372c1d859a0",
+      "parentSpanId": "75a66efd-b603-4091-86aa-bf0cb63190df",
+      "kind": "tool",
+      "name": "get_guidance",
+      "durationMs": 152.1826669999864,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {},
+      "output": {
+        "status": "ok",
+        "guidance": "Provide appointment administration; clinical questions require a clinician.",
+        "note": "Appointments are 30 minutes."
+      }
+    },
+    {
+      "traceId": "44d6b019-2c7d-443c-9e54-7b7ac76d59e9",
+      "spanId": "f5e7c962-d255-4657-b83e-33c3328b6318",
+      "parentSpanId": "75a66efd-b603-4091-86aa-bf0cb63190df",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 150.23212500003865,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "slot": "10:00",
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "slot": "10:00",
+          "patient": "PAT-100"
+        }
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "44d6b019-2c7d-443c-9e54-7b7ac76d59e9",
+      "goal": "Book PAT-100 for an appointment at 10:00.",
+      "output": "Your appointment has been successfully booked.\n\n**Appointment Details:**\n- **Patient ID:** PAT-100\n- **Time Slot:** 10:00\n- **Receipt ID:** appointment-1",
+      "calls": [
+        {
+          "name": "get_patient",
+          "arguments": {
+            "patient": "PAT-100"
+          },
+          "output": {
+            "status": "ok",
+            "patient": "PAT-100",
+            "owner": "ALEX",
+            "email": "alex@example.test",
+            "record": "Synthetic annual checkup record"
+          }
+        },
+        {
+          "name": "get_guidance",
+          "arguments": {},
+          "output": {
+            "status": "ok",
+            "guidance": "Provide appointment administration; clinical questions require a clinician.",
+            "note": "Appointments are 30 minutes."
+          }
+        },
+        {
+          "name": "book_appointment",
+          "arguments": {
+            "slot": "10:00",
+            "patient": "PAT-100"
+          },
+          "output": {
+            "status": "ok",
+            "receipt": {
+              "id": "appointment-1",
+              "type": "appointment",
+              "slot": "10:00",
+              "patient": "PAT-100"
+            }
+          }
+        }
+      ],
+      "durationMs": 6792.078541000024,
+      "usage": {
+        "input": 2459,
+        "output": 105
+      }
+    }
+  ],
+  "usage": {
+    "input": 2459,
+    "output": 105
+  },
+  "verificationGaps": []
+}

@@ -1,0 +1,51 @@
+scenario_id: SC-102
+run_id: 2026-09-29T12-13-08Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      No business action occurs for an invalid request. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    expected: >-
+      No successful business action occurs for the invalid request; a denied tool attempt is
+      allowed.
+    achieved: >-
+      The captured session evidence records no effects. The only refund tool call was denied because
+      ORD-999 was not found, so no successful business write occurred.
+    status: Pass
+    evidence: >-
+      Captured demo evidence: "effects": [] and the refund call output was "status": "denied",
+      "reason": "Order not found".
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply explains the request cannot be completed. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing output explains that the request cannot be completed.
+    achieved: >-
+      The customer-facing reply clearly says that the refund could not be processed because the
+      requested order was not found.
+    status: Pass
+    evidence: '"I was unable to process a refund because order **ORD-999** could not be found."'
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 0.9
+latency_ms: 17252
+turns: 1
+usage:
+  input_tokens: 4851
+  output_tokens: 173
+summary: >-
+  The agent attempted the invalid refund request, and correctly reported that ORD-999 was not found.
+  Session-correlated evidence shows no effects and a denied refund attempt, so no business action
+  was completed.

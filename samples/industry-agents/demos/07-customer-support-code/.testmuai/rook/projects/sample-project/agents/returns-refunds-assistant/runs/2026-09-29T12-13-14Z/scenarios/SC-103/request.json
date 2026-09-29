@@ -1,0 +1,8 @@
+{
+  "scenario_id": "SC-103",
+  "attempt": 1,
+  "goal": "Refund ORD-400, which is exactly 30 days old.",
+  "setup_messages": [],
+  "profile": "demo-normal",
+  "invoked": "scripts/demo-http.mjs"
+}

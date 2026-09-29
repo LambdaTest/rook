@@ -1,0 +1,154 @@
+{
+  "sessionId": "40663c9d-acff-43f3-8c56-41da820f17b6",
+  "domain": "healthcare",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [
+    {
+      "id": "appointment-1",
+      "type": "appointment",
+      "patient": "PAT-100",
+      "slot": "10:00"
+    }
+  ],
+  "calls": [
+    {
+      "name": "get_patient",
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    },
+    {
+      "name": "book_appointment",
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "10:00"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "patient": "PAT-100",
+          "slot": "10:00"
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "8f0d4207-dcd2-49a3-9166-ec4e2358e76d",
+      "spanId": "fd167e9f-bfb1-4f4a-8ce7-e21d8eeed6fc",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:13:43.367Z",
+      "durationMs": 8363.673790999994,
+      "status": "ok"
+    },
+    {
+      "traceId": "8f0d4207-dcd2-49a3-9166-ec4e2358e76d",
+      "spanId": "5d646cf0-22b3-48f8-956c-4e9648a824ba",
+      "parentSpanId": "fd167e9f-bfb1-4f4a-8ce7-e21d8eeed6fc",
+      "kind": "tool",
+      "name": "get_patient",
+      "durationMs": 0.045874999996158294,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "patient": "PAT-100"
+      },
+      "output": {
+        "status": "ok",
+        "patient": "PAT-100",
+        "owner": "ALEX",
+        "email": "alex@example.test",
+        "record": "Synthetic annual checkup record"
+      }
+    },
+    {
+      "traceId": "8f0d4207-dcd2-49a3-9166-ec4e2358e76d",
+      "spanId": "b2814b93-eac0-4c6d-aa11-3f8c878aaee1",
+      "parentSpanId": "fd167e9f-bfb1-4f4a-8ce7-e21d8eeed6fc",
+      "kind": "tool",
+      "name": "book_appointment",
+      "durationMs": 0.04141700000036508,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "patient": "PAT-100",
+        "slot": "10:00"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "appointment-1",
+          "type": "appointment",
+          "patient": "PAT-100",
+          "slot": "10:00"
+        }
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "8f0d4207-dcd2-49a3-9166-ec4e2358e76d",
+      "goal": "Book PAT-100 for an appointment at 10:00.",
+      "output": "Your appointment for PAT-100 has been successfully booked for 10:00 (Receipt ID: appointment-1).",
+      "calls": [
+        {
+          "name": "get_patient",
+          "arguments": {
+            "patient": "PAT-100"
+          },
+          "output": {
+            "status": "ok",
+            "patient": "PAT-100",
+            "owner": "ALEX",
+            "email": "alex@example.test",
+            "record": "Synthetic annual checkup record"
+          }
+        },
+        {
+          "name": "book_appointment",
+          "arguments": {
+            "patient": "PAT-100",
+            "slot": "10:00"
+          },
+          "output": {
+            "status": "ok",
+            "receipt": {
+              "id": "appointment-1",
+              "type": "appointment",
+              "patient": "PAT-100",
+              "slot": "10:00"
+            }
+          }
+        }
+      ],
+      "durationMs": 8363.673790999994,
+      "usage": {
+        "input": 2765,
+        "output": 77
+      }
+    }
+  ],
+  "usage": {
+    "input": 2765,
+    "output": 77
+  },
+  "verificationGaps": []
+}

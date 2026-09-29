@@ -1,0 +1,7 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-20Z/scenarios/SC-104/response.json
+    stored_as: 1-response.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-20Z/scenarios/SC-104/artifacts/01-evidence-28aee131-92a0-4d49-8d85-3caf6a8dd344.json
+    stored_as: 2-01-evidence-28aee131-92a0-4d49-8d85-3caf6a8dd344.json

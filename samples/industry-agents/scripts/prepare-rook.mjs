@@ -15,7 +15,8 @@ if (demo.style === 'code') {
   // Preserve the source module's relative imports, without exposing other domains.
   await mkdir(join(target, 'source', 'demos', demo.id), { recursive: true });
   await mkdir(join(target, 'source', 'shared'), { recursive: true });
-  await copyFile(join(root, 'demos', demo.id, 'agent.mjs'), join(target, 'source', 'demos', demo.id, 'agent.mjs'));
+  const agentSource = await readFile(join(root, 'demos', demo.id, 'agent.mjs'), 'utf8');
+  await writeFile(join(target, 'source', 'demos', demo.id, 'agent.mjs'), agentSource.replace('./runtime/domain.mjs', '../../shared/domain.mjs'));
   for (const file of ['domain.mjs', 'engine.mjs']) await copyFile(join(root, 'shared', file), join(target, 'source', 'shared', file));
 }
 await writeFile(join(target, 'generation-instructions.md'), `# Native Rook scenario generation: ${demo.title}\n\n` +

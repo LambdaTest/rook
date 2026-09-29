@@ -1,4 +1,4 @@
-import { tool, objectSchema, str, deny, ok, effect, pickId } from '../../shared/domain.mjs';
+import { tool, objectSchema, str, deny, ok, effect, pickId } from './runtime/domain.mjs';
 
 export const domain = {
   id: 'healthcare', name: 'Harbor Care', agent: 'Patient Access Assistant',

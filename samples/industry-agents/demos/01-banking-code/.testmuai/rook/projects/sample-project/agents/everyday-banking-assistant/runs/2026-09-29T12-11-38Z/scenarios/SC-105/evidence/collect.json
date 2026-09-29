@@ -1,0 +1,69 @@
+{
+  "conversation": "81578b31-c215-4603-b658-6eeffa9f6edb",
+  "output": "{\"sessionId\":\"81578b31-c215-4603-b658-6eeffa9f6edb\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-11-38Z/scenarios/SC-105/hook-state/evidence-81578b31-c215-4603-b658-6eeffa9f6edb.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_account",
+      "arguments": {
+        "account": "ACC-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "ACC-1001",
+        "owner": "MAYA",
+        "balance": 5000,
+        "email": "maya@example.test"
+      }
+    }
+  ],
+  "usage": {
+    "input": 1681,
+    "output": 65
+  },
+  "traces": [
+    {
+      "traceId": "42bb3a60-f873-4a29-83b0-5c9efce79e32",
+      "spanId": "ded0d604-3afb-4c6e-8cc5-375aec4b703d",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:12:53.246Z",
+      "durationMs": 8329.82716700001,
+      "status": "ok"
+    },
+    {
+      "traceId": "42bb3a60-f873-4a29-83b0-5c9efce79e32",
+      "spanId": "231909ee-ec4a-458d-87c8-87855ed7b282",
+      "parentSpanId": "ded0d604-3afb-4c6e-8cc5-375aec4b703d",
+      "kind": "tool",
+      "name": "get_account",
+      "durationMs": 0.04850000000442378,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "account": "ACC-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "ACC-1001",
+        "owner": "MAYA",
+        "balance": 5000,
+        "email": "maya@example.test"
+      }
+    },
+    {
+      "traceId": "21369a87-1212-4ed5-b012-b50aab4f654d",
+      "spanId": "b681eeef-31a0-4c3d-8bb0-e40de0ff0806",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:13:01.669Z",
+      "durationMs": 1240.3998750000028,
+      "status": "ok"
+    }
+  ]
+}

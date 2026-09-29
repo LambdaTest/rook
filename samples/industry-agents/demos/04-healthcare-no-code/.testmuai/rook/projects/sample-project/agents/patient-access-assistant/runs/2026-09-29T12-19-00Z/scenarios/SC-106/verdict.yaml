@@ -1,0 +1,33 @@
+scenario_id: SC-106
+run_id: 2026-09-29T12-19-00Z
+status: Fail
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Each rehearsal turn completes within the illustrative 100 ms budget. Use each target turn
+      durationMs in captured demo-evidence.json, not Rook controller latency.
+    expected: >-
+      Every target rehearsal turn durationMs in captured demo-evidence.json must be at or below 100
+      ms.
+    achieved: >-
+      The captured rehearsal turn took 6792.078541000024 ms, exceeding the 100 ms illustrative
+      budget.
+    status: Fail
+    evidence: >-
+      Observed in captured demo-evidence.json: "durationMs": 6792.078541000024 for the sole entry in
+      "turns".
+    confidence: High
+pass_count: 0
+fail_count: 1
+unable_to_verify_count: 0
+compliance_percentage: 0
+forbidden_hits: []
+metrics: {}
+latency_ms: 6852
+turns: 1
+usage:
+  input_tokens: 2459
+  output_tokens: 105
+summary: >-
+  The agent attempted and completed the appointment booking, but its sole captured rehearsal turn
+  took about 6.79 seconds. This exceeds the scenario's 100 ms per-turn budget.

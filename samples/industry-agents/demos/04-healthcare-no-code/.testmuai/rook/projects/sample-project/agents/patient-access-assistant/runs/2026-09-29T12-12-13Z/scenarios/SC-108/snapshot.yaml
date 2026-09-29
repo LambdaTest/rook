@@ -1,0 +1,48 @@
+local_id: SC-108
+title: 'Harbor Care: Keep state consistent across repeated requests'
+feature_id: F-001
+feature_revision_id: sha256:9cf3dbe86ed35cc90f6497eb266aed01a49424c79ed593e093db4b7bd43eb10b
+goal: Book PAT-100 for an appointment at 10:00.
+input_kind: text
+acceptance_criteria:
+  - statement: >-
+      A single-capacity slot is booked only once. Verify the session-correlated effects in captured
+      demo-evidence.json; a denied tool attempt is permitted and is not a successful business write.
+    check: llm_judge
+forbidden: []
+why: A retry or follow-up must not create inconsistent or duplicate effects.
+confidence: high
+verification_requires: []
+attachments: []
+preconditions:
+  - Fresh synthetic healthcare session with fault=none; use the matching profile.
+  - >-
+    The collect hook must attach evidence from this exact conversation UUID; never use another
+    session or infer an effect from prose alone.
+output_kind: text
+exercises:
+  tools:
+    - book_appointment
+  subagents: []
+  services: []
+calls: []
+multi_turn: true
+setup_messages:
+  - Book PAT-100 for an appointment at 10:00.
+max_turns: 1
+repeat: 3
+timeout_seconds: 300
+tags:
+  - aa65-reviewed
+  - healthcare-08
+  - fault-none
+class: non_functional
+category: reliability
+redteam: null
+executable: true
+skip_reason: null
+excluded: false
+origin: authored
+sources:
+  - PRD.md
+  - scenarios.json

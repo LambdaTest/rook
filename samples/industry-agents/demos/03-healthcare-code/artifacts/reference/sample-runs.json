@@ -1,0 +1,104 @@
+{
+  "kind": "recorded-rook-runs",
+  "exportedAt": "2026-09-17T14:55:52.294Z",
+  "notes": [
+    "Actual Rook output from model-backed demo agents. All business records are fictional.",
+    "Native report, verdict and scenario snapshots are preserved. Response artifact paths are made relative to the sample directory; request hook paths are made relative to the demo repository.",
+    "Only selected input, response and collected business evidence files are included. Credentials, hook state, local configuration and judge working files are excluded.",
+    "These focused runs do not cover all 18 categories. Native report counts for excluded or unrunnable scenarios are retained."
+  ],
+  "runs": [
+    {
+      "id": "healthcare-agent-code/journeys",
+      "directory": "rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-40-29Z",
+      "recordedAt": "2026-09-17T14:42:03.836Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "f90d09f4ba0799f7d8fa17cdbbd347848983878e0ca39e718cefe310e826e9e9",
+        "scenarios/SC-101/verdict.yaml": "681ee0bbd0f9afcc7a15cfdb54678f62af5518c13c542fe0505ee0594205026f",
+        "scenarios/SC-101/snapshot.yaml": "5c39a40d1f3e0367f8e91953b2e0c6bc921ebac54ea1b5a3e2dc5a34271033ec",
+        "scenarios/SC-101/request.json": "8c5a40855dd01e773db547acea187f6387703b2fb8da0addbf16abd52adc8bb6",
+        "scenarios/SC-101/response.json": "fe90fceacdd2ab66d2a77144e79f72f189894093554490598e70a85c46a05a0b",
+        "scenarios/SC-101/artifacts/01-demo-evidence-3e1c1820-483b-4cfc-a7e7-dacfb823e912.json": "c157f3a3f27ee73d9367c5b6bbeeae64f75267664a27298e3aa6432543e20b04",
+        "scenarios/SC-105/verdict.yaml": "8c11b14289358be0b1dc986ff1c24f58d9532dd519405d696202748f65d500ec",
+        "scenarios/SC-105/snapshot.yaml": "aa6108cd251400a8c56d407eb644a3c9f035e29535d4033f97bf0ce8ec713559",
+        "scenarios/SC-105/request.json": "7f68c740d48d1b3d20ae6036d6c3ecfabf507f83fd4965c87c21dded83927c92",
+        "scenarios/SC-105/response.json": "0623966ca46a236e2eaf084cc61acc54e429aadba4e001b2a51c148ac5c03859",
+        "scenarios/SC-105/artifacts/01-demo-evidence-7fd33b4d-e411-46a0-b594-9d8415868ea4.json": "19dfc454e5346aa377d419d9217cb13cd7e20d5708865ef8ce57f6b668374654",
+        "scenarios/SC-111/verdict.yaml": "4659174a4d73fe5fc7d7fd1549120816162b0ff358536b29a9bf1b00b1ce20c8",
+        "scenarios/SC-111/snapshot.yaml": "256c28b499581c89b58a5ce1206e20a89dca1f5ddf74d7a52c0f4c3f6fb78537",
+        "scenarios/SC-111/request.json": "797a688d43ad2d4b2f9a39d64d549d30b45cc9298c395916ed8b22ead58c527d",
+        "scenarios/SC-111/response.json": "699f94faccbcdc50ae0f9ff9c6ccd95dca3f3b1a15278bc7f5de8f3aacee3b99",
+        "scenarios/SC-111/artifacts/01-demo-evidence-9d69c265-dce3-4493-b4cf-b8b3d40d1bf5.json": "c45078006e591b80024160ca602a8f7836fa4d362667c8bc42b540e6f45e2800"
+      }
+    },
+    {
+      "id": "healthcare-agent-code/before",
+      "directory": "rook/sample-runs/before",
+      "runId": "2026-09-17T14-42-09Z",
+      "recordedAt": "2026-09-17T14:42:53.007Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-103"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "4e4c854323d2f1afc02decdca59a5a62f98812557c59921cd7e91d053d709057",
+        "scenarios/SC-103/verdict.yaml": "fc3321cbce1857488322d065a97fce6e0d08023bd4503f986d078b66808bbc4c",
+        "scenarios/SC-103/snapshot.yaml": "9cb1dc6d6009ea6a1d88fec5a7e1d7b83dd17866333c643be1ba39f535f0431a",
+        "scenarios/SC-103/request.json": "fe27e8dfe8a2c5c96744c48bb6ee9e90859a4db41b95a999c2be0613e73b304c",
+        "scenarios/SC-103/response.json": "9487820e92a94dabf48df90c5d6ffdacaf506f7ecac7e43f0419e5ad43ddcdff",
+        "scenarios/SC-103/artifacts/01-demo-evidence-1f150dbd-6d4f-44b9-8df1-275d1aaa7045.json": "74c43bb5e6d0abfbb99318074d0d39350ceb914e7a82b584f6a66605281c886b"
+      }
+    },
+    {
+      "id": "healthcare-agent-code/after",
+      "directory": "rook/sample-runs/after",
+      "runId": "2026-09-17T14-42-58Z",
+      "recordedAt": "2026-09-17T14:43:40.425Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-103"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "6d0b6996216c460eb591c741689e97b186b843d8f300ac41a86cb7e164ba667a",
+        "scenarios/SC-103/verdict.yaml": "cf71bffb523d5a81921b2c7266a3ec36e42d75333395815f754f3cf058443213",
+        "scenarios/SC-103/snapshot.yaml": "9cb1dc6d6009ea6a1d88fec5a7e1d7b83dd17866333c643be1ba39f535f0431a",
+        "scenarios/SC-103/request.json": "fe27e8dfe8a2c5c96744c48bb6ee9e90859a4db41b95a999c2be0613e73b304c",
+        "scenarios/SC-103/response.json": "9c155632ae31dbadc2791bfe432edd121cebcb2f995d33f2fb0360fb4211455f",
+        "scenarios/SC-103/artifacts/01-demo-evidence-29d49335-e48d-426a-b15e-dfdd003c4af1.json": "be2881adc550eec4019d669e82c3072448aa908db8bbf1bb87fc259e05625965"
+      }
+    },
+    {
+      "id": "healthcare-agent-code/mcp",
+      "directory": "rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-43-46Z",
+      "recordedAt": "2026-09-17T14:44:20.759Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "b345ccf07262c5a50515f6747aa84f1b21070d351264dbe685cd1ccff58161be",
+        "scenarios/SC-105/verdict.yaml": "4f7a5b978730eee09b752ab837de3c5c67bfdb3eeb4a9194cd7140d38a0532eb",
+        "scenarios/SC-105/snapshot.yaml": "aa6108cd251400a8c56d407eb644a3c9f035e29535d4033f97bf0ce8ec713559",
+        "scenarios/SC-105/request.json": "9794f0022a62d29cffd70b643a94750278c46244e0f6efb77d201bb940ba2b78",
+        "scenarios/SC-105/response.json": "941dbe87a86afb3abd03b69ec20946a6a91e64bb29e8090aad091e337df7889a",
+        "scenarios/SC-105/artifacts/01-demo-evidence-740b904d-fccb-48bf-84be-4c49ef459600.json": "aad8521b9739b7d749cd6ceee1c904f01689fb8651de65b31e66a884a262b16e"
+      }
+    }
+  ]
+}

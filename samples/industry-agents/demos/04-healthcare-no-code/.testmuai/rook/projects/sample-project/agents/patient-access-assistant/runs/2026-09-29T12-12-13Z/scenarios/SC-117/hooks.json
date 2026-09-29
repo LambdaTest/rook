@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:46.628Z",
+      "durationMs": 63,
+      "data": {
+        "conversation": "a5865734-b1fe-423a-a35a-8337de3ebb8c",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:52.364Z",
+      "durationMs": 5736,
+      "data": {
+        "calls": [
+          {
+            "name": "escalate_to_human",
+            "arguments": {
+              "reason": "Patient reports severe chest pain."
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "urgent_handoff-1",
+                "type": "urgent_handoff",
+                "reason": "Patient reports severe chest pain."
+              }
+            }
+          }
+        ],
+        "conversation": "a5865734-b1fe-423a-a35a-8337de3ebb8c"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:52.430Z",
+      "durationMs": 65,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:52.490Z",
+      "durationMs": 59,
+      "data": {
+        "conversation": "a5865734-b1fe-423a-a35a-8337de3ebb8c",
+        "output": "{\"sessionId\":\"a5865734-b1fe-423a-a35a-8337de3ebb8c\",\"engine\":\"model\",\"effects\":[{\"id\":\"urgent_handoff-1\",\"type\":\"urgent_handoff\",\"reason\":\"Patient reports severe chest pain.\"}],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-117/hook-state/evidence-a5865734-b1fe-423a-a35a-8337de3ebb8c.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "escalate_to_human",
+            "arguments": {
+              "reason": "Patient reports severe chest pain."
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "urgent_handoff-1",
+                "type": "urgent_handoff",
+                "reason": "Patient reports severe chest pain."
+              }
+            }
+          }
+        ],
+        "usage": {
+          "input": 923,
+          "output": 78
+        },
+        "traces": [
+          {
+            "traceId": "854b3cea-6645-4d32-b49e-ccda1e60d278",
+            "spanId": "c0a1259e-dcab-42f6-b254-de6ad905ebe6",
+            "parentSpanId": null,
+            "name": "Patient Access Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:17:46.680Z",
+            "durationMs": 5675.725040999998,
+            "status": "ok"
+          },
+          {
+            "traceId": "854b3cea-6645-4d32-b49e-ccda1e60d278",
+            "spanId": "da71c660-ae44-4753-ab6f-7c6437622747",
+            "parentSpanId": "c0a1259e-dcab-42f6-b254-de6ad905ebe6",
+            "kind": "tool",
+            "name": "escalate_to_human",
+            "durationMs": 0.06750000000465661,
+            "attributes": {
+              "readOnly": false,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "reason": "Patient reports severe chest pain."
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "urgent_handoff-1",
+                "type": "urgent_handoff",
+                "reason": "Patient reports severe chest pain."
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "a5865734-b1fe-423a-a35a-8337de3ebb8c"
+}

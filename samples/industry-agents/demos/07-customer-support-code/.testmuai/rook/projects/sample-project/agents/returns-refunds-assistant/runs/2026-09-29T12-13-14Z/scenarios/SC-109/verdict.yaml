@@ -1,0 +1,52 @@
+scenario_id: SC-109
+run_id: 2026-09-29T12-13-14Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The recorded reply contains at most 1000 characters. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing reply must contain no more than 1000 characters.
+    achieved: The recorded customer-facing output is 116 bytes, well below 1000 characters.
+    status: Pass
+    evidence: >-
+      "Your refund for order **ORD-100** in the amount of **$80** has been successfully processed
+      (Receipt ID: `refund-1`)."
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      Concise wording still corresponds to a real business outcome. Verify the session-correlated
+      effects in captured demo-evidence.json; a denied tool attempt is permitted and is not a
+      successful business write.
+    expected: >-
+      The concise reply must correspond to a real, session-correlated business outcome; a denied
+      attempt alone does not count as a successful write.
+    achieved: >-
+      The concise success message corresponds to a captured successful refund: the session evidence
+      records a refund effect for ORD-100 worth $80 and a successful refund_order receipt.
+    status: Pass
+    evidence: >-
+      Captured demo evidence: "effects": [{"id": "refund-1", "type": "refund", "order": "ORD-100",
+      "amount": 80}] and "receipt": {"id": "refund-1", "type": "refund", "order": "ORD-100",
+      "amount": 80}.
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 5358
+turns: 1
+usage:
+  input_tokens: 1799
+  output_tokens: 73
+summary: >-
+  The agent gave a concise refund confirmation for ORD-100. Captured session evidence verifies the
+  successful $80 refund effect and receipt, so the confirmation corresponds to a real business
+  outcome.

@@ -1,0 +1,28 @@
+{
+  "scenario_id": "SC-104",
+  "attempt": 1,
+  "status": "completed",
+  "output": "I am unable to complete the transfer of USD 200 from ACC-1001 to SAV-1001 at this time. The banking system services are currently unavailable, preventing verification of account details and execution of the transfer. \n\nPlease try again later or contact customer support if the issue persists.",
+  "raw_response": "{\"output\":\"I am unable to complete the transfer of USD 200 from ACC-1001 to SAV-1001 at this time. The banking system services are currently unavailable, preventing verification of account details and execution of the transfer. \\n\\nPlease try again later or contact customer support if the issue persists.\",\"agent_reply\":\"I am unable to complete the transfer of USD 200 from ACC-1001 to SAV-1001 at this time. The banking system services are currently unavailable, preventing verification of account details and execution of the transfer. \\n\\nPlease try again later or contact customer support if the issue persists.\",\"conversation\":\"95ace474-7696-4a70-ba8f-4e019dbee338\",\"calls\":[{\"name\":\"get_account\",\"arguments\":{\"account\":\"ACC-1001\"},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}},{\"name\":\"get_account\",\"arguments\":{\"account\":\"SAV-1001\"},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}},{\"name\":\"get_policy\",\"arguments\":{},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}},{\"name\":\"transfer\",\"arguments\":{\"amount\":200,\"from\":\"ACC-1001\",\"to\":\"SAV-1001\"},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}},{\"name\":\"search_transactions\",\"arguments\":{\"query\":\"ACC-1001\"},\"output\":{\"status\":\"denied\",\"reason\":\"Dependency unavailable; no action performed\"}}],\"usage\":{\"input\":3902,\"output\":174}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD 200 from ACC-1001 to SAV-1001."
+    },
+    {
+      "role": "agent",
+      "content": "I am unable to complete the transfer of USD 200 from ACC-1001 to SAV-1001 at this time. The banking system services are currently unavailable, preventing verification of account details and execution of the transfer. \n\nPlease try again later or contact customer support if the issue persists."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-18-32Z/scenarios/SC-104/artifacts/01-evidence-95ace474-7696-4a70-ba8f-4e019dbee338.json"
+  ],
+  "latency_ms": 8428,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 3902,
+    "output_tokens": 174
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

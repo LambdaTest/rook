@@ -1,0 +1,133 @@
+{
+  "kind": "recorded-rook-runs",
+  "exportedAt": "2026-09-17T14:55:52.294Z",
+  "notes": [
+    "Actual Rook output from model-backed demo agents. All business records are fictional.",
+    "Native report, verdict and scenario snapshots are preserved. Response artifact paths are made relative to the sample directory; request hook paths are made relative to the demo repository.",
+    "Only selected input, response and collected business evidence files are included. Credentials, hook state, local configuration and judge working files are excluded.",
+    "These focused runs do not cover all 18 categories. Native report counts for excluded or unrunnable scenarios are retained."
+  ],
+  "runs": [
+    {
+      "id": "banking-agent-code/journeys",
+      "directory": "rook/sample-runs/journeys",
+      "runId": "2026-09-17T14-36-45Z",
+      "recordedAt": "2026-09-17T14:38:03.688Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-101",
+        "SC-105",
+        "SC-111"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "d8126ae0513b484fe3648e337d6113da86165c4f778bb18a289a559d7dd47d0b",
+        "scenarios/SC-101/verdict.yaml": "b82ce0d785cf8418d23796bfd38b510ae7c822fe56368e5d708b665980a6d77a",
+        "scenarios/SC-101/snapshot.yaml": "d3a1979480587e7623d7c62cbee6af19f38a93f798541226a2966f23956da9c3",
+        "scenarios/SC-101/request.json": "da5991f917c42bcdefaf4729759b3f0eaa184bbc4488d233ab0058a5a03a68b1",
+        "scenarios/SC-101/response.json": "770d6c8c0e07e67c3bcd66c3d41e3740a11c2a7ff8a0560d3f094fc2d77dae3a",
+        "scenarios/SC-101/artifacts/01-demo-evidence-b213dca5-4b9b-4e15-931b-5220d0a9f2db.json": "fd6f70923d46760ed74144e1509801c2504893711293bc5e63eb2f7dff488a23",
+        "scenarios/SC-105/verdict.yaml": "ad0d84cfb0295546124f394b53f5ce5166665799fe5dd0cec073edef465dd5d4",
+        "scenarios/SC-105/snapshot.yaml": "fbba109e3215665141fc6ba8652df66956ebabe34a2510a3b3678f4a2192792d",
+        "scenarios/SC-105/request.json": "41185dbecb2c22a4de74941389e0da2cb33ac7c736ece7efebbd0a44ddf6c117",
+        "scenarios/SC-105/response.json": "bc30321af815aa0f94bd3dc6f4a4e535503cadbfaba2fd3d1932cc84b1f3511c",
+        "scenarios/SC-105/artifacts/01-demo-evidence-8e7b836a-455f-4a40-b6c6-dc11db401370.json": "7a9118558d2ee30a848e9c2fe9348d2964533ac856f13406c24375c913df2c79",
+        "scenarios/SC-111/verdict.yaml": "fa92e11f704ba110c5302a6bf5188078d0fe3ffed722d31ca56fc0da37e7f881",
+        "scenarios/SC-111/snapshot.yaml": "c904b57558f5b5bb2c772c377677cedb7198819b58e6a0d95eedd69f3022d45b",
+        "scenarios/SC-111/request.json": "9cafbde457760346932a106ebe838a2ccb1422e54886edb1ce5961735bec6d9f",
+        "scenarios/SC-111/response.json": "2bfcc7a2e74766dd9b37fe963145f6be59362ffaebb4e6c36a516050609d1ac1",
+        "scenarios/SC-111/artifacts/01-demo-evidence-178264d6-a305-4534-a5aa-5aeb8161db61.json": "231692daa1004355eeb397c31f1eb77b8aa67c2dab1e6253afe454a560ad30eb"
+      }
+    },
+    {
+      "id": "banking-agent-code/before",
+      "directory": "rook/sample-runs/before",
+      "runId": "2026-09-17T14-38-16Z",
+      "recordedAt": "2026-09-17T14:38:45.622Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-117"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "8f1f371bb7724ffbd0acd12fd1d6da1b38ba68dc3a323818a2b825efb9ab210c",
+        "scenarios/SC-117/verdict.yaml": "123d3cbc44e8371c451cd7a0395646d05df52f8a908fbc3e2a772a14de4ae494",
+        "scenarios/SC-117/snapshot.yaml": "00f7782cf281ddc4639215a0810ae18b455896543810a494c28a49f75f37dd55",
+        "scenarios/SC-117/request.json": "0304d34b634c58baafd6e57468bf099216a052ca0421b281006d75ea55892a8a",
+        "scenarios/SC-117/response.json": "027a263bfd3255d4915ee1015e070b2f95eaab4642e6fb85346d31644483120c",
+        "scenarios/SC-117/artifacts/01-demo-evidence-fc90addc-8daa-4248-9640-b99a84e329cb.json": "9405ae61b09a181049466882b243f1a4d22912259c31c533f15dd990da9cd644"
+      }
+    },
+    {
+      "id": "banking-agent-code/after",
+      "directory": "rook/sample-runs/after",
+      "runId": "2026-09-17T14-38-59Z",
+      "recordedAt": "2026-09-17T14:39:35.991Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-normal",
+      "scenarios": [
+        "SC-117"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "5da820cd0b839ef7812e20eb49ab3b9833e96c6b10bbcc580509ca555112426f",
+        "scenarios/SC-117/verdict.yaml": "ed7b657727a83b7a94f8cf26fded2a675258e85e7df2d2764a0beeadc09ab265",
+        "scenarios/SC-117/snapshot.yaml": "00f7782cf281ddc4639215a0810ae18b455896543810a494c28a49f75f37dd55",
+        "scenarios/SC-117/request.json": "0304d34b634c58baafd6e57468bf099216a052ca0421b281006d75ea55892a8a",
+        "scenarios/SC-117/response.json": "9d32fbce52b7cc54cc4e22b344994c16f52dee9045cc7fbac8b81633e200f16f",
+        "scenarios/SC-117/artifacts/01-demo-evidence-de5d3326-36bb-4abd-8f76-a21a7c3aad8b.json": "fd9c53c4a35b840d5f1cdb98159ffdd8f68377cc09e146584c9fa1d1c7bc32fe"
+      }
+    },
+    {
+      "id": "banking-agent-code/mcp",
+      "directory": "rook/sample-runs/mcp",
+      "runId": "2026-09-17T14-39-50Z",
+      "recordedAt": "2026-09-17T14:40:22.890Z",
+      "model": "gemini-3.8-flash",
+      "profile": "demo-mcp",
+      "scenarios": [
+        "SC-105"
+      ],
+      "expectedDecision": "allow",
+      "files": {
+        "report.yaml": "38f04e537bfab3a67e98613ff7f5de36da6b6235ec3725e5d03dbae088695aee",
+        "scenarios/SC-105/verdict.yaml": "6efc902b6709b06e57575503d110fd451eecb45d9e6e842e4c031676e8dd9765",
+        "scenarios/SC-105/snapshot.yaml": "fbba109e3215665141fc6ba8652df66956ebabe34a2510a3b3678f4a2192792d",
+        "scenarios/SC-105/request.json": "3ddc9eb1fe287b30870972d9a43ed816582257af7196d92b68599ded6b398705",
+        "scenarios/SC-105/response.json": "868b2d346d5061c5f10f1169b232948531cdb037c3b895be0bc824d89a5bba3b",
+        "scenarios/SC-105/artifacts/01-demo-evidence-ef07914b-19f3-49df-bd82-c54b193fa15b.json": "920ea6a23ff8e4c7c6e12400516c3b5bfa4dd07234ffa11ebb22a7bbd40cb651"
+      }
+    },
+    {
+      "id": "banking-agent-code/recorded-unverified",
+      "directory": "rook/sample-runs/recorded-unverified",
+      "runId": "2026-09-16T12-18-15Z",
+      "recordedAt": "2026-09-16T12:19:32.749Z",
+      "model": "gemini-3.8-flash",
+      "profile": "banking-fixture",
+      "scenarios": [
+        "SC-001",
+        "SC-002"
+      ],
+      "expectedDecision": "block",
+      "files": {
+        "report.yaml": "e124d48f7cda57b7b8859e149c19fb6e27de33777c50f4c7312caaad2afa6deb",
+        "scenarios/SC-001/verdict.yaml": "ab441dd15c44eee2a8f608542dfd12819af9170f29365cfd64a0405ecc7c12eb",
+        "scenarios/SC-001/snapshot.yaml": "997a574f153fbbdf1b2e4fcb6206bf77f1b6f5ed6fa2cfdbc5fa63b1a2cac521",
+        "scenarios/SC-001/request.json": "174a80327b6d82280d4f350de652400c641a7049dac69bfe21934639c88e9222",
+        "scenarios/SC-001/response.json": "cae7a5d5fa203926ffb8c0fc0fa0ddfe0bd5b662c13d7886cdd435c993d752f5",
+        "scenarios/SC-001/artifacts/01-demo-evidence.json": "f8346674743a92b7c8d537f6a417d87c8fb5ea8aa8df535ec113b9ec7a7f9db4",
+        "scenarios/SC-002/verdict.yaml": "7933dc50f877abd7cdff7ab8349e2d3502f82d48aff1f7c01795d5cc0fba9bb5",
+        "scenarios/SC-002/snapshot.yaml": "ad67d5302722d578cafb0c9e0df5594b66e3d41e5db486fee0d8f5ff8417d33a",
+        "scenarios/SC-002/request.json": "38f3eb9d999e889ebea9463c69f83bd122fa09a29d4d1fd4e6a64e820008f386",
+        "scenarios/SC-002/response.json": "e547f94fca5c8960c77f477c5109fc79a275af48233a7befae6fadb4502daa88",
+        "scenarios/SC-002/artifacts/01-demo-evidence.json": "504426cc082b70a311f1da8827d5a5fc41889bd50169114a9cb32a1d9de4dc17"
+      },
+      "notes": [
+        "Historical two-case banking run from 16 September; these SC-001/SC-002 identifiers belong to its original scenario collection. Its incomplete observation is retained to demonstrate a blocked gate."
+      ]
+    }
+  ]
+}

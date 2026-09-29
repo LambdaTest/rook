@@ -1,0 +1,13 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-41Z/scenarios/SC-106/artifacts/01-evidence-45a0de78-e28e-4604-9997-314d7168fd19.json
+    stored_as: 1-01-evidence-45a0de78-e28e-4604-9997-314d7168fd19.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-41Z/scenarios/SC-106/artifacts/01-evidence-4a982fd3-960c-4098-986e-1d29c0c92a88.json
+    stored_as: 2-01-evidence-4a982fd3-960c-4098-986e-1d29c0c92a88.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-41Z/scenarios/SC-106/artifacts/01-evidence-c9bb7171-c04b-4aa1-b228-c5e0d92668b1.json
+    stored_as: 3-01-evidence-c9bb7171-c04b-4aa1-b228-c5e0d92668b1.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-41Z/scenarios/SC-106/response.json
+    stored_as: 4-response.json

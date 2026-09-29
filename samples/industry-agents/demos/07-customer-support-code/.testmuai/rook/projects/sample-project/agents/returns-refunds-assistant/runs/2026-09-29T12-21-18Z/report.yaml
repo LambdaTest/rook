@@ -1,0 +1,38 @@
+run_id: 2026-09-29T12-21-18Z
+agent_id: returns-refunds-assistant
+generated: '2026-09-29T12:21:47.646Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 1
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 0
+  decided: 1
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 27.529300000000003
+  duration_ms: 21386
+  tokens_in: 809
+  tokens_out: 96
+  latency_p50_ms: 6868
+  latency_p95_ms: 6868
+  turns_total: 1
+  quality: {}
+  quality_samples: 0
+clusters: []
+credits: 9.152999999999999
+headline: >-
+  The target agent passed its single tested scenario, but the run evaluated only one of ten declared
+  features.
+narrative: >-
+  The run executed a single test scenario which passed cleanly, recording no failures or unverified
+  criteria. However, nine of the ten declared features—including core controls like customer data
+  isolation, approval limits, and prompt injection resistance—were left completely untested.
+  Consequently, this run establishes that the tested refund path works under nominal conditions but
+  licenses no broader claim regarding overall agent safety or reliability.
+next:
+  - Expand test plan coverage to evaluate the remaining nine unverified features.

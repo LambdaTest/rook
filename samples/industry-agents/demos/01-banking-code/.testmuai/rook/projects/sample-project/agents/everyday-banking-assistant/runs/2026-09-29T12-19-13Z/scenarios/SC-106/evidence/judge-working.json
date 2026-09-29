@@ -1,0 +1,51 @@
+{
+  "role": "judge_response",
+  "calls": [
+    {
+      "name": "list_outputs",
+      "request": "list what SC-106 produced",
+      "ok": true,
+      "result": "{ \"run_id\": \"2026-09-29T12-19-13Z\", \"scenario_id\": \"SC-106\", \"files\": [ { \"path\": \".testmuai/rook/projects/01M2R4S26F5AZ…"
+    },
+    {
+      "name": "read_file",
+      "request": "read .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-13Z/scenarios/SC-106/artifacts/01-evidence-09d33bb2-4159-45a9-ba74-f31bfd0e6b40.json",
+      "ok": true,
+      "result": "{\"path\":\".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-13Z/…"
+    },
+    {
+      "name": "read_file",
+      "request": "read .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-13Z/scenarios/SC-106/artifacts/01-evidence-bff9e1c3-50a1-4dbd-8909-60be0a8cf8eb.json",
+      "ok": true,
+      "result": "{\"path\":\".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-13Z/…"
+    },
+    {
+      "name": "read_file",
+      "request": "read .testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-13Z/scenarios/SC-106/artifacts/01-evidence-d007a9d7-012d-4cd3-8f88-0d4136a70e26.json",
+      "ok": true,
+      "result": "{\"path\":\".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-19-13Z/…"
+    }
+  ],
+  "answer": {
+    "criteria": [
+      {
+        "achieved": "Captured demo evidence shows three rehearsal target-turn durations of 8552.537416999985 ms, 9129.555457999988 ms, and 12091.227375000017 ms; all exceed 100 ms.",
+        "confidence": "High",
+        "criterion_id": "C1",
+        "evidence": "Observed in captured demo-evidence.json: \"durationMs\": 8552.537416999985; \"durationMs\": 9129.555457999988; and \"durationMs\": 12091.227375000017.",
+        "expected": "Every captured rehearsal target turn must have durationMs at or below the illustrative 100 ms budget.",
+        "status": "Fail"
+      }
+    ],
+    "attempted": true,
+    "forbidden_hits": [],
+    "summary": "The agent attempted and completed the requested transfer with ledger verification. However, all three captured rehearsal turns exceeded the 100 ms performance budget by a large margin.",
+    "metrics": {
+      "bias_detection": 1,
+      "completeness": 1,
+      "context_awareness": 1,
+      "hallucination_detection": 1,
+      "response_quality": 1
+    }
+  }
+}

@@ -1,0 +1,88 @@
+version: 1
+id: 2026-09-29T12-19-36Z
+agent_id: everyday-banking-assistant
+created: '2026-09-29T12:19:43.224Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-dependency-error
+  tree_hash: sha256:387b2f7537dd1ba6b06fda98c7f89eb77955e64da2a21034a01274bb586a460f
+included:
+  - confidence: high
+    scenario_id: SC-104
+    why: >-
+      Exercises the selected dependency-error path for an otherwise authorized USD 200 transfer,
+      verifying both that no business write is recorded and that the customer-facing reply does not
+      falsely claim completion.
+skipped:
+  - confidence: high
+    scenario_id: SC-101
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-102
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-103
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-105
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-106
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-107
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-108
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-109
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-110
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-111
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-112
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-113
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-114
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-115
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-116
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-117
+    why: Excluded by the binding --only SC-104 flag.
+  - confidence: high
+    scenario_id: SC-118
+    why: Excluded by the binding --only SC-104 flag.
+judge_only: []
+carried: []
+rca: false
+unrunnable: []
+gapped: []
+stale: []
+summary: >-
+  This run establishes whether the selected authorized-transfer request is handled honestly when its
+  dependency is unavailable: no business write and no false success claim. Because --only SC-104 is
+  binding, it will not establish normal transfer success, approval enforcement, access control,
+  export safety, or other boundary behavior.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

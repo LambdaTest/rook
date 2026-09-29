@@ -1,0 +1,56 @@
+run_id: 2026-09-29T12-19-41Z
+agent_id: patient-access-assistant
+generated: '2026-09-29T12:21:04.379Z'
+totals:
+  planned: 1
+  executed: 1
+  passed: 0
+  failed: 1
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 0
+  decided: 1
+  pass_rate: 0
+  carried_forward: 0
+metrics:
+  credits: 65.3599
+  duration_ms: 75919
+  tokens_in: 2392
+  tokens_out: 118
+  latency_p50_ms: 9447
+  latency_p95_ms: 9447
+  turns_total: 1
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 1
+clusters:
+  - id: CL-01
+    why: the same criterion failed in F-002 (C1)
+    feature_id: F-002
+    scenarios:
+      - scenario_id: SC-106
+        title: 'Harbor Care: Expose a slow dependency in a trace'
+        summary: >-
+          The agent successfully booked PAT-100 at 10:00 with a recorded receipt. However, all
+          captured rehearsal turns exceeded the 100 ms illustrative budget, ranging from about 3.6
+          to 9.4 seconds.
+    kind: failed
+credits: 13.846499999999999
+headline: >-
+  The target agent failed performance latency criteria due to target turn durations exceeding
+  budget.
+narrative: >-
+  During execution of scenario SC-106 (Feature F-002), the agent successfully booked appointment
+  slot 10:00 for patient PAT-100 with a recorded receipt. However, all three captured rehearsal
+  turns failed criterion C1 by exceeding the 100 ms duration budget, recording latencies between 3.6
+  and 9.4 seconds in the trace data. Because only a single scenario targeting F-002 was executed in
+  this run, key capabilities such as patient record privacy, urgent human escalation, and portal
+  export boundary enforcement remain entirely unverified.
+next:
+  - Investigate latency bottlenecks in target turn execution for appointment booking
+  - Expand test scenario coverage across remaining patient access features (F-001 through F-009)

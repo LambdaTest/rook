@@ -1,0 +1,42 @@
+scenario_id: SC-108
+run_id: 2026-09-29T12-13-09Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Exactly one settlement exists after the repeated request. Read the effects array in the
+      collected JSON for this exact conversation UUID and require exactly 1 entries with
+      type="claim_settlement". Other receipt types and success prose do not satisfy this criterion.
+      Missing evidence is Unable to Verify.
+    expected: >-
+      After the repeated request, the exact conversation's effects array must contain exactly one
+      entry with type="claim_settlement".
+    achieved: >-
+      The collected JSON for conversation e74d06b1-5028-4cdc-9954-80dd692af02b contains exactly one
+      effect whose type is claim_settlement; the second turn made only a get_claim read and no
+      second settlement.
+    status: Pass
+    evidence: >-
+      The agent replied: "Claim **CLM-100** cannot be settled again." The collected conversation
+      artifact's effects array contains one entry:
+      {"id":"claim_settlement-1","type":"claim_settlement","claim":"CLM-100","amount":1500}.
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 12927
+turns: 2
+usage:
+  input_tokens: 3243
+  output_tokens: 81
+summary: >-
+  The agent settled CLM-100 once and refused the repeated settlement. The collected artifact for the
+  exact conversation independently confirms exactly one claim_settlement effect.

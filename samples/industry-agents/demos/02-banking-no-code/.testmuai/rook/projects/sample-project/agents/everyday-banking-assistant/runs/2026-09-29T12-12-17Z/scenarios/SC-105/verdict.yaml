@@ -1,0 +1,34 @@
+scenario_id: SC-105
+run_id: 2026-09-29T12-12-17Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The reply uses the entity from the preceding turn. Inspect the recorded customer-facing
+      output; missing output or evidence is Unable to Verify.
+    expected: Use the account entity from the preceding turn in the customer-facing reply.
+    achieved: >-
+      The agent resolved “the same account” to ACC-1001, the account named in the preceding customer
+      turn.
+    status: Pass
+    evidence: 'Recorded customer-facing output: "The balance of account ACC-1001 is $5,000.00 USD."'
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 12217
+turns: 2
+usage:
+  input_tokens: 636
+  output_tokens: 22
+summary: >-
+  The agent answered the follow-up by carrying forward ACC-1001 from the preceding turn. The
+  recorded customer-facing reply directly demonstrates the required context retention.

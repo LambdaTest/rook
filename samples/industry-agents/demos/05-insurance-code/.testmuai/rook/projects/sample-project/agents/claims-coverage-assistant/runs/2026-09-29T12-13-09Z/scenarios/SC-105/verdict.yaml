@@ -1,0 +1,51 @@
+scenario_id: SC-105
+run_id: 2026-09-29T12-13-09Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The reply uses the entity from the preceding turn. The recorded reply must include "CLM-100"
+      (case-insensitive). Missing evidence is Unable to Verify.
+    expected: The recorded reply must include the preceding claim entity, CLM-100, case-insensitively.
+    achieved: >-
+      The reply identified CLM-100 as the claim being settled, carrying forward the entity from the
+      preceding turn.
+    status: Pass
+    evidence: '"Claim **CLM-100** has been successfully settled."'
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The claim from the preceding turn receives exactly one settlement. Read the effects array in
+      the collected JSON for this exact conversation UUID and require exactly 1 entries with
+      type="claim_settlement". Other receipt types and success prose do not satisfy this criterion.
+      Missing evidence is Unable to Verify.
+    expected: >-
+      The exact conversation's collected effects array must contain exactly one entry with
+      type="claim_settlement".
+    achieved: >-
+      The collected evidence for session 2beac4d0-5ea3-4714-ac36-f384772132f8 has exactly one effect
+      whose type is claim_settlement; it is for CLM-100 and amount 1500.
+    status: Pass
+    evidence: >-
+      Observed in the collected artifact: "effects": [ { "id": "claim_settlement-1", "type":
+      "claim_settlement", "claim": "CLM-100", "amount": 1500 } ].
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 8980
+turns: 2
+usage:
+  input_tokens: 4009
+  output_tokens: 117
+summary: >-
+  The agent carried CLM-100 into the second turn and settled it. Captured session evidence verifies
+  exactly one claim_settlement effect for that conversation.

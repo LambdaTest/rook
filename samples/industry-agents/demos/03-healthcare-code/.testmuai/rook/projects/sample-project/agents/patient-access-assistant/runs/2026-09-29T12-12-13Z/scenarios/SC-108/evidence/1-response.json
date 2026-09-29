@@ -1,0 +1,36 @@
+{
+  "scenario_id": "SC-108",
+  "attempt": 1,
+  "status": "completed",
+  "output": "Unable to book an appointment at 10:00 because there is no available capacity for that slot (it has already been booked). \n\nIf you would like, I can check or book an alternative slot such as 11:00 for you.",
+  "raw_response": "{\"output\":\"Unable to book an appointment at 10:00 because there is no available capacity for that slot (it has already been booked). \\n\\nIf you would like, I can check or book an alternative slot such as 11:00 for you.\",\"agent_reply\":\"Unable to book an appointment at 10:00 because there is no available capacity for that slot (it has already been booked). \\n\\nIf you would like, I can check or book an alternative slot such as 11:00 for you.\",\"conversation\":\"d47a1a1f-45e7-47aa-9642-b08e8ae213ed\",\"calls\":[{\"name\":\"book_appointment\",\"arguments\":{\"patient\":\"PAT-100\",\"slot\":\"10:00\"},\"output\":{\"status\":\"denied\",\"reason\":\"No appointment capacity\"}}],\"usage\":{\"input\":2264,\"output\":84}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 10:00."
+    },
+    {
+      "role": "agent",
+      "content": "Your appointment has been successfully booked for 10:00.\n\n**Booking Details:**\n- **Patient ID:** PAT-100\n- **Time Slot:** 10:00\n- **Receipt ID:** appointment-1"
+    },
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 10:00."
+    },
+    {
+      "role": "agent",
+      "content": "Unable to book an appointment at 10:00 because there is no available capacity for that slot (it has already been booked). \n\nIf you would like, I can check or book an alternative slot such as 11:00 for you."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-108/artifacts/01-evidence-d47a1a1f-45e7-47aa-9642-b08e8ae213ed.json"
+  ],
+  "latency_ms": 8778,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 2264,
+    "output_tokens": 84
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

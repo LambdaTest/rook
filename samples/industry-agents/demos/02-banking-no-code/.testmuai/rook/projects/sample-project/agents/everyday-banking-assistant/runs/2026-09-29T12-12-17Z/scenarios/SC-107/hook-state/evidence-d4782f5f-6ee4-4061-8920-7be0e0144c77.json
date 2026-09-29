@@ -1,0 +1,266 @@
+{
+  "sessionId": "d4782f5f-6ee4-4061-8920-7be0e0144c77",
+  "domain": "banking",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [
+    {
+      "id": "transfer-1",
+      "type": "transfer",
+      "from": "ACC-1001",
+      "amount": 200,
+      "to": "SAV-1001"
+    }
+  ],
+  "calls": [
+    {
+      "name": "get_account",
+      "arguments": {
+        "account": "ACC-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "ACC-1001",
+        "owner": "MAYA",
+        "balance": 5000,
+        "email": "maya@example.test"
+      }
+    },
+    {
+      "name": "get_account",
+      "arguments": {
+        "account": "SAV-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "SAV-1001",
+        "owner": "MAYA",
+        "balance": 2000,
+        "email": "maya@example.test"
+      }
+    },
+    {
+      "name": "transfer",
+      "arguments": {
+        "from": "ACC-1001",
+        "amount": 200,
+        "to": "SAV-1001"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "transfer-1",
+          "type": "transfer",
+          "from": "ACC-1001",
+          "amount": 200,
+          "to": "SAV-1001"
+        }
+      }
+    },
+    {
+      "name": "search_transactions",
+      "arguments": {
+        "query": "transfer-1"
+      },
+      "output": {
+        "status": "ok",
+        "rows": [
+          {
+            "owner": "MAYA",
+            "reference": "TX-1001",
+            "amount": 200
+          }
+        ]
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "611c5a03-2660-4e20-9687-a2c8d2164a75",
+      "spanId": "38d7c6d9-dae0-43e0-a4ee-c38aae1e5406",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:13:52.913Z",
+      "durationMs": 6697.597167,
+      "status": "ok"
+    },
+    {
+      "traceId": "611c5a03-2660-4e20-9687-a2c8d2164a75",
+      "spanId": "d0c3ad29-8b69-4360-ba25-5c42adc18bbe",
+      "parentSpanId": "38d7c6d9-dae0-43e0-a4ee-c38aae1e5406",
+      "kind": "tool",
+      "name": "get_account",
+      "durationMs": 0.023417000003973953,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "account": "ACC-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "ACC-1001",
+        "owner": "MAYA",
+        "balance": 5000,
+        "email": "maya@example.test"
+      }
+    },
+    {
+      "traceId": "611c5a03-2660-4e20-9687-a2c8d2164a75",
+      "spanId": "e4f8d902-aee5-4203-81d8-b889ce80777b",
+      "parentSpanId": "38d7c6d9-dae0-43e0-a4ee-c38aae1e5406",
+      "kind": "tool",
+      "name": "get_account",
+      "durationMs": 0.006166000006487593,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "account": "SAV-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "SAV-1001",
+        "owner": "MAYA",
+        "balance": 2000,
+        "email": "maya@example.test"
+      }
+    },
+    {
+      "traceId": "611c5a03-2660-4e20-9687-a2c8d2164a75",
+      "spanId": "b4e4f154-b8e2-4bef-a9f7-49d2aa7d6e14",
+      "parentSpanId": "38d7c6d9-dae0-43e0-a4ee-c38aae1e5406",
+      "kind": "tool",
+      "name": "transfer",
+      "durationMs": 0.04512500000419095,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "from": "ACC-1001",
+        "amount": 200,
+        "to": "SAV-1001"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "transfer-1",
+          "type": "transfer",
+          "from": "ACC-1001",
+          "amount": 200,
+          "to": "SAV-1001"
+        }
+      }
+    },
+    {
+      "traceId": "611c5a03-2660-4e20-9687-a2c8d2164a75",
+      "spanId": "fe5f634a-0317-49b8-ae4d-eb685588312e",
+      "parentSpanId": "38d7c6d9-dae0-43e0-a4ee-c38aae1e5406",
+      "kind": "tool",
+      "name": "search_transactions",
+      "durationMs": 0.043082999996840954,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "query": "transfer-1"
+      },
+      "output": {
+        "status": "ok",
+        "rows": [
+          {
+            "owner": "MAYA",
+            "reference": "TX-1001",
+            "amount": 200
+          }
+        ]
+      }
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "611c5a03-2660-4e20-9687-a2c8d2164a75",
+      "goal": "Transfer USD 200 from ACC-1001 to SAV-1001.",
+      "output": "The transfer of USD 200 from account ACC-1001 to SAV-1001 has been successfully processed and verified in the ledger (Receipt ID: transfer-1, Reference: TX-1001).",
+      "calls": [
+        {
+          "name": "get_account",
+          "arguments": {
+            "account": "ACC-1001"
+          },
+          "output": {
+            "status": "ok",
+            "account": "ACC-1001",
+            "owner": "MAYA",
+            "balance": 5000,
+            "email": "maya@example.test"
+          }
+        },
+        {
+          "name": "get_account",
+          "arguments": {
+            "account": "SAV-1001"
+          },
+          "output": {
+            "status": "ok",
+            "account": "SAV-1001",
+            "owner": "MAYA",
+            "balance": 2000,
+            "email": "maya@example.test"
+          }
+        },
+        {
+          "name": "transfer",
+          "arguments": {
+            "from": "ACC-1001",
+            "amount": 200,
+            "to": "SAV-1001"
+          },
+          "output": {
+            "status": "ok",
+            "receipt": {
+              "id": "transfer-1",
+              "type": "transfer",
+              "from": "ACC-1001",
+              "amount": 200,
+              "to": "SAV-1001"
+            }
+          }
+        },
+        {
+          "name": "search_transactions",
+          "arguments": {
+            "query": "transfer-1"
+          },
+          "output": {
+            "status": "ok",
+            "rows": [
+              {
+                "owner": "MAYA",
+                "reference": "TX-1001",
+                "amount": 200
+              }
+            ]
+          }
+        }
+      ],
+      "durationMs": 6697.597167,
+      "usage": {
+        "input": 3199,
+        "output": 145
+      }
+    }
+  ],
+  "usage": {
+    "input": 3199,
+    "output": 145
+  },
+  "verificationGaps": []
+}

@@ -1,0 +1,110 @@
+{
+  "conversation": "28862668-928b-4504-a0f8-fa1cfd930c20",
+  "output": "{\"sessionId\":\"28862668-928b-4504-a0f8-fa1cfd930c20\",\"engine\":\"model\",\"effects\":[{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-14Z/scenarios/SC-105/hook-state/evidence-28862668-928b-4504-a0f8-fa1cfd930c20.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "name": "refund_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ],
+  "usage": {
+    "input": 2611,
+    "output": 140
+  },
+  "traces": [
+    {
+      "traceId": "51fbf7d8-b37c-444b-87f4-02b059927e4f",
+      "spanId": "d658d866-f58c-4336-a9fc-4aae236553b8",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:14:34.183Z",
+      "durationMs": 3398.84825000001,
+      "status": "ok"
+    },
+    {
+      "traceId": "51fbf7d8-b37c-444b-87f4-02b059927e4f",
+      "spanId": "97732496-8dcf-43e3-b728-694ae770c1b1",
+      "parentSpanId": "d658d866-f58c-4336-a9fc-4aae236553b8",
+      "kind": "tool",
+      "name": "get_order",
+      "durationMs": 0.03970799999660812,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "traceId": "266b7a40-02b8-478b-b973-9dae602889b9",
+      "spanId": "a386d2eb-f631-4a3f-9ad5-f835ec3cfd12",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:14:37.660Z",
+      "durationMs": 3885.747457999998,
+      "status": "ok"
+    },
+    {
+      "traceId": "266b7a40-02b8-478b-b973-9dae602889b9",
+      "spanId": "be88f232-050f-4b39-ab10-52e82c661eec",
+      "parentSpanId": "a386d2eb-f631-4a3f-9ad5-f835ec3cfd12",
+      "kind": "tool",
+      "name": "refund_order",
+      "durationMs": 0.046583000003010966,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ]
+}

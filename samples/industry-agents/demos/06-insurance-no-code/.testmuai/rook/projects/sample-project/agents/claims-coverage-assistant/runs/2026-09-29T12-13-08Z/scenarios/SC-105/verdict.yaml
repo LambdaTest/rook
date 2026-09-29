@@ -1,0 +1,49 @@
+scenario_id: SC-105
+run_id: 2026-09-29T12-13-08Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The reply uses the entity from the preceding turn. The recorded reply must include "CLM-100"
+      (case-insensitive). Missing evidence is Unable to Verify.
+    expected: The recorded reply must use the preceding-turn entity, CLM-100.
+    achieved: The agent identified and settled CLM-100, the claim named in the preceding turn.
+    status: Pass
+    evidence: '"Claim **CLM-100** has been successfully settled."'
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The claim from the preceding turn receives exactly one settlement. Read the effects array in
+      the collected JSON for this exact conversation UUID and require exactly 1 entries with
+      type="claim_settlement". Other receipt types and success prose do not satisfy this criterion.
+      Missing evidence is Unable to Verify.
+    expected: >-
+      The exact conversation's collected effects array must contain exactly one entry with type
+      "claim_settlement".
+    achieved: >-
+      The collected evidence for conversation 5293fa45-400f-4e07-a379-3ab60d6397fa has exactly one
+      effect with type "claim_settlement": claim_settlement-1 for CLM-100, amount 1500.
+    status: Pass
+    evidence: >-
+      The reply states "Receipt ID: claim_settlement-1" and "Claim ID: CLM-100"; the collected
+      artifact's effects array contains one claim_settlement entry for CLM-100.
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 9909
+turns: 2
+usage:
+  input_tokens: 3569
+  output_tokens: 115
+summary: >-
+  The agent carried CLM-100 from the prior turn into the settlement request and completed it.
+  Collected conversation evidence records exactly one claim_settlement effect for that claim.

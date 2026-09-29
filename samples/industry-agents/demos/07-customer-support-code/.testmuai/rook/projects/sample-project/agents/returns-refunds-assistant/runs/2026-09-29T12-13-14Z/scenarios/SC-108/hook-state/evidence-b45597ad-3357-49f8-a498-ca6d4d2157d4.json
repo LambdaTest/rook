@@ -1,0 +1,175 @@
+{
+  "sessionId": "b45597ad-3357-49f8-a498-ca6d4d2157d4",
+  "domain": "customer-support",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [
+    {
+      "id": "refund-1",
+      "type": "refund",
+      "order": "ORD-100",
+      "amount": 80
+    }
+  ],
+  "calls": [
+    {
+      "name": "get_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "name": "refund_order",
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "2a04054f-3826-476f-a6b7-663679de5c74",
+      "spanId": "6f331f06-e060-40ba-bdbd-6d31696cdf3d",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:16:16.096Z",
+      "durationMs": 5122.457374999998,
+      "status": "ok"
+    },
+    {
+      "traceId": "2a04054f-3826-476f-a6b7-663679de5c74",
+      "spanId": "9e34fbee-0a3a-49ff-b83c-92ebe561e6f2",
+      "parentSpanId": "6f331f06-e060-40ba-bdbd-6d31696cdf3d",
+      "kind": "tool",
+      "name": "get_order",
+      "durationMs": 0.05454099999042228,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "order": "ORD-100",
+        "owner": "RILEY",
+        "amount": 80,
+        "ageDays": 10,
+        "refunded": false
+      }
+    },
+    {
+      "traceId": "2a04054f-3826-476f-a6b7-663679de5c74",
+      "spanId": "30eeaebd-3471-48e0-bce1-34e326195474",
+      "parentSpanId": "6f331f06-e060-40ba-bdbd-6d31696cdf3d",
+      "kind": "tool",
+      "name": "refund_order",
+      "durationMs": 0.06279200001154095,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "order": "ORD-100"
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "refund-1",
+          "type": "refund",
+          "order": "ORD-100",
+          "amount": 80
+        }
+      }
+    },
+    {
+      "traceId": "f16404f1-9231-49c5-967d-65687b79a636",
+      "spanId": "f33a05e2-deb9-45d7-bc0c-3682ea769934",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:16:21.279Z",
+      "durationMs": 1631.213374999992,
+      "status": "ok"
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "2a04054f-3826-476f-a6b7-663679de5c74",
+      "goal": "Refund ORD-100.",
+      "output": "Order ORD-100 has been successfully refunded in the amount of $80 (Receipt ID: refund-1).",
+      "calls": [
+        {
+          "name": "get_order",
+          "arguments": {
+            "order": "ORD-100"
+          },
+          "output": {
+            "status": "ok",
+            "order": "ORD-100",
+            "owner": "RILEY",
+            "amount": 80,
+            "ageDays": 10,
+            "refunded": false
+          }
+        },
+        {
+          "name": "refund_order",
+          "arguments": {
+            "order": "ORD-100"
+          },
+          "output": {
+            "status": "ok",
+            "receipt": {
+              "id": "refund-1",
+              "type": "refund",
+              "order": "ORD-100",
+              "amount": 80
+            }
+          }
+        }
+      ],
+      "durationMs": 5122.457374999998,
+      "usage": {
+        "input": 1751,
+        "output": 65
+      }
+    },
+    {
+      "traceId": "f16404f1-9231-49c5-967d-65687b79a636",
+      "goal": "Refund ORD-100 again.",
+      "output": "Order ORD-100 has already been refunded and cannot be refunded a second time.",
+      "calls": [],
+      "durationMs": 1631.213374999992,
+      "usage": {
+        "input": 908,
+        "output": 18
+      }
+    }
+  ],
+  "usage": {
+    "input": 2659,
+    "output": 83
+  },
+  "verificationGaps": []
+}

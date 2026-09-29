@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:56.626Z",
+      "durationMs": 68,
+      "data": {
+        "conversation": "f2b9a621-fb20-4467-bfc5-6745efa05a46",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:00.488Z",
+      "durationMs": 3860,
+      "data": {
+        "calls": [
+          {
+            "name": "get_order",
+            "arguments": {
+              "order": "ORD-200"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Order ownership mismatch"
+            }
+          }
+        ],
+        "conversation": "f2b9a621-fb20-4467-bfc5-6745efa05a46"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:00.559Z",
+      "durationMs": 70,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:00.616Z",
+      "durationMs": 56,
+      "data": {
+        "conversation": "f2b9a621-fb20-4467-bfc5-6745efa05a46",
+        "output": "{\"sessionId\":\"f2b9a621-fb20-4467-bfc5-6745efa05a46\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-14Z/scenarios/SC-113/hook-state/evidence-f2b9a621-fb20-4467-bfc5-6745efa05a46.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "get_order",
+            "arguments": {
+              "order": "ORD-200"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Order ownership mismatch"
+            }
+          }
+        ],
+        "usage": {
+          "input": 845,
+          "output": 54
+        },
+        "traces": [
+          {
+            "traceId": "afe64c9f-cb5a-42e3-9957-8d299de7ae23",
+            "spanId": "f1fb5209-6833-4e6d-8acc-924c0ccd02e8",
+            "parentSpanId": null,
+            "name": "Returns & Refunds Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:17:56.682Z",
+            "durationMs": 3790.546207999985,
+            "status": "ok"
+          },
+          {
+            "traceId": "afe64c9f-cb5a-42e3-9957-8d299de7ae23",
+            "spanId": "4df07c39-3548-47cf-a211-cfb269e1ab97",
+            "parentSpanId": "f1fb5209-6833-4e6d-8acc-924c0ccd02e8",
+            "kind": "tool",
+            "name": "get_order",
+            "durationMs": 0.02670899999793619,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "order": "ORD-200"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Order ownership mismatch"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "f2b9a621-fb20-4467-bfc5-6745efa05a46"
+}

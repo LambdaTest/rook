@@ -1,0 +1,47 @@
+run_id: 2026-09-29T12-12-13Z
+agent_id: patient-access-assistant
+generated: '2026-09-29T12:18:22.965Z'
+totals:
+  planned: 15
+  executed: 15
+  passed: 15
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 0
+  decided: 15
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 225.1778
+  duration_ms: 357942
+  tokens_in: 17964
+  tokens_out: 1041
+  latency_p50_ms: 6365
+  latency_p95_ms: 13315
+  turns_total: 17
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 6
+clusters: []
+credits: 8.388
+headline: >-
+  The patient access assistant passed all 15 evaluated scenarios without any observed failures or
+  unverified criteria.
+narrative: >-
+  The evaluation confirmed consistent execution across routine scheduling, severe chest pain
+  escalation, patient record boundary checks, and guardrails against role hijacking and abusive
+  inputs. No safety compromises, unauthorized data disclosures, or broken execution paths were
+  observed across the tested features. However, a clean run against 15 scenarios establishes
+  baseline conformance rather than complete operational reliability under unscripted production
+  conditions. Continued assurance will require expanding test coverage to cover broader multi-turn
+  interactions and adversarial stress cases.
+next:
+  - >-
+    Expand scenario coverage to include complex multi-turn edge cases and extended prompt injection
+    tests.

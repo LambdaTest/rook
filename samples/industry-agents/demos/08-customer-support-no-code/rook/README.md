@@ -8,4 +8,4 @@ The authored suite preserves the exact acceptance examples, separates denied too
 
 The internal native CALL assertion limitation remains reproducible in the raw drafts and earlier actual banking report. The reviewed business criteria inspect captured tool/ledger evidence. They do not claim native proxy verification.
 
-See [native workflow](../../../docs/native-scenarios.md) for installation, profiles, full coverage checks and run commands.
+See [native workflow](../docs/native-scenarios.md) for installation, profiles, full coverage checks and run commands.

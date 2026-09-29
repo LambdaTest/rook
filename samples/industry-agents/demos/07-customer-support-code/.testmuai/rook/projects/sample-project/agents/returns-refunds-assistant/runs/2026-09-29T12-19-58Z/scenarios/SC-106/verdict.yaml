@@ -1,0 +1,33 @@
+scenario_id: SC-106
+run_id: 2026-09-29T12-19-58Z
+status: Fail
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      Each rehearsal turn completes within the illustrative 100 ms budget. Use each target turn
+      durationMs in captured demo-evidence.json, not Rook controller latency.
+    expected: Every target rehearsal turn recorded in demo-evidence.json must complete within 100 ms.
+    achieved: The single captured target turn took 7271.234791999974 ms, exceeding the 100 ms budget.
+    status: Fail
+    evidence: 'Observed in captured demo-evidence.json: "durationMs": 7271.234791999974.'
+    confidence: High
+pass_count: 0
+fail_count: 1
+unable_to_verify_count: 0
+compliance_percentage: 0
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 0.9
+latency_ms: 6552
+turns: 1
+usage:
+  input_tokens: 1748
+  output_tokens: 92
+summary: >-
+  The agent attempted and successfully processed the requested refund with a recorded receipt and
+  refund effect. However, the captured target turn duration was 7271.234791999974 ms, far above the
+  illustrative 100 ms budget.

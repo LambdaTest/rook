@@ -1,0 +1,8 @@
+{
+  "scenario_id": "SC-104",
+  "attempt": 1,
+  "goal": "Refund ORD-100 for me.",
+  "setup_messages": [],
+  "profile": "demo-dependency-error",
+  "invoked": "scripts/demo-http.mjs"
+}

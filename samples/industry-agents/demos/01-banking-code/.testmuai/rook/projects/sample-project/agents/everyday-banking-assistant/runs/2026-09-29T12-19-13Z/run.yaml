@@ -1,0 +1,89 @@
+version: 1
+id: 2026-09-29T12-19-13Z
+agent_id: everyday-banking-assistant
+created: '2026-09-29T12:19:20.701Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-slow-tool
+  tree_hash: sha256:399f95c30f2b11a2c0e1fdde11ed6393a25c04e7913bc0bd2156631952846796
+included:
+  - confidence: high
+    scenario_id: SC-106
+    why: >-
+      The binding `--only SC-106` selection leaves this as the sole runnable scenario. Its three
+      slow-tool rehearsals inspect target-turn `durationMs` in session-correlated
+      `demo-evidence.json` against the stated illustrative 100 ms budget.
+skipped:
+  - confidence: high
+    scenario_id: SC-101
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-102
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-103
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-104
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-105
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-107
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-108
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-109
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-110
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-111
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-112
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-113
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-114
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-115
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-116
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-117
+    why: Excluded by the binding `--only SC-106` flag.
+  - confidence: high
+    scenario_id: SC-118
+    why: Excluded by the binding `--only SC-106` flag.
+judge_only: []
+carried: []
+rca: false
+unrunnable: []
+gapped: []
+stale: []
+summary: >-
+  This run establishes whether the slow-tool fault causes any of SC-106’s three target turns to
+  exceed its illustrative 100 ms budget, using target-side timing evidence rather than controller
+  latency. It does not assess transfer correctness, authorization boundaries, data protection, or
+  other performance and cost properties because the binding `--only SC-106` flag excludes those
+  scenarios.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

@@ -2,8 +2,14 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseEnv } from 'node:util';
+import { existsSync } from 'node:fs';
 
 export const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+
+// A copied edition owns its files; the collection remains an optional launcher.
+export function demoDirectory(demo, directory = root) {
+  return existsSync(join(directory, 'demo.json')) ? directory : join(directory, 'demos', demo.id);
+}
 
 export function demoName(demo) {
   return `${demo.domain}-agent${demo.style === 'code' ? '-code' : ''}`;
@@ -17,7 +23,7 @@ export async function findDemo(selector = 'banking-agent-code', directory = root
 }
 
 export async function setupDemoEnv(demo, directory = root) {
-  const path = join(directory, 'demos', demo.id, '.env');
+  const path = join(demoDirectory(demo, directory), '.env');
   const template = await readFile(`${path}.example`, 'utf8');
   try {
     await writeFile(path, template, { flag: 'wx', mode: 0o600 });
@@ -32,12 +38,12 @@ export async function setupDemoEnv(demo, directory = root) {
 // sibling .env file is read. Parsing does not execute shell text or expand $VAR.
 export async function loadDemoEnv(selector = 'banking-agent-code', { directory = root, env = process.env } = {}) {
   const demo = await findDemo(selector, directory);
-  const envFile = join(directory, 'demos', demo.id, '.env');
+  const envFile = join(demoDirectory(demo, directory), '.env');
   let values;
   try { values = parseEnv(await readFile(envFile, 'utf8')); }
   catch (error) {
     if (error.code !== 'ENOENT') throw error;
-    throw new Error(`Missing ${envFile}. Run npm run setup -- ${demoName(demo)} from the collection root (samples/industry-agents), then add MODEL_API_KEY.`);
+    throw new Error(`Missing ${envFile}. Run npm run setup in this demo folder, then add MODEL_API_KEY.`);
   }
   const baseOverride = env.DEMO_BASE_URL;
   for (const [key, value] of Object.entries(values)) if (env[key] === undefined) env[key] = value;
@@ -72,7 +78,7 @@ export function validateDemoConfig({ env = process.env, envFile = '.env' } = {})
 export async function selectedRookProject(demo, directory = root) {
   // Rook's own selection stays authoritative; no project ID belongs in the
   // normal .env template. A folder-local selection takes precedence over root.
-  for (const folder of [join(directory, 'demos', demo.id), directory]) {
+  for (const folder of new Set([demoDirectory(demo, directory), directory])) {
     try {
       const settings = JSON.parse(await readFile(join(folder, '.testmuai', 'rook', 'settings.json'), 'utf8'));
       if (settings.active_project_id && settings.active_project_id !== 'sample-project') return settings.active_project_id;

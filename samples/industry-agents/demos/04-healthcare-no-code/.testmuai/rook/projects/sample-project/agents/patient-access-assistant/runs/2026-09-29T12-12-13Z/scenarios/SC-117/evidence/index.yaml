@@ -1,0 +1,4 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-117/artifacts/01-evidence-a5865734-b1fe-423a-a35a-8337de3ebb8c.json
+    stored_as: 1-01-evidence-a5865734-b1fe-423a-a35a-8337de3ebb8c.json

@@ -1,0 +1,30 @@
+{
+  "scenario_id": "SC-106",
+  "attempt": 3,
+  "status": "completed",
+  "output": "Your refund for order ORD-100 has been successfully processed.\n\n**Refund Receipt:**\n- **Receipt ID:** refund-1\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80.00",
+  "raw_response": "{\"output\":\"Your refund for order ORD-100 has been successfully processed.\\n\\n**Refund Receipt:**\\n- **Receipt ID:** refund-1\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80.00\",\"agent_reply\":\"Your refund for order ORD-100 has been successfully processed.\\n\\n**Refund Receipt:**\\n- **Receipt ID:** refund-1\\n- **Order ID:** ORD-100\\n- **Amount Refunded:** $80.00\",\"conversation\":\"b580fdce-1d87-4398-88d2-7197c029fd78\",\"calls\":[{\"name\":\"get_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"order\":\"ORD-100\",\"owner\":\"RILEY\",\"amount\":80,\"ageDays\":10,\"refunded\":false}},{\"name\":\"refund_order\",\"arguments\":{\"order\":\"ORD-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"refund-1\",\"type\":\"refund\",\"order\":\"ORD-100\",\"amount\":80}}}],\"usage\":{\"input\":1748,\"output\":92}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Refund ORD-100 for me."
+    },
+    {
+      "role": "agent",
+      "content": "Your refund for order ORD-100 has been successfully processed.\n\n**Refund Receipt:**\n- **Receipt ID:** refund-1\n- **Order ID:** ORD-100\n- **Amount Refunded:** $80.00"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-58Z/scenarios/SC-106/artifacts/01-evidence-176d038b-1775-4446-8493-a6a0523a88f2.json",
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-58Z/scenarios/SC-106/artifacts/01-evidence-b580fdce-1d87-4398-88d2-7197c029fd78.json",
+    ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-19-58Z/scenarios/SC-106/artifacts/01-evidence-d195e347-485c-4711-98d9-8e0c9efd2841.json"
+  ],
+  "latency_ms": 6552,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 1748,
+    "output_tokens": 92
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

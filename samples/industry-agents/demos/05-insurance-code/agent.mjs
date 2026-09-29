@@ -1,4 +1,4 @@
-import { tool, objectSchema, str, num, deny, ok, effect, requirePositive, pickAmount, pickId } from '../../shared/domain.mjs';
+import { tool, objectSchema, str, num, deny, ok, effect, requirePositive, pickAmount, pickId } from './runtime/domain.mjs';
 
 // Fictional motor-insurance administration. Every claim and payment stays in this local ledger.
 export const domain = {

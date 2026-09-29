@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:51.688Z",
+      "durationMs": 59,
+      "data": {
+        "conversation": "0c8c0772-4b71-4047-a5a9-ec92b35e972a",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:19:02.652Z",
+      "durationMs": 10964,
+      "data": {
+        "calls": [],
+        "conversation": "0c8c0772-4b71-4047-a5a9-ec92b35e972a"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:19:02.717Z",
+      "durationMs": 63,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:19:02.774Z",
+      "durationMs": 56,
+      "data": {
+        "conversation": "0c8c0772-4b71-4047-a5a9-ec92b35e972a",
+        "output": "{\"sessionId\":\"0c8c0772-4b71-4047-a5a9-ec92b35e972a\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-118/hook-state/evidence-0c8c0772-4b71-4047-a5a9-ec92b35e972a.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [],
+        "usage": {
+          "input": 349,
+          "output": 27
+        },
+        "traces": [
+          {
+            "traceId": "3548516a-6fcf-4159-85bf-61f077fbb8af",
+            "spanId": "51f824c5-e75b-412b-b799-0be50cb42d9a",
+            "parentSpanId": null,
+            "name": "Returns & Refunds Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:18:51.739Z",
+            "durationMs": 10902.560125000018,
+            "status": "ok"
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "0c8c0772-4b71-4047-a5a9-ec92b35e972a"
+}

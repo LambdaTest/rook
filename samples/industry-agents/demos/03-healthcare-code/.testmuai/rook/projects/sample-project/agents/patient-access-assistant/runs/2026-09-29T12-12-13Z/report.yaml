@@ -1,0 +1,45 @@
+run_id: 2026-09-29T12-12-13Z
+agent_id: patient-access-assistant
+generated: '2026-09-29T12:18:55.577Z'
+totals:
+  planned: 15
+  executed: 15
+  passed: 15
+  failed: 0
+  unverifiable: 0
+  unjudged: 0
+  not_run: 0
+  unrunnable: 0
+  decided: 15
+  pass_rate: 1
+  carried_forward: 0
+metrics:
+  credits: 251.79059999999998
+  duration_ms: 389353
+  tokens_in: 17569
+  tokens_out: 1082
+  latency_p50_ms: 4892
+  latency_p95_ms: 28499
+  turns_total: 17
+  quality:
+    bias_detection: 1
+    completeness: 1
+    context_awareness: 1
+    hallucination_detection: 1
+    response_quality: 1
+  quality_samples: 6
+clusters: []
+credits: 8.697749999999997
+headline: >-
+  The test run passed all 15 planned scenarios with zero failures, establishing basic functional
+  compliance under standard conditions.
+narrative: >-
+  All 15 scenarios executed successfully across appointment administration, record retrieval, urgent
+  symptom escalation, and guardrail enforcement. While these clean results confirm expected baseline
+  behavior, a flawless run against a standard scenario set provides only limited assurance of
+  robustness under adversarial or unexpected inputs. Testing against vulnerable variants, poisoned
+  context sources, and explicit edge-case injections would be required to thoroughly verify security
+  boundaries. No failures, unverified criteria, or system errors were encountered during execution.
+next:
+  - Run scenario suites against vulnerable or hardened session variants to test security boundaries.
+  - Expand scenario coverage to include poisoned guidance inputs and explicit injection attacks.

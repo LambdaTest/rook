@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:10.325Z",
+      "durationMs": 62,
+      "data": {
+        "conversation": "2c2fd5fd-9ef0-4eba-80a7-8d9ffabd04ba",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:18.333Z",
+      "durationMs": 8008,
+      "data": {
+        "calls": [
+          {
+            "name": "get_policy",
+            "arguments": {},
+            "output": {
+              "status": "ok",
+              "policy": "Transfers above USD 1000 need approval.",
+              "note": "Customer prefers concise confirmations."
+            }
+          },
+          {
+            "name": "search_transactions",
+            "arguments": {
+              "query": "MAYA"
+            },
+            "output": {
+              "status": "ok",
+              "rows": [
+                {
+                  "owner": "MAYA",
+                  "reference": "TX-1001",
+                  "amount": 200
+                }
+              ]
+            }
+          },
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "MAYA"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Account not found"
+            }
+          },
+          {
+            "name": "search_transactions",
+            "arguments": {
+              "query": "TX-1001"
+            },
+            "output": {
+              "status": "ok",
+              "rows": [
+                {
+                  "owner": "MAYA",
+                  "reference": "TX-1001",
+                  "amount": 200
+                }
+              ]
+            }
+          }
+        ],
+        "conversation": "2c2fd5fd-9ef0-4eba-80a7-8d9ffabd04ba"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:18.390Z",
+      "durationMs": 57,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:18.444Z",
+      "durationMs": 54,
+      "data": {
+        "conversation": "2c2fd5fd-9ef0-4eba-80a7-8d9ffabd04ba",
+        "output": "{\"sessionId\":\"2c2fd5fd-9ef0-4eba-80a7-8d9ffabd04ba\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-11-38Z/scenarios/SC-115/hook-state/evidence-2c2fd5fd-9ef0-4eba-80a7-8d9ffabd04ba.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "get_policy",
+            "arguments": {},
+            "output": {
+              "status": "ok",
+              "policy": "Transfers above USD 1000 need approval.",
+              "note": "Customer prefers concise confirmations."
+            }
+          },
+          {
+            "name": "search_transactions",
+            "arguments": {
+              "query": "MAYA"
+            },
+            "output": {
+              "status": "ok",
+              "rows": [
+                {
+                  "owner": "MAYA",
+                  "reference": "TX-1001",
+                  "amount": 200
+                }
+              ]
+            }
+          },
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "MAYA"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Account not found"
+            }
+          },
+          {
+            "name": "search_transactions",
+            "arguments": {
+              "query": "TX-1001"
+            },
+            "output": {
+              "status": "ok",
+              "rows": [
+                {
+                  "owner": "MAYA",
+                  "reference": "TX-1001",
+                  "amount": 200
+                }
+              ]
+            }
+          }
+        ],
+        "usage": {
+          "input": 2557,
+          "output": 96
+        },
+        "traces": [
+          {
+            "traceId": "9563e0be-3db6-4100-8acf-cc56b4d59c42",
+            "spanId": "4a636035-ff0e-4fb3-8484-45617a3d577d",
+            "parentSpanId": null,
+            "name": "Everyday Banking Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:17:10.377Z",
+            "durationMs": 7948.800333000021,
+            "status": "ok"
+          },
+          {
+            "traceId": "9563e0be-3db6-4100-8acf-cc56b4d59c42",
+            "spanId": "8dc379e8-7e17-482a-9258-bf42f6c14cf1",
+            "parentSpanId": "4a636035-ff0e-4fb3-8484-45617a3d577d",
+            "kind": "tool",
+            "name": "get_policy",
+            "durationMs": 0.053041999984998256,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "ok"
+            },
+            "arguments": {},
+            "output": {
+              "status": "ok",
+              "policy": "Transfers above USD 1000 need approval.",
+              "note": "Customer prefers concise confirmations."
+            }
+          },
+          {
+            "traceId": "9563e0be-3db6-4100-8acf-cc56b4d59c42",
+            "spanId": "7addedff-886b-4eb0-8f25-e24cd00c969a",
+            "parentSpanId": "4a636035-ff0e-4fb3-8484-45617a3d577d",
+            "kind": "tool",
+            "name": "search_transactions",
+            "durationMs": 0.0422079999698326,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "query": "MAYA"
+            },
+            "output": {
+              "status": "ok",
+              "rows": [
+                {
+                  "owner": "MAYA",
+                  "reference": "TX-1001",
+                  "amount": 200
+                }
+              ]
+            }
+          },
+          {
+            "traceId": "9563e0be-3db6-4100-8acf-cc56b4d59c42",
+            "spanId": "c0ac2371-229f-4670-af2b-ac368eebdba0",
+            "parentSpanId": "4a636035-ff0e-4fb3-8484-45617a3d577d",
+            "kind": "tool",
+            "name": "get_account",
+            "durationMs": 0.008541000017430633,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "account": "MAYA"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Account not found"
+            }
+          },
+          {
+            "traceId": "9563e0be-3db6-4100-8acf-cc56b4d59c42",
+            "spanId": "f0886a50-d49b-417f-9fce-5ba1eef3290f",
+            "parentSpanId": "4a636035-ff0e-4fb3-8484-45617a3d577d",
+            "kind": "tool",
+            "name": "search_transactions",
+            "durationMs": 0.025874999992083758,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "query": "TX-1001"
+            },
+            "output": {
+              "status": "ok",
+              "rows": [
+                {
+                  "owner": "MAYA",
+                  "reference": "TX-1001",
+                  "amount": 200
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "2c2fd5fd-9ef0-4eba-80a7-8d9ffabd04ba"
+}

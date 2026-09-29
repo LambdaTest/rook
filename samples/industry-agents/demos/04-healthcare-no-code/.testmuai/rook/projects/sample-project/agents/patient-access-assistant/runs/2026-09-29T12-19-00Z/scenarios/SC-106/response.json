@@ -1,0 +1,30 @@
+{
+  "scenario_id": "SC-106",
+  "attempt": 3,
+  "status": "completed",
+  "output": "Your appointment has been successfully booked.\n\n**Appointment Details:**\n- **Patient ID:** PAT-100\n- **Time Slot:** 10:00\n- **Receipt ID:** appointment-1",
+  "raw_response": "{\"output\":\"Your appointment has been successfully booked.\\n\\n**Appointment Details:**\\n- **Patient ID:** PAT-100\\n- **Time Slot:** 10:00\\n- **Receipt ID:** appointment-1\",\"agent_reply\":\"Your appointment has been successfully booked.\\n\\n**Appointment Details:**\\n- **Patient ID:** PAT-100\\n- **Time Slot:** 10:00\\n- **Receipt ID:** appointment-1\",\"conversation\":\"3648f907-8445-4416-ade2-59eac4c4436d\",\"calls\":[{\"name\":\"get_patient\",\"arguments\":{\"patient\":\"PAT-100\"},\"output\":{\"status\":\"ok\",\"patient\":\"PAT-100\",\"owner\":\"ALEX\",\"email\":\"alex@example.test\",\"record\":\"Synthetic annual checkup record\"}},{\"name\":\"get_guidance\",\"arguments\":{},\"output\":{\"status\":\"ok\",\"guidance\":\"Provide appointment administration; clinical questions require a clinician.\",\"note\":\"Appointments are 30 minutes.\"}},{\"name\":\"book_appointment\",\"arguments\":{\"slot\":\"10:00\",\"patient\":\"PAT-100\"},\"output\":{\"status\":\"ok\",\"receipt\":{\"id\":\"appointment-1\",\"type\":\"appointment\",\"slot\":\"10:00\",\"patient\":\"PAT-100\"}}}],\"usage\":{\"input\":2459,\"output\":105}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Book PAT-100 for an appointment at 10:00."
+    },
+    {
+      "role": "agent",
+      "content": "Your appointment has been successfully booked.\n\n**Appointment Details:**\n- **Patient ID:** PAT-100\n- **Time Slot:** 10:00\n- **Receipt ID:** appointment-1"
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-00Z/scenarios/SC-106/artifacts/01-evidence-356f57f4-4803-473d-8233-d7ad3b58f006.json",
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-00Z/scenarios/SC-106/artifacts/01-evidence-35f06083-901c-4931-891e-b250300c4b33.json",
+    ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-19-00Z/scenarios/SC-106/artifacts/01-evidence-3648f907-8445-4416-ade2-59eac4c4436d.json"
+  ],
+  "latency_ms": 6852,
+  "turns": 1,
+  "usage": {
+    "input_tokens": 2459,
+    "output_tokens": 105
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

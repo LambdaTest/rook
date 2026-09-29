@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agent Assurance — ROOK</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <a href="#conversation" class="skip">Skip to conversation</a>
+  <header class="topbar"><a class="wordmark" href="/" aria-label="Agent Assurance — ROOK home"><span class="brand-mark" aria-hidden="true">♜</span> ROOK <span class="byline">AGENT ASSURANCE</span></a><a class="overview-link" href="/overview">Agent architecture ↗</a><span class="pill">Fictional customer records</span></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow" id="audience">AGENT WORKSPACE</p><h1 id="brand">Customer operations</h1><p class="mission" id="mission">Connecting to the agent…</p></div><div class="intro-aside"><p class="eyebrow">AGENT UNDER TEST</p><p id="agent-name">Customer service agent</p><p class="muted" id="persona"></p></div></section>
+    <div id="error" role="alert" hidden></div>
+    <form id="auth-form" hidden><label for="api-token">API access token</label><input id="api-token" type="password" autocomplete="off"><button>Connect</button></form>
+    <section class="controls" aria-label="Agent configuration">
+      <div class="control"><label for="variant">Agent version</label><select id="variant"><option value="vulnerable">Before the fix</option><option value="hardened">After the fix</option></select></div>
+      <button class="secondary" id="new-session" type="button">New session <span aria-hidden="true">↗</span></button>
+    </section>
+    <div class="workspace">
+      <aside class="scenario-panel"><div class="panel-title"><h2>Customer scenarios</h2><span id="scenario-count">18</span></div><label class="sr-only" for="category">Filter scenario class</label><select id="category"><option value="all">All issue categories</option><option value="functional">Functional</option><option value="non_functional">Non-functional</option><option value="adversarial">Red teaming</option></select><div id="scenario-list"></div></aside>
+      <section class="chat-panel" id="conversation" aria-label="Customer conversation"><div class="panel-title"><h2 id="chat-title">Everyday Banking Assistant</h2><span class="status-dot" id="session-status">READY</span></div><div id="messages" role="log" aria-live="polite" aria-label="Conversation messages"><div class="empty-chat"><span class="large-symbol" aria-hidden="true">↗</span><h3>Start a customer conversation.</h3><p>Choose a scenario or write your own request.</p></div></div><div id="expectations" hidden></div><form id="chat-form"><label class="sr-only" for="goal">Customer message</label><textarea id="goal" rows="3" required maxlength="16000" placeholder="Ask the assistant to help…"></textarea><div class="composer-footer"><span id="turn-hint">Messages stay in this conversation.</span><button id="send" type="submit">Send message <span aria-hidden="true">↗</span></button></div></form></section>
+      <aside class="evidence-panel"><div class="panel-title"><h2>Follow the evidence</h2><button class="text-button" id="export" type="button" disabled>Export JSON ↗</button></div><p class="muted evidence-intro">Activity recorded for this conversation.</p><dl class="metrics"><div><dt>Business effects</dt><dd id="effect-count">—</dd></div><div><dt>Latest turn</dt><dd id="latency">—</dd></div><div><dt>Model tokens</dt><dd id="tokens">Unobserved</dd></div></dl><h3 class="section-label">BUSINESS LEDGER</h3><div id="ledger" class="evidence-box">No session yet.</div><h3 class="section-label">TOOL TRACE</h3><div id="traces" class="trace-list">Run a request to inspect its path.</div><details class="policy"><summary>Customer service rules</summary><p id="policy"></p></details><p class="session-id" id="session-id"></p><p class="muted footnote">These are target observations. Open Rook’s report to see its independent verdict and verification gaps.</p></aside>
+    </div>
+    <footer><span>AGENT ASSURANCE — ROOK</span><span>Customer request · Recorded action · Verifiable outcome</span></footer>
+  </main>
+  <script type="module" src="/app.mjs"></script>
+</body>
+</html>

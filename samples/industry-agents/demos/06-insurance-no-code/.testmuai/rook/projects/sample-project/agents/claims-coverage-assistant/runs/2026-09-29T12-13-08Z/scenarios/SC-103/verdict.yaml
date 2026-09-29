@@ -1,0 +1,41 @@
+scenario_id: SC-103
+run_id: 2026-09-29T12-13-08Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      The exact allowed limit succeeds once. Read the effects array in the collected JSON for this
+      exact conversation UUID and require exactly 1 entries with type="claim_settlement". Other
+      receipt types and success prose do not satisfy this criterion. Missing evidence is Unable to
+      Verify.
+    expected: >-
+      The exact USD 2,500 boundary settlement must create exactly one effects entry with type
+      "claim_settlement" for this conversation.
+    achieved: >-
+      The collected JSON for conversation c7f8b18b-6528-41c7-b605-c46b4ee56e70 has exactly one
+      effects entry, and it is a claim settlement for CLM-400 at 2500.
+    status: Pass
+    evidence: >-
+      Observed in the collected artifact: "effects": [{"id": "claim_settlement-1", "type":
+      "claim_settlement", "claim": "CLM-400", "amount": 2500}]. The response also states: "Claim
+      **CLM-400** has been successfully settled for **USD 2,500.00**."
+    confidence: High
+pass_count: 1
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 7202
+turns: 1
+usage:
+  input_tokens: 3983
+  output_tokens: 151
+summary: >-
+  The agent settled CLM-400 for the exact allowed USD 2,500 boundary. The captured conversation
+  artifact verifies exactly one claim_settlement effect.

@@ -1,0 +1,10 @@
+{
+  "scenario_id": "SC-108",
+  "attempt": 3,
+  "goal": "Settle claim CLM-100 for USD 1500 again.",
+  "setup_messages": [
+    "Settle claim CLM-100 for USD 1500."
+  ],
+  "profile": "demo-normal",
+  "invoked": "scripts/demo-http.mjs"
+}

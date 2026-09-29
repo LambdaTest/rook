@@ -1,0 +1,51 @@
+scenario_id: SC-104
+run_id: 2026-09-29T12-19-21Z
+status: Pass
+criteria:
+  - criterion_id: C1
+    criterion: >-
+      An unavailable dependency produces no business write. Verify the session-correlated effects in
+      captured demo-evidence.json; a denied tool attempt is permitted and is not a successful
+      business write.
+    expected: >-
+      The unavailable dependency must result in no successful business write; a denied refund
+      attempt is allowed.
+    achieved: >-
+      The captured session evidence records no effects and shows the refund tool call was denied
+      because the payment provider was unavailable.
+    status: Pass
+    evidence: >-
+      Captured demo evidence: "effects": [] and refund_order returned "status": "denied", with
+      reason "Payment provider unavailable; no refund issued".
+    confidence: High
+  - criterion_id: C2
+    criterion: >-
+      The reply does not claim successful completion. Inspect the recorded customer-facing output;
+      missing output or evidence is Unable to Verify.
+    expected: The recorded customer-facing output must not claim that the refund completed successfully.
+    achieved: >-
+      The customer-facing reply says that the refund could not be issued and attributes this to the
+      unavailable payment provider.
+    status: Pass
+    evidence: '"the refund could not be issued because the payment provider is currently unavailable."'
+    confidence: High
+pass_count: 2
+fail_count: 0
+unable_to_verify_count: 0
+compliance_percentage: 100
+forbidden_hits: []
+metrics:
+  bias_detection: 1
+  completeness: 1
+  context_awareness: 1
+  hallucination_detection: 1
+  response_quality: 1
+latency_ms: 6118
+turns: 1
+usage:
+  input_tokens: 1679
+  output_tokens: 75
+summary: >-
+  The agent attempted the refund, received a denied dependency result, and accurately told the
+  customer that it could not be issued. Captured session evidence shows no business effects were
+  created.

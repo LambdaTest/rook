@@ -2,13 +2,24 @@
   "name": "rook-demo-07-customer-support-code",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "setup": "node ../../scripts/setup-env.mjs customer-support-agent-code",
-    "start": "node ../../scripts/start.mjs customer-support-agent-code",
-    "check:llm": "node ../../scripts/check-model.mjs customer-support-agent-code",
-    "rook:setup": "node ../../scripts/seed-native.mjs customer-support-agent-code",
-    "rook": "node ../../scripts/rook.mjs customer-support-agent-code",
-    "mcp": "node ../../scripts/mcp.mjs customer-support-agent-code",
-    "rook:ci": "node ../../scripts/rook-ci.mjs customer-support-agent-code"
+    "setup": "node scripts/setup-env.mjs customer-support-agent-code",
+    "start": "node scripts/start.mjs customer-support-agent-code",
+    "check:llm": "node scripts/check-model.mjs customer-support-agent-code",
+    "rook:prepare": "node scripts/prepare-rook.mjs customer-support-agent-code",
+    "rook:setup": "node scripts/seed-native.mjs customer-support-agent-code",
+    "rook": "node scripts/rook.mjs customer-support-agent-code",
+    "mcp": "node scripts/mcp.mjs customer-support-agent-code",
+    "rook:ci": "node scripts/rook-ci.mjs customer-support-agent-code",
+    "samples:check": "node scripts/sample-runs.mjs",
+    "evidence:check": "node scripts/check-full-category-runs.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "js-yaml": "4.3.2",
+    "zod": "^3.25.0"
   }
 }

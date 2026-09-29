@@ -1,0 +1,10 @@
+files:
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-20-07Z/scenarios/SC-106/artifacts/01-evidence-1d3812b3-d135-4c2e-a3ce-4421a20aa821.json
+    stored_as: 1-01-evidence-1d3812b3-d135-4c2e-a3ce-4421a20aa821.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-20-07Z/scenarios/SC-106/artifacts/01-evidence-41233dc4-4520-4666-9e4b-d1cb1b344381.json
+    stored_as: 2-01-evidence-41233dc4-4520-4666-9e4b-d1cb1b344381.json
+  - read: >-
+      .testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-20-07Z/scenarios/SC-106/artifacts/01-evidence-b179c2e4-0001-44c6-84cb-ae36fca199f7.json
+    stored_as: 3-01-evidence-b179c2e4-0001-44c6-84cb-ae36fca199f7.json

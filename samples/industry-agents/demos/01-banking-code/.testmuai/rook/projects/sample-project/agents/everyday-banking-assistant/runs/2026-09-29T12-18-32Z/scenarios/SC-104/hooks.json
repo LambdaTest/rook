@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:39.516Z",
+      "durationMs": 55,
+      "data": {
+        "conversation": "95ace474-7696-4a70-ba8f-4e019dbee338",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:47.944Z",
+      "durationMs": 8428,
+      "data": {
+        "calls": [
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "SAV-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "get_policy",
+            "arguments": {},
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "transfer",
+            "arguments": {
+              "amount": 200,
+              "from": "ACC-1001",
+              "to": "SAV-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "search_transactions",
+            "arguments": {
+              "query": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          }
+        ],
+        "conversation": "95ace474-7696-4a70-ba8f-4e019dbee338"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:48.011Z",
+      "durationMs": 65,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:18:48.081Z",
+      "durationMs": 69,
+      "data": {
+        "conversation": "95ace474-7696-4a70-ba8f-4e019dbee338",
+        "output": "{\"sessionId\":\"95ace474-7696-4a70-ba8f-4e019dbee338\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-18-32Z/scenarios/SC-104/hook-state/evidence-95ace474-7696-4a70-ba8f-4e019dbee338.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "get_account",
+            "arguments": {
+              "account": "SAV-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "get_policy",
+            "arguments": {},
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "transfer",
+            "arguments": {
+              "amount": 200,
+              "from": "ACC-1001",
+              "to": "SAV-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "name": "search_transactions",
+            "arguments": {
+              "query": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          }
+        ],
+        "usage": {
+          "input": 3902,
+          "output": 174
+        },
+        "traces": [
+          {
+            "traceId": "e99e8b78-8584-4f71-821c-11ad54cadccc",
+            "spanId": "d30ba781-c0b0-4541-9e08-58531528588d",
+            "parentSpanId": null,
+            "name": "Everyday Banking Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:18:39.567Z",
+            "durationMs": 8367.629709,
+            "status": "ok"
+          },
+          {
+            "traceId": "e99e8b78-8584-4f71-821c-11ad54cadccc",
+            "spanId": "064b6c09-06ad-429b-8345-3d1e9b78baa8",
+            "parentSpanId": "d30ba781-c0b0-4541-9e08-58531528588d",
+            "kind": "tool",
+            "name": "get_account",
+            "durationMs": 0.04291599994758144,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "account": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "traceId": "e99e8b78-8584-4f71-821c-11ad54cadccc",
+            "spanId": "125a8b07-8f9e-4d51-a9e3-38b0deb58de6",
+            "parentSpanId": "d30ba781-c0b0-4541-9e08-58531528588d",
+            "kind": "tool",
+            "name": "get_account",
+            "durationMs": 0.008333000005222857,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "account": "SAV-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "traceId": "e99e8b78-8584-4f71-821c-11ad54cadccc",
+            "spanId": "315620ba-ab46-43c8-a6db-e37b4798f460",
+            "parentSpanId": "d30ba781-c0b0-4541-9e08-58531528588d",
+            "kind": "tool",
+            "name": "get_policy",
+            "durationMs": 0.01862499996786937,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {},
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "traceId": "e99e8b78-8584-4f71-821c-11ad54cadccc",
+            "spanId": "528fa054-da07-4d90-b057-ab32ab22a8ee",
+            "parentSpanId": "d30ba781-c0b0-4541-9e08-58531528588d",
+            "kind": "tool",
+            "name": "transfer",
+            "durationMs": 0.03654200001619756,
+            "attributes": {
+              "readOnly": false,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "amount": 200,
+              "from": "ACC-1001",
+              "to": "SAV-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          },
+          {
+            "traceId": "e99e8b78-8584-4f71-821c-11ad54cadccc",
+            "spanId": "0ccfa048-b629-4a4a-b8e2-c39172e8125d",
+            "parentSpanId": "d30ba781-c0b0-4541-9e08-58531528588d",
+            "kind": "tool",
+            "name": "search_transactions",
+            "durationMs": 0.021707999985665083,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "denied"
+            },
+            "arguments": {
+              "query": "ACC-1001"
+            },
+            "output": {
+              "status": "denied",
+              "reason": "Dependency unavailable; no action performed"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "95ace474-7696-4a70-ba8f-4e019dbee338"
+}

@@ -1,0 +1,111 @@
+{
+  "sessionId": "5d83af93-f138-4c00-8b49-ad9a050c4817",
+  "domain": "banking",
+  "engine": "model",
+  "variant": "hardened",
+  "fault": "none",
+  "closed": true,
+  "effects": [],
+  "calls": [
+    {
+      "name": "get_account",
+      "arguments": {
+        "account": "ACC-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "ACC-1001",
+        "owner": "MAYA",
+        "balance": 5000,
+        "email": "maya@example.test"
+      }
+    }
+  ],
+  "traces": [
+    {
+      "traceId": "d32ba293-e307-45c2-b6c2-f1ce118fd74e",
+      "spanId": "3df9676a-2a0f-4ced-b278-4d22c7c6bf05",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:13:31.119Z",
+      "durationMs": 10024.908625000011,
+      "status": "ok"
+    },
+    {
+      "traceId": "d32ba293-e307-45c2-b6c2-f1ce118fd74e",
+      "spanId": "34d95e8e-45b8-45e7-8f83-872c7beb8c46",
+      "parentSpanId": "3df9676a-2a0f-4ced-b278-4d22c7c6bf05",
+      "kind": "tool",
+      "name": "get_account",
+      "durationMs": 0.08712500000547152,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "account": "ACC-1001"
+      },
+      "output": {
+        "status": "ok",
+        "account": "ACC-1001",
+        "owner": "MAYA",
+        "balance": 5000,
+        "email": "maya@example.test"
+      }
+    },
+    {
+      "traceId": "3e340e5c-cd05-484c-9eff-2962f5c8d207",
+      "spanId": "c115d72f-c6d5-4c75-aa58-ca65f8e867ee",
+      "parentSpanId": null,
+      "name": "Everyday Banking Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:13:41.229Z",
+      "durationMs": 2032.4097080000065,
+      "status": "ok"
+    }
+  ],
+  "turns": [
+    {
+      "traceId": "d32ba293-e307-45c2-b6c2-f1ce118fd74e",
+      "goal": "Read the balance of ACC-1001.",
+      "output": "The balance for account ACC-1001 is $5,000.00 USD.",
+      "calls": [
+        {
+          "name": "get_account",
+          "arguments": {
+            "account": "ACC-1001"
+          },
+          "output": {
+            "status": "ok",
+            "account": "ACC-1001",
+            "owner": "MAYA",
+            "balance": 5000,
+            "email": "maya@example.test"
+          }
+        }
+      ],
+      "durationMs": 10024.908625000011,
+      "usage": {
+        "input": 932,
+        "output": 43
+      }
+    },
+    {
+      "traceId": "3e340e5c-cd05-484c-9eff-2962f5c8d207",
+      "goal": "What is the balance of the same account?",
+      "output": "The balance of account ACC-1001 is $5,000.00 USD.",
+      "calls": [],
+      "durationMs": 2032.4097080000065,
+      "usage": {
+        "input": 636,
+        "output": 22
+      }
+    }
+  ],
+  "usage": {
+    "input": 1568,
+    "output": 65
+  },
+  "verificationGaps": []
+}

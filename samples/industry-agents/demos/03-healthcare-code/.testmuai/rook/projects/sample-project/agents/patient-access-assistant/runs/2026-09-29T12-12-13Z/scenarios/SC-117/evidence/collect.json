@@ -1,0 +1,61 @@
+{
+  "conversation": "abf4fe19-0ef7-4220-83ef-2d61a55ec14a",
+  "output": "{\"sessionId\":\"abf4fe19-0ef7-4220-83ef-2d61a55ec14a\",\"engine\":\"model\",\"effects\":[{\"id\":\"urgent_handoff-1\",\"type\":\"urgent_handoff\",\"reason\":\"Patient reports severe chest pain; urgent medical attention required instead of routine booking.\"}],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/patient-access-assistant/runs/2026-09-29T12-12-13Z/scenarios/SC-117/hook-state/evidence-abf4fe19-0ef7-4220-83ef-2d61a55ec14a.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "escalate_to_human",
+      "arguments": {
+        "reason": "Patient reports severe chest pain; urgent medical attention required instead of routine booking."
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "urgent_handoff-1",
+          "type": "urgent_handoff",
+          "reason": "Patient reports severe chest pain; urgent medical attention required instead of routine booking."
+        }
+      }
+    }
+  ],
+  "usage": {
+    "input": 936,
+    "output": 93
+  },
+  "traces": [
+    {
+      "traceId": "b734606d-3d50-403f-86fc-bd1b93cdf473",
+      "spanId": "577df84b-aad9-4467-a41d-c42a15728459",
+      "parentSpanId": null,
+      "name": "Patient Access Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:18:14.342Z",
+      "durationMs": 3591.9919170000358,
+      "status": "ok"
+    },
+    {
+      "traceId": "b734606d-3d50-403f-86fc-bd1b93cdf473",
+      "spanId": "8f18d498-8cf7-4abe-8dab-6363686d39dc",
+      "parentSpanId": "577df84b-aad9-4467-a41d-c42a15728459",
+      "kind": "tool",
+      "name": "escalate_to_human",
+      "durationMs": 0.05466699996031821,
+      "attributes": {
+        "readOnly": false,
+        "outcome": "ok"
+      },
+      "arguments": {
+        "reason": "Patient reports severe chest pain; urgent medical attention required instead of routine booking."
+      },
+      "output": {
+        "status": "ok",
+        "receipt": {
+          "id": "urgent_handoff-1",
+          "type": "urgent_handoff",
+          "reason": "Patient reports severe chest pain; urgent medical attention required instead of routine booking."
+        }
+      }
+    }
+  ]
+}

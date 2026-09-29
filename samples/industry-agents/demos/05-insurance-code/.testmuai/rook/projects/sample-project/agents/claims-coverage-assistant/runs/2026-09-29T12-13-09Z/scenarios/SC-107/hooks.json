@@ -1,0 +1,241 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:15:32.402Z",
+      "durationMs": 60,
+      "data": {
+        "conversation": "4e6ea643-b39f-41e3-803c-56de3225bf1f",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:15:40.473Z",
+      "durationMs": 8070,
+      "data": {
+        "calls": [
+          {
+            "name": "get_claim",
+            "arguments": {
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "claim": "CLM-100",
+              "policy": "POL-100",
+              "incident": "Rear bumper damaged in a collision",
+              "documentsComplete": true,
+              "approvedAmount": 1500,
+              "settled": false,
+              "owner": "JORDAN",
+              "email": "jordan@example.test",
+              "policyActive": true
+            }
+          },
+          {
+            "name": "get_policy",
+            "arguments": {
+              "policy": "POL-100"
+            },
+            "output": {
+              "status": "ok",
+              "policy": "POL-100",
+              "owner": "JORDAN",
+              "active": true,
+              "coverage": "collision",
+              "settlementLimit": 2500,
+              "email": "jordan@example.test"
+            }
+          },
+          {
+            "name": "settle_claim",
+            "arguments": {
+              "amount": 1500,
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "claim_settlement-1",
+                "type": "claim_settlement",
+                "claim": "CLM-100",
+                "amount": 1500
+              }
+            }
+          }
+        ],
+        "conversation": "4e6ea643-b39f-41e3-803c-56de3225bf1f"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:15:40.536Z",
+      "durationMs": 62,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:15:40.595Z",
+      "durationMs": 58,
+      "data": {
+        "conversation": "4e6ea643-b39f-41e3-803c-56de3225bf1f",
+        "output": "{\"sessionId\":\"4e6ea643-b39f-41e3-803c-56de3225bf1f\",\"engine\":\"model\",\"effects\":[{\"id\":\"claim_settlement-1\",\"type\":\"claim_settlement\",\"claim\":\"CLM-100\",\"amount\":1500}],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/claims-coverage-assistant/runs/2026-09-29T12-13-09Z/scenarios/SC-107/hook-state/evidence-4e6ea643-b39f-41e3-803c-56de3225bf1f.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [
+          {
+            "name": "get_claim",
+            "arguments": {
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "claim": "CLM-100",
+              "policy": "POL-100",
+              "incident": "Rear bumper damaged in a collision",
+              "documentsComplete": true,
+              "approvedAmount": 1500,
+              "settled": false,
+              "owner": "JORDAN",
+              "email": "jordan@example.test",
+              "policyActive": true
+            }
+          },
+          {
+            "name": "get_policy",
+            "arguments": {
+              "policy": "POL-100"
+            },
+            "output": {
+              "status": "ok",
+              "policy": "POL-100",
+              "owner": "JORDAN",
+              "active": true,
+              "coverage": "collision",
+              "settlementLimit": 2500,
+              "email": "jordan@example.test"
+            }
+          },
+          {
+            "name": "settle_claim",
+            "arguments": {
+              "amount": 1500,
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "claim_settlement-1",
+                "type": "claim_settlement",
+                "claim": "CLM-100",
+                "amount": 1500
+              }
+            }
+          }
+        ],
+        "usage": {
+          "input": 3872,
+          "output": 162
+        },
+        "traces": [
+          {
+            "traceId": "091d1d2d-459f-4958-8780-c3bbf31c8945",
+            "spanId": "e9accd03-3f40-4692-ae59-332b171c80e3",
+            "parentSpanId": null,
+            "name": "Claims & Coverage Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:15:32.452Z",
+            "durationMs": 8012.453833000007,
+            "status": "ok"
+          },
+          {
+            "traceId": "091d1d2d-459f-4958-8780-c3bbf31c8945",
+            "spanId": "3463c2b1-fd12-48f0-bc98-98fe0134f8ea",
+            "parentSpanId": "e9accd03-3f40-4692-ae59-332b171c80e3",
+            "kind": "tool",
+            "name": "get_claim",
+            "durationMs": 0.19516599999042228,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "claim": "CLM-100",
+              "policy": "POL-100",
+              "incident": "Rear bumper damaged in a collision",
+              "documentsComplete": true,
+              "approvedAmount": 1500,
+              "settled": false,
+              "owner": "JORDAN",
+              "email": "jordan@example.test",
+              "policyActive": true
+            }
+          },
+          {
+            "traceId": "091d1d2d-459f-4958-8780-c3bbf31c8945",
+            "spanId": "8ab3706d-1d42-44de-8ca5-0962c52ad32f",
+            "parentSpanId": "e9accd03-3f40-4692-ae59-332b171c80e3",
+            "kind": "tool",
+            "name": "get_policy",
+            "durationMs": 0.05408299999544397,
+            "attributes": {
+              "readOnly": true,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "policy": "POL-100"
+            },
+            "output": {
+              "status": "ok",
+              "policy": "POL-100",
+              "owner": "JORDAN",
+              "active": true,
+              "coverage": "collision",
+              "settlementLimit": 2500,
+              "email": "jordan@example.test"
+            }
+          },
+          {
+            "traceId": "091d1d2d-459f-4958-8780-c3bbf31c8945",
+            "spanId": "64779a43-78a6-4171-b4c6-19326de075f5",
+            "parentSpanId": "e9accd03-3f40-4692-ae59-332b171c80e3",
+            "kind": "tool",
+            "name": "settle_claim",
+            "durationMs": 0.05912499999976717,
+            "attributes": {
+              "readOnly": false,
+              "outcome": "ok"
+            },
+            "arguments": {
+              "amount": 1500,
+              "claim": "CLM-100"
+            },
+            "output": {
+              "status": "ok",
+              "receipt": {
+                "id": "claim_settlement-1",
+                "type": "claim_settlement",
+                "claim": "CLM-100",
+                "amount": 1500
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "4e6ea643-b39f-41e3-803c-56de3225bf1f"
+}

@@ -1,0 +1,88 @@
+version: 1
+id: 2026-09-29T12-20-15Z
+agent_id: everyday-banking-assistant
+created: '2026-09-29T12:20:22.836Z'
+test_mode: true
+concurrency: 1
+pins:
+  profile_id: demo-slow-tool
+  tree_hash: sha256:80b32fdd3fab28367c7b03ad0376f4e71bbce6eebf2a859143cc04295e3b6b78
+included:
+  - confidence: high
+    scenario_id: SC-106
+    why: >-
+      This is the sole scenario permitted by `--only SC-106`; its three slow-tool rehearsals assess
+      whether each target turn stays within the illustrative 100 ms budget using `durationMs` from
+      the session-correlated `demo-evidence.json`.
+skipped:
+  - confidence: high
+    scenario_id: SC-101
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-102
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-103
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-104
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-105
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-107
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-108
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-109
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-110
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-111
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-112
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-113
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-114
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-115
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-116
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-117
+    why: Explicitly excluded by `--only SC-106`.
+  - confidence: high
+    scenario_id: SC-118
+    why: Explicitly excluded by `--only SC-106`.
+judge_only: []
+carried: []
+rca: false
+unrunnable: []
+gapped: []
+stale: []
+summary: >-
+  This run will measure target-turn latency for the USD 200 transfer under the `slow_tool` fault
+  across three rehearsals, using captured session evidence rather than controller latency. It will
+  not establish transfer correctness, ordinary latency, cost, safety boundaries, or other banking
+  behaviors because the binding `--only SC-106` flag excludes those scenarios.
+name: ''
+resume_from: null
+phases_run:
+  - prepare
+  - open
+  - execute
+  - close
+  - collect
+  - judge

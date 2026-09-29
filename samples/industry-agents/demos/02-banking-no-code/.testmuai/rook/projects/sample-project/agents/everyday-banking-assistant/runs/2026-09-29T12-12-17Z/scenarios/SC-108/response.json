@@ -1,0 +1,38 @@
+{
+  "scenario_id": "SC-108",
+  "attempt": 3,
+  "status": "completed",
+  "output": "The current balance of account ACC-1001 is USD 4,800.00.",
+  "raw_response": "{\"output\":\"The current balance of account ACC-1001 is USD 4,800.00.\",\"agent_reply\":\"The current balance of account ACC-1001 is USD 4,800.00.\",\"conversation\":\"529032e8-16d4-485e-b115-30ad93c86e2b\",\"calls\":[{\"name\":\"get_account\",\"arguments\":{\"account\":\"ACC-1001\"},\"output\":{\"status\":\"ok\",\"account\":\"ACC-1001\",\"owner\":\"MAYA\",\"balance\":4800,\"email\":\"maya@example.test\"}}],\"usage\":{\"input\":2429,\"output\":44}}",
+  "transcript": [
+    {
+      "role": "user",
+      "content": "Transfer USD 200 from ACC-1001 to SAV-1001."
+    },
+    {
+      "role": "agent",
+      "content": "The transfer of USD 200.00 from account ACC-1001 to SAV-1001 has been successfully completed and verified in the ledger (Receipt ID: `transfer-1`, Transaction Reference: `TX-1001`)."
+    },
+    {
+      "role": "user",
+      "content": "Read the balance of ACC-1001."
+    },
+    {
+      "role": "agent",
+      "content": "The current balance of account ACC-1001 is USD 4,800.00."
+    }
+  ],
+  "artifacts": [
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-108/artifacts/01-evidence-48a99b84-412c-499c-ab7d-d6f9282a76d0.json",
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-108/artifacts/01-evidence-529032e8-16d4-485e-b115-30ad93c86e2b.json",
+    ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-108/artifacts/01-evidence-f97670ae-93e6-4e4b-b25a-1317979fc47b.json"
+  ],
+  "latency_ms": 12714,
+  "turns": 2,
+  "usage": {
+    "input_tokens": 2429,
+    "output_tokens": 44
+  },
+  "clarifications": 0,
+  "fs_note": "the filesystem was not observed for this scenario, so nothing can be concluded from the absence of changes"
+}

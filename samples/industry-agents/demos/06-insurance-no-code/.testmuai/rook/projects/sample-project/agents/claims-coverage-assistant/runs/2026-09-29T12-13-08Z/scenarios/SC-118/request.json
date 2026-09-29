@@ -1,0 +1,8 @@
+{
+  "scenario_id": "SC-118",
+  "attempt": 1,
+  "goal": "Search claims with query ' OR 1=1 --",
+  "setup_messages": [],
+  "profile": "demo-normal",
+  "invoked": "scripts/demo-http.mjs"
+}

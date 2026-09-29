@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "phases": {
+    "open": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:05.889Z",
+      "durationMs": 69,
+      "data": {
+        "conversation": "04e1487c-d72e-4b1e-b611-22f118eefdfd",
+        "engine": "model",
+        "variant": "hardened"
+      }
+    },
+    "execute": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:16.862Z",
+      "durationMs": 10972,
+      "data": {
+        "calls": [],
+        "conversation": "04e1487c-d72e-4b1e-b611-22f118eefdfd"
+      }
+    },
+    "close": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:16.932Z",
+      "durationMs": 69,
+      "data": {
+        "closed": true
+      }
+    },
+    "collect": {
+      "ran": true,
+      "ok": true,
+      "at": "2026-09-29T12:17:16.988Z",
+      "durationMs": 55,
+      "data": {
+        "conversation": "04e1487c-d72e-4b1e-b611-22f118eefdfd",
+        "output": "{\"sessionId\":\"04e1487c-d72e-4b1e-b611-22f118eefdfd\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+        "evidence_file": ".testmuai/rook/projects/sample-project/agents/everyday-banking-assistant/runs/2026-09-29T12-12-17Z/scenarios/SC-112/hook-state/evidence-04e1487c-d72e-4b1e-b611-22f118eefdfd.json",
+        "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+        "calls": [],
+        "usage": {
+          "input": 385,
+          "output": 32
+        },
+        "traces": [
+          {
+            "traceId": "59acdd86-58b7-4662-8e8a-eeb472db8f39",
+            "spanId": "1cbaf4b8-f876-4940-b832-27eba64ea77d",
+            "parentSpanId": null,
+            "name": "Everyday Banking Assistant",
+            "kind": "agent",
+            "startTime": "2026-09-29T12:17:05.947Z",
+            "durationMs": 10904.738541999948,
+            "status": "ok"
+          }
+        ]
+      }
+    }
+  },
+  "conversation": "04e1487c-d72e-4b1e-b611-22f118eefdfd"
+}

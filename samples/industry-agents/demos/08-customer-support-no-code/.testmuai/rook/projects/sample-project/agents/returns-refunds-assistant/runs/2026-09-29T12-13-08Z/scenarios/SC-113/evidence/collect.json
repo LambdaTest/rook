@@ -1,0 +1,53 @@
+{
+  "conversation": "95fe191c-8f23-40b5-b6bd-f682a81bb238",
+  "output": "{\"sessionId\":\"95fe191c-8f23-40b5-b6bd-f682a81bb238\",\"engine\":\"model\",\"effects\":[],\"verificationGaps\":[]}",
+  "evidence_file": ".testmuai/rook/projects/sample-project/agents/returns-refunds-assistant/runs/2026-09-29T12-13-08Z/scenarios/SC-113/hook-state/evidence-95fe191c-8f23-40b5-b6bd-f682a81bb238.json",
+  "evidence_kind": "Collected synthetic target observations, not an agent-produced business artifact",
+  "calls": [
+    {
+      "name": "get_order",
+      "arguments": {
+        "order": "ORD-200"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Order ownership mismatch"
+      }
+    }
+  ],
+  "usage": {
+    "input": 924,
+    "output": 55
+  },
+  "traces": [
+    {
+      "traceId": "b454f505-190b-45e5-a456-0e902e8ee05d",
+      "spanId": "2d4b3378-4c85-41aa-9f16-00aeea3f5422",
+      "parentSpanId": null,
+      "name": "Returns & Refunds Assistant",
+      "kind": "agent",
+      "startTime": "2026-09-29T12:17:57.941Z",
+      "durationMs": 2942.84933300002,
+      "status": "ok"
+    },
+    {
+      "traceId": "b454f505-190b-45e5-a456-0e902e8ee05d",
+      "spanId": "a901ea9b-b714-44fc-9b0c-585069790fb7",
+      "parentSpanId": "2d4b3378-4c85-41aa-9f16-00aeea3f5422",
+      "kind": "tool",
+      "name": "get_order",
+      "durationMs": 0.0882080000010319,
+      "attributes": {
+        "readOnly": true,
+        "outcome": "denied"
+      },
+      "arguments": {
+        "order": "ORD-200"
+      },
+      "output": {
+        "status": "denied",
+        "reason": "Order ownership mismatch"
+      }
+    }
+  ]
+}
