@@ -7,6 +7,7 @@ Sample agents to explore, test and inspect with `rook`.
 | [`refund-desk/`](refund-desk) | A Claude Code agent: `.claude/agents/*.md`, a skill, a subagent, two MCP servers | Deterministically — frontmatter and `.mcp.json`, no model involved |
 | [`triage-service/`](triage-service) | A plain codebase: a prompt in a string, a tool table, an HTTP server | By reading the code, with tools |
 | [`industry-agents/`](industry-agents) | Eight Developer/QE editions across banking, healthcare, insurance and customer support | Explore source or requirements, or run the supplied native workspaces headlessly |
+| [`incident-scribe/`](incident-scribe) | An incident-intake agent: a Python CLI, an MCP directory server and a tool-less subagent | By reading the code, with tools |
 
 The first is the declared case, and it is the minority. A survey of ~20 real
 repositories found **zero** agent manifests, which is why the folder is the

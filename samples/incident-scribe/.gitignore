@@ -1,0 +1,10 @@
+node_modules/
+.npm-cache/
+.models/
+.pytest_cache/
+__pycache__/
+*.pyc
+.env
+.alumnium/
+.scribe-sessions/
+.testmuai/

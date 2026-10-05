@@ -1,0 +1,12 @@
+{
+  "name": "rook-demo-incident-scribe",
+  "private": true,
+  "type": "module",
+  "description": "incident-scribe desk + ops-directory MCP server (with semantic incident search)",
+  "scripts": {
+    "build-index": "node scripts/build-index.mjs"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.7.6"
+  }
+}

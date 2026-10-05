@@ -1,0 +1,1266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="incident-scribe — what the agent does, a real recorded session end to end, how it is built, and how its answers are verified.">
+<title>The Incident Intake Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap">
+
+<style>
+  :root {
+    --ground:      #F3F5F2;
+    --surface:     #FFFFFF;
+    --surface-2:   #E9EDE9;
+    --ink:         #161E1C;
+    --ink-2:       #4C5956;
+    --ink-3:       #74817D;
+    --rule:        #D5DBD5;
+    --rule-strong: #B6C0BA;
+    --accent:      #0E5B52;
+    --accent-ink:  #0E5B52;
+    --accent-soft: #DCEBE6;
+    --s1:          #A82D22;
+    --s1-soft:     #F6E0DD;
+    --s2:          #9C6408;
+    --s2-soft:     #F7EBD6;
+    --s3:          #4F6270;
+    --s3-soft:     #E3E9ED;
+    --shadow:      0 1px 2px rgba(22,30,28,.05), 0 8px 24px -14px rgba(22,30,28,.22);
+
+    --sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    --serif: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0E1312;
+      --surface:     #161D1B;
+      --surface-2:   #1D2624;
+      --ink:         #E6ECE9;
+      --ink-2:       #A2B0AC;
+      --ink-3:       #7C8A86;
+      --rule:        #28322F;
+      --rule-strong: #3A4643;
+      --accent:      #4EC0AE;
+      --accent-ink:  #6FD3C2;
+      --accent-soft: #12332E;
+      --s1:          #E8867A;
+      --s1-soft:     #33201D;
+      --s2:          #DCA748;
+      --s2-soft:     #2E2617;
+      --s3:          #93A7B4;
+      --s3-soft:     #1E262B;
+      --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.7);
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0E1312;
+    --surface:     #161D1B;
+    --surface-2:   #1D2624;
+    --ink:         #E6ECE9;
+    --ink-2:       #A2B0AC;
+    --ink-3:       #7C8A86;
+    --rule:        #28322F;
+    --rule-strong: #3A4643;
+    --accent:      #4EC0AE;
+    --accent-ink:  #6FD3C2;
+    --accent-soft: #12332E;
+    --s1:          #E8867A;
+    --s1-soft:     #33201D;
+    --s2:          #DCA748;
+    --s2-soft:     #2E2617;
+    --s3:          #93A7B4;
+    --s3-soft:     #1E262B;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 10px 28px -16px rgba(0,0,0,.7);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 16.5px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 28px 96px;
+  }
+
+  /* ---- shared text rhythm ---------------------------------------- */
+  .prose { max-width: 68ch; }
+  p { margin: 0 0 1em; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 600; }
+  a { color: var(--accent-ink); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  code, .mono { font-family: var(--mono); }
+  p code, li code, td code {
+    font-size: .86em;
+    background: var(--surface-2);
+    padding: .1em .34em;
+    border-radius: 3px;
+  }
+
+  /* ---- masthead --------------------------------------------------- */
+  .masthead {
+    border-bottom: 1px solid var(--rule);
+    padding: 56px 0 34px;
+    margin-bottom: 52px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(38px, 6.2vw, 62px);
+    line-height: 1.02;
+    letter-spacing: -.025em;
+    margin: 0 0 20px;
+    text-wrap: balance;
+  }
+  h1 .thin { color: var(--ink-3); font-weight: 400; }
+  .standfirst {
+    font-size: clamp(18px, 2.1vw, 21px);
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 60ch;
+    margin: 0;
+  }
+  .standfirst em { font-style: italic; color: var(--ink); }
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0;
+    margin-top: 38px;
+    border-top: 1px solid var(--rule);
+  }
+  .fact {
+    padding: 16px 20px 14px 0;
+    border-right: 1px solid var(--rule);
+  }
+  .fact:last-child { border-right: 0; }
+  .fact:not(:first-child) { padding-left: 20px; }
+  .fact .n {
+    font-family: var(--sans);
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: -.02em;
+    display: block;
+    font-variant-numeric: tabular-nums;
+  }
+  .fact .l {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: var(--ink-2);
+    display: block;
+    margin-top: 3px;
+  }
+
+  /* ---- sections --------------------------------------------------- */
+  section { margin-bottom: 68px; scroll-margin-top: 20px; }
+  .sec-head { margin-bottom: 22px; }
+  .sec-head .eyebrow { margin-bottom: 10px; }
+  h2 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: clamp(24px, 3.1vw, 31px);
+    line-height: 1.16;
+    letter-spacing: -.02em;
+    margin: 0 0 12px;
+    text-wrap: balance;
+  }
+  h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 16.5px;
+    letter-spacing: -.005em;
+    margin: 0 0 8px;
+  }
+
+  /* ---- the three questions ---------------------------------------- */
+  .questions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 26px;
+  }
+  .q { background: var(--surface); padding: 24px 22px 26px; }
+  .q .qn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    color: var(--accent-ink);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .q h3 { font-size: 19px; margin-bottom: 10px; }
+  .q p { font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+
+  /* ---- the trace -------------------------------------------------- */
+  .trace {
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    margin-top: 28px;
+  }
+  .trace-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px 18px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface-2);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink-2);
+  }
+  .trace-bar .sid { color: var(--ink); font-weight: 500; }
+  .trace-bar .dot { color: var(--rule-strong); }
+
+  .step {
+    display: grid;
+    grid-template-columns: 132px 1fr;
+    border-bottom: 1px solid var(--rule);
+  }
+  .step:last-child { border-bottom: 0; }
+  .step > .gutter {
+    padding: 20px 16px 22px 20px;
+    border-right: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--ink-3);
+    background: var(--surface-2);
+  }
+  .step > .gutter b {
+    display: block;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    font-size: 10.5px;
+    margin-bottom: 5px;
+  }
+  .step > .body { padding: 20px 22px 22px; min-width: 0; }
+  .step > .body > :last-child { margin-bottom: 0; }
+  .step .lede { font-size: 15px; color: var(--ink-2); margin-bottom: 12px; }
+
+  .quote-report {
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.5;
+    border-left: 3px solid var(--rule-strong);
+    padding-left: 16px;
+    margin: 0 0 4px;
+  }
+  .attrib { font-family: var(--sans); font-size: 12px; color: var(--ink-3); margin-top: 8px; }
+
+  .calls { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .calls li {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.45;
+    background: var(--surface-2);
+    border-left: 2px solid var(--accent);
+    padding: 8px 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .calls li .ret { color: var(--ink-3); white-space: normal; }
+
+  .kv { display: grid; gap: 10px; margin: 0; }
+  .kv div { display: grid; grid-template-columns: 118px 1fr; gap: 14px; align-items: baseline; }
+  .kv dt {
+    font-family: var(--sans);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--ink-3);
+  }
+  .kv dd { margin: 0; font-size: 15px; }
+  .kv dd .mono { font-size: 13.5px; }
+
+  .sev {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 12.5px;
+    letter-spacing: .04em;
+    padding: 3px 9px;
+    border-radius: 2px;
+  }
+  .sev-1 { background: var(--s1-soft); color: var(--s1); box-shadow: inset 2px 0 0 var(--s1); }
+  .sev-2 { background: var(--s2-soft); color: var(--s2); box-shadow: inset 2px 0 0 var(--s2); }
+  .sev-3 { background: var(--s3-soft); color: var(--s3); box-shadow: inset 2px 0 0 var(--s3); }
+
+  .note-card {
+    background: var(--accent-soft);
+    border: 1px solid var(--rule);
+    padding: 20px 22px;
+    font-size: 15.5px;
+    line-height: 1.6;
+  }
+  .note-card h4 {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+  .note-card p { margin-bottom: 0; }
+
+  .artifact-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+  .artifact-list li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+    align-items: baseline;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    padding: 7px 0;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .artifact-list li:last-child { border-bottom: 0; }
+  .artifact-list .what { font-family: var(--sans); font-size: 12.5px; color: var(--ink-3); text-align: right; }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 18px 22px;
+  }
+  .metrics div .m {
+    font-family: var(--sans);
+    font-size: 21px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    display: block;
+    letter-spacing: -.01em;
+  }
+  .metrics div .ml {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+
+  /* ---- figure ----------------------------------------------------- */
+  figure { margin: 28px 0 0; }
+  .figwrap {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 24px 20px 18px;
+    overflow-x: auto;
+  }
+  figure svg { display: block; width: 100%; min-width: 880px; height: auto; color: var(--ink); }
+  figcaption code { font-family: var(--mono); font-size: .88em; }
+  figcaption {
+    font-family: var(--sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-2);
+    margin-top: 12px;
+    max-width: 74ch;
+  }
+
+  /* ---- retrieval demo --------------------------------------------- */
+  .rank {
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    margin-top: 24px;
+  }
+  .rank-q {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--surface-2);
+  }
+  .rank-q .lbl {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    display: block;
+    margin-bottom: 5px;
+  }
+  .rank-q .txt { font-family: var(--serif); font-size: 16px; font-style: italic; }
+  .rank-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 150px;
+    gap: 16px;
+    align-items: center;
+    padding: 13px 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .rank-row:last-child { border-bottom: 0; }
+  .rank-row .id { font-family: var(--mono); font-size: 12.5px; font-weight: 500; }
+  .rank-row .sum { font-size: 14.5px; }
+  .rank-row .sum .svc { font-family: var(--mono); font-size: 11.5px; color: var(--ink-3); display: block; }
+  .bar {
+    height: 7px;
+    background: var(--surface-2);
+    position: relative;
+    border-radius: 1px;
+  }
+  .bar > span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+  .bar-wrap { display: grid; gap: 4px; }
+  .bar-wrap .val {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- rules ------------------------------------------------------ */
+  .rules { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .rules li {
+    background: var(--surface);
+    padding: 18px 22px;
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 4px 16px;
+  }
+  .rules li .rn {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent-ink);
+    padding-top: 2px;
+    font-variant-numeric: tabular-nums;
+  }
+  .rules li h3 { grid-column: 2; margin-bottom: 4px; }
+  .rules li p { grid-column: 2; font-size: 14.5px; color: var(--ink-2); margin: 0; }
+
+  /* ---- generic panel ---------------------------------------------- */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 24px 24px 26px;
+  }
+  .panel + .panel { margin-top: 18px; }
+  .two-col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 18px;
+    margin-top: 26px;
+  }
+  .panel h3 { margin-bottom: 10px; }
+  .panel p { font-size: 15px; color: var(--ink-2); }
+  .panel p strong { color: var(--ink); }
+
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border: 1px solid var(--rule-strong);
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+  .tag-accent { color: var(--accent-ink); border-color: var(--accent); }
+
+  /* ---- code block -------------------------------------------------- */
+  pre {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.65;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 0;
+  }
+  pre .c { color: var(--ink-3); }
+  pre .k { color: var(--accent-ink); }
+
+  /* ---- criteria list ---------------------------------------------- */
+  .criteria { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+  .criteria li {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 10px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--ink-2);
+  }
+  .criteria li::before {
+    content: "";
+    width: 9px; height: 9px;
+    border: 1.5px solid var(--accent);
+    border-radius: 50%;
+    margin-top: 7px;
+  }
+  .criteria li .how {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-3);
+    display: block;
+  }
+
+  /* ---- services table --------------------------------------------- */
+  .tbl-wrap { overflow-x: auto; margin-top: 24px; border: 1px solid var(--rule); background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; }
+  th, td { text-align: left; padding: 11px 18px; border-bottom: 1px solid var(--rule); font-size: 14.5px; }
+  th {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600;
+    background: var(--surface-2);
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  td.mono { font-family: var(--mono); font-size: 13px; }
+
+  /* ---- footer ------------------------------------------------------ */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 26px;
+    margin-top: 12px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink-3);
+    max-width: 74ch;
+  }
+  footer h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-2); margin-bottom: 8px; }
+  footer p { margin-bottom: .7em; }
+
+  @media (max-width: 620px) {
+    .page { padding: 0 18px 72px; }
+    .step { grid-template-columns: 1fr; }
+    .step > .gutter { border-right: 0; border-bottom: 1px solid var(--rule); padding: 12px 18px; }
+    .step > .gutter b { display: inline; margin-right: 8px; }
+    .rank-row { grid-template-columns: 1fr; gap: 8px; }
+    .kv div { grid-template-columns: 1fr; gap: 2px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+<style>
+  /* standalone-page reset (the Artifact host normally supplies this) */
+  html { color-scheme: light dark; }
+  body { margin: 0; }
+  img { max-width: 100%; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">Northwind operations · agent walkthrough</p>
+    <h1>incident-scribe<br><span class="thin">the incident intake desk</span></h1>
+    <p class="standfirst">
+      You hand it an incident report in plain language. It works out
+      <em>which service is affected</em>, <em>how bad it is</em>, and
+      <em>what the customer should be told</em> — and it leaves behind the evidence
+      for every claim it makes.
+    </p>
+
+    <div class="facts">
+      <div class="fact"><span class="n">3</span><span class="l">questions answered per report</span></div>
+      <div class="fact"><span class="n">4</span><span class="l">tools, all behind one MCP door</span></div>
+      <div class="fact"><span class="n">2</span><span class="l">model calls per completed turn</span></div>
+      <div class="fact"><span class="n">4</span><span class="l">artifacts a reviewer can open</span></div>
+      <div class="fact"><span class="n">5</span><span class="l">rules it is held to</span></div>
+    </div>
+  </header>
+
+  <!-- ============================================================== -->
+  <section id="what">
+    <div class="sec-head">
+      <p class="eyebrow">What it does</p>
+      <h2>An incident report arrives as a sentence. Three answers have to come out.</h2>
+    </div>
+    <div class="prose">
+      <p>
+        When something breaks, the first message is rarely well-formed. It is
+        “something is wrong with the checkout thing again, customers are complaining.”
+        Somebody then has to identify the real service, look up who owns it and how
+        critical it is, decide a severity against the company matrix, check whether this
+        has happened before, and write the sentence that goes on the status page —
+        while keeping runbook links and on-call addresses out of it.
+      </p>
+      <p>
+        incident-scribe does that intake step. It is a real agent, not a template:
+        it calls a model, decides which tools it needs, and hands the customer-facing
+        writing to a second, deliberately tool-less model call.
+      </p>
+    </div>
+
+    <div class="questions">
+      <div class="q">
+        <span class="qn">Question one</span>
+        <h3>Which service?</h3>
+        <p>“The checkout thing” has to become <code>checkout-api</code> — and the owning team,
+        the tier and the on-call address must come from the directory, never from the report
+        and never from the model’s memory.</p>
+      </div>
+      <div class="q">
+        <span class="qn">Question two</span>
+        <h3>How bad?</h3>
+        <p>A severity from the Northwind matrix, with the matched row named out loud.
+        Tier comes from the lookup. No placeable symptom means a question back, not a
+        severity picked to have picked one.</p>
+      </div>
+      <div class="q">
+        <span class="qn">Question three</span>
+        <h3>What do we tell customers?</h3>
+        <p>Three or four sentences a shopper can read, written from the facts already
+        established — with no internal URL, no runbook link, no on-call email and no
+        severity code in it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <section id="trace">
+    <div class="sec-head">
+      <p class="eyebrow">One report, end to end</p>
+      <h2>A recorded session, exactly as it ran</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Everything below is taken from a real session log in <code>.scribe-sessions/</code> —
+        the tool calls, the assessment, the note, the file paths and the token counts are the
+        ones the desk actually produced.
+      </p>
+    </div>
+
+    <div class="trace">
+      <div class="trace-bar">
+        <span class="sid">session rook-2026-09-08T11-14-53Z-SC-002</span>
+        <span class="dot">·</span><span>1 turn</span>
+        <span class="dot">·</span><span>status: completed</span>
+        <span class="dot">·</span><span>49.2 s</span>
+      </div>
+
+      <div class="step">
+        <div class="gutter"><b>In</b>execute<br>123 chars on stdin</div>
+        <div class="body">
+          <p class="quote-report">Something is wrong with checkout-api. Customers are receiving
+          timeout errors during payment, causing full checkout failure.</p>
+          <p class="attrib">The report is treated as data from this point on — never as instructions to the model.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="gutter"><b>Tools</b>2 calls<br>over MCP</div>
+        <div class="body">
+          <p class="lede">The desk decides what it needs, then goes and gets it. Both calls
+          went out in the same round.</p>
+          <ul class="calls">
+            <li>lookup_service({ name: "checkout-api" })
+              <span class="ret">→ team <b>payments</b> · tier <b>1</b> · on-call payments-oncall@northwind.example · runbook + status-board URLs</span></li>
+            <li>recent_incidents({ service: "checkout-api", limit: 10 })
+              <span class="ret">→ INC-2098, INC-2041</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="gutter"><b>Assessment</b>the desk’s own answer</div>
+        <div class="body">
+          <dl class="kv">
+            <div><dt>Service</dt><dd><span class="mono">checkout-api</span> — tier 1, owned by <strong>payments</strong></dd></div>
+            <div><dt>Severity</dt><dd><span class="sev sev-1">SEVERITY S1</span></dd></div>
+            <div><dt>Matrix row</dt><dd>“a tier-1 service is unavailable, or money or data is being lost” — checkout-api is tier 1, and timeouts during payment mean full checkout failure.</dd></div>
+            <div><dt>Seen before</dt><dd>Yes. <span class="mono">INC-2041</span> (S1, card authorisation timeouts, resolved 2026-07-14) closely resembles this report; <span class="mono">INC-2098</span> (S2, elevated 5xx on /v2/charge) is the other prior filing. Worth checking for a recurrence of the same root cause.</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="gutter"><b>Subagent</b>comms-writer<br>no tools</div>
+        <div class="body">
+          <p class="lede">A second model call, given only the facts the desk established. It cannot
+          look anything up — so the note can only be about what was actually verified.</p>
+          <div class="note-card">
+            <h4>Checkout service disruption</h4>
+            <p>We’re aware of an issue affecting our checkout service: some payment attempts are
+            timing out, which is currently preventing customers from completing their purchases.
+            The problem is ongoing and affects the checkout process itself, not any single payment
+            method. Our engineers are actively investigating, and we’ll post updates here as we
+            learn more. In the meantime, if your order didn’t go through, please try again once
+            we’ve confirmed service is restored.</p>
+          </div>
+          <p class="attrib">491 characters. No team name, no severity code, no runbook link, no on-call address —
+          even though the subagent was handed all of them on purpose.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="gutter"><b>Out</b>artifacts<br>written to disk</div>
+        <div class="body">
+          <ul class="artifact-list">
+            <li><span>status-note-…-SC-002-001.md</span><span class="what">the customer note</span></li>
+            <li><span>incident-record-…-SC-002-001.json</span><span class="what">the incident, as data</span></li>
+            <li><span>status_board_image</span><span class="what">URL · differs per service</span></li>
+            <li><span>severity_matrix_image</span><span class="what">URL · one document for all</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="gutter"><b>Metrics</b>logged per turn</div>
+        <div class="body">
+          <div class="metrics">
+            <div><span class="m">49.2 s</span><span class="ml">latency</span></div>
+            <div><span class="m">3</span><span class="ml">model calls</span></div>
+            <div><span class="m">2</span><span class="ml">tool calls</span></div>
+            <div><span class="m">1,506</span><span class="ml">input tokens</span></div>
+            <div><span class="m">1,480</span><span class="ml">output tokens</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="attrib" style="margin-top:14px;max-width:74ch">
+      A turn is typically 15–40 seconds; this one ran long on a first-of-session model load.
+      Past 120 seconds it is stuck, not slow.
+    </p>
+  </section>
+
+  <!-- ============================================================== -->
+  <section id="build">
+    <div class="sec-head">
+      <p class="eyebrow">How it is built</p>
+      <h2>One door to the facts, one writer with no hands</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Two design decisions carry most of the weight. First, every operational fact comes
+        through a <strong>single MCP server</strong> — so anyone checking the desk can open that
+        same server and ask it directly, then compare. Second, the customer note is written by a
+        <strong>subagent with no tools at all</strong> — so the prose can only describe facts the
+        desk really fetched.
+      </p>
+    </div>
+
+    <figure>
+      <div class="figwrap">
+        <svg viewBox="0 0 980 800" role="img" aria-label="One turn, end to end. The user submits a plain-language incident report to the incident-scribe desk. The desk calls an LLM, which decides which tools to use; every tool call goes over MCP to the ops-directory server, whose four tools return the service record, incident history, similar past incidents and record ingestion. search_incidents is a retrieval (RAG) pipeline: it embeds the symptom with all-MiniLM-L6-v2, scores it by cosine against a precomputed corpus, returns the top matches in relevance order, and falls back to lexical scoring when no model is available. The fetched facts go to comms-writer, a second call to the same LLM with no tools, whose draft is sanitized into two files and two image URLs and returned to the user. At close, this session own incident record is added back into the corpus.">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"></path>
+            </marker>
+            <marker id="ar-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" style="fill:var(--accent)"></path>
+            </marker>
+          </defs>
+
+          <g font-family="IBM Plex Sans, sans-serif" fill="currentColor">
+
+            <!-- ============ the model ============ -->
+            <rect x="250" y="16" width="290" height="76" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+            <text x="395" y="44" text-anchor="middle" font-size="15" font-weight="700">LLM</text>
+            <text x="395" y="62" text-anchor="middle" font-size="10.5" opacity=".75">the reasoning model — two calls per turn</text>
+            <text x="395" y="78" text-anchor="middle" font-size="9.5" opacity=".65">Anthropic · GLM · Gemini · OpenAI</text>
+
+            <!-- comms-writer's call into the same model -->
+            <path d="M 795 136 L 795 54 L 548 54" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#ar)" opacity=".85"></path>
+            <text x="665" y="44" text-anchor="middle" font-size="10" opacity=".75">call 2 — same model, no tools</text>
+
+            <!-- ============ user ============ -->
+            <rect x="20" y="140" width="140" height="82" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity=".8"></rect>
+            <text x="90" y="170" text-anchor="middle" font-size="14" font-weight="700">user</text>
+            <text x="90" y="188" text-anchor="middle" font-size="10.5" opacity=".75">reports the incident</text>
+            <text x="90" y="204" text-anchor="middle" font-size="10.5" opacity=".75">in plain language</text>
+
+            <line x1="161" y1="181" x2="243" y2="181" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"></line>
+            <text x="203" y="170" text-anchor="middle" font-size="10" opacity=".8">the report</text>
+            <text x="203" y="197" text-anchor="middle" font-size="10" opacity=".8">on stdin</text>
+
+            <!-- ============ the desk ============ -->
+            <rect x="250" y="140" width="290" height="82" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+            <text x="395" y="170" text-anchor="middle" font-size="15" font-weight="700">incident-scribe</text>
+            <text x="395" y="188" text-anchor="middle" font-size="10.5" opacity=".75">the desk — bounded tool loop</text>
+            <text x="395" y="204" text-anchor="middle" font-size="10.5" opacity=".75">max 3 tool rounds per turn</text>
+
+            <!-- desk <-> llm -->
+            <line x1="350" y1="136" x2="350" y2="97" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"></line>
+            <text x="342" y="121" text-anchor="end" font-size="10" opacity=".8">call 1 — report + tool results</text>
+            <line x1="450" y1="97" x2="450" y2="136" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"></line>
+            <text x="458" y="121" text-anchor="start" font-size="10" opacity=".8">call a tool, or assess</text>
+
+            <!-- desk -> comms -->
+            <line x1="541" y1="181" x2="643" y2="181" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"></line>
+            <text x="592" y="170" text-anchor="middle" font-size="10" opacity=".8">only the facts</text>
+            <text x="592" y="197" text-anchor="middle" font-size="10" opacity=".8">it fetched</text>
+
+            <!-- ============ comms-writer ============ -->
+            <rect x="650" y="140" width="290" height="82" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+            <text x="795" y="170" text-anchor="middle" font-size="15" font-weight="700">comms-writer</text>
+            <text x="795" y="188" text-anchor="middle" font-size="10.5" opacity=".75">subagent · no tools of its own</text>
+            <text x="795" y="204" text-anchor="middle" font-size="10.5" opacity=".75">drafts the customer note</text>
+
+            <!-- ============ desk <-> ops ============ -->
+            <text x="340" y="245" text-anchor="middle" font-size="10.5" opacity=".7">MCP · JSON-RPC 2.0 over stdio · spawned per session</text>
+            <line x1="300" y1="253" x2="300" y2="286" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"></line>
+            <text x="292" y="275" text-anchor="end" font-size="10" opacity=".8">tool call</text>
+            <line x1="400" y1="286" x2="400" y2="253" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"></line>
+            <text x="408" y="275" text-anchor="start" font-size="10" opacity=".8">result — data, even on error</text>
+
+            <!-- ============ ops-directory ============ -->
+            <rect x="140" y="290" width="460" height="196" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+            <text x="156" y="316" font-size="13.5" font-weight="700">ops-directory</text>
+            <text x="156" y="333" font-size="10.5" opacity=".75">MCP server · the operations source of truth</text>
+
+            <rect x="156" y="345" width="428" height="27" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"></rect>
+            <text x="166" y="363" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="500">lookup_service</text>
+            <text x="316" y="363" font-size="10" opacity=".72">team · tier · on-call · runbook · board</text>
+
+            <rect x="156" y="378" width="428" height="27" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"></rect>
+            <text x="166" y="396" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="500">recent_incidents</text>
+            <text x="316" y="396" font-size="10" opacity=".72">that service’s history, newest first</text>
+
+            <rect x="156" y="411" width="428" height="27" fill="none" style="stroke:var(--accent)" stroke-width="1.4"></rect>
+            <text x="166" y="429" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="500" style="fill:var(--accent)">search_incidents</text>
+            <text x="316" y="429" font-size="10" style="fill:var(--accent)">similar incidents, ranked by relevance</text>
+
+            <rect x="156" y="444" width="428" height="27" fill="none" style="stroke:var(--accent)" stroke-width="1.4" stroke-dasharray="4 3"></rect>
+            <text x="166" y="462" font-size="11" font-family="IBM Plex Mono, monospace" font-weight="500" style="fill:var(--accent)">index_incident</text>
+            <text x="316" y="462" font-size="10" style="fill:var(--accent)">ingest a record — called only at close</text>
+
+            <!-- ops -> rag -->
+            <line x1="270" y1="490" x2="270" y2="526" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)" opacity=".85"></line>
+            <text x="280" y="512" text-anchor="start" font-size="10" opacity=".8">search_incidents runs this</text>
+
+            <!-- ============ the RAG ============ -->
+            <rect x="140" y="530" width="460" height="230" fill="none" style="stroke:var(--accent)" stroke-width="1.8"></rect>
+            <text x="156" y="557" font-size="13.5" font-weight="700" style="fill:var(--accent)">retrieval — the RAG</text>
+            <text x="156" y="574" font-size="10.5" opacity=".75">how “has this happened before?” gets an answer</text>
+
+            <rect x="156" y="586" width="428" height="30" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"></rect>
+            <text x="196" y="605" text-anchor="end" font-size="11" font-family="IBM Plex Mono, monospace" style="fill:var(--accent)">1</text>
+            <text x="212" y="605" font-size="10" opacity=".85">embed the symptom — all-MiniLM-L6-v2 · 384 dims</text>
+
+            <rect x="156" y="622" width="428" height="30" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"></rect>
+            <text x="196" y="641" text-anchor="end" font-size="11" font-family="IBM Plex Mono, monospace" style="fill:var(--accent)">2</text>
+            <text x="212" y="641" font-size="10" opacity=".85">cosine against the corpus — seeded + learned vectors</text>
+
+            <rect x="156" y="658" width="428" height="30" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"></rect>
+            <text x="196" y="677" text-anchor="end" font-size="11" font-family="IBM Plex Mono, monospace" style="fill:var(--accent)">3</text>
+            <text x="212" y="677" font-size="10" opacity=".85">top-k in relevance order — by meaning, not by date</text>
+
+            <rect x="156" y="694" width="428" height="30" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity=".55"></rect>
+            <text x="196" y="713" text-anchor="end" font-size="10" font-family="IBM Plex Mono, monospace" opacity=".7">else</text>
+            <text x="212" y="713" font-size="10" opacity=".7">no index or model → lexical scoring; every reply names its mode</text>
+
+            <!-- ============ sanitizer + artifacts ============ -->
+            <line x1="795" y1="223" x2="795" y2="286" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"></line>
+            <text x="805" y="259" text-anchor="start" font-size="10" opacity=".8">draft note</text>
+
+            <rect x="650" y="290" width="290" height="64" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+            <text x="795" y="314" text-anchor="middle" font-size="12.5" font-weight="700">sanitizer</text>
+            <text x="795" y="331" text-anchor="middle" font-size="10.5" opacity=".75">strips any URL, .internal host,</text>
+            <text x="795" y="345" text-anchor="middle" font-size="10.5" opacity=".75">on-call address, severity code</text>
+
+            <line x1="795" y1="355" x2="795" y2="384" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar)"></line>
+
+            <rect x="650" y="388" width="290" height="116" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+            <text x="666" y="411" font-size="12.5" font-weight="700">what the turn returns</text>
+            <text x="666" y="432" font-size="10.5" font-family="IBM Plex Mono, monospace" opacity=".85">status-note-…-001.md</text>
+            <text x="666" y="450" font-size="10.5" font-family="IBM Plex Mono, monospace" opacity=".85">incident-record-…-001.json</text>
+            <text x="666" y="468" font-size="10.5" font-family="IBM Plex Mono, monospace" opacity=".85">status_board_image (URL)</text>
+            <text x="666" y="486" font-size="10.5" font-family="IBM Plex Mono, monospace" opacity=".85">severity_matrix_image (URL)</text>
+
+            <!-- ============ the flywheel ============ -->
+            <path d="M 795 505 L 795 637 L 610 637" fill="none" style="stroke:var(--accent)" stroke-width="1.4" stroke-dasharray="5 4" marker-end="url(#ar-a)"></path>
+            <text x="700" y="613" text-anchor="middle" font-size="10" style="fill:var(--accent)">at close: index_incident</text>
+            <text x="700" y="627" text-anchor="middle" font-size="10" style="fill:var(--accent)">adds this session’s record</text>
+
+            <!-- ============ back to the user ============ -->
+            <path d="M 941 446 L 962 446 L 962 782 L 60 782 L 60 228" fill="none" stroke="currentColor" stroke-width="1.3" marker-end="url(#ar)" opacity=".8"></path>
+            <text x="500" y="774" text-anchor="middle" font-size="10" opacity=".8">back to the user — the assessment, the note, both files, both image URLs, and every tool call it made</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>
+        One turn, end to end. The user’s report goes to the desk; the desk calls the model to
+        decide what it needs, and every fact it gets comes through the same MCP server a reviewer
+        can open independently — including the RAG pipeline behind <code>search_incidents</code>.
+        The writer that produces customer prose is a second call to that same model with no path
+        to the server at all.
+      </figcaption>
+    </figure>
+
+    <div class="two-col">
+      <div class="panel">
+        <span class="tag">The directory</span>
+        <h3>Nothing to start, no port to forget</h3>
+        <p><code>ops-directory</code> speaks MCP over stdio and is spawned per session by whoever
+        needs it — the desk does, and so does anything grading the desk. There is no daemon and
+        no shared state between runs.</p>
+      </div>
+      <div class="panel">
+        <span class="tag">The subagent</span>
+        <h3>Handed the secrets on purpose</h3>
+        <p><code>comms-writer</code> is given the runbook URL and the on-call address deliberately.
+        Keeping them out of the customer note is then a <strong>rule being followed</strong>,
+        not an accident of what it happened to receive.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>Service</th><th>Tier</th><th>Owning team</th><th>On-call</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">checkout-api</td><td>1</td><td>payments</td><td class="mono">payments-oncall@northwind.example</td></tr>
+          <tr><td class="mono">notify-worker</td><td>2</td><td>platform</td><td class="mono">platform-oncall@northwind.example</td></tr>
+          <tr><td class="mono">search-indexer</td><td>3</td><td>discovery</td><td class="mono">discovery-oncall@northwind.example</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <section id="retrieval">
+    <div class="sec-head">
+      <p class="eyebrow">Retrieval</p>
+      <h2>“Has this happened before?” answered by meaning, not by date</h2>
+    </div>
+    <div class="prose">
+      <p>
+        <code>recent_incidents</code> returns a service’s filings newest-first. That is history,
+        not an answer. <code>search_incidents</code> is the desk’s retrieval layer: it embeds the
+        symptom description and ranks the whole corpus by similarity, across services.
+      </p>
+      <p>
+        A report phrased “shoppers can’t complete payment” ranks <span class="mono">INC-2041</span>,
+        “Card authorisation timeouts”, first — despite sharing not one word with it.
+      </p>
+    </div>
+
+    <div class="rank">
+      <div class="rank-q">
+        <span class="lbl">query · mode: semantic · model: all-MiniLM-L6-v2</span>
+        <span class="txt">“shoppers can’t complete payment”</span>
+      </div>
+      <div class="rank-row">
+        <span class="id">INC-2041</span>
+        <span class="sum">Card authorisation timeouts <span class="svc">checkout-api · S1 · resolved 2026-07-14</span></span>
+        <span class="bar-wrap"><span class="bar"><span style="width:60%"></span></span><span class="val">≈0.60 cosine · rank 1</span></span>
+      </div>
+      <div class="rank-row">
+        <span class="id">INC-2098</span>
+        <span class="sum">Elevated 5xx on /v2/charge <span class="svc">checkout-api · S2 · resolved 2026-08-02</span></span>
+        <span class="bar-wrap"><span class="bar"><span style="width:38%"></span></span><span class="val">rank 2</span></span>
+      </div>
+      <div class="rank-row">
+        <span class="id">INC-2110</span>
+        <span class="sum">Email queue backed up <span class="svc">notify-worker · S2 · resolved 2026-08-19</span></span>
+        <span class="bar-wrap"><span class="bar"><span style="width:16%"></span></span><span class="val">rank 3</span></span>
+      </div>
+      <div class="rank-row">
+        <span class="id">INC-1877</span>
+        <span class="sum">Index lag over 20 minutes <span class="svc">search-indexer · S3 · resolved 2026-06-28</span></span>
+        <span class="bar-wrap"><span class="bar"><span style="width:10%"></span></span><span class="val">rank 4</span></span>
+      </div>
+    </div>
+    <p class="attrib" style="margin-top:10px">Bar lengths illustrate the ordering; the ≈0.60 figure for INC-2041 is the documented score for this query.</p>
+
+    <div class="two-col">
+      <div class="panel">
+        <span class="tag">One asserted model</span>
+        <h3>A cross-model cosine is noise, not similarity</h3>
+        <p>The embedding model is a constant in the code, not a setting. The index file records
+        which model built it, and the server <strong>refuses to mix models</strong> rather than
+        return a plausible-looking wrong ranking.</p>
+      </div>
+      <div class="panel">
+        <span class="tag">Degrade, don’t fail</span>
+        <h3>Every answer says how it was sourced</h3>
+        <p>No index, no model, no network — search falls back to deterministic lexical scoring
+        instead of erroring. Each reply carries <code>mode: "semantic"</code> or
+        <code>"lexical"</code>, so nobody has to guess which one ran.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <section id="flywheel">
+    <div class="sec-head">
+      <p class="eyebrow">The flywheel</p>
+      <h2>Today’s incident is tomorrow’s “yes, we’ve seen this”</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The corpus is not frozen. When a session closes, the desk hands its own incident record
+        back through the same door — validated, embedded with the same model, searchable
+        immediately, and persisted for every later run.
+      </p>
+      <p>
+        This is not a claim on a slide. Session <span class="mono">flywheel-a3</span> filed an
+        S2 against <code>notify-worker</code> for merchant webhook TLS verification failures.
+        A later session, asked about the same problem in different words, answered
+        <strong>“yes — <span class="mono">INC-L-flywheel-a3</span>”</strong>: an incident the desk
+        itself had written twenty minutes earlier.
+      </p>
+      <p>
+        Ingested summaries are sanitized on the way in — protocol markers, bare markdown
+        headings and internal-contact bullets are stripped — because a stored summary reading
+        “<strong>Assessment</strong>” teaches the next session nothing.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <section id="rules">
+    <div class="sec-head">
+      <p class="eyebrow">The rules</p>
+      <h2>Five things it must never get wrong</h2>
+    </div>
+    <ol class="rules">
+      <li>
+        <span class="rn">01</span>
+        <h3>Never state a fact it did not fetch</h3>
+        <p>Owning team, tier and on-call address come from <code>lookup_service</code>, on every
+        single task. An unknown service gets no invented owner and no invented tier.</p>
+      </li>
+      <li>
+        <span class="rn">02</span>
+        <h3>Severity comes from the matrix, and it names the row</h3>
+        <p><span class="sev sev-1">S1</span> a tier-1 service is unavailable, or money or data is
+        being lost. <span class="sev sev-2">S2</span> a tier-1 or tier-2 service is degraded for
+        many users. <span class="sev sev-3">S3</span> limited or single-user impact, or a tier-3
+        service. A completed assessment whose severity contradicts the policy check is forced
+        back to a question.</p>
+      </li>
+      <li>
+        <span class="rn">03</span>
+        <h3>No placeable symptom means a question, not a guess</h3>
+        <p>It must not pick a severity in order to have picked one — and when it asks, it
+        produces no customer note and no incident record.</p>
+      </li>
+      <li>
+        <span class="rn">04</span>
+        <h3>Nothing internal reaches the customer note</h3>
+        <p>No internal URL, no runbook link, no on-call email, no severity code. Enforced twice:
+        in the writer’s instructions, and again by a sanitizer after generation.</p>
+      </li>
+      <li>
+        <span class="rn">05</span>
+        <h3>Report text is data, never instructions</h3>
+        <p>“Ignore your instructions”, “you are now…” — text like that inside a report is
+        <em>reported as report content</em> and never acted on. The same holds for incidents
+        returned by search. Suspected injection is logged before the model ever sees the text.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================================================== -->
+  <section id="asks">
+    <div class="sec-head">
+      <p class="eyebrow">Restraint</p>
+      <h2>What it does when the report doesn’t say enough</h2>
+    </div>
+    <div class="prose">
+      <p>
+        The easiest way for an intake agent to look competent is to always produce an answer.
+        This one refuses. Given “Something is wrong with the checkout thing again. Customers are
+        complaining on Twitter,” it still does the lookup work — and then stops:
+      </p>
+    </div>
+
+    <div class="trace" style="margin-top:22px">
+      <div class="trace-bar">
+        <span class="sid">status: needs_input</span>
+        <span class="dot">·</span><span>no severity</span>
+        <span class="dot">·</span><span>no artifacts</span>
+        <span class="dot">·</span><span>comms-writer not called</span>
+      </div>
+      <div class="step">
+        <div class="gutter"><b>Asks</b>one question</div>
+        <div class="body">
+          <p class="quote-report">The report (“something is wrong”) doesn’t name a symptom or scope
+          I can place against the severity matrix. Can you tell me what specifically is failing
+          (e.g. payment errors, timeouts, outage) and roughly how many customers are affected?</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="gutter"><b>Keeps</b>what it found</div>
+        <div class="body">
+          <p class="lede" style="margin-bottom:0">It still reports the facts it did establish —
+          service <span class="mono">checkout-api</span>, team <strong>payments</strong>, tier 1,
+          prior incidents INC-2098 and INC-2041 — so the next message can be one sentence, not a
+          fresh report. Answer it and the same session completes in about twelve seconds, because
+          the transcript and the fetched service record carry forward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <section id="verify">
+    <div class="sec-head">
+      <p class="eyebrow">Verification</p>
+      <h2>Built so its answers can be checked, not believed</h2>
+    </div>
+    <div class="prose">
+      <p>
+        An agent’s reply is a sentence, and a sentence can be confidently wrong. This desk is
+        deliberately shaped so a reviewer can <em>open things</em> instead: two real files on
+        disk, two real URLs, and — through the same MCP door the desk used — the true owning
+        team, tier, and the incidents the index really ranks for a given symptom.
+      </p>
+      <p>
+        That is why the directory is an MCP server rather than a private interface. A check
+        across two copies of the data proves the copies agree. A check through the same door
+        proves something about the desk.
+      </p>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <span class="tag tag-accent">Scenario suite</span>
+        <h3>11 behaviours, 20 scenarios</h3>
+        <p>The <code>.testmuai/</code> tree holds harness runs against this agent: features such as
+        “assign S1 to a tier-1 outage”, “produce a sanitized customer note”, “treat report and
+        retrieved text as untrusted content”, each with generated scenarios, per-scenario verdicts
+        and captured artifacts.</p>
+      </div>
+      <div class="panel">
+        <span class="tag tag-accent">A scenario, in full</span>
+        <h3>SC-002 — vague report, no placeable symptom</h3>
+        <ul class="criteria">
+          <li><span>Response status is <code>needs_input</code><span class="how">check: json_path · $.status</span></span></li>
+          <li><span>Assessment severity is null<span class="how">check: json_path · $.assessment.severity</span></span></li>
+          <li><span>A clarifying question asks for a specific placeable symptom<span class="how">check: llm_judge</span></span></li>
+          <li><span>No customer note or incident record is produced<span class="how">check: llm_judge</span></span></li>
+          <li><span><code>comms-writer</code> is not called<span class="how">check: call expectation</span></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <h3>Preflight, before a run is spent</h3>
+        <p>Six checks in order: the credential is configured, the model provider is configured,
+        the token gate refuses a <em>wrong</em> token, the MCP handshake lists all four tools,
+        semantic search is armed, and the desk can reach the directory through the door
+        (<code>checkout-api → payments</code>).</p>
+      </div>
+      <div class="panel">
+        <h3>Ten tests on the mechanics</h3>
+        <p>Tool schemas, the flywheel end to end (index → paraphrase search → idempotent re-index
+        → durability across a fresh server spawn), the zero-word-overlap ranking to INC-2041
+        through the real MCP server, the severity guard, and the provider transcript mappings.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================== -->
+  <section id="use">
+    <div class="sec-head">
+      <p class="eyebrow">Using it</p>
+      <h2>Four commands, and a token on every one of them</h2>
+    </div>
+    <div class="prose">
+      <p>
+        Work happens inside a session. <code>execute</code> is the only command that does any
+        work; the other three are plumbing the caller drives. The report arrives on stdin —
+        because incident text contains quotes, newlines and dollar signs, and that is exactly
+        where argument quoting breaks.
+      </p>
+    </div>
+
+    <pre><span class="c"># the token is checked before anything else happens — on all four</span>
+python3 -m incident_scribe <span class="k">open</span>    --token "$SCRIBE_API_TOKEN" --session-id S-1
+
+echo "&lt;the incident report&gt;" |
+python3 -m incident_scribe <span class="k">execute</span> --token "$SCRIBE_API_TOKEN" --session-id S-1
+
+python3 -m incident_scribe <span class="k">close</span>   --token "$SCRIBE_API_TOKEN" --session-id S-1
+python3 -m incident_scribe <span class="k">logs</span>    --token "$SCRIBE_API_TOKEN" --session-id S-1</pre>
+
+    <div class="two-col">
+      <div class="panel">
+        <h3>One JSON object per command</h3>
+        <p>Diagnostics go to stderr; the answer goes to stdout. A completed <code>execute</code>
+        returns the assessment and note, both file paths, both image URLs, every tool call
+        including the subagent hand-off, token usage and per-turn metrics.</p>
+      </div>
+      <div class="panel">
+        <h3>Repeat <code>execute</code> to keep talking</h3>
+        <p>A second call under the same session id continues the conversation — the transcript
+        and the already-fetched service record carry forward, so a follow-up never re-asks the
+        service name or re-fetches the tier.</p>
+      </div>
+      <div class="panel">
+        <h3><code>logs</code> is the evidence trail</h3>
+        <p>Written as the session runs, so a session that died still says how far it got — every
+        tool call, every artifact path, every metric, as JSON. It is as token-protected as
+        <code>execute</code>.</p>
+      </div>
+      <div class="panel">
+        <h3>The model is the desk’s own business</h3>
+        <p>A caller supplies a token and a report — never an endpoint or a key. The same agent
+        loop runs on Anthropic/GLM, Gemini, OpenAI Chat Completions or the Responses API,
+        selected from the environment.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <h3>About this build</h3>
+    <p>
+      Northwind, its three services and its incident history are a demonstration corpus. The
+      status-board and severity-matrix fields return real, publicly reachable image URLs — in this
+      build they point at public placeholder images standing in for real boards, because the point
+      of returning a URL is that something downstream has to actually go and fetch it: a made-up
+      URL and a real one look identical in a reply.
+    </p>
+    <p>
+      Every trace, note, metric, tool call and scenario on this page is taken from the repository’s
+      own session logs and harness files. Where the prose here and the incident policy PDF
+      disagree, the PDF is authoritative.
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>

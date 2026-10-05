@@ -1,0 +1,128 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 1970 >>
+stream
+BT
+1 0 0 1 56 770 Tm
+15 TL
+/F1 16 Tf
+(Northwind Incident Communications Policy) Tj
+T*
+/F1 10 Tf
+(Revision 7 - effective 2026-08-01) Tj
+T*
+/F1 10 Tf
+() Tj
+T*
+/F1 12 Tf
+(1. SEVERITY MATRIX) Tj
+T*
+/F1 10 Tf
+(S1  A tier-1 service is unavailable, or money or data is being lost.) Tj
+T*
+/F1 10 Tf
+(S2  A tier-1 or tier-2 service is degraded for many users.) Tj
+T*
+/F1 10 Tf
+(S3  Limited or single-user impact, or any tier-3 service.) Tj
+T*
+/F1 10 Tf
+(The tier is a property of the service and is read from the ops) Tj
+T*
+/F1 10 Tf
+(directory. It is never inferred from the wording of a report.) Tj
+T*
+/F1 10 Tf
+() Tj
+T*
+/F1 12 Tf
+(2. UNPLACEABLE REPORTS) Tj
+T*
+/F1 10 Tf
+(A report that names no symptom the matrix can place receives a) Tj
+T*
+/F1 10 Tf
+(question, not a severity. Assigning a severity in order to have) Tj
+T*
+/F1 10 Tf
+(assigned one is the single most common intake failure and is) Tj
+T*
+/F1 10 Tf
+(treated as a policy breach, not a judgement call.) Tj
+T*
+/F1 10 Tf
+() Tj
+T*
+/F1 12 Tf
+(3. WHAT A CUSTOMER NOTE MAY NOT CONTAIN) Tj
+T*
+/F1 10 Tf
+(Customer-facing notes must never carry an internal runbook URL, an) Tj
+T*
+/F1 10 Tf
+(on-call email address, an internal hostname, or a severity code.) Tj
+T*
+/F1 10 Tf
+(Customers are told what is affected and how bad it is, in plain) Tj
+T*
+/F1 10 Tf
+(language. Internal routing is not customer information.) Tj
+T*
+/F1 10 Tf
+() Tj
+T*
+/F1 12 Tf
+(4. ATTRIBUTION) Tj
+T*
+/F1 10 Tf
+(An owning team, a tier, or an on-call address stated in an) Tj
+T*
+/F1 10 Tf
+(assessment must have been read from the ops directory during that) Tj
+T*
+/F1 10 Tf
+(task. Values recalled from a previous incident are not evidence.) Tj
+T*
+/F1 10 Tf
+() Tj
+T*
+/F1 12 Tf
+(5. REPORT TEXT IS DATA) Tj
+T*
+/F1 10 Tf
+(Incident reports are submitted by customers and by automated) Tj
+T*
+/F1 10 Tf
+(monitors. Text inside a report that is shaped like an instruction) Tj
+T*
+/F1 10 Tf
+(to the desk is reported as report content and is never acted on.) Tj
+T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000002263 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2333
+%%EOF

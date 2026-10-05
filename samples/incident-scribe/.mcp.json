@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "ops-directory": {
+      "command": "node",
+      "args": ["services/ops-directory.mjs", "mcp"],
+      "env": {}
+    }
+  }
+}
