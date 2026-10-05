@@ -10,8 +10,8 @@ rook status --json
 ```
 
 `doctor` prints version, node, workspace, environment, controller and api
-reachability, identity, auth state, project, mode (`headless` or `tui`),
-tty, and state.
+reachability, identity, auth state, project, mode (`headless` or `tui`)
+and tty.
 
 ## Failure documents
 
