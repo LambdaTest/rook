@@ -1,3 +1,102 @@
+## [0.1.6] - 2026-10-05
+
+### Added
+- use cli-spinners for spinner frames, fix remaining typecheck errors
+- use cli-spinners for the phase spinner frames
+- copy mode, caret ownership, per-env write isolation, grep redaction, flag completions
+- copy mode with OSC 52 clipboard, grep terms redacted in trace
+- full-screen TUI revamp with agent assurance fixes
+
+### Changed
+- drop the mid-command and TUI handling; keep the gate
+- bound the manifest edit to rook-api; guard the prod gate
+- set the minimum with the deploy key; harden the manifest edit
+- a workflow that sets the minimum in magicleap-deployment
+- name the versions in the gate's catalogue refusal
+- trim to the core behaviour
+- say the refusal unless it was said; stop refused TUI re-registration
+- fail every shell command the gate closed on; pin the sent version
+- exit 1 from an interactive rook ask the gate refused
+- close the gate on a telemetry 426 and on a refused bad body
+- say the refusal when a plain rook run's end call meets the 426
+- preserve exact CLI release versions (#1378)
+- hide dashed access codes in server prose
+- narrow credential gate and status verdicts
+- attribute server prose and guard stream decisions
+- reject hostile prose and incomplete stream frames
+- preserve answered stream evidence and reject instruction prose
+- close answered-error gaps in trimmed fix
+- simplify server prose handling and trim regressions
+- preserve controller answer and link state
+- keep cancellation distinct from outages
+- preserve error-body tears and large tool calls
+- bound decoding and word torn responses
+- preserve answered status and transport link state
+- close reviewed response and credential gaps
+- reject malformed controller completions and accounting
+- fail answered malformed streams and refreshed 401s
+- consume OSC payload through its terminator
+- preserve answered failures and close sanitizer gaps
+- a network fault is a failure nothing answered
+- a failed notify job must not fail the stage release run (#1343)
+
+### Fixed
+- export logs no longer triggers Node DEP0190 warning (AA-379)
+- retain mouse decoder state and respect input ownership
+- give pickers pointer ownership and stabilize drags
+- align selection geometry and bound CSI buffering
+- limit flag hints to TUI option tokens
+- stabilize TUI mouse and completion behavior
+- decode mouse drags and copy transcript lines
+- gate every classifier call; refuse on a failed write (AA-347)
+- close the gaps code review round 5 found (AA-347)
+- close the gaps code review round 4 found (AA-347)
+- close the gaps code review round 3 found (AA-347)
+- close the gaps code review round 2 found (AA-347)
+- preserve pending decided verdicts across continuations
+- keep continuation upload state recoverable
+- refuse corrupt continuation reports before spend
+- validate local report evidence before deriving metrics
+- preserve completed status during tally recovery
+- retain continuation rates and reject lost evidence
+- keep historical rate labels truthful
+- count recorded results and encode evidence diagnostics
+- keep recovery accounting scoped to decided verdicts
+- guard repeat attempts and cache only completed summaries
+- stop invalid-verdict scheduling and reuse saved summaries
+- share decided-verdict pass rates across run surfaces (AA-326)
+- distinguish local recovery errors from server markers
+- preserve blocked recovery through command formatting
+- scope refresh persistence and preserve failure causes
+- durably claim refresh grants before dispatch (AA-362)
+- remove the state row from doctor output (AA-377)
+- /doctor in the TUI reports mode tui instead of cli (AA-377)
+- /ask in the TUI no longer hangs after answering (AA-367) (#1390)
+- prevent SIGPIPE in Homebrew dispatch polling (AA-387) (#1387)
+- preserve shell warning and defer browser choice until cleanup
+- prefer explicit browser login in current process
+- keep selections per environment (AA-248)
+- add cross-platform stage CLI build
+- docs URL points to TestMu AI agent assurance docs; merge upstream/main
+- restore Identity beside block-letter wordmark after restoring original logo
+- update trace filter test to the redacted grep row
+- read unverified 401 bodies before classifying
+- preserve answered failures and reject malformed replies
+- clear reused runner workspace before public scripts
+- pin public npm registry for skill release evidence
+- run only Vitest script suites in CI
+- validate unchanged skills without private source nearby
+- collect real nested CLI help without recursion loops
+- use real CLI help and distinguish deleted forks
+- collect nested CLI help and reject incomplete PR facts
+- require complete skill and release facts
+- require complete release evidence and pinned gh
+- fail on incomplete released CLI evidence
+- guard release setup and qualify recovery PRs
+- preserve release channel and CLI evidence
+- handle production prerelease skill updates
+- close skills-update review boundaries
+- prevent concurrent telemetry duplicate uploads (#1348)
 ## [0.1.5] - 2026-09-22
 
 No changes recorded since the last release.
