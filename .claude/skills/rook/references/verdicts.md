@@ -17,6 +17,15 @@ Statuses are **Pass**, **Fail**, and **Unable to Verify**. Unverifiable reasons:
 `agent_never_ran`, `not_observable`, or `undecidable`. A scenario that never ran
 has no verdict; do not turn its absence into a failure.
 
+## Pass rate
+
+In 0.1.6, `totals.pass_rate` is `Pass / (Pass + Fail + Unable to Verify)`.
+`totals.decided` still means `Pass + Fail`. Unable to Verify contributes to the
+pass-rate denominator as a recorded result, but remains a separate verdict;
+never describe it as Fail. An all-Unverifiable result has pass rate `0`; no
+recorded Pass, Fail or Unable to Verify results yields `null`, not zero.
+Unjudged, not-run and unrunnable work does not enter this denominator.
+
 ## Presenting results
 
 Use a table like this, populated from the records:
