@@ -59,16 +59,17 @@ are about something rook cannot see (a tool call the agent made off-record,
 an image); that is a gap to report, not a failure to fix.
 
 Inspect the saved raw response and hook records before concluding that the
-target omitted evidence. In 0.1.1, an explicitly empty execute `calls` array could
-be omitted from the hook record, and `json_path` checks did not decode a JSON
-string in `raw_response` before traversing it. Verify the installed release
-before attributing a gap to either historical limitation.
+target omitted evidence. In 0.1.1, an explicitly empty execute `calls` array
+could be omitted from the hook record. Check whether this limitation still
+applies to the installed release: a recorded `calls: []` does not guarantee a
+conclusive check. Report the limitation and retain the recorded verdict; do not
+invent calls or change scenario criteria just to obtain a pass.
 
-The JSON-string decoding limitation is fixed in 0.1.6: deterministic `json_path`
-checks can traverse valid JSON saved as a string in `raw_response`. Invalid or
-oversized JSON can still be uncheckable; inspect the recorded reason and retain
-Unable to Verify when the path cannot be resolved. Do not invent evidence or
-change scenario criteria just to obtain a pass.
+The JSON-string decoding limitation observed in 0.1.1 is fixed in 0.1.6:
+deterministic `json_path` checks can traverse valid JSON saved as a string in
+`raw_response`. Invalid JSON or a raw JSON string larger than the 8 MiB decode
+limit remains uncheckable. Inspect the criterion's recorded `achieved` explanation
+and retain its verdict; do not invent evidence to fill an unresolved path.
 
 ## A verdict you disagree with
 
