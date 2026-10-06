@@ -24,9 +24,6 @@ Catch failures and vulnerabilities before they ship.
 
 </div>
 
-> [!NOTE]
-> **rook is pre-alpha.** Published builds are available. Expect sharp edges, and expect the surface to move.
-
 ## What it does
 
 Testing an AI agent is awkward because there is no fixed contract. Input might be a sentence, a pull request, or an image; output might be prose, a created ticket, or a written file. So `rook` derives the tests rather than asking you to write them.
