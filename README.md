@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rook-mascot-dark.svg">
-  <img src=".github/assets/rook-mascot-light.svg" alt="rook, the chess-piece mascot" width="150">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rook-mascot-dark.gif">
+  <img src=".github/assets/rook-mascot-light.gif" alt="rook, the chess-piece mascot" width="200">
 </picture>
 
 # rook
