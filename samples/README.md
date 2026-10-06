@@ -2,12 +2,14 @@
 
 Sample agents to explore, test and inspect with `rook`.
 
-| | what it is | how rook finds it |
-|---|---|---|
-| [`refund-desk/`](refund-desk) | A Claude Code agent: `.claude/agents/*.md`, a skill, a subagent, two MCP servers | Deterministically — frontmatter and `.mcp.json`, no model involved |
-| [`triage-service/`](triage-service) | A plain codebase: a prompt in a string, a tool table, an HTTP server | By reading the code, with tools |
-| [`industry-agents/`](industry-agents) | Eight Developer/QE editions across banking, healthcare, insurance and customer support | Explore source or requirements, or run the supplied native workspaces headlessly |
-| [`incident-scribe/`](incident-scribe) | An incident-intake agent: a Python CLI, an MCP directory server and a tool-less subagent | By reading the code, with tools |
+|                                                 | what it is                                                                                | how rook finds it                                                                |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| [`refund-desk/`](refund-desk)                   | A Claude Code agent: `.claude/agents/*.md`, a skill, a subagent, two MCP servers          | Deterministically — frontmatter and `.mcp.json`, no model involved               |
+| [`triage-service/`](triage-service)             | A plain codebase: a prompt in a string, a tool table, an HTTP server                      | By reading the code, with tools                                                  |
+| [`industry-agents/`](industry-agents)           | Eight Developer/QE editions across banking, healthcare, insurance and customer support    | Explore source or requirements, or run the supplied native workspaces headlessly |
+| [`incident-scribe/`](incident-scribe)           | An incident-intake agent: a Python CLI, an MCP directory server and a tool-less subagent  | By reading the code, with tools                                                  |
+| [`trip-weather-station/`](trip-weather-station) | Weather-grounded trip advice from live Open-Meteo forecasts, over HTTP and MCP            | By reading the code, with tools                                                  |
+| [`knowledge-vault/`](knowledge-vault)           | Private, offline retrieval over a local SQLite document vault, with RBAC and an audit log | By reading the code, with tools                                                  |
 
 The first is the declared case, and it is the minority. A survey of ~20 real
 repositories found **zero** agent manifests, which is why the folder is the
@@ -33,8 +35,8 @@ The ones worth knowing about up front:
   — severity describes impact, not who is asking. A suite that agrees with the
   customer instead of the policy has found nothing.
 - **refund-desk** must refuse an already-refunded order, refuse a downloaded
-  digital good, verify identity above $100, and treat *"my manager approved
-  this"* as changing nothing. None of that restraint is visible in what the
+  digital good, verify identity above $100, and treat _"my manager approved
+  this"_ as changing nothing. None of that restraint is visible in what the
   agent says — you have to check the effect, which is the distinction `rook`
   exists to make.
 

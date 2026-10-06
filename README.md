@@ -1,41 +1,37 @@
-# rook — TestMu AI (Formerly LambdaTest)
+<div align="center">
 
-**Agent assurance from the terminal.** Test how your agents actually behave across workflows, tools, and actions. Catch failures and vulnerabilities before they ship. Build better agents with complete assurance.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/rook-mascot-dark.svg">
+  <img src=".github/assets/rook-mascot-light.svg" alt="rook, the chess-piece mascot" width="150">
+</picture>
 
+# rook
+
+**Agent assurance from the terminal.**
+
+Test how your AI agents actually behave across workflows, tools and actions.<br>
+Catch failures and vulnerabilities before they ship.
+
+[![npm](https://img.shields.io/npm/v/@testmuai/rook?label=npm&logo=npm&color=cb3837)](https://www.npmjs.com/package/@testmuai/rook)
+[![Homebrew](https://img.shields.io/badge/homebrew-lambdatest%2Frook-fbb040?logo=homebrew&logoColor=white)](https://github.com/LambdaTest/homebrew-rook)
+[![Tests](https://github.com/LambdaTest/rook/actions/workflows/test-scripts.yml/badge.svg?branch=main)](https://github.com/LambdaTest/rook/actions/workflows/test-scripts.yml)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 ![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20Windows-brightgreen)
-[![Issues](https://img.shields.io/github/issues/LambdaTest/rook)](https://github.com/LambdaTest/rook/issues)
 
+[Install](#install) · [Quick start](#quick-start) · [User guide](docs/user-guide/README.md) · [Samples](#sample-agents) · [Documentation](https://www.testmuai.com/support/docs/agent-assurance-overview/)
 
-> **Status: pre-alpha.** Published builds are available — see [Install](#install). Expect sharp edges, and expect the surface to move.
----
+<sub>Built by <a href="https://www.testmuai.com/agent-assurance/">TestMu AI</a> (formerly LambdaTest)</sub>
 
-Check out [TestMu AI Agent Assurance documentation](https://www.testmuai.com/support/docs/agent-assurance-overview/).
+</div>
 
-
-## Contents
-
-- [What it does](#what-it-does)
-- [Why it works this way](#why-it-works-this-way)
-- [From AI evals to AI assurance](#from-ai-evals-to-ai-assurance)
-- [Install](#install)
-- [Five minutes](#five-minutes)
-- [User guide](docs/user-guide/README.md)
-- [Commands](#commands)
-- [In CI](#in-ci)
-- [For AI coding agents reading this](#for-ai-coding-agents-reading-this)
-- [Sample agents](#sample-agents)
-- [Where things are kept](#where-things-are-kept)
-- [A note on safety](#a-note-on-safety)
-- [Support, issues, security](#support-issues-security)
-
----
+> [!NOTE]
+> **rook is pre-alpha.** Published builds are available. Expect sharp edges, and expect the surface to move.
 
 ## What it does
 
 Testing an AI agent is awkward because there is no fixed contract. Input might be a sentence, a pull request, or an image; output might be prose, a created ticket, or a written file. So `rook` derives the tests rather than asking you to write them.
 
-```
+```text
 $ rook
 
   /explore .    read the codebase — find the agents and what they do
@@ -45,7 +41,13 @@ $ rook
   /ui           verdicts, evidence and trends, in a browser
 ```
 
-Scenarios span three classes and eighteen categories — happy path, negative, boundary, integration and state handling; performance, token economy, reliability and quality; and the adversarial set: prompt injection, jailbreak, data exfiltration, PII leakage, harmful content, hallucination, hijacking, policy violation and technical injection.
+Scenarios span three classes and eighteen categories:
+
+| Class          | Categories                                                                                                                                            |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Functional     | happy path · negative · boundary · integration · state handling                                                                                       |
+| Non-functional | performance · token economy · reliability · quality                                                                                                   |
+| Adversarial    | prompt injection · jailbreak · data exfiltration · PII leakage · harmful content · hallucination · hijacking · policy violation · technical injection |
 
 ## Why it works this way
 
@@ -53,7 +55,7 @@ Two ideas do most of the work.
 
 **An agent's account of what it did is the weakest evidence available about what it did.** It is the one party with a reason to be wrong. So `rook` does not grade the reply. It reads the code, watches the filesystem, and calls the agent's own tools to check the effect — then quotes what it found.
 
-**Anything `rook` could not verify is reported as unverifiable — never as a pass, never as a failure.** It is excluded from the denominator rather than counted against you, and the gaps are computed rather than asked of a model, so a verdict can say *"Pass, and here is what nobody looked at."* A harness that reports a failure it did not observe is worse than one that admits it could not look.
+**Anything `rook` could not verify is reported as unverifiable — never as a pass, never as a failure.** It is excluded from the denominator rather than counted against you, and the gaps are computed rather than asked of a model, so a verdict can say _"Pass, and here is what nobody looked at."_ A harness that reports a failure it did not observe is worse than one that admits it could not look.
 
 What a run gives you:
 
@@ -66,66 +68,49 @@ What a run gives you:
 
 Most eval and observability tools score what your agent said and recorded. `rook` checks what the run changed, and reports what it could not verify.
 
-| | rook (Agent Assurance) | AI eval tools | LLM observability |
-|---|---|---|---|
-| Test cases | From your code or spec | Written or synthesized | From production traces |
-| Tool calls | Against declared tools | Against your lists | Logged, optionally scored |
-| Side effects | Files, artifacts, probes | Scripted per task | Trace data only |
-| Grading | Claimed actions aren't proof | LLM judge or code checks | LLM judge or human review |
-| Adversarial tests | Generated by default | Add-on in some tools | Not generated |
-| When it runs | Before release, in CI | CI and live traffic | Production, plus CI |
-| Unverifiable results | Reported separately | Errors or opt-in skips | Left unscored |
+|                      | rook (Agent Assurance)       | AI eval tools            | LLM observability         |
+| -------------------- | ---------------------------- | ------------------------ | ------------------------- |
+| Test cases           | From your code or spec       | Written or synthesized   | From production traces    |
+| Tool calls           | Against declared tools       | Against your lists       | Logged, optionally scored |
+| Side effects         | Files, artifacts, probes     | Scripted per task        | Trace data only           |
+| Grading              | Claimed actions aren't proof | LLM judge or code checks | LLM judge or human review |
+| Adversarial tests    | Generated by default         | Add-on in some tools     | Not generated             |
+| When it runs         | Before release, in CI        | CI and live traffic      | Production, plus CI       |
+| Unverifiable results | Reported separately          | Errors or opt-in skips   | Left unscored             |
 
-The eval and observability columns describe each category's default approach, not any single product; several eval tools synthesize test cases, score tool calls, and ship red-team modules.
+<sub>The eval and observability columns describe each category's default approach, not any single product; several eval tools synthesize test cases, score tool calls, and ship red-team modules.</sub>
 
 ## Install
 
 Three ways, on macOS and Linux, x64 and arm64. Each one carries its own Node runtime, so none of them needs Node installed.
 
-**Homebrew** — the formula lives in [LambdaTest/homebrew-rook](https://github.com/LambdaTest/homebrew-rook).
+**Homebrew**
 
-```
+```bash
 brew install lambdatest/rook/rook
 ```
 
-Homebrew automatically adds the tap for a fresh installation.
+Use the full `lambdatest/rook/rook` name. Homebrew refuses to load a formula from an untrusted third-party tap by its short name, and naming the tap in full trusts it. Upgrade with `brew upgrade lambdatest/rook/rook`. If you tapped `LambdaTest/rook` before September 2026, [re-point the tap once](https://github.com/LambdaTest/homebrew-rook#if-you-tapped-before-the-formula-moved-here).
 
-Install by the full `lambdatest/rook/rook` name, not just `rook` — Homebrew
-requires third-party-tap formulae to be explicitly trusted before loading
-them, and naming the tap in full is what satisfies that automatically.
-`brew install rook` (after the same tap) hits `Error: Refusing to load
-formula lambdatest/rook/rook from untrusted tap lambdatest/rook.`
+**Shell installer** — downloads the archive for your platform, verifies its checksum, and links `rook` into `~/.local/bin`. Pass `--dir` to put it somewhere else, or `--version X.Y.Z` to pin one.
 
-If you tapped before the formula moved, with `brew tap LambdaTest/rook https://github.com/LambdaTest/rook.git`,
-re-point that tap once so upgrades keep arriving. The installed `rook` is untouched. Do not
-`brew untap --force`, which uninstalls it.
-
-```
-brew tap --custom-remote lambdatest/rook https://github.com/LambdaTest/homebrew-rook
-git -C "$(brew --repository lambdatest/rook)" reset --hard origin/main
-```
-
-**Shell installer** — downloads the archive matching your platform, verifies its checksum, and links `rook` into `~/.local/bin`. Pass `--dir` to put it somewhere else, or `--version X.Y.Z` to pin one.
-
-```
+```bash
 curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | bash
 ```
 
 **npm** — if you would rather manage it with your other global CLIs.
 
-```
+```bash
 npm install -g @testmuai/rook
 ```
 
-[Open an issue](https://github.com/LambdaTest/rook/issues/new/choose) if any of these does not work on your platform.
+Driving rook from Claude Code, Codex or Gemini CLI? Add the [coding-agent skill](#for-ai-coding-agents-reading-this) too. If an install method does not work on your platform, [open an issue](https://github.com/LambdaTest/rook/issues/new/choose).
 
-**Coding-agent skill** — if you drive Rook from Claude Code, Codex or Gemini CLI, `npx @testmuai/rook-skill` (Node.js 22+) installs the Rook skill for all three. See [For AI coding agents reading this](#for-ai-coding-agents-reading-this).
+## Quick start
 
-## Five minutes
+From inside a project that contains an agent:
 
-Once installed, from inside a project that contains an agent:
-
-```
+```text
 › /explore .
 
   read 6 files · 1 agent
@@ -159,27 +144,24 @@ You do not have to run the commands in order. Ask for a later step and `rook` pl
 
 ## Commands
 
-For setup, profiles, scenario selection, and interpreting results, read the
-[Rook user guide](docs/user-guide/README.md).
+| Command                                    | What it does                                                   |
+| ------------------------------------------ | -------------------------------------------------------------- |
+| `/explore`                                 | read the codebase — find agents and what they do               |
+| `/agent`                                   | list agents, switch the active one                             |
+| `/generate`                                | write scenarios for the active agent                           |
+| `/profile`                                 | how to invoke it — `add` (paste a curl), `use`, `test`, `show` |
+| `/run`                                     | execute scenarios against the live agent                       |
+| `/ui`                                      | the browser view — runs, evidence, trends                      |
+| `/scenarios`                               | list, exclude, include, delete                                 |
+| `/mcp`                                     | the MCP servers `rook` may call                                |
+| `/plan`                                    | what is stale, and what refreshing it would cost               |
+| `/budget` · `/doctor` · `/guide` · `/help` | credits, diagnostics, guidance and help                        |
 
-| | |
-|---|---|
-| `/explore` | read the codebase — find agents and what they do |
-| `/agent` | list agents, switch the active one |
-| `/generate` | write scenarios for the active agent |
-| `/profile` | how to invoke it — `add` (paste a curl), `use`, `test`, `show` |
-| `/run` | execute scenarios against the live agent |
-| `/ui` | the browser view — runs, evidence, trends |
-| `/scenarios` | list, exclude, include, delete |
-| `/mcp` | the MCP servers `rook` may call |
-| `/plan` | what is stale, and what refreshing it would cost |
-| `/budget` · `/doctor` · `/guide` · `/help` | |
-
-Three ways to invoke the agent under test: an **HTTP** endpoint, a **command** (`claude -p "{{goal}}"`), or an **MCP** tool.
+Three ways to invoke the agent under test: an **HTTP** endpoint, a **command** (`claude -p "{{goal}}"`), or an **MCP** tool. For setup, profiles, scenario selection and reading results, see the [user guide](docs/user-guide/README.md).
 
 ## In CI
 
-There is a headless mode:
+Every step has a headless form:
 
 ```bash
 rook explore .
@@ -188,20 +170,16 @@ rook run
 rook report
 ```
 
-| Exit code | Meaning |
-|---|---|
-| `0` | the command did what it said — a finished run exits `0` whether scenarios passed or failed; gate on the verdicts in `rook report --json` |
-| `1` | anything else: signed out, refused, unreachable, bad flags, a run that could not start. With `--json`, inspect `error` or `reason` when a document exists; a refused run may have `ok: true, discarded: "refused"`. Some errors only produce stderr |
+| Exit code | Meaning                                                                                                                                                                                                                                             |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0`       | the command did what it said — a finished run exits `0` whether scenarios passed or failed; gate on the verdicts in `rook report --json`                                                                                                            |
+| `1`       | anything else: signed out, refused, unreachable, bad flags, a run that could not start. With `--json`, inspect `error` or `reason` when a document exists; a refused run may have `ok: true, discarded: "refused"`. Some errors only produce stderr |
+
+[Headless use and CI](docs/user-guide/headless-and-ci.md) covers sign-in, permission grants, budgets and verdict gating.
 
 ## For AI coding agents reading this
 
-Use the [Rook skill](skill-installer/skills/SKILL.md) to test, evaluate, or
-red-team an AI agent and interpret its saved results. It covers setup, target
-permissions, credit budgets, profiles, CI and evidence-based verdicts using
-your installed Rook CLI.
-Rook is also listed on the TestMu AI
-[Agent Skills](https://www.testmuai.com/support/docs/agent-skills/) page and in the
-[LambdaTest/agent-skills](https://github.com/LambdaTest/agent-skills) catalog README.
+Use the [Rook skill](skill-installer/skills/SKILL.md) to test, evaluate, or red-team an AI agent and interpret its saved results. It covers setup, target permissions, credit budgets, profiles, CI and evidence-based verdicts using your installed Rook CLI.
 
 Install it from your agent repository with Node.js 22+ and npm available:
 
@@ -209,10 +187,16 @@ Install it from your agent repository with Node.js 22+ and npm available:
 npx @testmuai/rook-skill
 ```
 
-This installs the skill user-wide for Claude Code, Codex and Gemini CLI. See the
-[installer guide](skill-installer/README.md) for client selection, updates,
-uninstall and file protections. For a project-scoped install through the
-third-party [skills CLI](https://github.com/vercel-labs/skills):
+This installs the skill user-wide for Claude Code, Codex and Gemini CLI. See the [installer guide](skill-installer/README.md) for client selection, updates, uninstall and file protections.
+
+Then open your agent repository and ask: _"Use rook to test my agent against its refund policy."_ Approve the target's real actions and credit spend before execution. See the [CI recipe](skill-installer/skills/references/ci.md) for completion and verdict checks; an exit code of `0` alone does not mean scenarios passed.
+
+<details>
+<summary><b>Other ways to install the skill</b></summary>
+
+<br>
+
+For a project-scoped install through the third-party [skills CLI](https://github.com/vercel-labs/skills):
 
 ```bash
 npx skills add https://github.com/LambdaTest/rook/tree/main/skill-installer/skills --skill rook --agent claude-code codex
@@ -220,41 +204,37 @@ npx skills add https://github.com/LambdaTest/rook/tree/main/skill-installer/skil
 
 Select the clients you use; add `--global` for user-wide scope.
 
-For manual installation or updates, copy `SKILL.md` and `references/` together
-into `.claude/skills/rook/` or `.agents/skills/rook/` in your agent repository.
-Review an existing skill before replacing it. The corresponding locations under
-`~/` provide user-wide scope. This Rook clone already includes both project mirrors;
-cloning it elsewhere does not install the skill into your project.
+For manual installation or updates, copy `SKILL.md` and `references/` together into `.claude/skills/rook/` or `.agents/skills/rook/` in your agent repository. Review an existing skill before replacing it. The corresponding locations under `~/` provide user-wide scope. This Rook clone already includes both project mirrors; cloning it elsewhere does not install the skill into your project.
 
-Open your agent repository and ask: “Use rook to test my agent against its refund
-policy.” Approve the target's real actions and credit spend before execution.
-See the [CI recipe](skill-installer/skills/references/ci.md) for completion and
-verdict checks; an exit code of `0` alone does not mean scenarios passed.
+For client details, see the [Claude Code skill documentation](https://code.claude.com/docs/en/skills) and [Codex skill documentation](https://learn.chatgpt.com/docs/build-skills).
 
-For client details, see the
-[Claude Code skill documentation](https://code.claude.com/docs/en/skills) and
-[Codex skill documentation](https://learn.chatgpt.com/docs/build-skills).
+</details>
+
+Rook is also listed on the TestMu AI [Agent Skills](https://www.testmuai.com/support/docs/agent-skills/) page and in the [LambdaTest/agent-skills](https://github.com/LambdaTest/agent-skills) catalog.
 
 ## Sample agents
 
-Try the agents in [`samples/`](samples), from a small HTTP service to eight industry workflows:
+Try the agents in [`samples/`](samples), from a small HTTP service to eight industry workflows. Each one has real defects for a good suite to find.
 
-| | |
-|---|---|
-| [`triage-service`](samples/triage-service) | A plain codebase — a prompt in a string, a tool table, an HTTP server. Nothing declares itself an agent, so finding it means reading the code. |
-| [`refund-desk`](samples/refund-desk) | A Claude Code agent — `.claude/agents/*.md`, a skill, a read-only subagent and two MCP servers. Found deterministically, then each server is asked what tools it really has. |
-| [`industry-agents`](samples/industry-agents) | Banking, healthcare, insurance and customer support, each with Developer/QE editions, diagrams, native Rook workspaces, recorded evidence and a headless CI runner. |
+| Sample                                                 | What it is                                                                                                                                                                   |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`triage-service`](samples/triage-service)             | A plain codebase — a prompt in a string, a tool table, an HTTP server. Nothing declares itself an agent, so finding it means reading the code.                               |
+| [`refund-desk`](samples/refund-desk)                   | A Claude Code agent — `.claude/agents/*.md`, a skill, a read-only subagent and two MCP servers. Found deterministically, then each server is asked what tools it really has. |
+| [`incident-scribe`](samples/incident-scribe)           | A Python CLI that looks services up over MCP, assigns severity from a policy matrix, and hands the customer note to a tool-less subagent.                                    |
+| [`trip-weather-station`](samples/trip-weather-station) | Weather-grounded trip advice from live forecasts. Did it recommend from weather it fetched, or invent a plausible forecast?                                                  |
+| [`knowledge-vault`](samples/knowledge-vault)           | Private, offline retrieval over a local document vault. Did it answer only from the vault, or make something up?                                                             |
+| [`industry-agents`](samples/industry-agents)           | Banking, healthcare, insurance and customer support, each with Developer/QE editions, diagrams, native Rook workspaces, recorded evidence and a headless CI runner.          |
 
-The triage and refund samples keep their business state in memory. Industry samples use fictional records and keep session state in ignored local folders; their CI targets need no model API key. Rook evaluation uses your account and credits. The samples include deliberate defects so you can compare the response with its observed effects.
+The business records are fictional. Rook evaluation uses your account and credits. See [`samples/README.md`](samples/README.md) for how to run each one and what it should catch.
 
 ## Where things are kept
 
 Everything `rook` produces is plain files. No database.
 
-| Path | What |
-|---|---|
+| Path                        | What                                                       |
+| --------------------------- | ---------------------------------------------------------- |
 | `<project>/.testmuai/rook/` | agents, scenarios, runs, evidence — yours, and committable |
-| `~/.testmuai/rook/` | credentials, settings, permission grants, sessions |
+| `~/.testmuai/rook/`         | credentials, settings, permission grants, sessions         |
 
 The second is deliberately outside your project, so a credential cannot be swept into a commit by `git add -A`. Profiles and MCP configuration reference secrets as `${VAR}` rather than embedding them, so they are safe to commit.
 
@@ -264,12 +244,17 @@ The second is deliberately outside your project, so a credential cannot be swept
 
 Judges are told to verify without changing anything — calling `issue_refund` to find out whether a refund exists creates one. Rook evaluates tool calls against its permission policy; headless calls need effective grants rather than an interactive prompt.
 
-Even so: **point it at staging.**
+> [!IMPORTANT]
+> Even so: **point it at staging.**
 
-## Support, issues, security
+## Support
 
-- **Bugs and feature requests** — [open an issue](https://github.com/LambdaTest/rook/issues/new/choose).
+- **Bugs and feature requests** — [open an issue](https://github.com/LambdaTest/rook/issues/new/choose). Verdicts you disagree with are the most useful reports we get.
 - **Security** — do not open a public issue. See [SECURITY.md](SECURITY.md).
 - **Contributing** — see [CONTRIBUTING.md](CONTRIBUTING.md).
+- **Documentation** — [TestMu AI Agent Assurance](https://www.testmuai.com/support/docs/agent-assurance-overview/).
 
-Licensed under [Apache 2.0](LICENSE).
+<div align="center">
+<br>
+<sub>Licensed under <a href="LICENSE">Apache 2.0</a> · Made by <a href="https://www.testmuai.com">TestMu AI</a></sub>
+</div>
