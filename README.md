@@ -31,11 +31,12 @@ Testing an AI agent is awkward because there is no fixed contract. Input might b
 ```text
 $ rook
 
-  /explore .    read the codebase — find the agents and what they do
-  /generate     scenarios: functional · non-functional · adversarial
-  /profile add  how to invoke it — paste a curl, or give a command
-  /run          execute them, 3 at a time
-  /ui           verdicts, evidence and trends, in a browser
+  /explore .           read the codebase — find the agents and what they do
+  /generate            scenarios: functional · non-functional · adversarial
+  /profile add <name>  how to invoke it — paste a curl, or give a command
+  /sync                record the agent, its scenarios and profile upstream
+  /run                 execute them, 3 at a time
+  /ui                  verdicts, evidence and trends, in a browser
 ```
 
 Scenarios span three classes and eighteen categories:
@@ -117,13 +118,19 @@ From inside a project that contains an agent:
 
   14 scenarios · 9 functional · 2 non-functional · 3 adversarial
 
-› /profile add
+› /profile add local
 
   How is this agent invoked?  paste a curl · command · http · mcp
 › curl http://127.0.0.1:9110/v1/triage -H 'content-type: application/json' -d '{"input":"look at T-1043"}'
 
   POST http://127.0.0.1:9110/v1/triage
   the scenario goes in "input"
+
+› /sync
+
+  recording 1 agent(s)
+  triage-service: new upstream — recording everything
+  triage-service: recorded
 
 › /run
 
@@ -141,18 +148,19 @@ You do not have to run the commands in order. Ask for a later step and `rook` pl
 
 ## Commands
 
-| Command                                    | What it does                                                   |
-| ------------------------------------------ | -------------------------------------------------------------- |
-| `/explore`                                 | read the codebase — find agents and what they do               |
-| `/agent`                                   | list agents, switch the active one                             |
-| `/generate`                                | write scenarios for the active agent                           |
-| `/profile`                                 | how to invoke it — `add` (paste a curl), `use`, `test`, `show` |
-| `/run`                                     | execute scenarios against the live agent                       |
-| `/ui`                                      | the browser view — runs, evidence, trends                      |
-| `/scenarios`                               | list, exclude, include, delete                                 |
-| `/mcp`                                     | the MCP servers `rook` may call                                |
-| `/plan`                                    | what is stale, and what refreshing it would cost               |
-| `/budget` · `/doctor` · `/guide` · `/help` | credits, diagnostics, guidance and help                        |
+| Command                                    | What it does                                                          |
+| ------------------------------------------ | --------------------------------------------------------------------- |
+| `/explore`                                 | read the codebase — find agents and what they do                      |
+| `/agent`                                   | list agents, switch the active one                                    |
+| `/generate`                                | write scenarios for the active agent                                  |
+| `/profile`                                 | how to invoke it — `add <name>` (paste a curl), `use`, `test`, `show` |
+| `/sync`                                    | record the project upstream — every agent, as one write               |
+| `/run`                                     | execute scenarios against the live agent                              |
+| `/ui`                                      | the browser view — runs, evidence, trends                             |
+| `/scenarios`                               | list, exclude, include, delete                                        |
+| `/mcp`                                     | the MCP servers `rook` may call                                       |
+| `/plan`                                    | what is stale, and what refreshing it would cost                      |
+| `/budget` · `/doctor` · `/guide` · `/help` | credits, diagnostics, guidance and help                               |
 
 Three ways to invoke the agent under test: an **HTTP** endpoint, a **command** (`claude -p "{{goal}}"`), or an **MCP** tool. For setup, profiles, scenario selection and reading results, see the [user guide](docs/user-guide/README.md).
 
@@ -163,6 +171,7 @@ Every step has a headless form:
 ```bash
 rook explore .
 rook generate
+rook sync
 rook run
 rook report
 ```
@@ -172,7 +181,7 @@ rook report
 | `0`       | the command did what it said — a finished run exits `0` whether scenarios passed or failed; gate on the verdicts in `rook report --json`                                                                                                            |
 | `1`       | anything else: signed out, refused, unreachable, bad flags, a run that could not start. With `--json`, inspect `error` or `reason` when a document exists; a refused run may have `ok: true, discarded: "refused"`. Some errors only produce stderr |
 
-[Headless use and CI](docs/user-guide/headless-and-ci.md) covers sign-in, permission grants, budgets and verdict gating.
+`rook run` refuses an agent that has never been synced. To keep a result local instead, skip `sync` and use `rook run --test`. [Headless use and CI](docs/user-guide/headless-and-ci.md) covers sign-in, permission grants, budgets and verdict gating.
 
 ## For AI coding agents reading this
 
