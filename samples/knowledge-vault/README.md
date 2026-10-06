@@ -6,7 +6,7 @@ catch is the one a fluent answer hides: **did it answer only from the vault, or
 did it make something up?**
 
 ```bash
-cd sample/case-studies/knowledge-vault && npm start      # :9600
+cd samples/knowledge-vault && npm start      # :9600
 ```
 
 ```
