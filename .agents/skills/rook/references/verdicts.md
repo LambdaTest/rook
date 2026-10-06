@@ -22,8 +22,9 @@ has no verdict; do not turn its absence into a failure.
 In 0.1.6, `totals.pass_rate` is `Pass / (Pass + Fail + Unable to Verify)`.
 `totals.decided` still means `Pass + Fail`. Unable to Verify contributes to the
 pass-rate denominator as a recorded result, but remains a separate verdict;
-never describe it as Fail. An all-Unverifiable result has pass rate `0`; no
-recorded Pass, Fail or Unable to Verify results yields `null`, not zero.
+never describe it as Fail. If every recorded result is Unable to Verify,
+`pass_rate` is `0`; if there are no recorded Pass, Fail or Unable to Verify
+results, it is `null`, not zero.
 Unjudged, not-run and unrunnable work does not enter this denominator.
 
 ## Presenting results

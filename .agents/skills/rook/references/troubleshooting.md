@@ -60,16 +60,17 @@ an image); that is a gap to report, not a failure to fix.
 
 Inspect the saved raw response and hook records before concluding that the
 target omitted evidence. In 0.1.1, an explicitly empty execute `calls` array
-could be omitted from the hook record. Check whether this limitation still
-applies to the installed release: a recorded `calls: []` does not guarantee a
-conclusive check. Report the limitation and retain the recorded verdict; do not
-invent calls or change scenario criteria just to obtain a pass.
+could be omitted from the hook record. It is not established whether later
+releases still do this. If the saved raw response contains `calls: []` but the
+hook record has no `calls`, report that gap and retain the recorded verdict;
+do not invent calls or change scenario criteria just to obtain a pass.
 
 The JSON-string decoding limitation observed in 0.1.1 is fixed in 0.1.6:
 deterministic `json_path` checks can traverse valid JSON saved as a string in
-`raw_response`. Invalid JSON or a raw JSON string larger than the 8 MiB decode
-limit remains uncheckable. Inspect the criterion's recorded `achieved` explanation
-and retain its verdict; do not invent evidence to fill an unresolved path.
+`raw_response`. Invalid JSON, a raw string over the 8 MiB decode limit, or a
+path that does not resolve yields Unable to Verify; the criterion's `achieved`
+field explains why. Report that explanation and retain the recorded verdict;
+do not invent evidence to fill the path.
 
 ## A verdict you disagree with
 
