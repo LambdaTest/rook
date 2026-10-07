@@ -45,7 +45,7 @@ Use the next command needed by the current state:
 
 | Need | Command |
 | --- | --- |
-| Sign in | `rook login`, or `rook login --username <u> --access-key <k>` for CI |
+| Sign in | `rook login`; in CI, export `LT_USERNAME` and `LT_ACCESS_KEY` (no login step) |
 | Select a project | `rook project use <id>` or `rook project create <name>` |
 | Discover agents | `rook explore . --json` |
 | Select an agent | `rook agent use <id>` |

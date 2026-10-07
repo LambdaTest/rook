@@ -63,8 +63,8 @@ body:
   - type: input
     id: platform
     attributes:
-      label: OS, architecture and Node version
-      placeholder: macOS 15.4 arm64, node v20.11.0
+      label: OS, architecture and install method
+      placeholder: macOS 15.4 arm64, Homebrew (or npm with Node 22.x, or the shell installer)
     validations:
       required: true
 

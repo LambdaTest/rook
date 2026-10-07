@@ -1,164 +1,139 @@
 ## [0.1.6] - 2026-10-05
 
 ### Added
-- use cli-spinners for spinner frames, fix remaining typecheck errors
-- use cli-spinners for the phase spinner frames
-- copy mode, caret ownership, per-env write isolation, grep redaction, flag completions
-- copy mode with OSC 52 clipboard, grep terms redacted in trace
-- full-screen TUI revamp with agent assurance fixes
+
+- Full-screen terminal UI redesign, with animated phase spinners.
+- Copy mode in the TUI: Ctrl+Y selects transcript lines and Enter copies them to the clipboard. Mouse selection and drag-to-copy also work.
+- Reference a workspace file in a TUI message with `@path`. rook attaches the file's contents to that message.
+- The TUI completes flag values such as `--class` and `--category`.
+- `rook ui --local` opens a redesigned local viewer that looks like the cloud app. Every install now includes it.
+- Only one rook session can run in a workspace folder at a time. A second session is refused and shows the process that holds the folder; `rook doctor` still runs.
+- If your CLI is older than the minimum version the service accepts, rook refuses to run. It shows the installed and required versions and the command to update.
 
 ### Changed
-- drop the mid-command and TUI handling; keep the gate
-- name the versions in the gate's catalogue refusal
-- trim to the core behaviour
-- say the refusal unless it was said; stop refused TUI re-registration
-- fail every shell command the gate closed on; pin the sent version
-- exit 1 from an interactive rook ask the gate refused
-- close the gate on a telemetry 426 and on a refused bad body
-- say the refusal when a plain rook run's end call meets the 426
-- preserve exact CLI release versions
-- hide dashed access codes in server prose
-- narrow credential gate and status verdicts
-- attribute server prose and guard stream decisions
-- reject hostile prose and incomplete stream frames
-- preserve answered stream evidence and reject instruction prose
-- close answered-error gaps in trimmed fix
-- simplify server prose handling and trim regressions
-- preserve controller answer and link state
-- keep cancellation distinct from outages
-- preserve error-body tears and large tool calls
-- bound decoding and word torn responses
-- preserve answered status and transport link state
-- close reviewed response and credential gaps
-- reject malformed controller completions and accounting
-- fail answered malformed streams and refreshed 401s
-- consume OSC payload through its terminator
-- preserve answered failures and close sanitizer gaps
-- a network fault is a failure nothing answered
+
+- Pass rate now counts Unable to Verify results: Pass / (Pass + Fail + Unable to Verify). Every place rook shows a pass rate uses this formula.
+- rook keeps a separate project selection for each environment.
+- rook refuses unknown commands and extra arguments, and suggests the closest command. Before, `rook typo` opened the TUI and `rook status extra` ran `status`.
+- The version shown in the TUI is now the exact released version, with no `-alpha` suffix.
+- Errors from the service use the same wording everywhere, and each one says what to do next.
+- The docs link points to the TestMu AI agent assurance docs.
 
 ### Fixed
-- export logs no longer triggers Node DEP0190 warning
-- retain mouse decoder state and respect input ownership
-- give pickers pointer ownership and stabilize drags
-- align selection geometry and bound CSI buffering
-- limit flag hints to TUI option tokens
-- stabilize TUI mouse and completion behavior
-- decode mouse drags and copy transcript lines
-- gate every classifier call; refuse on a failed write
-- preserve pending decided verdicts across continuations
-- keep continuation upload state recoverable
-- refuse corrupt continuation reports before spend
-- validate local report evidence before deriving metrics
-- preserve completed status during tally recovery
-- retain continuation rates and reject lost evidence
-- keep historical rate labels truthful
-- count recorded results and encode evidence diagnostics
-- keep recovery accounting scoped to decided verdicts
-- guard repeat attempts and cache only completed summaries
-- stop invalid-verdict scheduling and reuse saved summaries
-- share decided-verdict pass rates across run surfaces
-- distinguish local recovery errors from server markers
-- preserve blocked recovery through command formatting
-- scope refresh persistence and preserve failure causes
-- durably claim refresh grants before dispatch
-- remove the state row from doctor output
-- /doctor in the TUI reports mode tui instead of cli
-- /ask in the TUI no longer hangs after answering
-- preserve shell warning and defer browser choice until cleanup
-- prefer explicit browser login in current process
-- keep selections per environment
-- docs URL points to TestMu AI agent assurance docs; merge upstream/main
-- restore Identity beside block-letter wordmark after restoring original logo
-- update trace filter test to the redacted grep row
-- read unverified 401 bodies before classifying
-- preserve answered failures and reject malformed replies
-- clear reused runner workspace before public scripts
-- pin public npm registry for skill release evidence
-- run only Vitest script suites in CI
-- collect real nested CLI help without recursion loops
-- use real CLI help and distinguish deleted forks
-- collect nested CLI help and reject incomplete PR facts
-- require complete skill and release facts
-- require complete release evidence and pinned gh
-- fail on incomplete released CLI evidence
-- guard release setup and qualify recovery PRs
-- preserve release channel and CLI evidence
-- handle production prerelease skill updates
-- close skills-update review boundaries
-- prevent concurrent telemetry duplicate uploads
+
+- `json_path` checks work when a hook returns the agent's response as a serialized JSON string.
+- `/ask` in the TUI no longer hangs after it answers.
+- `/doctor` in the TUI reports mode `tui` instead of `cli`.
+- A browser `/login` in the TUI takes effect even when `LT_USERNAME` and `LT_ACCESS_KEY` are exported.
+- Two rook processes no longer reuse the same sign-in refresh token, which could sign you out.
+- When the service returns an error, rook now reports that error. It no longer shows a connection failure, and it cleans server text before displaying it.
+- Concurrent rook processes no longer upload the same telemetry twice.
+- `rook export logs` no longer prints a Node DEP0190 warning.
+- Ending a session with a signal releases its workspace lock.
+- Mouse handling, text selection and completions in the TUI are more stable.
+
 ## [0.1.5] - 2026-09-22
 
-No changes recorded since the last release.
+### Added
+
+- `rook profile add` writes the hook script as a single Node file and generates a README next to `profile.yaml`.
+- `rook profile add` saves the profile before verifying it. If a run stops early, continue with `rook profile test` or `rook profile fix`.
+- A verified `rook profile add` stores the credentials its live run proved, as `rook env set` does.
+- `rook env set` accepts `KEY VALUE`, `KEY=VALUE`, or `--from <file>` (a `.env` or `.json` file), as well as JSON.
+- `--debug` writes extra diagnostic details to the local log.
+- `rook doctor --session <id>` shows the file paths for a recorded session.
+- Tool-call criteria with an expected count (`times`) now count repeated identical calls. More calls than expected is a Fail.
+- The judge sees the token usage your agent reports.
+- Resume planning can see the results of earlier completed and interrupted runs.
+
+### Changed
+
+- New projects get readable folder names (`<name>--<id>`). Existing folders keep working.
+- Default hook timeouts are longer: 2 minutes for prepare, open and close, and 10 minutes for execute and collect.
+- `rook profile add` has a larger credit allowance, so multi-step agents can finish verifying.
+- Failed commands write diagnostics to the local log, with credentials redacted, and send them with your existing telemetry uploads.
+
+### Fixed
+
+- Windows: `rook login`, `/login`, `/ui` and `/docs` now open the browser.
+- The TUI prints the project line once at startup, not after every command.
+- The product name is spelled TestMu AI everywhere in the CLI.
+
 ## [0.1.4] - 2026-09-22
 
-No changes recorded since the last release.
+Maintenance release. No user-facing changes to the CLI.
+
 ## [0.1.3] - 2026-09-10
 
-### Fixes
-- Fix npm-installed `rook update` failing with `TAR_BAD_ARCHIVE` by binding the scoped registry setting correctly.
-- Resume the scenarios selected by the approved plan, reject incomplete carried evidence, and report interrupted or aborted work accurately.
-- Show declared positional choices in the terminal menu and help, and avoid duplicate parser diagnostics.
-- Remove the unused evidence-cli runtime dependency.
+### Fixed
+
+- A `rook update` from an npm install no longer fails with `TAR_BAD_ARCHIVE`.
+- Resumed runs execute the scenarios that the approved plan selected. They reject incomplete carried evidence and report interrupted or aborted work accurately.
+- The terminal menu and help show the allowed values for positional arguments, and parser errors are no longer printed twice.
+
+### Removed
+
+- An unused runtime dependency.
+
 ## [0.1.2] - 2026-09-10
 
-### Improvements
-- Choose whether to create a project, select an existing project, or open a project recorded in the current workspace.
-- Navigate long project lists within a fixed terminal viewport and refresh cached project names when they change upstream.
+### Added
 
-### Fixes
-- Plan runs from explicit flags without making a model planning call. Free-text instructions still use the planner.
-- Keep the active profile consistent after adding a profile.
-- Parse comma-separated list flags consistently in the terminal UI and shell, including spaces around commas and intervening root options.
-- Resolve supported file citation suffixes during attack generation and report which cited files can be read when access is refused.
+- Choose whether to create a project, select an existing project, or open the project recorded in the current workspace.
+
+### Changed
+
+- Long project lists scroll within a fixed area of the terminal.
+- Cached project names update when a project is renamed.
+
+### Fixed
+
+- When you plan a run from explicit flags, rook no longer makes a model planning call. Free-text instructions still use the planner.
+- The active profile no longer changes after you add a profile.
+- The TUI and the shell parse comma-separated list flags the same way, including spaces around commas and root options placed between values.
+- Attack generation resolves supported file citation suffixes. When access is refused, rook reports which cited files it can read.
+
 ## [0.1.1] - 2026-09-05
 
 ### Added
 
-- Sign in with a username and access key — `rook login` for machines with no browser, CI runners included.
-- Native end-to-end adversarial (red-team) testing: attack patterns carry their metadata, risk weighting guides the run, and the catalogue is validated before it is used.
-- `rook` registers each session and resolves the project at boot, with a project picker when more than one is available; `rook sync` and `rook status` report the project state and the four sync states from `state.json`.
-- Every `explore`, `generate` and `run` is opened as a job before it starts, and its ending is recorded — including how rook was driven and what it cost. Concurrent jobs share one screen: one question at a time.
-- Run evidence and artefacts are uploaded and traceable to the session, job and run that produced them; credit usage is attributed to the same three ids.
-- A public install is told when a newer rook is available.
-- Headless mode declares what it needs up front and refuses what it cannot honour, instead of failing part-way.
-- A single connectivity state, and the command you ran is the retry.
-- Richer generated-scenario output in the TUI, and a new boot screen.
+- `rook login` with a username and access key, for machines with no browser, including CI runners.
+- Native end-to-end adversarial (red-team) testing. Attack patterns carry their metadata, risk weighting guides the run, and rook validates the catalog before using it.
+- rook registers each session and resolves the project at startup, with a project picker when more than one is available. `rook sync` and `rook status` report the project state and the four sync states.
+- rook opens every `explore`, `generate` and `run` as a job before it starts and records how it ended, including how rook was driven and what it cost. Concurrent jobs share one screen and ask one question at a time.
+- Run evidence and artifacts are uploaded and can be traced to the session, job and run that produced them. Credit usage is attributed to the same three ids.
+- Public installs are told when a newer rook is available.
+- Headless mode declares what it needs up front and refuses what it cannot honor, instead of failing partway through.
+- One connectivity state. To retry, run the same command again.
+- Richer generated-scenario output in the TUI, and a new startup screen.
 
 ### Changed
 
-- The credits top-up link now opens the billing page (`/billing/credits`); the previous path led nowhere.
-- Scenario classification uses three independent axes — class, category and tags — instead of one kind.
+- The credits top-up link opens the billing page.
+- Scenario classification uses three independent axes (class, category and tags) instead of one kind.
 
 ### Fixed
 
-- Windows: `rook login` was unusable because `cmd` truncated the authorize URL at the first `&`; the URL is now passed to the browser intact, and always printed so it can be opened by hand.
-- Login: the consent page's automatic redirect to `127.0.0.1` was refused, and the auth heartbeat aborted every login after eight seconds with "signed out elsewhere".
-- Auth: a 403 is no longer reported as "your session expired" — three statuses, three remedies. The credential is read from the environment rook started with, and the access key is kept out of hook scripts.
-- Ctrl+C no longer loses the end of a session; a logout defers the outcome instead of dropping it; queued job endings are flushed on exit.
-- Running out of credits stops the session, not one worker, and the message says who refused and why. Every early exit in `run` says what actually happened.
-- Documents rook can read are no longer refused as zip bombs; the zip64 sentinel is handled; an empty preview is reported rather than silent.
-- `explore` and `generate` are hardened against malformed model output: feature and `known_data` shape drift, unsafe integers, circular references, blank elements and Unicode bidirectional overrides in one-line rendering are guarded or reported instead of crashing or silently dropping fields.
-- The permission prompt no longer drops its unconfirmed-write warning; write-status labels (`[WRITE]` / `[WRITE?]`) are correct, and bare truthiness checks no longer fabricate CRITICAL findings.
-- Scenarios no longer invent record ids, which graded correct agents as Fail.
-- The project picker had no exit, and a wrong URL reported itself as a missing project.
-- `--force` is scoped per candidate; the TUI's force count and a startup crash are fixed.
-- `rook plan` calls the right endpoint and does not register a session.
+- Windows: `rook login` works. rook passes the full authorize URL to the browser and always prints it so you can open it by hand.
+- Login: the consent page's redirect back to rook works, and logins are no longer cut off after eight seconds with "signed out elsewhere".
+- A 403 is no longer reported as an expired session. Each auth failure now names its own remedy, and the access key stays out of hook scripts.
+- Ctrl+C no longer loses the end of a session, and pending job results are saved before exit.
+- Running out of credits stops the whole session and explains why. Every early exit from `run` says what happened.
+- rook no longer refuses readable documents as zip bombs.
+- `explore` and `generate` handle malformed model output by guarding or reporting it, instead of crashing or silently dropping fields.
+- The permission prompt keeps its unconfirmed-write warning, and write labels (`[WRITE]` / `[WRITE?]`) are correct.
+- rook no longer reports false CRITICAL findings.
+- Scenarios no longer invent record ids, which made correct agents fail.
+- The project picker can be exited, and a wrong URL is no longer reported as a missing project.
+- `--force` applies to each candidate separately. The TUI's force count is correct and a startup crash is fixed.
+- `rook plan` no longer registers a session.
+
 ## [0.1.0] - 2026-08-14
 
-### 0.1.0
+### Added
 
-Initial public release.
-
-`rook` reads an agent's own codebase, writes a scenario suite for it, runs the agent for real, and grades the result with evidence — reporting what it could not verify rather than guessing. See the [README](https://github.com/LambdaTest/rook) for the full picture.
-
-Install:
-- npm: `npm install -g @testmuai/rook`
-- curl: `curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | bash`
-- Homebrew: `brew tap lambdatest/rook https://github.com/LambdaTest/rook.git && brew install lambdatest/rook/rook`
-
-macOS and Linux, x64 and arm64. The curl and Homebrew installs need no local Node — each bundles its own runtime. (The npm install still needs npm itself, to fetch it.)
-
-# Changelog
-
-All notable changes to rook are documented here.
-Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
+- Initial public release. `rook` reads an agent's codebase, writes a scenario suite for it, runs the agent for real, and grades the result with evidence. When it cannot verify something, it reports that instead of guessing. See the [README](https://github.com/LambdaTest/rook) for details.
+- Install with npm: `npm install -g @testmuai/rook`
+- Install with curl: `curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | bash`
+- Install with Homebrew (superseded; see [Install](https://github.com/LambdaTest/rook#install) for the current command): `brew tap lambdatest/rook https://github.com/LambdaTest/rook.git && brew install lambdatest/rook/rook`
+- Supports macOS and Linux on x64 and arm64. The curl and Homebrew installs bundle their own runtime, so they need no local Node. The npm install needs npm to download rook.

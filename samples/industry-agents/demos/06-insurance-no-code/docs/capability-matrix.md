@@ -22,4 +22,4 @@ The collection includes **144 authored scenarios**. Earlier Rook-generated draft
 
 Customer records and business services are fictional. The trace view shows local observations, and missing evidence remains unverified. Model behavior and generated tests need review.
 
-Product references: [Rook features](https://www.testmuai.com/support/docs/rook-features/) and [MCP](https://www.testmuai.com/support/docs/rook-command-mcp/).
+Product references: [Rook features](https://www.testmuai.com/support/docs/rook-features/) and [MCP](https://www.testmuai.com/support/docs/agent-assurance-command-reference/).

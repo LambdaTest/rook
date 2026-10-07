@@ -135,9 +135,7 @@ for (const demo of catalog.demos) {
   await writeStandaloneDocs(directory, demo, catalog.taxonomy);
   // Collection-wide historical references remain explicitly linked to their
   // published source; all operational instructions and dependencies are local.
-  const collection = await exists(join(root, 'import-provenance.json'))
-    ? 'https://github.com/LambdaTest/rook/blob/main/samples/industry-agents/'
-    : 'https://github.com/4DvAnCeBoY/rook-demo/blob/main/';
+  const collection = 'https://github.com/LambdaTest/rook/tree/main/samples/industry-agents/';
   for (const file of await readdir(join(directory, 'docs'))) {
     if (!file.endsWith('.md')) continue;
     const path = join(directory, 'docs', file);

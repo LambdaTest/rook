@@ -2,11 +2,9 @@
 # Synthetic end-to-end dry run for install.sh, standing in for the real
 # dry run install.sh's own header/brief describes (download a real
 # published release, strip node from PATH, confirm `rook --version` still
-# runs). That real dry run is NOT possible yet: no `LambdaTest/rook`
-# release exists (blocked on LambdatestIncPrivate/rook#349's fix actually
-# producing one) — this script is what stands in for it until then, and
-# should be re-run for real, against a real release, the first time one
-# exists.
+# runs). This script stands in for that dry run without a network
+# download; re-run the real one against a published release when
+# install.sh changes.
 #
 # It builds a fake local "release": a tarball shaped exactly like a real
 # per-platform asset (bin/rook + lib/node_modules/...) plus a matching

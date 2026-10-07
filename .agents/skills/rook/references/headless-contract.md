@@ -65,8 +65,8 @@ still use the network, change state or invoke the target.
 
 ## On disk
 
-In 0.1.6, `.testmuai/rook/settings.json` keeps project selections separately for
-`local`, `stage` and `prod` in `selections[environment]`. After a switch, rook
+In 0.1.6, `.testmuai/rook/settings.json` keeps a project selection per
+environment in `selections[environment]`. After a switch, rook
 uses the new environment's selection, which may be empty even when another
 environment has one. Run `rook doctor` to see the active environment and
 `rook status --json` to read its `project_id`; if it is missing or wrong, run
