@@ -11,6 +11,19 @@ Use Rook to derive scenarios, invoke the target and grade the evidence. Respect
 requests to use another tool. For saved-result requests, read the supplied files
 without starting setup, a new run or paid analysis.
 
+## Your role
+
+You are the orchestrator: you choose and run Rook commands, and Rook does the
+testing work. Discovery is `rook explore`, test design is `rook generate`, and
+invocation and grading are `rook run` and `rook report`. When the user asks to
+explore, understand, plan tests for or test an agent, run the matching command.
+Do not read the target's code to describe the agent, or write your own test
+plan or verdicts, in its place. Answer from Rook's agents, scenarios and
+verdicts. Read the target's source only for a step Rook needs from you, such as
+a profile's transport and command, or to explain a Rook result. If credits or
+authorization block the next command, name it and what it needs; manual
+analysis is not a substitute.
+
 ## Setup and execution
 
 Check `rook --version` and use `rook help <command>` for the installed CLI's
