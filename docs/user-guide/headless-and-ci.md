@@ -6,7 +6,10 @@ Use the [canonical CI recipe](../../skill-installer/skills/references/ci.md)
 with your installed CLI. It requires bash, jq, a selected project and agent,
 a configured profile, and credentials supplied through CI secrets. Review target writes,
 credit spend, and tool grants before enabling it. Headless mode applies when
-stdin is not a TTY or a supported CI environment variable is set.
+`--yes` is passed, stdin is not a TTY, or any of `CI`, `GITHUB_ACTIONS`, `GITLAB_CI`,
+`BUILDKITE` or `JENKINS_URL` is set. Export `LT_USERNAME` and `LT_ACCESS_KEY` from
+secrets to sign in; they take precedence over a stored sign-in. Set
+`ROOK_TELEMETRY=off` to keep telemetry events on the runner.
 
 The recipe syncs scenarios and the profile before running. For a local result,
 omit sync and use `run --test` with the same checks. Retain project history;

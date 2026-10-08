@@ -86,4 +86,4 @@ npm run samples:check
 
 The checked-in diagrams and PDF handouts retain the delivered source material. Media production tooling is maintained in the linked source repository.
 
-Product references: [interactive terminal](https://www.testmuai.com/support/docs/rook-command-start/), [exploration](https://www.testmuai.com/support/docs/rook-command-explore/), [profiles](https://www.testmuai.com/support/docs/rook-command-profile/), [MCP](https://www.testmuai.com/support/docs/rook-command-mcp/).
+Product references: [interactive terminal](https://www.testmuai.com/support/docs/agent-assurance-quickstart/), [exploration](https://www.testmuai.com/support/docs/agent-assurance-connect-and-explore-agents/), [profiles](https://www.testmuai.com/support/docs/rook-profiles-and-hooks/), [MCP](https://www.testmuai.com/support/docs/agent-assurance-command-reference/).

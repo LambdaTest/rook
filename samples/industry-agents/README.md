@@ -11,9 +11,9 @@ Explore an agent, generate tests, prove its connection and inspect the evidence.
 | Insurance | [insurance-agent-code](demos/05-insurance-code/README.md) | [insurance-agent](demos/06-insurance-no-code/README.md) |
 | Customer Support | [customer-support-agent-code](demos/07-customer-support-code/README.md) | [customer-support-agent](demos/08-customer-support-no-code/README.md) |
 
-## Watch the recorded walkthroughs
+## Walkthrough materials
 
-The nine Andrew-narrated videos, captions and sales PDFs are together in the [Drive delivery folder](https://drive.google.com/drive/u/2/folders/1xdp7vr4-R-mlBWd4rY6OHAfc2qziDlnz). The [source video library](https://github.com/4DvAnCeBoY/rook-demo/tree/ea9e746fe4267cd70665aeb22ab7e4540c188178/delivery) also retains the MP4s. This sample includes diagrams, PDF handouts, captions and recording metadata; movie binaries remain in that delivery.
+This sample includes the diagrams, PDF handouts, captions and recording metadata for nine narrated walkthroughs. The video files themselves are not stored in this repository.
 
 ## Replay the saved results without credentials
 
@@ -107,7 +107,7 @@ All customer records and business systems are fictional. Model requests and Rook
 
 ## Import provenance
 
-Imported from [rook-demo at ea9e746](https://github.com/4DvAnCeBoY/rook-demo/tree/ea9e746fe4267cd70665aeb22ab7e4540c188178). [import-provenance.json](import-provenance.json) records the original source hashes; runtime, documentation and CI integration are adapted here. The immutable artifact list is checked byte for byte before replay. See [recorded checks and limits](docs/verification.md) for the source recordings' scope.
+Imported from the `rook-demo` source repository at `ea9e746fe4267cd70665aeb22ab7e4540c188178`. [import-provenance.json](import-provenance.json) records the original source hashes; runtime, documentation and CI integration are adapted here. The immutable artifact list is checked byte for byte before replay. See [recorded checks and limits](docs/verification.md) for the source recordings' scope.
 
 The prepared authored pack is for local `--test` runs. This import uses the installed CLI's native behavior and does not include the original synchronization adapter. Use newly explored/generated definitions for the optional hosted workflow.
 

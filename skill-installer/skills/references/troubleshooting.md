@@ -10,7 +10,7 @@ rook status --json
 ```
 
 `doctor` prints version, node, workspace, environment, controller and api
-reachability, identity, auth state, project, mode (`headless` or `tui`)
+reachability, identity, auth state, project, mode (`cli`, `tui` or `headless`)
 and tty.
 
 ## Failure documents
@@ -21,23 +21,27 @@ Gate refusals on `report`, `status` and `ask`, and parser errors, may have no
 JSON document; use the stderr diagnostic. Do not infer successful execution
 from `ok: true` or from an old report on disk.
 
-| `error` says             | Do                                                                                              |
-| ------------------------ | ----------------------------------------------------------------------------------------------- |
-| `remedy: login`          | you are not signed in — `rook login`; in CI, `rook login --username <u> --access-key <k>`       |
-| `remedy: new_session`    | that session has been used up — run the command again                                           |
-| `remedy: retry`          | could not reach rook-api — it may be down, or the network; wait and try again, or `rook doctor` |
-| `remedy: request_access` | you do not have access to this project — ask the org admin for access                           |
-| `remedy: create_project` | this org has no projects yet — `rook project create <name>`                                     |
-| `remedy: pick_project`   | no project selected — `rook project use <id>`                                                   |
-| `remedy: agent_missing`  | the active agent is gone — `rook agent use <id>`                                                |
-| `remedy: explore_agents` | no agents registered — `rook explore`                                                           |
-| `remedy: pick_agent`     | no agent selected — `rook agent use <id>`                                                       |
-| `remedy: topup`          | you are out of credits — check `rook plan` and add credits                                      |
-| `remedy: reconcile`      | this agent has diverged from upstream — `rook sync`                                             |
-| `remedy: update`         | this version is too old to be served — announce that `rook update` may install a newer version, then recheck skill compatibility                                    |
-| no active agent          | `rook agent use <id>` after `rook explore`                                                      |
-| no project selected      | `rook project use <id>` or `rook project create <name>`                                         |
-| could not reach rook-api | check the network; `doctor` shows both endpoints                                                |
+| `error` says                | Do                                                                                                                                 |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `remedy: login`             | you are not signed in — `rook login`; in CI, export `LT_USERNAME` and `LT_ACCESS_KEY`                                              |
+| `remedy: repair_auth`       | a stored sign-in could not be refreshed or saved — not a sign-out; run `rook login` again and check `~/.testmuai/rook` permissions |
+| `remedy: new_session`       | that session has been used up — run the command again                                                                              |
+| `remedy: retry`             | could not reach the service — it may be down, or the network; wait and try again, or `rook doctor`                                 |
+| `remedy: wait`              | rate-limited — wait the stated time, then retry                                                                                    |
+| `remedy: server_error`      | the service answered with an error — retry later; include the status in a bug report                                               |
+| `remedy: request_access`    | you do not have access to this project — ask the org admin for access                                                              |
+| `remedy: create_project`    | this org has no projects yet — `rook project create <name>`                                                                        |
+| `remedy: pick_project`      | no project selected — `rook project use <id>`                                                                                      |
+| `remedy: agent_missing`     | the active agent is gone — `rook agent use <id>`                                                                                   |
+| `remedy: explore_agents`    | no agents registered — `rook explore`                                                                                              |
+| `remedy: pick_agent`        | no agent selected — `rook agent use <id>`                                                                                          |
+| `remedy: topup`             | you are out of credits — check `rook plan` and add credits                                                                         |
+| `remedy: reconcile`         | this agent has diverged from upstream — `rook sync`                                                                                |
+| `remedy: update`            | this version is too old to be served — announce that `rook update` may install a newer version, then recheck skill compatibility   |
+| `remedy: report`            | a client bug — file an issue with `rook export logs` attached                                                                      |
+| no active agent             | `rook agent use <id>` after `rook explore`                                                                                         |
+| no project selected         | `rook project use <id>` or `rook project create <name>`                                                                            |
+| could not reach the service | check the network; `doctor` shows both endpoints                                                                                   |
 
 ## Discovery succeeds but registers no agents
 

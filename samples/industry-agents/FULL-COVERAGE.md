@@ -29,8 +29,8 @@ No verdict was replaced or retried to obtain a Pass. These are recorded Rook dec
 ## Execution and provenance
 
 - Target: Gemini model `gemini-3.8-flash`, engine `model`, variant `hardened`; each edition ran from its own runtime. Eight real model probes verified tool calls and complete provider usage before evaluation.
-- Rook CLI: `5be0db96c7616cb592c4b5cd2adb0f68b141ddcd`, authenticated existing **stage** environment, local `--test` mode. These runs are not on the hosted project timeline.
-- Capture source: `4DvAnCeBoY/rook-demo` at `4d6d34b0ee32d208ba4db4b17dd9ccc2b797662b`. The same captured evidence is preserved in the public samples repository; the repositories were not counted as separate evaluations.
+- Rook CLI: a pre-release build, local `--test` mode. These runs are not on the hosted project timeline.
+- Capture source: the `rook-demo` source repository at `4d6d34b0ee32d208ba4db4b17dd9ccc2b797662b`. The same captured evidence is preserved in the public samples repository; the repositories were not counted as separate evaluations.
 - Each isolated run profile enabled `capabilities.usage: true`; no authored scenario, acceptance criterion or repeat count changed. The fixture-oriented reusable templates retain their original capabilities.
 - SC-104 used `demo-dependency-error`, SC-106 used `demo-slow-tool`, SC-110 used `demo-poisoned-context`; the other 15 scenarios used `demo-normal`.
 - SC-106, SC-107 and SC-108 each executed three times. This CLI retains the last response/verdict per scenario and counts scenarios in its report. UUID-named hook-state files and artifacts retain all attempt sessions. A final Pass is not a claim that every earlier attempt passed.

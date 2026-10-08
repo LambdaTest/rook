@@ -3,7 +3,9 @@
 Requires bash, jq, the Rook CLI, a committed `.testmuai/rook/` tree containing
 `ROOK_AGENT_ID` and a selected, configured profile. Supply the profile's declared
 environment variables through CI secrets, alongside `LT_USERNAME`, `LT_ACCESS_KEY`
-and `ROOK_PROJECT_ID`. Set `GITHUB_RUN_ID` to a job label outside GitHub Actions.
+and `ROOK_PROJECT_ID`. Rook signs in from `LT_USERNAME`/`LT_ACCESS_KEY` directly, ahead
+of any stored sign-in, so the recipe needs no `rook login` step and the key never
+appears on a command line. Set `GITHUB_RUN_ID` to a job label outside GitHub Actions.
 A person must review the target, its real writes, credit spend and tool grants
 before enabling this workflow. Install the CLI before this recipe; pin its
 version in your own CI for reproducibility. Compatibility is checked through required output fields, not
@@ -12,7 +14,6 @@ an exact version string. Recheck changed commands with `rook help <command>`.
 ```bash
 set -euo pipefail
 printf 'Rook CLI: %s\n' "$(rook --version)" >&2
-rook login --username "$LT_USERNAME" --access-key "$LT_ACCESS_KEY"
 rook project use "$ROOK_PROJECT_ID"
 rook agent use "$ROOK_AGENT_ID"
 rook explore . --yes
@@ -69,5 +70,6 @@ same flags and result checks. Do not silently switch between these policies.
 
 Cache the project `.testmuai/rook/` for history and comparisons. Never cache or
 commit `~/.testmuai/rook/`. `--yes` supplies broad command-scoped tool consent;
-existing deny policy still applies. Rook uses headless mode when stdin is not a
-TTY or a supported CI environment variable is set.
+existing deny policy still applies. Rook uses headless mode when `--yes` is passed,
+stdin is not a TTY, or any of `CI`, `GITHUB_ACTIONS`, `GITLAB_CI`, `BUILDKITE` or
+`JENKINS_URL` is set (to any value, including `false`).

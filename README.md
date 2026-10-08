@@ -35,7 +35,7 @@ $ rook
   /generate            scenarios: functional · non-functional · adversarial
   /profile add <name>  how to invoke it — paste a curl, or give a command
   /sync                record the agent, its scenarios and profile upstream
-  /run                 execute them, 3 at a time
+  /run                 execute them against the live agent
   /ui                  verdicts, evidence and trends, in a browser
 ```
 
@@ -43,7 +43,7 @@ Scenarios span three classes and eighteen categories:
 
 | Class          | Categories                                                                                                                                            |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Functional     | happy path · negative · boundary · integration · state handling                                                                                       |
+| Functional     | happy path · negative · boundary · integration · state & context                                                                                      |
 | Non-functional | performance · token economy · reliability · quality                                                                                                   |
 | Adversarial    | prompt injection · jailbreak · data exfiltration · PII leakage · harmful content · hallucination · hijacking · policy violation · technical injection |
 
@@ -53,13 +53,13 @@ Two ideas do most of the work.
 
 **An agent's account of what it did is the weakest evidence available about what it did.** It is the one party with a reason to be wrong. So `rook` does not grade the reply. It reads the code, watches the filesystem, and calls the agent's own tools to check the effect — then quotes what it found.
 
-**Anything `rook` could not verify is reported as unverifiable — never as a pass, never as a failure.** It is excluded from the denominator rather than counted against you, and the gaps are computed rather than asked of a model, so a verdict can say _"Pass, and here is what nobody looked at."_ A harness that reports a failure it did not observe is worse than one that admits it could not look.
+**Anything `rook` could not verify is reported as unverifiable — never as a pass, never as a failure.** It gets its own count and is never folded into Fail, and the gaps are computed rather than asked of a model, so a verdict can say _"Pass, and here is what nobody looked at."_ A harness that reports a failure it did not observe is worse than one that admits it could not look.
 
 What a run gives you:
 
 - **Per criterion**, not per scenario: what was expected, what happened, and a quote as evidence.
 - **What could not be checked, and why.**
-- **What changed since last time** — newly failing, fixed, **flaky** (flips between runs on an unchanged scenario, which calls for the opposite response to a regression), and scenarios whose definition changed, so their history no longer compares.
+- **What changed since last time** — the pass-rate change between your last two runs, and which scenarios newly fail or were fixed.
 - **What it did, not just what it said** — files that changed on disk while it ran, artifacts it produced, and tool calls checked against the agent's own tool surface.
 
 ## From AI evals to AI assurance
@@ -80,7 +80,9 @@ Most eval and observability tools score what your agent said and recorded. `rook
 
 ## Install
 
-Three ways, on macOS and Linux, x64 and arm64. Each one carries its own Node runtime, so none of them needs Node installed.
+You need a TestMu AI (formerly LambdaTest) account. Exploring, generating, writing profiles and running spend Agent Assurance credits.
+
+Homebrew and the shell installer cover macOS and Linux on x64 and arm64, and bring their own runtime, so they need no Node. npm also covers Windows x64; it needs Node.js 22 or newer to install and launch, then runs `rook` on its bundled runtime.
 
 **Homebrew**
 
@@ -90,7 +92,7 @@ brew install lambdatest/rook/rook
 
 Use the full `lambdatest/rook/rook` name. Homebrew refuses to load a formula from an untrusted third-party tap by its short name, and naming the tap in full trusts it. Upgrade with `brew upgrade lambdatest/rook/rook`. If you tapped `LambdaTest/rook` before September 2026, [re-point the tap once](https://github.com/LambdaTest/homebrew-rook#if-you-tapped-before-the-formula-moved-here).
 
-**Shell installer** — downloads the archive for your platform, verifies its checksum, and links `rook` into `~/.local/bin`. Pass `--dir` to put it somewhere else, or `--version X.Y.Z` to pin one.
+**Shell installer** — downloads the archive for your platform, verifies its checksum, unpacks it into `~/.testmuai/rook-<version>/`, and links `rook` into `~/.local/bin`. Pass `--dir` to put it somewhere else, or `--version X.Y.Z` to pin one.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | bash
@@ -102,13 +104,28 @@ curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | b
 npm install -g @testmuai/rook
 ```
 
+**Upgrade and uninstall** — `rook update` checks for a newer release and prints the upgrade command.
+
+| Installed with  | Upgrade                                | Uninstall                                        |
+| --------------- | -------------------------------------- | ------------------------------------------------ |
+| Homebrew        | `brew upgrade lambdatest/rook/rook`    | `brew uninstall lambdatest/rook/rook`            |
+| Shell installer | re-run the install command             | `rm ~/.local/bin/rook` and `~/.testmuai/rook-*/` |
+| npm             | `npm install -g @testmuai/rook@latest` | `npm uninstall -g @testmuai/rook`                |
+
+Uninstalling leaves your sign-in and settings in `~/.testmuai/rook/`; delete that directory too to remove them.
+
 Driving rook from Claude Code, Codex or Gemini CLI? Add the [coding-agent skill](#for-ai-coding-agents-reading-this) too. If an install method does not work on your platform, [open an issue](https://github.com/LambdaTest/rook/issues/new/choose).
 
 ## Quick start
 
-From inside a project that contains an agent:
+From inside a project that contains an agent, start `rook`. The first time, sign in through the browser and pick or create the project your work is filed under:
 
 ```text
+$ rook
+
+› /login
+› /project create support-agents
+
 › /explore .
 
   read 6 files · 1 agent
@@ -135,45 +152,51 @@ From inside a project that contains an agent:
 › /run
 
   14 scenario(s) → triage-service
-    concurrency  3
 
   … 11 passed · 2 failed · 1 unverifiable
 
 › /ui
 ```
 
-`/ui` opens a local browser view on the run: every verdict, the exchange that produced it, the tools the agent called, and — after a second run — what changed.
+`/ui` opens the hosted results app on what you have synced: every verdict, the exchange that produced it, the tools the agent called, and — after a second run — what changed. `/ui --local` serves the evidence on disk in a read-only local viewer instead.
 
 You do not have to run the commands in order. Ask for a later step and `rook` plans the ones it needs first, with the cost, before spending anything. Or just describe what you want in a sentence.
 
 ## Commands
 
-| Command                                    | What it does                                                          |
-| ------------------------------------------ | --------------------------------------------------------------------- |
-| `/explore`                                 | read the codebase — find agents and what they do                      |
-| `/agent`                                   | list agents, switch the active one                                    |
-| `/generate`                                | write scenarios for the active agent                                  |
-| `/profile`                                 | how to invoke it — `add <name>` (paste a curl), `use`, `test`, `show` |
-| `/sync`                                    | record the project upstream — every agent, as one write               |
-| `/run`                                     | execute scenarios against the live agent                              |
-| `/ui`                                      | the browser view — runs, evidence, trends                             |
-| `/scenarios`                               | list, exclude, include, delete                                        |
-| `/mcp`                                     | the MCP servers `rook` may call                                       |
-| `/plan`                                    | what is stale, and what refreshing it would cost                      |
-| `/budget` · `/doctor` · `/guide` · `/help` | credits, diagnostics, guidance and help                               |
+| Command                        | What it does                                                                 |
+| ------------------------------ | ---------------------------------------------------------------------------- |
+| `/login` · `/logout`           | sign in with your TestMu AI account, or sign out                             |
+| `/project`                     | list projects, `use <id>` one, or `create <name>` one                        |
+| `/explore`                     | read the codebase — find agents and what they do                             |
+| `/agent`                       | list agents, switch the active one                                           |
+| `/generate`                    | write scenarios for the active agent                                         |
+| `/profile`                     | how to invoke it — `add <name>` (paste a curl), `use`, `test`, `fix`, `show` |
+| `/sync`                        | record the project upstream — every agent, as one write                      |
+| `/run`                         | execute scenarios against the live agent                                     |
+| `/report`                      | what a run found, and — with `--rca` — why                                   |
+| `/ui`                          | the hosted results view; `--local` for the on-disk viewer                    |
+| `/scenarios`                   | list, exclude, include, delete                                               |
+| `/status`                      | where this machine stands against upstream — what is stale or unsynced       |
+| `/mcp` · `/env`                | the MCP servers `rook` may call, and the values profiles reference           |
+| `/ask`                         | say what you want in words — `rook` works out the command                    |
+| `/plan`                        | your account and credit balance                                              |
+| `/doctor` · `/guide` · `/help` | diagnostics, the whole sequence explained, and every command                 |
 
 Three ways to invoke the agent under test: an **HTTP** endpoint, a **command** (`claude -p "{{goal}}"`), or an **MCP** tool. For setup, profiles, scenario selection and reading results, see the [user guide](docs/user-guide/README.md).
 
 ## In CI
 
-Every step has a headless form:
+Every step has a headless form. Export `LT_USERNAME` and `LT_ACCESS_KEY` (your username and access key) from CI secrets and `rook` signs in with them; no `rook login` step is needed. Headless commands need tool grants up front, so pass `--yes` once you have reviewed what the agent under test can do (see [A note on safety](#a-note-on-safety)).
 
 ```bash
-rook explore .
-rook generate
-rook sync
-rook run
-rook report
+rook project use "$ROOK_PROJECT_ID"
+rook agent use "$ROOK_AGENT_ID"
+rook explore . --yes
+rook generate --yes
+rook sync --yes
+rook run --yes --json > run.json
+rook report "$(jq -r .run_id run.json)" --json > report.json
 ```
 
 | Exit code | Meaning                                                                                                                                                                                                                                             |
@@ -181,13 +204,13 @@ rook report
 | `0`       | the command did what it said — a finished run exits `0` whether scenarios passed or failed; gate on the verdicts in `rook report --json`                                                                                                            |
 | `1`       | anything else: signed out, refused, unreachable, bad flags, a run that could not start. With `--json`, inspect `error` or `reason` when a document exists; a refused run may have `ok: true, discarded: "refused"`. Some errors only produce stderr |
 
-`rook run` refuses an agent that has never been synced. To keep a result local instead, skip `sync` and use `rook run --test`. [Headless use and CI](docs/user-guide/headless-and-ci.md) covers sign-in, permission grants, budgets and verdict gating.
+`rook run` refuses an agent that has never been synced. To keep a result local instead, skip `sync` and use `rook run --test`. The [CI recipe](skill-installer/skills/references/ci.md) is a complete, gated script, and [Headless use and CI](docs/user-guide/headless-and-ci.md) covers sign-in, permission grants, budgets and verdict gating.
 
 ## For AI coding agents reading this
 
 Use the [Rook skill](skill-installer/skills/SKILL.md) to test, evaluate, or red-team an AI agent and interpret its saved results. It covers setup, target permissions, credit budgets, profiles, CI and evidence-based verdicts using your installed Rook CLI.
 
-Install it from your agent repository with Node.js 22+ and npm available:
+Install it user-wide (needs Node.js 22+ and npm):
 
 ```bash
 npx @testmuai/rook-skill
@@ -242,7 +265,7 @@ Everything `rook` produces is plain files. No database.
 | `<project>/.testmuai/rook/` | agents, scenarios, runs, evidence — yours, and committable |
 | `~/.testmuai/rook/`         | credentials, settings, permission grants, sessions         |
 
-The second is deliberately outside your project, so a credential cannot be swept into a commit by `git add -A`. Profiles and MCP configuration reference secrets as `${VAR}` rather than embedding them, so they are safe to commit.
+Set `ROOK_HOME` to keep the second somewhere else, such as a CI workspace. It is deliberately outside your project, so a credential cannot be swept into a commit by `git add -A`. Profiles and MCP configuration reference secrets as `${VAR}` rather than embedding them, so they are safe to commit.
 
 ## A note on safety
 
@@ -252,6 +275,10 @@ Judges are told to verify without changing anything — calling `issue_refund` t
 
 > [!IMPORTANT]
 > Even so: **point it at staging.**
+
+## Telemetry
+
+`rook` records operational events — no prompts, no code, no arguments — and sends them to TestMu AI, attributed to your organization, to find failures. Set `ROOK_TELEMETRY=off` (or `"telemetry": false` in `~/.testmuai/rook/config.json`) to keep them on your machine. The one-time notice appears only in an interactive terminal, so set the variable in CI if you want it off there.
 
 ## Support
 

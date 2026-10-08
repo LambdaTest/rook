@@ -269,7 +269,5 @@ regression a grounding + red-team suite exists to catch.
 **Behaviour-locked:** `npm test` spawns the server and asserts every row above,
 plus all three twin flips, RBAC enforcement, and the path-traversal refusal.
 
-> `rook/profile.yaml` is the wiring. See [`../README.md`](../README.md) and
-> [`../CAPABILITY-MATRIX.md`](../CAPABILITY-MATRIX.md) for how the three case
-> studies fit together, and [`../../byoa-template`](../../byoa-template) to point
-> Rook at your own retrieval agent.
+> `rook/profile.yaml` is the wiring. See [`../README.md`](../README.md) for the
+> other samples.
