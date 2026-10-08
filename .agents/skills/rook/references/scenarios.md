@@ -10,8 +10,11 @@
 | Class          | Categories                                                                                                                                                      |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | functional     | `happy_path`, `negative`, `boundary`, `integration`, `state_context`                                                                                            |
-| non_functional | `performance`, `token_economy`, `reliability`, `quality`                                                                                                        |
+| non_functional | `token_economy`, `quality`                                                                                                                                      |
 | adversarial    | `prompt_injection`, `jailbreak`, `data_exfiltration`, `pii_leakage`, `harmful_content`, `hallucination`, `hijacking`, `policy_violation`, `technical_injection` |
+
+`performance` and `reliability` are no longer categories: `generate` refuses
+them, though existing scenario files that use them still load and run.
 
 Every scenario also carries free-form tags; `run --tag <names>` selects on them.
 
@@ -27,7 +30,13 @@ rook generate -- focus on the refund limits and the identity check
 `generate` derives scenarios per feature and pins them; a second `generate`
 only refreshes features whose pins are stale. `--force` re-derives everything.
 It may emit text despite `--json`; check the exit code, then read
-`rook scenarios list --json`.
+`rook scenarios list --json`. An unknown `--class` or `--category` makes it exit
+1 before analysing anything, listing every valid value.
+
+Each scenario's feature is the one it was assigned. If the model named a
+different feature, `generate` warns and saves that scenario excluded; review it
+in `rook scenarios list --json` and bring it back with
+`rook scenarios include <id>` if it belongs in runs.
 
 ## Listing and curating
 
@@ -63,4 +72,4 @@ rook run --resume <id> --json                         # carry finished work into
 
 `--only` takes one comma-separated argument; repeating the flag keeps only
 the last occurrence, and a space-separated second id is read as instruction
-text.
+text. Each scenario runs once; there is no repeat count.
