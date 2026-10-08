@@ -1,3 +1,25 @@
+## [0.1.7] - 2026-10-08
+
+### Behavior changes
+- [no-repeat] Scenarios have no repeat count: each scenario runs once, `rook scenarios` no longer shows one, and new scenario files carry no `repeat` key.
+- [categories] `performance` and `reliability` are no longer scenario categories (16 remain; non_functional is now token_economy and quality). `rook generate` refuses them; existing scenario files that use them still load and run.
+- [generate-bad-flags] `rook generate` with an unknown --class or --category now exits 1 before analysing anything, instead of exiting 0, and lists every valid value.
+- [generate-feature] `rook generate` sets each scenario's feature to the one it was assigned. If the model named a different feature, generate warns and saves that scenario excluded; `rook scenarios include <id>` brings it back.
+- [json-warning] `rook` no longer prints "ExperimentalWarning: Importing JSON modules" on Node 22.0–22.11.
+- [node20] On Node 20, `npm install -g @testmuai/rook` installs the latest release again instead of 0.1.0.
+- [ui-open] Opening the web UI from the CLI goes to rook.lambdatest.com, not rook.testmuai.com.
+- [npm-page] The npm page links to LambdaTest/rook, and the package ships without source maps.
+
+### Changed
+- Node 20 users upgrade past 0.1.0
+- point the npm page at LambdaTest/rook and strip source maps
+
+### Fixed
+- run-page tiles count what is listed; local matches cloud for unjudged
+- local viewer keeps an attempted, unjudged scenario on a finished run
+- local viewer lists pending scenarios while a run is still writing
+- QA follow-ups on the run pages and verdict upload
+- open rook.lambdatest.com from /ui on prod, not rook.testmuai.com
 ## [0.1.6] - 2026-10-05
 
 ### Added
