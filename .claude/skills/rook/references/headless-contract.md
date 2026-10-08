@@ -20,7 +20,7 @@ Commands that emit JSON write one document to stdout and prose to stderr.
 | `plan` | `{ username, user_id, org_name, org_id, subscription, credits }`; null credits means the balance could not be read |
 | `run` | `{ ok, error?, run_id?, halted, reason?, discarded?, unrunnable?, flag_problems?, credits, report? }` |
 | `report` | `{ run_id, name?, dir, report }`; `dir` is the evidence folder |
-| `scenarios list` | `{ agent_id, profile_id, total, runnable, scenarios: [{ scenario_id, title, feature_id, class, category?, state, excluded, unrunnable, multi_turn, repeat, criteria }] }` |
+| `scenarios list` | `{ agent_id, profile_id, total, runnable, scenarios: [{ scenario_id, title, feature_id, class, category?, state, excluded, unrunnable, multi_turn, criteria }] }` |
 | `scenarios exclude/include/delete` | `{ ok: true, verb, ... }` |
 | `status` | `{ project_id, offline, agents: [{ local_id, name, tree, offline, features, scenarios, profiles, unfinished_runs, owed_runs }], runs? }` |
 | `mcp list` | `{ errors, servers: [{ name, origin, transport, state, source, changed_since_approval, shadowed_by }] }` |
