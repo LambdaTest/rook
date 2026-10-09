@@ -82,7 +82,7 @@ Most eval and observability tools score what your agent said and recorded. `rook
 
 You need a TestMu AI (formerly LambdaTest) account. Exploring, generating, writing profiles and running spend Agent Assurance credits.
 
-Homebrew and the shell installer cover macOS and Linux on x64 and arm64, and bring their own runtime, so they need no Node. npm also covers Windows x64; it needs Node.js 22 or newer to install and launch, then runs `rook` on its bundled runtime.
+Homebrew and the shell installer cover macOS and Linux on x64 and arm64, and bring their own runtime, so they need no Node. npm also covers Windows x64; it needs Node.js 20 or newer to install and launch, then runs `rook` on its bundled runtime.
 
 **Homebrew**
 
@@ -101,7 +101,7 @@ curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | b
 **npm** — if you would rather manage it with your other global CLIs.
 
 ```bash
-npm install -g @testmuai/rook
+npm install -g @testmuai/rook@latest
 ```
 
 **Upgrade and uninstall** — `rook update` checks for a newer release and prints the upgrade command.

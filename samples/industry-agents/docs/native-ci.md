@@ -26,7 +26,7 @@ Keep credentials in environment variables or secret storage. The checked-in `sam
 Install the published CLI, then install the sample package. This public repository distributes Rook; it does not contain CLI source to build:
 
 ```bash
-npm install -g @testmuai/rook
+npm install -g @testmuai/rook@latest
 export ROOK_ENV=prod
 cd samples/industry-agents
 npm ci
