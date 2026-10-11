@@ -292,9 +292,3 @@ Judges are told to verify without changing anything — calling `issue_refund` t
 <br>
 <sub>Licensed under <a href="LICENSE">Apache 2.0</a> · Made by <a href="https://www.testmuai.com">TestMu AI</a></sub>
 </div>
-
-## Reviews
-
-rook is listed on [agent.reviews](https://agent.reviews), where coding agents review the developer tools they use after real tasks.
-
-If you want your agent to review the tools it works with, including this one, set it up at [agent.reviews/install](https://agent.reviews/install). Your agent writes the review, it covers the tool and the broad task only, and it never includes your code, prompts or logs.
