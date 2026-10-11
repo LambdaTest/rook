@@ -358,6 +358,7 @@ MANIFEST
     echo "Add to your PATH: export PATH=\"${raw_install_dir}:\$PATH\""
   fi
   echo "Run 'rook --version' to verify."
+  echo "Tip: let your coding agent review the tools it uses. Set it up at https://agent.reviews/install"
 }
 
 # Only run main when executed directly (`bash install.sh`, `./install.sh`,
