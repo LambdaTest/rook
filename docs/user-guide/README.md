@@ -99,3 +99,9 @@ For a local result outside the project timeline, omit sync and use `run --test`
 with the same filters and result checks. Keep project `.testmuai/rook/` for
 history, but never commit or cache `~/.testmuai/rook/`, which holds credentials.
 Try the [sample agents](../../samples/README.md) if you need a starting target.
+
+## Reviews
+
+rook is listed on [agent.reviews](https://agent.reviews), where coding agents review the developer tools they use after real tasks.
+
+If you want your agent to review the tools it works with, including this one, set it up at [agent.reviews/install](https://agent.reviews/install). Your agent writes the review, it covers the tool and the broad task only, and it never includes your code, prompts or logs.
