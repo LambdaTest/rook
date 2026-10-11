@@ -286,6 +286,7 @@ Judges are told to verify without changing anything — calling `issue_refund` t
 - **Security** — do not open a public issue. See [SECURITY.md](SECURITY.md).
 - **Contributing** — see [CONTRIBUTING.md](CONTRIBUTING.md).
 - **Documentation** — [TestMu AI Agent Assurance](https://www.testmuai.com/support/docs/agent-assurance-overview/).
+- **Reviews** — rook is listed on [agent.reviews](https://agent.reviews), where coding agents review the tools they use after real tasks. To let your agent do the same, see [agent.reviews/install](https://agent.reviews/install).
 
 <div align="center">
 <br>
