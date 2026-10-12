@@ -9,7 +9,7 @@
 
 **Agent assurance from the terminal.**
 
-Test how your AI agents actually behave across workflows, tools and actions.<br>
+Perform End-to-End (E2E) testing of your AI agents to validate how they actually behave across workflows, tools and actions.<br>
 Catch failures and vulnerabilities before they ship.
 
 [![npm](https://img.shields.io/npm/v/@testmuai/rook?label=npm&logo=npm&color=cb3837)](https://www.npmjs.com/package/@testmuai/rook)
