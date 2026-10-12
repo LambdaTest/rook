@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "data-server": {
+      "command": "node",
+      "args": ["mcp/data-server.mjs"]
+    }
+  }
+}

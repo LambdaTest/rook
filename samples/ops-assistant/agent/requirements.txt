@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+anthropic
+mcp
+python-dotenv
+httpx
+# uvicorn needs a WebSocket library to serve WS /v1/chat/ws
+websockets
