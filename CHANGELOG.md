@@ -1,3 +1,44 @@
+## [0.1.11] - 2026-10-12
+
+### Behavior changes
+- [sync-orphans] `rook sync` stops before uploading when a scenario names a feature its agent does not carry, and lists each one with its agent, the missing feature and a fix.
+- [registered-session] A command that calls the model controller or opens an upstream job refuses before anything runs or is charged when its session could not be registered.
+- [session-transcript] Each session's `transcript.jsonl` records the raw input and output of every role call, including refused, failed and interrupted calls.
+- [client-headers] CLI and TUI requests send `X-Source-Product: rook` and `X-Rook-Client: cli` or `tui`; `--debug` output shows the client.
+- [owasp-mapping] Red-team scenarios carry OWASP LLM, OWASP Agentic (ASI) and MITRE ATLAS references. Scenarios that cannot run are written and named with a reason instead of dropped.
+- [redteam-reports] Reports keep refusals, interrupted runs and coverage gaps, and a grounded partial compromise counts as a Fail.
+- [cli-text] Help, guide and the TUI's Get Started list teach sync before run; remedies name commands that exist; `rook update` fallbacks print `brew upgrade lambdatest/rook/rook`; the guide lists every credit-spending command and what leaves the machine, including telemetry and `ROOK_TELEMETRY=off`; login text says TestMu AI.
+- [logout-note] `rook logout` warns when `LT_USERNAME`/`LT_ACCESS_KEY` still sign commands in.
+- [consent-logo] `rook login` shows the Rook logo on the consent page; a cached OAuth client re-registers once to pick it up.
+- [boot-banner] The TUI boot banner shows a pixel rook mascot beside ROOK in amber.
+
+### Added
+- ANSI-Shadow ROOK in amber beside the mascot
+- pixel rook mascot and ROOK name in the boot banner
+- full OWASP LLM/ASI mapping, ASI06 two-session proof, poetry variant, reachability fixes
+- canonical OWASP and MITRE scenario metadata
+- add OWASP multi-turn coverage
+
+### Changed
+- preserve grounded outcomes and generation failures
+- preserve coverage gaps and rebuild evidence-backed reports
+- exclusive attack evidence channels, deterministic report, pre-spend gates
+- align retained attack evidence and coverage paths
+- correct retained attack coverage and cached failure reports
+- preserve refusals and collect interrupted attack evidence
+- preserve attack evidence and pinned coverage inventory
+- ground attack decisions and align coverage verdict states
+
+### Fixed
+- amber name, version-aware threshold, full colour grids
+- write non-runnable scenarios and name them instead of dropping
+- generate only runnable scenarios
+- keep cross-session evidence and settle incomplete judging honestly
+- reject contradictory scenario criteria
+- preserve grounded OWASP coverage evidence
+- require action receipts and retain grounded coverage
+- bind retained evidence to its execution
+- show the rook logo on the OAuth consent page
 ## [0.1.7] - 2026-10-08
 
 ### Behavior changes
