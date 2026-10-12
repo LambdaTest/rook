@@ -17,6 +17,8 @@
 them, though existing scenario files that use them still load and run.
 
 Every scenario also carries free-form tags; `run --tag <names>` selects on them.
+Red-team scenarios also carry OWASP LLM, OWASP Agentic (ASI) and MITRE ATLAS
+references.
 
 ## Generating
 
@@ -38,6 +40,11 @@ different feature, `generate` warns and saves that scenario excluded; review it
 in `rook scenarios list --json` and bring it back with
 `rook scenarios include <id>` if it belongs in runs.
 
+`rook sync` stops before uploading anything when a scenario names a feature its
+agent does not carry, and lists each one with its agent, the missing feature and
+a fix. Apply the listed fix and sync again; do not run against upstream until
+sync succeeds.
+
 ## Listing and curating
 
 ```bash
@@ -56,6 +63,8 @@ multiple turns without an observed conversation handle, or token-economy
 grading without reported usage, is skipped by `run` and counts toward the
 assurance gap, not toward Fail. File and image requirements are not rejected
 solely by their input kind: inspect what the profile script can actually send.
+`generate` writes a scenario that cannot run and names it with a reason instead
+of dropping it; report those as coverage gaps.
 
 ## Scoping a run
 
