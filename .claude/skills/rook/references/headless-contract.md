@@ -48,6 +48,9 @@ Use `error`, or `reason` when present. Translate remedy tokens with
 - `halted: true` can retain a report and exit 0. Present it as incomplete.
 - Gate refusals on `report`, `status` and `ask`, and parser errors, may leave
   stdout empty. Use the stderr diagnostic rather than inventing an error object.
+- A command that calls the model controller or opens an upstream job refuses
+  before anything runs or is charged when its session could not be registered.
+  Report it as no run and no spend, using the diagnostic it returns.
 
 ## Grants and accounting
 
@@ -65,7 +68,7 @@ still use the network, change state or invoke the target.
 
 ## On disk
 
-In 0.1.6, `.testmuai/rook/settings.json` keeps a project selection per
+Since 0.1.6, `.testmuai/rook/settings.json` keeps a project selection per
 environment in `selections[environment]`. After a switch, rook
 uses the new environment's selection, which may be empty even when another
 environment has one. Run `rook doctor` to see the active environment and
@@ -87,4 +90,6 @@ assuming either form. Under its `agents/<agent-id>/` directory:
 | `runs/<run-id>/scenarios/<scenario-id>/` | `snapshot.yaml`, `request.json`, `response.json`, artifacts and `verdict.yaml` |
 
 Home state at `~/.testmuai/rook/` includes credentials, grants and session
-transcripts. Keep it outside commits and shared evidence.
+transcripts. Each session's `transcript.jsonl` records the raw input and output
+of every role call, including refused, failed and interrupted calls. Keep it
+outside commits and shared evidence.
