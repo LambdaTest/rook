@@ -20,61 +20,60 @@ CHAT = {"chat", "chat_completions", "openai", "openai_chat"}
 GEMINI = {"gemini", "google", "google_gemini"}
 
 
+def _env(*names: str) -> str:
+    """The first of `names` that is set and non-empty."""
+    return next((os.environ[name].strip() for name in names if os.environ.get(name, "").strip()), "")
+
+
 def _config() -> tuple[str, str, str, str]:
+    # BASE_URL, LLM_API_KEY and LLM_MODEL work for every provider. The
+    # provider-specific names are still read as fallbacks.
     requested = os.environ.get("LLM_PROVIDER", "").strip().lower()
     if not requested:
-        if any(os.environ.get(name, "").strip() for name in ("ANTHROPIC_BASE_URL", "GLM_API_KEY", "ZAI_API_KEY")):
+        if _env("BASE_URL", "LLM_API_KEY", "ANTHROPIC_BASE_URL", "GLM_API_KEY", "ZAI_API_KEY"):
             requested = "anthropic"
-        elif os.environ.get("GEMINI_API_KEY", "").strip():
+        elif _env("GEMINI_API_KEY"):
             requested = "gemini"
-        elif os.environ.get("OPENAI_ENDPOINT", "").strip():
+        elif _env("OPENAI_ENDPOINT"):
             requested = "responses"
         else:
             requested = "chat"
 
     if requested in ANTHROPIC:
-        endpoint = os.environ.get("ANTHROPIC_BASE_URL", "https://api.z.ai/api/anthropic").strip()
-        key = next((os.environ.get(name, "").strip() for name in (
-            "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_API_KEY", "GLM_API_KEY", "ZAI_API_KEY"
-        ) if os.environ.get(name, "").strip()), "")
-        model = next((os.environ.get(name, "").strip() for name in (
-            "ANTHROPIC_MODEL", "GLM_MODEL", "ANTHROPIC_DEFAULT_SONNET_MODEL",
+        endpoint = _env("BASE_URL", "ANTHROPIC_BASE_URL") or "https://api.z.ai/api/anthropic"
+        key = _env("LLM_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_API_KEY", "GLM_API_KEY", "ZAI_API_KEY")
+        model = _env(
+            "LLM_MODEL", "ANTHROPIC_MODEL", "GLM_MODEL", "ANTHROPIC_DEFAULT_SONNET_MODEL",
             "ANTHROPIC_DEFAULT_OPUS_MODEL", "ANTHROPIC_DEFAULT_HAIKU_MODEL"
-        ) if os.environ.get(name, "").strip()), "")
+        )
         model = model.split("[", 1)[0]
         if not key or not model:
-            raise ModelError("the Anthropic/GLM model needs an auth token and model")
+            raise ModelError("the model needs LLM_API_KEY and LLM_MODEL")
         return "anthropic", endpoint, key, model
 
     if requested in GEMINI:
-        endpoint = os.environ.get("GEMINI_ENDPOINT", "https://generativelanguage.googleapis.com/v1beta").strip()
-        key = os.environ.get("GEMINI_API_KEY", "").strip()
-        model = os.environ.get("GEMINI_MODEL", "").strip()
+        endpoint = _env("BASE_URL", "GEMINI_ENDPOINT") or "https://generativelanguage.googleapis.com/v1beta"
+        key = _env("LLM_API_KEY", "GEMINI_API_KEY")
+        model = _env("LLM_MODEL", "GEMINI_MODEL")
         if not key or not model:
-            raise ModelError("the Gemini model needs GEMINI_API_KEY and GEMINI_MODEL")
+            raise ModelError("the Gemini model needs LLM_API_KEY and LLM_MODEL")
         return "gemini", endpoint.rstrip("/"), key, model
 
     if requested in CHAT:
-        endpoint = os.environ.get("OPENAI_CHAT_ENDPOINT", "").strip()
-        if not endpoint:
-            endpoint = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1").strip()
-        key = next((os.environ.get(name, "").strip() for name in (
-            "OPENAI_API_KEY", "OPENAI_INDIA_API_KEY"
-        ) if os.environ.get(name, "").strip()), "")
-        model = next((os.environ.get(name, "").strip() for name in (
-            "OPENAI_CHAT_MODEL", "OPENAI_MODEL"
-        ) if os.environ.get(name, "").strip()), "")
+        endpoint = _env("BASE_URL", "OPENAI_CHAT_ENDPOINT", "OPENAI_BASE_URL") or "https://api.openai.com/v1"
+        key = _env("LLM_API_KEY", "OPENAI_API_KEY", "OPENAI_INDIA_API_KEY")
+        model = _env("LLM_MODEL", "OPENAI_CHAT_MODEL", "OPENAI_MODEL")
         if not key or not model:
-            raise ModelError("the Chat Completions model needs an API key and model")
+            raise ModelError("the Chat Completions model needs LLM_API_KEY and LLM_MODEL")
         return "chat", _chat_url(endpoint), key, model
 
     if requested not in RESPONSES:
         raise ModelError(f"unknown LLM_PROVIDER: {requested}")
-    endpoint = os.environ.get("OPENAI_ENDPOINT", "").strip()
-    key = os.environ.get("OPENAI_INDIA_API_KEY", "").strip()
-    model = os.environ.get("OPENAI_MODEL", "").strip()
+    endpoint = _env("BASE_URL", "OPENAI_ENDPOINT")
+    key = _env("LLM_API_KEY", "OPENAI_INDIA_API_KEY")
+    model = _env("LLM_MODEL", "OPENAI_MODEL")
     missing = [name for name, value in (
-        ("OPENAI_ENDPOINT", endpoint), ("OPENAI_INDIA_API_KEY", key), ("OPENAI_MODEL", model)
+        ("BASE_URL", endpoint), ("LLM_API_KEY", key), ("LLM_MODEL", model)
     ) if not value]
     if missing:
         raise ModelError("the Responses model is not configured: " + ", ".join(missing))
