@@ -39,13 +39,15 @@ $ rook
   /ui                  verdicts, evidence and trends, in a browser
 ```
 
-Scenarios span three classes and eighteen categories:
+Scenarios span three classes and sixteen categories:
 
 | Class          | Categories                                                                                                                                            |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Functional     | happy path · negative · boundary · integration · state & context                                                                                      |
-| Non-functional | performance · token economy · reliability · quality                                                                                                   |
+| Non-functional | token economy · quality                                                                                                                               |
 | Adversarial    | prompt injection · jailbreak · data exfiltration · PII leakage · harmful content · hallucination · hijacking · policy violation · technical injection |
+
+Adversarial scenarios are mapped to the OWASP Top 10 for LLM Applications (2025), the OWASP Top 10 for Agentic Applications (2026) and MITRE ATLAS.
 
 ## Why it works this way
 
@@ -133,7 +135,7 @@ $ rook
 
 › /generate
 
-  14 scenarios · 9 functional · 2 non-functional · 3 adversarial
+  14 scenarios · 11 functional · 3 adversarial
 
 › /profile add local
 
