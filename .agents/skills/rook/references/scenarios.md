@@ -23,7 +23,7 @@ references.
 ## Generating
 
 ```bash
-rook generate --json                                  # functional + adversarial, rook picks the count
+rook generate --json                                  # functional + adversarial planned, rook picks the count
 rook generate --total 20 --class functional --json
 rook generate --category prompt_injection,jailbreak --json
 rook generate -- focus on the refund limits and the identity check
@@ -64,10 +64,17 @@ grading without reported usage, is skipped by `run` and counts toward the
 assurance gap, not toward Fail. File and image requirements are not rejected
 solely by their input kind: inspect what the profile script can actually send.
 `generate` keeps a scenario it cannot make runnable instead of dropping it:
-`executable: false` with a `skip_reason` starting `coverage gap:`,
-`invalid scenario:` or `invalid red-team scenario:`. Attack patterns with no
-scenario for a feature are listed in the agent's `coverage-gaps.yaml`. Report
-both as gaps, not as failures.
+`executable: false` with a `skip_reason`. Reasons from rook's own validation
+start with `coverage gap:`, `invalid scenario:` or `invalid red-team
+scenario:`; the scenario checker writes plain sentences, often a precondition
+the profile cannot establish. Do not match on the prefix to find them; read
+`executable`. Attack patterns with no scenario for a feature are listed in the
+agent's `coverage-gaps.yaml` and the report's coverage gaps. Report both as
+gaps, not as failures.
+
+A plain `generate` can plan no attacks for a small agent. When the user asked
+for red-team coverage and none was written, run
+`rook generate --class adversarial --json` and say so.
 
 Some attack patterns are skipped until the profile has the hook they need,
 and the skip reason names it: an `open` hook that seeds the fixture in
