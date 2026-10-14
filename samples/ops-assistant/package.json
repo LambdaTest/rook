@@ -1,0 +1,18 @@
+{
+  "name": "ops-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Sample Ops Assistant agent for testing how Rook handles varied response types",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start:mock": "node mock-api/server.mjs",
+    "selfcheck": "node scripts/selfcheck.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "ws": "^8.22.0"
+  }
+}

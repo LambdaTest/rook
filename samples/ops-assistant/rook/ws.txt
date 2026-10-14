@@ -1,0 +1,7 @@
+WebSocket endpoint: ws://127.0.0.1:9110/v1/chat/ws
+
+curl can't speak WebSocket. Connect, send one JSON message, and the server
+replies with tool_call, delta and done events, then closes the connection.
+
+Example with wscat (npm install -g wscat):
+  wscat -c ws://127.0.0.1:9110/v1/chat/ws -w 60 -x "{\"input\":\"What's the status of order A-100?\"}"
