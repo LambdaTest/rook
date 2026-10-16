@@ -18,11 +18,23 @@ Catch failures and vulnerabilities before they ship.
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 ![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20Windows-brightgreen)
 
-[Install](#install) · [Quick start](#quick-start) · [User guide](docs/user-guide/README.md) · [Samples](#sample-agents) · [Documentation](https://www.testmuai.com/support/docs/agent-assurance-overview/)
+[Install](#install) · [Quick start](#quick-start) · [User guide](docs/user-guide/README.md) · [Samples](#sample-agents) · [Documentation](https://www.testmuai.com/support/docs/agent-assurance-overview/?utm_source=github&utm_medium=listing&utm_campaign=marketplace)
 
-<sub>Built by <a href="https://www.testmuai.com/agent-assurance/">TestMu AI</a> (formerly LambdaTest)</sub>
+<sub>Built by <a href="https://www.testmuai.com/agent-assurance/?utm_source=github&utm_medium=listing&utm_campaign=marketplace">TestMu AI</a> (formerly LambdaTest)</sub>
 
 </div>
+
+```bash
+npm install -g @testmuai/rook@latest
+```
+
+```text
+$ rook                  # from inside a project that contains an agent
+› /login
+› /explore .            read 6 files · 1 agent
+› /generate             14 scenarios · 11 functional · 3 adversarial
+› /run                  11 passed · 2 failed · 1 unverifiable
+```
 
 ## What it does
 
