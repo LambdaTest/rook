@@ -235,7 +235,7 @@ def test_policy_guards():
 
 
 MODEL_VARS = (
-    "LLM_PROVIDER", "BASE_URL", "LLM_API_KEY", "LLM_MODEL", "ANTHROPIC_BASE_URL",
+    "LLM_PROVIDER", "LLM_BASE_URL", "BASE_URL", "LLM_API_KEY", "LLM_MODEL", "ANTHROPIC_BASE_URL",
     "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_MODEL", "GLM_MODEL", "ANTHROPIC_API_KEY",
     "GLM_API_KEY", "ZAI_API_KEY", "ANTHROPIC_DEFAULT_SONNET_MODEL",
 )
@@ -246,16 +246,32 @@ def test_generic_model_variables(monkeypatch):
     # the process environment, so start from a clean slate.
     for name in MODEL_VARS:
         monkeypatch.delenv(name, raising=False)
-    monkeypatch.setenv("BASE_URL", "https://llm.example/api/anthropic")
+    monkeypatch.setenv("LLM_BASE_URL", "https://llm.example/api/anthropic")
     monkeypatch.setenv("LLM_API_KEY", "test")
     monkeypatch.setenv("LLM_MODEL", "glm-5.3")
     assert _config() == ("anthropic", "https://llm.example/api/anthropic", "test", "glm-5.3")
 
-    monkeypatch.setenv("BASE_URL", "")
+    monkeypatch.setenv("LLM_BASE_URL", "")
     assert _config()[1] == "https://api.z.ai/api/anthropic"
 
     monkeypatch.setenv("LLM_PROVIDER", "gemini")
     assert _config() == ("gemini", "https://generativelanguage.googleapis.com/v1beta", "test", "glm-5.3")
+
+
+def test_unprefixed_base_url_is_ignored(monkeypatch):
+    # A BASE_URL exported for the app under test must not become the model
+    # endpoint or force provider auto-detection.
+    for name in MODEL_VARS:
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv("BASE_URL", "https://app-under-test.example")
+    monkeypatch.setenv("GEMINI_API_KEY", "test")
+    monkeypatch.setenv("GEMINI_MODEL", "gemini-model")
+    assert _config() == ("gemini", "https://generativelanguage.googleapis.com/v1beta", "test", "gemini-model")
+
+    monkeypatch.setenv("LLM_PROVIDER", "anthropic")
+    monkeypatch.setenv("LLM_API_KEY", "test")
+    monkeypatch.setenv("LLM_MODEL", "glm-5.3")
+    assert _config()[1] == "https://api.z.ai/api/anthropic"
 
 
 def test_zai_claude_guide_aliases(monkeypatch):

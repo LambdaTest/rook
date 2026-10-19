@@ -21,7 +21,7 @@ You need **Python 3.9+** and **Node.js 18+** on `PATH`. There is nothing to inst
    ```bash
    SCRIBE_API_TOKEN=scribe-local-token
 
-   BASE_URL=https://api.z.ai/api/anthropic
+   LLM_BASE_URL=
    LLM_API_KEY=your-key
    LLM_MODEL=your-model
    ```
@@ -103,7 +103,7 @@ Settings come from `.env`; real environment variables win.
 | variable | what it does |
 | --- | --- |
 | `SCRIBE_API_TOKEN` | the secret every command must pass as `--token` (preset to `scribe-local-token`) |
-| `BASE_URL` | the model API's base URL (default `https://api.z.ai/api/anthropic`) |
+| `LLM_BASE_URL` | the model API's base URL (blank = the provider's default; `https://api.z.ai/api/anthropic` unless `LLM_PROVIDER` says otherwise) |
 | `LLM_API_KEY` | **required**: the model API key |
 | `LLM_MODEL` | **required**: the model name |
 | `LLM_PROVIDER` | only for a non-Anthropic-compatible API: `gemini`, `openai` or `responses` |

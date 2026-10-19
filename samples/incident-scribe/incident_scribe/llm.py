@@ -26,11 +26,12 @@ def _env(*names: str) -> str:
 
 
 def _config() -> tuple[str, str, str, str]:
-    # BASE_URL, LLM_API_KEY and LLM_MODEL work for every provider. The
-    # provider-specific names are still read as fallbacks.
+    # LLM_BASE_URL, LLM_API_KEY and LLM_MODEL work for every provider. The
+    # provider-specific names are still read as fallbacks. The LLM_ prefix
+    # keeps a BASE_URL meant for the app under test from redirecting the model.
     requested = os.environ.get("LLM_PROVIDER", "").strip().lower()
     if not requested:
-        if _env("BASE_URL", "LLM_API_KEY", "ANTHROPIC_BASE_URL", "GLM_API_KEY", "ZAI_API_KEY"):
+        if _env("LLM_BASE_URL", "LLM_API_KEY", "ANTHROPIC_BASE_URL", "GLM_API_KEY", "ZAI_API_KEY"):
             requested = "anthropic"
         elif _env("GEMINI_API_KEY"):
             requested = "gemini"
@@ -40,7 +41,7 @@ def _config() -> tuple[str, str, str, str]:
             requested = "chat"
 
     if requested in ANTHROPIC:
-        endpoint = _env("BASE_URL", "ANTHROPIC_BASE_URL") or "https://api.z.ai/api/anthropic"
+        endpoint = _env("LLM_BASE_URL", "ANTHROPIC_BASE_URL") or "https://api.z.ai/api/anthropic"
         key = _env("LLM_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_API_KEY", "GLM_API_KEY", "ZAI_API_KEY")
         model = _env(
             "LLM_MODEL", "ANTHROPIC_MODEL", "GLM_MODEL", "ANTHROPIC_DEFAULT_SONNET_MODEL",
@@ -52,7 +53,7 @@ def _config() -> tuple[str, str, str, str]:
         return "anthropic", endpoint, key, model
 
     if requested in GEMINI:
-        endpoint = _env("BASE_URL", "GEMINI_ENDPOINT") or "https://generativelanguage.googleapis.com/v1beta"
+        endpoint = _env("LLM_BASE_URL", "GEMINI_ENDPOINT") or "https://generativelanguage.googleapis.com/v1beta"
         key = _env("LLM_API_KEY", "GEMINI_API_KEY")
         model = _env("LLM_MODEL", "GEMINI_MODEL")
         if not key or not model:
@@ -60,7 +61,7 @@ def _config() -> tuple[str, str, str, str]:
         return "gemini", endpoint.rstrip("/"), key, model
 
     if requested in CHAT:
-        endpoint = _env("BASE_URL", "OPENAI_CHAT_ENDPOINT", "OPENAI_BASE_URL") or "https://api.openai.com/v1"
+        endpoint = _env("LLM_BASE_URL", "OPENAI_CHAT_ENDPOINT", "OPENAI_BASE_URL") or "https://api.openai.com/v1"
         key = _env("LLM_API_KEY", "OPENAI_API_KEY", "OPENAI_INDIA_API_KEY")
         model = _env("LLM_MODEL", "OPENAI_CHAT_MODEL", "OPENAI_MODEL")
         if not key or not model:
@@ -69,11 +70,11 @@ def _config() -> tuple[str, str, str, str]:
 
     if requested not in RESPONSES:
         raise ModelError(f"unknown LLM_PROVIDER: {requested}")
-    endpoint = _env("BASE_URL", "OPENAI_ENDPOINT")
+    endpoint = _env("LLM_BASE_URL", "OPENAI_ENDPOINT")
     key = _env("LLM_API_KEY", "OPENAI_INDIA_API_KEY")
     model = _env("LLM_MODEL", "OPENAI_MODEL")
     missing = [name for name, value in (
-        ("BASE_URL", endpoint), ("LLM_API_KEY", key), ("LLM_MODEL", model)
+        ("LLM_BASE_URL", endpoint), ("LLM_API_KEY", key), ("LLM_MODEL", model)
     ) if not value]
     if missing:
         raise ModelError("the Responses model is not configured: " + ", ".join(missing))

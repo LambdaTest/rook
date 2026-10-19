@@ -67,12 +67,12 @@ provider it uses:
 
 | variable | what it is |
 | --- | --- |
-| `BASE_URL` | the API's base URL (default `https://api.z.ai/api/anthropic`) |
+| `LLM_BASE_URL` | the API's base URL (blank = the provider's default, `https://api.z.ai/api/anthropic` for the Anthropic Messages API) |
 | `LLM_API_KEY` | the API key |
 | `LLM_MODEL` | the model name, for example `glm-5.3` |
 
 By default the desk speaks the Anthropic Messages API (it adds `/v1/messages`
-to `BASE_URL`), which covers GLM through Z.AI. For another kind of API, also set
+to `LLM_BASE_URL`), which covers GLM through Z.AI. For another kind of API, also set
 `LLM_PROVIDER`: `gemini`, `openai` (Chat Completions) or `responses`. The
 older provider-specific names (`ANTHROPIC_BASE_URL`, `GLM_API_KEY`,
 `GEMINI_API_KEY` and so on) are still read as fallbacks.
