@@ -27,6 +27,7 @@ Commands that emit JSON write one document to stdout and prose to stderr.
 | Other `mcp` operations | `{ ok, lines: string[] }`, with configuration inside `lines` |
 | `ask` | `{ answer, command?, blocked_by?, summary? }`; the suggested command is not executed |
 | `update auto` | `{ ok, pinned }`; changes the update-notice preference |
+| `doctor` (0.1.12+) | `{ version, diagnostic_session, diagnostic_log, upstream_session, session_logs, registration, log_level, node, os, workspace, environment, controller, api, identity, auth, project, mode, tty, env }`; `os` is `{ name, version, arch }`, `controller` and `api` are `{ url, status }`, `env` holds the terminal facts, and unreadable parts are null |
 
 `status.agents[].tree` is `unsynced`, `clean`, `ahead`, `diverged`, `behind` or
 `unknown`. Unknown means offline, not clean.
@@ -35,7 +36,9 @@ Some releases emit text despite accepting `--json` on `explore`, `generate`,
 `sync`, `profile add/fix/test`, `report --rca` and `update` without `auto`.
 Check for a JSON document before parsing; otherwise inspect exit status and
 saved files. After authorized RCA, use `rook report <run-id> --json` to read the result.
-`rook update` may replace the CLI; check its version afterward.
+`rook update` may replace the CLI; check its version afterward. Since 0.1.12 a
+Homebrew install runs `brew upgrade` itself and exits 1 when Homebrew installs
+nothing new, for example while the tap trails a new npm release.
 
 ## Errors and partial runs
 
@@ -51,6 +54,13 @@ Use `error`, or `reason` when present. Translate remedy tokens with
 - A command that calls the model controller or opens an upstream job refuses
   before anything runs or is charged when its session could not be registered.
   Report it as no run and no spend, using the diagnostic it returns.
+- Since 0.1.12, `sync` exits 1 when the service leaves any agent it was sent
+  unanswered, even after recording others; the summary adds `N not returned` or
+  `N malformed`. Those agents keep their previous local state. Sync again
+  before a run that depends on them.
+- A `run` whose evidence uploads to the project failed keeps its exit code and
+  JSON; stderr adds `N evidence upload(s) failed — see <log path>`. Report the
+  project's copy of that evidence as incomplete.
 
 ## Grants and accounting
 
@@ -90,6 +100,13 @@ assuming either form. Under its `agents/<agent-id>/` directory:
 | `runs/<run-id>/scenarios/<scenario-id>/` | `snapshot.yaml`, `request.json`, `response.json`, artifacts and `verdict.yaml` |
 
 Home state at `~/.testmuai/rook/` includes credentials, grants and session
-transcripts. Each session's `transcript.jsonl` records the raw input and output
-of every role call, including refused, failed and interrupted calls. Keep it
+transcripts. Each session's `transcript.jsonl` records the input and output of
+every role call, including refused, failed and interrupted calls. Since 0.1.12
+it also records tool calls, each message sent to the target and its reply,
+jobs, per-agent sync results, run phases and scenario outcomes, so a killed run
+keeps the turns it exchanged. Lines carry `v: 2`: object keys starting with `$`
+gain one extra `$`, and strings of 4 KiB or more move to a `blobs/` folder
+beside the transcript, replaced by `{"$blob": "sha256:<hex>", "bytes": n}`.
+Check `v` on each line; a resumed session can mix v1 and v2 lines. Credential
+masking is best effort and older transcripts are unmasked, so keep transcripts
 outside commits and shared evidence.

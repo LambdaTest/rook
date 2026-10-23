@@ -9,9 +9,11 @@ rook plan --json
 rook status --json
 ```
 
-`doctor` prints version, node, workspace, environment, controller and api
-reachability, identity, auth state, project, mode (`cli`, `tui` or `headless`)
-and tty.
+`doctor` prints version, node, OS, workspace, environment, controller and api
+reachability, identity, auth state, project, mode (`cli`, `tui` or `headless`),
+tty and the terminal (shell, privilege, color level, size); a field it cannot
+detect reads `unknown`. Since 0.1.12, `rook doctor --json` prints the same
+report as one JSON object; see [headless contracts](headless-contract.md).
 
 ## Failure documents
 
@@ -96,4 +98,8 @@ rook export logs --out ./rook-logs.zip --all-sessions
 ```
 
 Include `rook --version`, the OS, and the scenario and run ids. Never paste a
-transcript, a credential, or the contents of `~/.testmuai/rook/`.
+transcript, a credential, or the contents of `~/.testmuai/rook/`. The bundle
+carries session transcripts and their `blobs/` folders. Since 0.1.12 Rook masks
+the credentials it holds or recognises before writing a transcript line, best
+effort; transcripts from older versions are not masked. Let the user review the
+bundle before it is shared.
