@@ -19,6 +19,7 @@ Read diagnostics as well as exit codes: an unreachable `auth status` can exit
 | Signed out | `rook login`; supply credentials through secrets in CI |
 | Missing project or agent | Select the intended ID with `project use` or `agent use` |
 | Access denied or no credits | Ask your organization admin for access or check `rook plan` |
+| Refused for the plan (`plan_required` or `upgrade_plan`) | Open the billing link the refusal names, or ask your admin; nothing ran or was charged. On Starter, keep work local with `rook run --test` |
 | Exploration found no agents | Check the source path and saved state before another paid attempt |
 | Profile failed or `agent_never_ran` | Inspect the exchange; test or repair the profile after approving target calls and any credits |
 | Unable to Verify | Inspect the criterion and saved evidence to identify what Rook could not observe |

@@ -73,7 +73,9 @@ and HTTP examples, or [MCP setup](../../skill-installer/skills/references/mcp.md
 
 ## Run and read the result
 
-Sync the reviewed profile and scenarios, then run one ID from your scenario list:
+Sync the reviewed profile and scenarios, then run one ID from your scenario list.
+On a plan without Rook cloud, such as Starter, `rook sync` is refused with a link
+to upgrade; skip it and add `--test` to keep the result on this machine:
 
 ```bash
 rook sync --yes

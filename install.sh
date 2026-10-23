@@ -10,9 +10,9 @@
 #   rook-<version>-linux-x64.tar.gz     (+ .tar.gz.sha256)
 #   rook-<version>-linux-arm64.tar.gz   (+ .tar.gz.sha256)
 #   rook-<version>-win-x64.tar.gz       (+ .tar.gz.sha256)
-# win-x64 is uploaded for build-matrix completeness only — there is no
-# Windows-native rook launcher anywhere in this codebase (the bundled
-# bin/rook is a POSIX shell script), and this installer is itself a bash
+# win-x64 is uploaded for build-matrix completeness only — the archive's
+# bundled bin/rook is a POSIX shell script (Windows installs go through npm,
+# which ships its own launcher), and this installer is itself a bash
 # script that only ever runs in a POSIX-ish shell. So only the 4 Unix-ish
 # tags are ever real download targets here; see detect_platform() below.
 set -euo pipefail
@@ -78,9 +78,9 @@ detect_platform() {
     Linux) os_tag="linux" ;;
     MINGW* | MSYS* | CYGWIN*)
       echo "Error: install.sh does not support Windows shells (uname -s reported '${os}')." >&2
-      echo "rook's bundled launcher (bin/rook) is a POSIX shell script — there is no" >&2
-      echo "Windows-native rook build to install. Run this from WSL, or from a real" >&2
-      echo "Linux/macOS host." >&2
+      echo "On Windows, install rook with npm instead (Node.js 20 or newer):" >&2
+      echo "  npm install -g @testmuai/rook" >&2
+      echo "Or run this script from WSL, or from a Linux/macOS host." >&2
       return 1
       ;;
     *)
