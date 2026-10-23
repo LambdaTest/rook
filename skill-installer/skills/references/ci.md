@@ -67,6 +67,9 @@ required for the gate.
 `rook sync --yes` records the scenarios/profile upstream. If the requested CI
 result should remain local instead, omit sync and use `rook run --test` with the
 same flags and result checks. Do not silently switch between these policies.
+Since 0.1.13, a plan without Rook cloud, such as Starter, refuses `sync` with
+`upgrade_plan`, so the job fails at that step. Switch to the local policy only
+if the user chooses it; otherwise pass on the upgrade link the refusal names.
 
 Cache the project `.testmuai/rook/` for history and comparisons. Never cache or
 commit `~/.testmuai/rook/`. `--yes` supplies broad command-scoped tool consent;
