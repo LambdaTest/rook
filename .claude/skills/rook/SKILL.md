@@ -76,6 +76,12 @@ and `run|report --rca`. `profile test` invokes the target without Rook model cre
 Use paid RCA only with user authorization. Track the user's budget across
 commands; do not assume the CLI enforces an aggregate task cap. Check its help
 for available limits. A null balance means unknown.
+Rook checks the organisation's Agent Assurance plan before any model call or
+credit spend, whatever the balance. A `plan_required` or `upgrade_plan` refusal
+names the billing page that lifts it; pass that link to the user instead of
+retrying. A plan without Rook cloud runs locally: when sync or cloud status is
+refused, use `rook run --test` for a local result. See
+[troubleshooting](references/troubleshooting.md).
 Prefer scoped `--allow` grants; use `--yes` only within the authorized scope.
 See [headless contracts](references/headless-contract.md) for output, grants and
 credit accounting.

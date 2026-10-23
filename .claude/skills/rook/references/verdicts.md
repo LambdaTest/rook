@@ -22,6 +22,12 @@ can add `coverage_gaps`, `redteam_coverage` (OWASP coverage of the scenario
 inventory) and `summary_claims`; an unmapped control is unverified, not passed.
 A **Partial** stored by an older run reads as Unable to Verify.
 
+Since 0.1.12, a regex check that misses is graded by the judge on the
+criterion's meaning, so a correct answer in another format can pass. A match
+still passes at once, and a regex asserting that text is absent still fails
+when the text appears. The judge call can add credits; if it fails, the
+criterion is Unable to Verify, not Fail.
+
 ## Pass rate
 
 Since 0.1.6, `totals.pass_rate` is `Pass / (Pass + Fail + Unable to Verify)`.

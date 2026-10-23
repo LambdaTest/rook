@@ -9,9 +9,11 @@ rook plan --json
 rook status --json
 ```
 
-`doctor` prints version, node, workspace, environment, controller and api
-reachability, identity, auth state, project, mode (`cli`, `tui` or `headless`)
-and tty.
+`doctor` prints version, node, OS, workspace, environment, controller and api
+reachability, identity, auth state, project, mode (`cli`, `tui` or `headless`),
+tty and the terminal (shell, privilege, color level, size); a field it cannot
+detect reads `unknown`. Since 0.1.12, `rook doctor --json` prints the same
+report as one JSON object; see [headless contracts](headless-contract.md).
 
 ## Failure documents
 
@@ -36,12 +38,18 @@ from `ok: true` or from an old report on disk.
 | `remedy: explore_agents`    | no agents registered — `rook explore`                                                                                              |
 | `remedy: pick_agent`        | no agent selected — `rook agent use <id>`                                                                                          |
 | `remedy: topup`             | you are out of credits — check `rook plan` and add credits                                                                         |
+| `remedy: plan_required`     | the org has no active Agent Assurance plan (none, an ended free trial or an expired subscription), whatever its credit balance — nothing ran or was charged; give the user the billing link the refusal names |
+| `remedy: upgrade_plan`      | the plan has no Rook cloud (such as Starter) — sync, cloud project status and recording runs on Rook cloud are refused; keep work local with `rook run --test`, or give the user the upgrade link the refusal names |
 | `remedy: reconcile`         | this agent has diverged from upstream — `rook sync`                                                                                |
 | `remedy: update`            | this version is too old to be served — announce that `rook update` may install a newer version, then recheck skill compatibility   |
 | `remedy: report`            | a client bug — file an issue with `rook export logs` attached                                                                      |
 | no active agent             | `rook agent use <id>` after `rook explore`                                                                                         |
 | no project selected         | `rook project use <id>` or `rook project create <name>`                                                                            |
 | could not reach the service | check the network; `doctor` shows both endpoints                                                                                   |
+
+A plan refusal shows the billing page that lifts it as the next step; Rook uses
+only https links on LambdaTest or TestMu AI hosts. Do not retry the refused
+command until the plan changes.
 
 ## Discovery succeeds but registers no agents
 
@@ -90,4 +98,8 @@ rook export logs --out ./rook-logs.zip --all-sessions
 ```
 
 Include `rook --version`, the OS, and the scenario and run ids. Never paste a
-transcript, a credential, or the contents of `~/.testmuai/rook/`.
+transcript, a credential, or the contents of `~/.testmuai/rook/`. The bundle
+carries session transcripts and their `blobs/` folders. Since 0.1.12 Rook masks
+the credentials it holds or recognises before writing a transcript line, best
+effort; transcripts from older versions are not masked. Let the user review the
+bundle before it is shared.
