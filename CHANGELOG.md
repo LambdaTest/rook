@@ -1,3 +1,22 @@
+## [0.1.13] - 2026-10-23
+
+### Behavior changes
+- [plan-check] Rook checks your organisation's Agent Assurance plan before any model call or credit spend. An organisation with no plan, an ended free trial or an expired subscription is refused with `plan_required` and a link to the billing plans page, whatever credit balance it holds.
+- [plan-cloud-features] On a plan without Rook cloud, such as Starter, Rook runs locally. Syncing to Rook cloud, cloud project status and recording runs on Rook cloud are refused with `upgrade_plan` and a link to upgrade.
+- [plan-upgrade-link] A plan refusal names the billing page that lifts it: the CLI shows it as the next step and the web app opens it. Only https links on LambdaTest or TestMu AI hosts are used.
+- [windows-support] Rook runs on Windows: commands, hooks and shims launch through cmd.exe with safe quoting, path checks handle drive roots, case-insensitive folders, short names and junctions, and brief Windows file-sharing and lock errors are retried.
+- [windows-scenario-inventory] `rook run` no longer fails on Windows with EPERM when it writes the scenario inventory.
+- [process-cleanup] A bash command that times out or is aborted stops its whole process group, and a process an MCP server launcher leaves behind is stopped after close.
+- [tui-flag-values] In the TUI, flag-value suggestions such as `--class` and `--category` follow the flag under the caret, not the first flag on the line.
+
+### Added
+- Agent Assurance plan check before model calls and credit spend, with an upgrade link on refusals; plans without Rook cloud run locally.
+- Windows support for launching commands, file and path handling, and locks.
+
+### Fixed
+- `rook run` on Windows no longer fails with EPERM while writing the scenario inventory.
+- Bash timeouts and aborts stop the whole process group; leftover MCP launcher processes are stopped after close.
+- TUI flag-value suggestions follow the flag under the caret.
 ## [0.1.12] - 2026-10-21
 
 ### Behavior changes
