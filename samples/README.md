@@ -10,6 +10,7 @@ Sample agents to explore, test and inspect with `rook`.
 | [`incident-scribe/`](incident-scribe)           | An incident-intake agent: a Python CLI, an MCP directory server and a tool-less subagent  | By reading the code, with tools                                                  |
 | [`trip-weather-station/`](trip-weather-station) | Weather-grounded trip advice from live Open-Meteo forecasts, over HTTP and MCP            | By reading the code, with tools                                                  |
 | [`knowledge-vault/`](knowledge-vault)           | Private, offline retrieval over a local SQLite document vault, with RBAC and an audit log | By reading the code, with tools                                                  |
+| [`ops-assistant/`](ops-assistant)               | One ops agent behind six response formats: JSON, text, async job, NDJSON, SSE, WebSocket  | By reading the code, with tools; one committed profile per format                |
 
 The first is the declared case, and it is the minority. A survey of ~20 real
 repositories found **zero** agent manifests, which is why the folder is the

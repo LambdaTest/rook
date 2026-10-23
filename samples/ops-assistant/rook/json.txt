@@ -1,0 +1,1 @@
+curl http://127.0.0.1:9110/v1/chat -H "content-type: application/json" -d "{\"input\":\"What's the status of order A-100?\"}"
