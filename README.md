@@ -94,7 +94,7 @@ Most eval and observability tools score what your agent said and recorded. `rook
 
 ## Install
 
-You need a TestMu AI (formerly LambdaTest) account. Exploring, generating, writing profiles and running spend Agent Assurance credits.
+You need a TestMu AI (formerly LambdaTest) account with an Agent Assurance plan; without one, Rook refuses before any model call or credit spend and links to the billing page. Exploring, generating, writing profiles and running spend Agent Assurance credits. On a plan without Rook cloud, such as Starter, Rook works on your machine: `rook sync` is refused with a link to upgrade, and `rook run` keeps its results local.
 
 Homebrew and the shell installer cover macOS and Linux on x64 and arm64, and bring their own runtime, so they need no Node. npm also covers Windows x64; it needs Node.js 20 or newer to install and launch, then runs `rook` on its bundled runtime.
 
@@ -118,7 +118,7 @@ curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh | b
 npm install -g @testmuai/rook@latest
 ```
 
-**Upgrade and uninstall** — `rook update` checks for a newer release and prints the upgrade command.
+**Upgrade and uninstall** — `rook update` checks for a newer release and installs it through the channel you installed with (Homebrew, the shell installer or npm); run `rook` again afterwards.
 
 | Installed with  | Upgrade                                | Uninstall                                        |
 | --------------- | -------------------------------------- | ------------------------------------------------ |
@@ -218,7 +218,7 @@ rook report "$(jq -r .run_id run.json)" --json > report.json
 | `0`       | the command did what it said — a finished run exits `0` whether scenarios passed or failed; gate on the verdicts in `rook report --json`                                                                                                            |
 | `1`       | anything else: signed out, refused, unreachable, bad flags, a run that could not start. With `--json`, inspect `error` or `reason` when a document exists; a refused run may have `ok: true, discarded: "refused"`. Some errors only produce stderr |
 
-`rook run` refuses an agent that has never been synced. To keep a result local instead, skip `sync` and use `rook run --test`. The [CI recipe](skill-installer/skills/references/ci.md) is a complete, gated script, and [Headless use and CI](docs/user-guide/headless-and-ci.md) covers sign-in, permission grants, budgets and verdict gating.
+`rook run` refuses an agent that has never been synced. To keep a result local instead, skip `sync` and use `rook run --test`; on a plan without Rook cloud, such as Starter, `rook sync` is refused, so use this form. The [CI recipe](skill-installer/skills/references/ci.md) is a complete, gated script, and [Headless use and CI](docs/user-guide/headless-and-ci.md) covers sign-in, permission grants, budgets and verdict gating.
 
 ## For AI coding agents reading this
 

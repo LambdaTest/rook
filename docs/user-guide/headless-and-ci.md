@@ -12,7 +12,8 @@ secrets to sign in; they take precedence over a stored sign-in. Set
 `ROOK_TELEMETRY=off` to keep telemetry events on the runner.
 
 The recipe syncs scenarios and the profile before running. For a local result,
-omit sync and use `run --test` with the same checks. Retain project history;
+omit sync and use `run --test` with the same checks. On a plan without Rook
+cloud, such as Starter, sync is refused, so use the local form. Retain project history;
 never cache the home credential directory.
 
 ## Check outputs and results
