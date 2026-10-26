@@ -1,0 +1,97 @@
+name: Rook setup
+description: >-
+  Resolve the secrets (run form, else environment secret), install the pinned public Rook CLI,
+  sign in headlessly and store the profile's SCRIBE_API_TOKEN in Rook's env store. Shared by
+  every stage of rook-prepare-suite.yml, because each stage runs on a fresh runner.
+inputs:
+  lt_username:
+    description: The LT_USERNAME environment secret (a run-form value wins over it)
+    required: false
+  lt_access_key:
+    description: The LT_ACCESS_KEY environment secret (a run-form value wins over it)
+    required: false
+  scribe_api_token:
+    description: The SCRIBE_API_TOKEN environment secret (a run-form value wins over it)
+    required: false
+  llm_api_key:
+    description: The LLM_API_KEY environment secret, the model API key (a run-form value wins over it)
+    required: false
+  rook_version:
+    description: The public Rook CLI release to install
+    required: false
+    default: '0.1.11'
+runs:
+  using: composite
+  steps:
+    # A value typed into the run form wins, else the environment secret. A typed value is read
+    # from the event file rather than through an expression, and masked before it reaches
+    # GITHUB_ENV, so it shows as *** like a secret everywhere after this.
+    - name: Resolve secrets (run form, else environment)
+      shell: bash
+      env:
+        ENV_LT_USERNAME: ${{ inputs.lt_username }}
+        ENV_LT_ACCESS_KEY: ${{ inputs.lt_access_key }}
+        ENV_SCRIBE_API_TOKEN: ${{ inputs.scribe_api_token }}
+        ENV_LLM_API_KEY: ${{ inputs.llm_api_key }}
+      run: |
+        set -euo pipefail
+        for name in LT_USERNAME LT_ACCESS_KEY SCRIBE_API_TOKEN LLM_API_KEY; do
+          key=$(printf '%s' "$name" | tr 'A-Z' 'a-z')
+          typed=$(jq -r --arg k "$key" '.inputs[$k] // empty' "$GITHUB_EVENT_PATH" | tr -d '\r' \
+            | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+          fallback="ENV_$name"
+          if [ -n "$typed" ]; then
+            echo "::add-mask::$typed"
+            value=$typed source='run form'
+          else
+            value=${!fallback} source='environment secret'
+          fi
+          # The desk's token is a fixed demo value (.env.example), not a real credential.
+          if [ -z "$value" ] && [ "$name" = SCRIBE_API_TOKEN ]; then
+            value=scribe-demo-token-2026 source='default (.env.example)'
+          fi
+          if [ -z "$value" ]; then source='not set'; fi
+          if [ -n "$value" ]; then
+            delimiter="ROOK_$(openssl rand -hex 12)"
+            printf '%s<<%s\n%s\n%s\n' "$name" "$delimiter" "$value" "$delimiter" >> "$GITHUB_ENV"
+          fi
+          echo "$name: $source"
+        done
+    - name: Install pinned public Rook CLI
+      shell: bash
+      env:
+        ROOK_VERSION: ${{ inputs.rook_version }}
+      run: |
+        set -euo pipefail
+        curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh \
+          -o "$RUNNER_TEMP/install-rook.sh"
+        bash "$RUNNER_TEMP/install-rook.sh" --version "$ROOK_VERSION" --dir "$RUNNER_TEMP/rook-bin"
+        echo "$RUNNER_TEMP/rook-bin" >> "$GITHUB_PATH"
+        # Rook's home (credentials, env store) stays outside the checkout.
+        echo "ROOK_HOME=$RUNNER_TEMP/rook-home" >> "$GITHUB_ENV"
+    - name: Sign in to Rook
+      shell: bash
+      run: |
+        set -euo pipefail
+        : "${LT_USERNAME:?Set LT_USERNAME: run form field lt_username or environment secret}"
+        : "${LT_ACCESS_KEY:?Set LT_ACCESS_KEY: run form field lt_access_key or environment secret}"
+        rook --version
+        # Stage only accepts the LambdaTest VPN; GitHub-hosted runners get a Cloudflare 403
+        # there, which rook reports as "credentials were refused".
+        rook login --username "$LT_USERNAME" --access-key "$LT_ACCESS_KEY" || {
+          echo "::error title=Rook sign-in::rook login failed against ROOK_ENV=${ROOK_ENV:-prod}. Check LT_USERNAME / LT_ACCESS_KEY; stage is unreachable from GitHub-hosted runners."
+          exit 1
+        }
+        rook auth status
+    # The profile references ${SCRIBE_API_TOKEN}; ROOK_HOME is fresh, so store it there.
+    # Written through a 0600 file so the value never appears in argv or the log.
+    - name: Store the profile's variables
+      shell: bash
+      run: |
+        set -euo pipefail
+        umask 077
+        mkdir -p "$ROOK_HOME"
+        env_file="$ROOK_HOME/profile.env"
+        printf 'SCRIBE_API_TOKEN=%s\n' "$SCRIBE_API_TOKEN" > "$env_file"
+        rook env set --from "$env_file" >/dev/null
+        rm -f "$env_file"
