@@ -1,0 +1,552 @@
+name: Rook prepare suite
+# Builds a NEW Rook project and suite for this agent under whichever Rook account the run is
+# given, rehearses it once, and opens a pull request for a person to review. It never changes
+# main and never gates anything: the release gate (rook-assurance.yml) only runs what has been
+# reviewed and merged. That is the docs' rule — "Do not generate new scenarios inside the
+# release gate" — with the preparation automated around it.
+#
+# One job per stage, so the run graph shows each step:
+#   1. Create project    rook project create, under the signed-in account's org
+#   2. Explore           rook explore: find the agents in this codebase
+#   3. Generate          rook generate: about <scenario_count> scenarios for the agent
+#   4. Profile add       rook profile add (from docs/invoking.md), then rook profile test
+#   5. Rehearsal run     rook sync + rook run once, so the PR shows which scenarios pass
+#   6. Open PR           the new project folder on a branch, as a PR for review
+#
+# Each stage runs on a fresh runner, so .testmuai/ travels between stages as an artifact.
+# Explore, generate, profile add and the run call a model and spend Rook credits.
+on:
+  workflow_dispatch:
+    # Every field is optional, as in rook-assurance.yml: leave one blank to use the value on
+    # the rook-assurance environment (Settings -> Environments). .env.example lists them all.
+    #
+    # Secret fields: GitHub does not treat dispatch inputs as secrets. The job masks them in the
+    # log before anything can print them, but they are still stored with the run's event, so
+    # anyone with write access to the repository can read them. For a key you keep using, set
+    # it as an environment secret and leave the field blank.
+    inputs:
+      project_name:
+        description: 'Name of the new Rook project (lowercase, digits, dashes)'
+        required: true
+        type: string
+        default: incident-scribe-presales
+      scenario_count:
+        description: 'About how many scenarios to generate'
+        required: true
+        type: string
+        default: '5'
+      rook_env:
+        description: 'Rook servers: prod or stage (blank = environment setting, else prod)'
+        required: false
+        type: string
+      rook_agent_id:
+        description: 'ROOK_AGENT_ID (blank = environment variable, else incident-scribe)'
+        required: false
+        type: string
+      rook_profile:
+        description: 'Name for the new profile (blank = ROOK_PROFILE variable, else local)'
+        required: false
+        type: string
+      rook_concurrency:
+        description: 'Scenarios in flight during the rehearsal run (blank = ROOK_CONCURRENCY, else 1)'
+        required: false
+        type: string
+      base_url:
+        description: 'LLM_BASE_URL of the model API (blank = environment variable, else Z.AI)'
+        required: false
+        type: string
+      llm_model:
+        description: 'LLM_MODEL (blank = environment variable)'
+        required: false
+        type: string
+      llm_provider:
+        description: 'LLM_PROVIDER: only gemini, openai or responses (blank = Anthropic-compatible)'
+        required: false
+        type: string
+      lt_username:
+        description: 'Secret LT_USERNAME: the Rook account the project is created under (blank = environment secret)'
+        required: false
+        type: string
+      lt_access_key:
+        description: 'Secret LT_ACCESS_KEY (blank = environment secret)'
+        required: false
+        type: string
+      scribe_api_token:
+        description: 'Secret SCRIBE_API_TOKEN (blank = environment secret, else scribe-demo-token-2026)'
+        required: false
+        type: string
+      llm_api_key:
+        description: 'Secret LLM_API_KEY: the model API key (blank = environment secret)'
+        required: false
+        type: string
+permissions:
+  contents: read
+concurrency:
+  # Never cancel a run in progress: it has already spent credits.
+  group: rook-prepare-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  project:
+    name: 1. Create project
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: rook-assurance
+    env:
+      ROOK_ENV: ${{ inputs.rook_env || vars.ROOK_ENV || 'prod' }}
+      PROJECT_NAME: ${{ inputs.project_name }}
+      SCENARIO_COUNT: ${{ inputs.scenario_count }}
+    outputs:
+      project_id: ${{ steps.create.outputs.project_id }}
+      project_dir: ${{ steps.create.outputs.project_dir }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Check the run form
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$PROJECT_NAME" =~ ^[a-z0-9][a-z0-9-]{0,62}$ ]] || {
+            echo "::error title=Run form::project_name must be lowercase letters, digits and dashes"; exit 1; }
+          [[ "$SCENARIO_COUNT" =~ ^[0-9]+$ ]] && [ "$SCENARIO_COUNT" -ge 1 ] && [ "$SCENARIO_COUNT" -le 50 ] || {
+            echo "::error title=Run form::scenario_count must be a whole number from 1 to 50"; exit 1; }
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - uses: ./.github/actions/rook-setup
+        with:
+          lt_username: ${{ secrets.LT_USERNAME }}
+          lt_access_key: ${{ secrets.LT_ACCESS_KEY }}
+          scribe_api_token: ${{ secrets.SCRIBE_API_TOKEN }}
+          llm_api_key: ${{ secrets.LLM_API_KEY || secrets.GLM_API_KEY }}
+      # Start from nothing: the committed projects belong to whichever org created them, and
+      # this run builds one for the signed-in account.
+      - name: Create the project
+        id: create
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf .testmuai
+          rook --no-animation project create "$PROJECT_NAME"
+          mapfile -t dirs < <(cd .testmuai/rook/projects && ls -d -- *--*)
+          [ "${#dirs[@]}" -eq 1 ] || { echo "::error title=Create project::expected one project folder, found ${#dirs[@]}"; exit 1; }
+          dir=${dirs[0]} id=${dirs[0]##*--}
+          printf 'project_dir=%s\nproject_id=%s\n' "$dir" "$id" >> "$GITHUB_OUTPUT"
+          {
+            echo '### 1. Project created'
+            echo
+            echo "| Project | ID | Rook servers |"
+            echo '| --- | --- | --- |'
+            echo "| \`$PROJECT_NAME\` | \`$id\` | $ROOK_ENV |"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: rook-workspace-1-project-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .testmuai/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  explore:
+    name: 2. Explore
+    needs: project
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: rook-assurance
+    env:
+      ROOK_ENV: ${{ inputs.rook_env || vars.ROOK_ENV || 'prod' }}
+      ROOK_AGENT_ID: ${{ inputs.rook_agent_id || vars.ROOK_AGENT_ID || 'incident-scribe' }}
+      ROOK_PROJECT_ID: ${{ needs.project.outputs.project_id }}
+      PROJECT_PATH: .testmuai/rook/projects/${{ needs.project.outputs.project_dir }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Drop the committed projects
+        run: rm -rf .testmuai
+      - uses: actions/download-artifact@v8
+        with:
+          name: rook-workspace-1-project-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .testmuai
+      # ops-directory, the agent's MCP server, is Node; explore may try to connect to it.
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - uses: ./.github/actions/rook-setup
+        with:
+          lt_username: ${{ secrets.LT_USERNAME }}
+          lt_access_key: ${{ secrets.LT_ACCESS_KEY }}
+          scribe_api_token: ${{ secrets.SCRIBE_API_TOKEN }}
+          llm_api_key: ${{ secrets.LLM_API_KEY || secrets.GLM_API_KEY }}
+      - name: Explore the codebase
+        shell: bash
+        run: |
+          set -euo pipefail
+          rook --no-animation project use "$ROOK_PROJECT_ID"
+          # --yes: headless, so approve explore's tool calls for this command only.
+          rook --no-animation explore --yes
+          mapfile -t agents < <(cd "$PROJECT_PATH/agents" && ls -d -- */ | tr -d /)
+          {
+            echo '### 2. Agents found'
+            echo
+            for a in "${agents[@]}"; do echo "- \`$a\`$([ "$a" = "$ROOK_AGENT_ID" ] && echo ' (the agent this run prepares)')"; done
+          } >> "$GITHUB_STEP_SUMMARY"
+          test -f "$PROJECT_PATH/agents/$ROOK_AGENT_ID/agent.yaml" || {
+            echo "::error title=Explore::no agent '$ROOK_AGENT_ID' found; agents: ${agents[*]}. Set rook_agent_id."; exit 1; }
+      - uses: actions/upload-artifact@v7
+        with:
+          name: rook-workspace-2-explore-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .testmuai/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  generate:
+    name: 3. Generate
+    needs: [project, explore]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    environment: rook-assurance
+    env:
+      ROOK_ENV: ${{ inputs.rook_env || vars.ROOK_ENV || 'prod' }}
+      ROOK_AGENT_ID: ${{ inputs.rook_agent_id || vars.ROOK_AGENT_ID || 'incident-scribe' }}
+      ROOK_PROJECT_ID: ${{ needs.project.outputs.project_id }}
+      PROJECT_PATH: .testmuai/rook/projects/${{ needs.project.outputs.project_dir }}
+      SCENARIO_COUNT: ${{ inputs.scenario_count }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Drop the committed projects
+        run: rm -rf .testmuai
+      - uses: actions/download-artifact@v8
+        with:
+          name: rook-workspace-2-explore-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .testmuai
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - uses: ./.github/actions/rook-setup
+        with:
+          lt_username: ${{ secrets.LT_USERNAME }}
+          lt_access_key: ${{ secrets.LT_ACCESS_KEY }}
+          scribe_api_token: ${{ secrets.SCRIBE_API_TOKEN }}
+          llm_api_key: ${{ secrets.LLM_API_KEY || secrets.GLM_API_KEY }}
+      - name: Generate scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          rook --no-animation project use "$ROOK_PROJECT_ID"
+          rook --no-animation agent use "$ROOK_AGENT_ID"
+          # --total is approximate: rook may write one or two more or fewer.
+          rook --no-animation generate --total "$SCENARIO_COUNT" --yes
+          dir="$PROJECT_PATH/agents/$ROOK_AGENT_ID/scenarios"
+          shopt -s nullglob
+          files=("$dir"/*.yaml)
+          [ "${#files[@]}" -gt 0 ] || { echo "::error title=Generate::no scenarios written to $dir"; exit 1; }
+          {
+            echo "### 3. Scenarios generated (${#files[@]})"
+            echo
+            echo '| ID | Title |'
+            echo '| --- | --- |'
+            for f in "${files[@]}"; do
+              title=$(sed -n 's/^title:[[:space:]]*//p' "$f" | head -1 | sed -e "s/^['\"]//" -e "s/['\"]$//")
+              echo "| \`$(basename "$f" .yaml)\` | ${title:-?} |"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: rook-workspace-3-generate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .testmuai/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  profile:
+    name: 4. Profile add
+    needs: [project, generate]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: rook-assurance
+    env:
+      ROOK_ENV: ${{ inputs.rook_env || vars.ROOK_ENV || 'prod' }}
+      ROOK_AGENT_ID: ${{ inputs.rook_agent_id || vars.ROOK_AGENT_ID || 'incident-scribe' }}
+      ROOK_PROFILE: ${{ inputs.rook_profile || vars.ROOK_PROFILE || 'local' }}
+      ROOK_PROJECT_ID: ${{ needs.project.outputs.project_id }}
+      PROJECT_PATH: .testmuai/rook/projects/${{ needs.project.outputs.project_dir }}
+      # The agent's own model configuration (its .env locally): profile test calls it.
+      # The same three settings for any provider; the older GLM variable names still work.
+      LLM_BASE_URL: ${{ inputs.base_url || vars.LLM_BASE_URL || vars.BASE_URL || vars.ANTHROPIC_BASE_URL }}
+      LLM_MODEL: ${{ inputs.llm_model || vars.LLM_MODEL || vars.GLM_MODEL }}
+      LLM_PROVIDER: ${{ inputs.llm_provider || vars.LLM_PROVIDER }}
+    # The PR job has no environment (it needs no secrets), so it takes these from here.
+    outputs:
+      agent_id: ${{ env.ROOK_AGENT_ID }}
+      profile: ${{ env.ROOK_PROFILE }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Drop the committed projects
+        run: rm -rf .testmuai
+      - uses: actions/download-artifact@v8
+        with:
+          name: rook-workspace-3-generate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .testmuai
+      # incident-scribe is a Python CLI that spawns its Node ops-directory MCP server.
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      # Also stores SCRIBE_API_TOKEN in rook's env store, so profile add can verify the
+      # profile it writes instead of stopping at "not verified".
+      - uses: ./.github/actions/rook-setup
+        with:
+          lt_username: ${{ secrets.LT_USERNAME }}
+          lt_access_key: ${{ secrets.LT_ACCESS_KEY }}
+          scribe_api_token: ${{ secrets.SCRIBE_API_TOKEN }}
+          llm_api_key: ${{ secrets.LLM_API_KEY || secrets.GLM_API_KEY }}
+      - name: Add the profile from docs/invoking.md
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$ROOK_PROFILE" =~ ^[a-zA-Z0-9_-]+$ ]] || { echo "::error title=Run form::invalid profile name"; exit 1; }
+          rook --no-animation project use "$ROOK_PROJECT_ID"
+          rook --no-animation agent use "$ROOK_AGENT_ID"
+          rook --no-animation profile add "$ROOK_PROFILE" --from docs/invoking.md --yes
+          test -f "$PROJECT_PATH/agents/$ROOK_AGENT_ID/profiles/$ROOK_PROFILE.yaml" || {
+            echo "::error title=Profile add::no profile written for $ROOK_PROFILE"; exit 1; }
+      - name: Test the profile against the live agent
+        shell: bash
+        run: |
+          set -euo pipefail
+          rook --no-animation profile test "$ROOK_PROFILE" --yes | tee "$RUNNER_TEMP/profile-test.txt"
+          # A working profile prints "<name>: answered in <n>ms — verified"; a broken one
+          # can still exit 0, so check the line itself.
+          line=$(grep -E "answered in [0-9]+ms.*verified" "$RUNNER_TEMP/profile-test.txt" | grep -v 'not verified' | head -1 || true)
+          {
+            echo '### 4. Profile'
+            echo
+            echo "- \`$ROOK_PROFILE\` written from \`docs/invoking.md\`"
+            echo "- profile test: ${line:-**not verified**}"
+          } >> "$GITHUB_STEP_SUMMARY"
+          [ -n "$line" ] || { echo "::error title=Profile test::the profile did not reach the agent; see the log above"; exit 1; }
+      - uses: actions/upload-artifact@v7
+        with:
+          name: rook-workspace-4-profile-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .testmuai/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  rehearsal:
+    name: 5. Rehearsal run
+    needs: [project, profile]
+    runs-on: ubuntu-24.04
+    # A single execute can take up to ~50 s on the configured model.
+    timeout-minutes: 60
+    environment: rook-assurance
+    env:
+      ROOK_ENV: ${{ inputs.rook_env || vars.ROOK_ENV || 'prod' }}
+      ROOK_AGENT_ID: ${{ inputs.rook_agent_id || vars.ROOK_AGENT_ID || 'incident-scribe' }}
+      ROOK_PROFILE: ${{ inputs.rook_profile || vars.ROOK_PROFILE || 'local' }}
+      ROOK_CONCURRENCY: ${{ inputs.rook_concurrency || vars.ROOK_CONCURRENCY || '1' }}
+      ROOK_PROJECT_ID: ${{ needs.project.outputs.project_id }}
+      PROJECT_PATH: .testmuai/rook/projects/${{ needs.project.outputs.project_dir }}
+      # The same three settings for any provider; the older GLM variable names still work.
+      LLM_BASE_URL: ${{ inputs.base_url || vars.LLM_BASE_URL || vars.BASE_URL || vars.ANTHROPIC_BASE_URL }}
+      LLM_MODEL: ${{ inputs.llm_model || vars.LLM_MODEL || vars.GLM_MODEL }}
+      LLM_PROVIDER: ${{ inputs.llm_provider || vars.LLM_PROVIDER }}
+    outputs:
+      run_id: ${{ steps.run.outputs.run_id }}
+      totals: ${{ steps.run.outputs.totals }}
+      results: ${{ steps.run.outputs.results }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Drop the committed projects
+        run: rm -rf .testmuai
+      - uses: actions/download-artifact@v8
+        with:
+          name: rook-workspace-4-profile-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .testmuai
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - uses: ./.github/actions/rook-setup
+        with:
+          lt_username: ${{ secrets.LT_USERNAME }}
+          lt_access_key: ${{ secrets.LT_ACCESS_KEY }}
+          scribe_api_token: ${{ secrets.SCRIBE_API_TOKEN }}
+          llm_api_key: ${{ secrets.LLM_API_KEY || secrets.GLM_API_KEY }}
+      # Failing scenarios do NOT fail this stage: this agent is built to fail some, and the
+      # point is to show the reviewer which ones. A run that halts or never starts does.
+      - name: Sync and run every scenario once
+        id: run
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir rook-results
+          rook --no-animation project use "$ROOK_PROJECT_ID"
+          rook --no-animation agent use "$ROOK_AGENT_ID"
+          rook --no-animation profile use "$ROOK_PROFILE"
+          rook --no-animation sync --agent "$ROOK_AGENT_ID" --yes
+          code=0
+          rook --no-animation run --profile "$ROOK_PROFILE" --concurrency "$ROOK_CONCURRENCY" \
+            --name "github-prepare-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" --yes --json \
+            > rook-results/run.json || code=$?
+          # rook can exit 0 with halted:true, so the JSON decides.
+          if [ "$code" -ne 0 ] || ! jq -e '.halted == false and (.run_id | type == "string" and length > 0)' rook-results/run.json >/dev/null; then
+            reason=$(jq -r '.reason // empty' rook-results/run.json 2>/dev/null || true)
+            echo "::error title=Rehearsal run::rook run did not complete (exit $code). ${reason}"
+            exit 1
+          fi
+          run_id=$(jq -r '.run_id' rook-results/run.json)
+          rook --no-animation report "$run_id" --json > rook-results/report.json
+          totals=$(jq -r '.report.totals | "Pass \(.passed) · Fail \(.failed) · Unable to verify \(.unverifiable) · Unjudged \(.unjudged) · Not run \(.not_run) · Unrunnable \(.unrunnable)"' rook-results/report.json)
+          results=$(
+            echo '| Scenario | Title | Rehearsal |'
+            echo '| --- | --- | --- |'
+            for f in "$PROJECT_PATH/agents/$ROOK_AGENT_ID/scenarios"/*.yaml; do
+              id=$(basename "$f" .yaml)
+              title=$(sed -n 's/^title:[[:space:]]*//p' "$f" | head -1 | sed -e "s/^['\"]//" -e "s/['\"]$//")
+              verdict="$PROJECT_PATH/agents/$ROOK_AGENT_ID/runs/$run_id/scenarios/$id/verdict.yaml"
+              status=$( [ -f "$verdict" ] && sed -n 's/^status:[[:space:]]*//p' "$verdict" | head -1 || true)
+              echo "| \`$id\` | ${title:-?} | ${status:-not run} |"
+            done
+          )
+          delimiter="ROOK_$(openssl rand -hex 12)"
+          {
+            printf 'run_id=%s\ntotals=%s\n' "$run_id" "$totals"
+            printf 'results<<%s\n%s\n%s\n' "$delimiter" "$results" "$delimiter"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo '### 5. Rehearsal run'
+            echo
+            echo "Run \`$run_id\`: $totals"
+            echo
+            echo "$results"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Keep the run's evidence
+        if: always()
+        shell: bash
+        run: |
+          if [ -d "$PROJECT_PATH/agents/$ROOK_AGENT_ID/runs" ]; then
+            tar -czf rook-results/evidence.tar.gz "$PROJECT_PATH/agents/$ROOK_AGENT_ID/runs"
+          fi
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: rook-rehearsal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: rook-results/
+          if-no-files-found: warn
+          retention-days: 7
+
+  pr:
+    name: 6. Open PR
+    needs: [project, profile, rehearsal]
+    # Also after a failed rehearsal: the suite is still worth reviewing, and the PR says so.
+    if: always() && needs.profile.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      ROOK_AGENT_ID: ${{ needs.profile.outputs.agent_id }}
+      ROOK_PROFILE: ${{ needs.profile.outputs.profile }}
+      ROOK_PROJECT_ID: ${{ needs.project.outputs.project_id }}
+      PROJECT_DIR: ${{ needs.project.outputs.project_dir }}
+      REHEARSAL_RESULT: ${{ needs.rehearsal.result }}
+      REHEARSAL_TOTALS: ${{ needs.rehearsal.outputs.totals }}
+      REHEARSAL_RESULTS: ${{ needs.rehearsal.outputs.results }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+      # The suite as it stood after profile add: definitions only, no run history.
+      - uses: actions/download-artifact@v8
+        with:
+          name: rook-workspace-4-profile-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/workspace
+      - name: Add the new project folder on a branch
+        id: branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          src="$RUNNER_TEMP/workspace/rook/projects/$PROJECT_DIR"
+          test -d "$src" || { echo "::error title=Open PR::$src is missing from the workspace artifact"; exit 1; }
+          mkdir -p .testmuai/rook/projects
+          # Only the new project. The committed projects and settings.json stay as they are.
+          rm -rf ".testmuai/rook/projects/$PROJECT_DIR"
+          cp -R "$src" .testmuai/rook/projects/
+          rm -rf ".testmuai/rook/projects/$PROJECT_DIR"/agents/*/runs
+          [ -f .testmuai/rook/.gitignore ] || cp "$RUNNER_TEMP/workspace/rook/.gitignore" .testmuai/rook/.gitignore
+          branch="rook/prepare-$ROOK_PROJECT_ID"
+          git switch -c "$branch"
+          git add .testmuai/rook
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -q -m "Rook: prepare suite for $ROOK_AGENT_ID (project $ROOK_PROJECT_ID)" \
+            -m "Generated by the Rook prepare suite workflow, run ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}."
+          git push -u origin "$branch"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
+      - name: Open the pull request
+        shell: bash
+        env:
+          BRANCH: ${{ steps.branch.outputs.branch }}
+        run: |
+          set -euo pipefail
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          if [ "$REHEARSAL_RESULT" = success ]; then
+            rehearsal="**Rehearsal:** $REHEARSAL_TOTALS"$'\n\n'"$REHEARSAL_RESULTS"
+          else
+            rehearsal="**Rehearsal:** did not complete ($REHEARSAL_RESULT). See the [workflow run]($run_url)."
+          fi
+          cat > "$RUNNER_TEMP/pr-body.md" <<EOF
+          A new Rook suite for \`$ROOK_AGENT_ID\`, prepared by the [Rook prepare suite run]($run_url).
+
+          | Setting | Value |
+          | --- | --- |
+          | Project | \`$PROJECT_DIR\` |
+          | \`rook_project_id\` | \`$ROOK_PROJECT_ID\` |
+          | \`rook_agent_id\` | \`$ROOK_AGENT_ID\` |
+          | \`rook_profile\` | \`$ROOK_PROFILE\` |
+
+          $rehearsal
+
+          ## Before merging
+          The release gate fails if any committed scenario fails, so:
+          - Read each scenario under \`.testmuai/rook/projects/$PROJECT_DIR/agents/$ROOK_AGENT_ID/scenarios/\`.
+          - Delete the ones that did not pass, or that you would not stand behind (\`rook scenarios delete SC-00X\`, or delete the file).
+          - Review the profile's hook script (\`agents/$ROOK_AGENT_ID/scripts/\`): it is what CI runs.
+
+          ## After merging
+          Run **Actions → Rook assurance → Run workflow** with \`rook_project_id\` = \`$ROOK_PROJECT_ID\`
+          and \`rook_profile\` = \`$ROOK_PROFILE\`, using the same Rook account this project was created under.
+          This PR was opened with the workflow token, so GitHub does not start the gate on it automatically.
+          EOF
+          if url=$(gh pr create --base "$GITHUB_REF_NAME" --head "$BRANCH" \
+              --title "Rook: prepare suite for $ROOK_AGENT_ID ($ROOK_PROJECT_ID)" \
+              --body-file "$RUNNER_TEMP/pr-body.md"); then
+            echo "### 6. Pull request: $url" >> "$GITHUB_STEP_SUMMARY"
+          else
+            # Usually "Allow GitHub Actions to create and approve pull requests" is off
+            # (Settings → Actions → General). The branch is pushed either way.
+            compare="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/${GITHUB_REF_NAME}...${BRANCH}?expand=1"
+            echo "::warning title=Open PR::could not open the PR automatically; open it here: $compare"
+            {
+              echo "### 6. Branch pushed: \`$BRANCH\`"
+              echo
+              echo "GitHub refused to let the workflow open the PR. Enable *Settings → Actions → General → Allow GitHub Actions to create and approve pull requests*, or open it by hand: $compare"
+              echo
+              echo '<details><summary>PR description</summary>'
+              echo
+              cat "$RUNNER_TEMP/pr-body.md"
+              echo '</details>'
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi

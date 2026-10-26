@@ -1,0 +1,26 @@
+name: Rook install
+description: >-
+  Install the pinned public Rook CLI and point ROOK_HOME outside the checkout. The one place the
+  version is pinned: rook-setup (every rook-prepare-suite.yml stage) and the rook-assurance.yml
+  gate both install through here, so the suite is prepared and gated by the same release.
+inputs:
+  rook_version:
+    description: The public Rook CLI release to install
+    required: false
+    default: '0.1.11'
+runs:
+  using: composite
+  steps:
+    - name: Install pinned public Rook CLI
+      shell: bash
+      env:
+        ROOK_VERSION: ${{ inputs.rook_version }}
+      run: |
+        set -euo pipefail
+        curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh \
+          -o "$RUNNER_TEMP/install-rook.sh"
+        bash "$RUNNER_TEMP/install-rook.sh" --version "$ROOK_VERSION" --dir "$RUNNER_TEMP/rook-bin"
+        echo "$RUNNER_TEMP/rook-bin" >> "$GITHUB_PATH"
+        # Rook's home (credentials, env store) stays outside the checkout. The runner context
+        # is not available in job-level env, so it is set here.
+        echo "ROOK_HOME=$RUNNER_TEMP/rook-home" >> "$GITHUB_ENV"
