@@ -25,3 +25,13 @@ declared, with no approval step.
 When `explore` finds `.mcp.json` in the target, those servers appear with
 origin `discovered` and need `approve` before a scenario can exercise them.
 Values stay `${VAR}` references in `get` output.
+
+Since 0.1.14 an `http` server connects over Streamable HTTP. A `project` or
+`discovered` one waits for `approve` like a stdio server, and a changed host
+needs approval again. `get` and `approve` print `sends the value of VAR to
+<host>` for each variable an http server receives, and values of 8 or more
+characters expanded from `${VAR}` are removed from what it sends back. Each
+request has a 20 s deadline and an 8 MiB limit, and redirects are refused.
+`sse` and `ws` servers stay `unsupported-transport`. On every transport, a
+tool list without `tools`, a result without `content` or a text block with no
+text is a malformed response, not an empty success.

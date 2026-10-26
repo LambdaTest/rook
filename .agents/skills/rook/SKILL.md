@@ -78,7 +78,7 @@ commands; do not assume the CLI enforces an aggregate task cap. Check its help
 for available limits. A null balance means unknown.
 Rook checks the organisation's Agent Assurance plan before any model call or
 credit spend, whatever the balance. A `plan_required` or `upgrade_plan` refusal
-names the billing page that lifts it; pass that link to the user instead of
+names the page that lifts it (billing, or onboarding to start a free trial); pass that link to the user instead of
 retrying. A plan without Rook cloud runs locally: when sync or cloud status is
 refused, use `rook run --test` for a local result. See
 [troubleshooting](references/troubleshooting.md).
