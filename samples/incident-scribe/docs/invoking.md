@@ -62,27 +62,20 @@ continues the same session.
 | --- | --- |
 | `SCRIBE_API_TOKEN` | the session credential, presented on every command |
 
-The default provider remains the existing Responses API. To use GLM through
-Z.AI's Anthropic-compatible endpoint, set `LLM_PROVIDER=glm`,
-`ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic`, `GLM_API_KEY`, and
-`GLM_MODEL` (for example `glm-5.3`). The adapter also accepts the names from
-Z.AI's Claude guide: `ANTHROPIC_AUTH_TOKEN` and
-`ANTHROPIC_DEFAULT_SONNET_MODEL` (or the Opus/Haiku equivalents). A model
-suffix such as `[1m]` is removed before the API request. The adapter adds
-`/v1/messages` to the base URL and sends Anthropic tool-use blocks.
+The desk's own model is set with three variables in its `.env`, whichever
+provider it uses:
 
-Other supported providers use the same multi-turn agent loop:
-
-| `LLM_PROVIDER` | required variables |
+| variable | what it is |
 | --- | --- |
-| `responses` | `OPENAI_ENDPOINT`, `OPENAI_INDIA_API_KEY`, `OPENAI_MODEL` |
-| `glm` / `anthropic` | `ANTHROPIC_BASE_URL`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_MODEL` |
-| `openai` / `chat` | `OPENAI_API_KEY`, `OPENAI_CHAT_MODEL`; optional `OPENAI_CHAT_ENDPOINT` |
-| `gemini` | `GEMINI_API_KEY`, `GEMINI_MODEL`; optional `GEMINI_ENDPOINT` |
+| `LLM_BASE_URL` | the API's base URL (blank = the provider's default, `https://api.z.ai/api/anthropic` for the Anthropic Messages API) |
+| `LLM_API_KEY` | the API key |
+| `LLM_MODEL` | the model name, for example `glm-5.3` |
 
-If `LLM_PROVIDER` is omitted, the adapter selects Anthropic/GLM, Gemini,
-Responses, or Chat Completions from the variables that are present, in that
-order.
+By default the desk speaks the Anthropic Messages API (it adds `/v1/messages`
+to `LLM_BASE_URL`), which covers GLM through Z.AI. For another kind of API, also set
+`LLM_PROVIDER`: `gemini`, `openai` (Chat Completions) or `responses`. The
+older provider-specific names (`ANTHROPIC_BASE_URL`, `GLM_API_KEY`,
+`GEMINI_API_KEY` and so on) are still read as fallbacks.
 
 **That is the whole list.** The desk's model endpoint, key and deployment are
 its OWN configuration — it reads them from its `.env` and they are nobody
