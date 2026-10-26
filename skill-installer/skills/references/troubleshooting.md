@@ -38,7 +38,7 @@ from `ok: true` or from an old report on disk.
 | `remedy: explore_agents`    | no agents registered — `rook explore`                                                                                              |
 | `remedy: pick_agent`        | no agent selected — `rook agent use <id>`                                                                                          |
 | `remedy: topup`             | you are out of credits — check `rook plan` and add credits                                                                         |
-| `remedy: plan_required`     | the org has no active Agent Assurance plan (none, an ended free trial or an expired subscription), whatever its credit balance — nothing ran or was charged; give the user the billing link the refusal names |
+| `remedy: plan_required`     | the org has no active Agent Assurance plan (none, an ended free trial or an expired subscription), whatever its credit balance — nothing ran or was charged; give the user the link the refusal names: since 0.1.14, the onboarding page to start the free trial when the org never had a plan, otherwise billing |
 | `remedy: upgrade_plan`      | the plan has no Rook cloud (such as Starter) — sync, cloud project status and recording runs on Rook cloud are refused; keep work local with `rook run --test`, or give the user the upgrade link the refusal names |
 | `remedy: reconcile`         | this agent has diverged from upstream — `rook sync`                                                                                |
 | `remedy: update`            | this version is too old to be served — announce that `rook update` may install a newer version, then recheck skill compatibility   |
