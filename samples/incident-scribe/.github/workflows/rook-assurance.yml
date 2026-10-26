@@ -103,6 +103,7 @@ on:
       - '.testmuai/rook/**'
       - 'ci/**'
       - '.github/workflows/rook-assurance.yml'
+      - '.github/actions/rook-install/**'
 permissions:
   contents: read
 concurrency:
@@ -213,6 +214,8 @@ jobs:
           fail() { echo "::error title=Scenario selection::$1"; scenario_table ""; exit 1; }
 
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            # select-scenarios.mjs writes ids and mode to $GITHUB_OUTPUT, and its reasoning to
+            # $GITHUB_STEP_SUMMARY, itself; stdout is only the IDs, for the table below.
             ids=$(ROOK_SCENARIO_IDS="$all_ids" node ci/select-scenarios.mjs --base "$BASE_SHA" --head "$HEAD_SHA")
           else
             typed=$(printf '%s' "$TYPED" | tr -d '[:space:]')
@@ -354,19 +357,14 @@ jobs:
             fi
             echo "| \`$name\` | $source | \`${!name:-}\` |" >> "$GITHUB_STEP_SUMMARY"
           done
-      # The public CLI; ROOK_ENV above points it at stage or prod.
+      # The public CLI; ROOK_ENV above points it at stage or prod. Installed through the same
+      # pinned action as rook-prepare-suite.yml, so the gate runs the release that prepared
+      # the suite.
       - name: Install pinned public Rook CLI
+        uses: ./.github/actions/rook-install
+      - name: Check jq
         shell: bash
-        run: |
-          set -euo pipefail
-          curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh \
-            -o "$RUNNER_TEMP/install-rook.sh"
-          bash "$RUNNER_TEMP/install-rook.sh" --version 0.1.5 --dir "$RUNNER_TEMP/rook-bin"
-          echo "$RUNNER_TEMP/rook-bin" >> "$GITHUB_PATH"
-          # Rook's home (credentials, env store) stays outside the checkout. The runner
-          # context is not available in job-level env, so it is set here.
-          echo "ROOK_HOME=$RUNNER_TEMP/rook-home" >> "$GITHUB_ENV"
-          command -v jq
+        run: command -v jq
       - name: Run the reviewed suite
         shell: bash
         env:

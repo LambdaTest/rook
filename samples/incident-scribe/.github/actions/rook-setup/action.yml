@@ -16,10 +16,6 @@ inputs:
   llm_api_key:
     description: The LLM_API_KEY environment secret, the model API key (a run-form value wins over it)
     required: false
-  rook_version:
-    description: The public Rook CLI release to install
-    required: false
-    default: '0.1.11'
 runs:
   using: composite
   steps:
@@ -57,18 +53,9 @@ runs:
           fi
           echo "$name: $source"
         done
+    # The version is pinned in rook-install, shared with rook-assurance.yml's gate.
     - name: Install pinned public Rook CLI
-      shell: bash
-      env:
-        ROOK_VERSION: ${{ inputs.rook_version }}
-      run: |
-        set -euo pipefail
-        curl -fsSL https://raw.githubusercontent.com/LambdaTest/rook/main/install.sh \
-          -o "$RUNNER_TEMP/install-rook.sh"
-        bash "$RUNNER_TEMP/install-rook.sh" --version "$ROOK_VERSION" --dir "$RUNNER_TEMP/rook-bin"
-        echo "$RUNNER_TEMP/rook-bin" >> "$GITHUB_PATH"
-        # Rook's home (credentials, env store) stays outside the checkout.
-        echo "ROOK_HOME=$RUNNER_TEMP/rook-home" >> "$GITHUB_ENV"
+      uses: ./.github/actions/rook-install
     - name: Sign in to Rook
       shell: bash
       run: |
