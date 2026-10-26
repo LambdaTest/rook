@@ -1,3 +1,22 @@
+## [0.1.14] - 2026-10-26
+
+### Behavior changes
+- [free-trial-start] The Agent Assurance free trial starts only from the Start Trial button in the Rook web app. Signing in, the CLI and its login poll never start a trial.
+- [trial-onboarding-link] When an organisation that has never had a plan is refused, the CLI and the web app point to the Rook onboarding page to start the free trial instead of billing. An ended trial or an expired plan still points to the billing plans page.
+- [plan-link-agent-assurance] Billing links in plan refusals open the plans page on Agent Assurance.
+- [read-after-plan-ends] After a trial or plan ends, the organisation can still open the projects, agents, scenarios and runs it made.
+- [mcp-streamable-http] Rook connects to remote MCP servers over Streamable HTTP. A server declared with an http `url` goes through the same approval as a stdio server and answers `mcp_tools` and `mcp_call` the same way. Each request has a 20 s deadline and an 8 MiB limit, and redirects are refused. `sse` and `ws` servers are still unsupported, and an http server with no url, or with an unset `${VAR}` in its url, is reported as malformed.
+- [mcp-http-credentials] Values of 8 or more characters expanded from `${VAR}` are removed from everything an http MCP server sends back. `rook mcp get` and `rook mcp approve` print `sends the value of VAR to <host>` for each variable an http server receives.
+- [mcp-malformed-responses] On every MCP transport, stdio included, a tool list without a `tools` array, a tool result without a `content` array, or a text block with no text is reported as a malformed response instead of an empty success.
+- [openai-overload-retry] When an OpenAI model call reports an overload or server error before streaming any output, Rook retries it, up to three attempts, instead of failing with "service unavailable".
+
+### Added
+- Agent Assurance free trial, started from the web app; the CLI points organisations that have never had a plan to it.
+- Remote MCP servers over Streamable HTTP, with the same approval as stdio servers and credential scrubbing.
+
+### Fixed
+- Model calls fail less often with "service unavailable": an OpenAI overload reported before any output is retried.
+- MCP responses missing their tool list or content are reported as malformed instead of treated as empty.
 ## [0.1.13] - 2026-10-23
 
 ### Behavior changes
