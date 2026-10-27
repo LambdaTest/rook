@@ -32,7 +32,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.30.0",
     "js-yaml": "4.3.2",
-    "zod": "^3.25.0"
+    "zod": "^4.6.7"
   },
   "description": "Eight industry agent editions with native Rook workspaces and recorded evidence"
 }
