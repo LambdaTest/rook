@@ -1,3 +1,15 @@
+## [0.1.16] - 2026-10-28
+
+### Behavior changes
+- [run-scenario-details] A run's scenario result shows the scenario as it was when that run used it: its feature, class, category, criteria, timeout, multi-turn setting, input and output, and an adversarial scenario's attack intent. An icon next to the title opens the scenario. In the web app it opens the version that ran, or says that version no longer exists; in `rook ui` it opens the scenario's page. The feature opens as it was for that run.
+- [light-theme-default] The web app and `rook ui` open in the light theme when no theme has been chosen, instead of following the system's dark mode.
+
+### Added
+- Scenario details and a link back to the scenario on a run's scenario result, in the web app and `rook ui`.
+
+### Changed
+- The web app and `rook ui` start in the light theme until you choose one.
+
 ## [0.1.14] - 2026-10-26
 
 ### Behavior changes
