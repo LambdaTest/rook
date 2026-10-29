@@ -26,8 +26,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v7.0.0
         with:
-          node-version: "22"
-          check-latest: true
+          node-version: "22.23.4"
       # `node --test` discovers every test/*.test.mjs file, so a new test file
       # joins without editing package.json or this workflow.
       - run: npm test
@@ -45,8 +44,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v7.0.0
         with:
-          node-version: "22"
-          check-latest: true
+          node-version: "22.23.4"
       - run: npm ci
       - run: npm run setup
       - run: npm test
