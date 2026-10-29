@@ -79,6 +79,7 @@ Other supported providers use the same multi-turn agent loop:
 | `glm` / `anthropic` | `ANTHROPIC_BASE_URL`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_MODEL` |
 | `openai` / `chat` | `OPENAI_API_KEY`, `OPENAI_CHAT_MODEL`; optional `OPENAI_CHAT_ENDPOINT` |
 | `gemini` | `GEMINI_API_KEY`, `GEMINI_MODEL`; optional `GEMINI_ENDPOINT` |
+| `lambdatest` / `lt` | `GATEWAY_URL`, `LT_USERNAME`, `LT_ACCESS_KEY`; optional `LT_MODEL` (default `auto`) |
 
 If `LLM_PROVIDER` is omitted, the adapter selects Anthropic/GLM, Gemini,
 Responses, or Chat Completions from the variables that are present, in that

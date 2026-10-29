@@ -263,3 +263,41 @@ def test_chat_and_gemini_tool_shapes(monkeypatch):
     result = llm.call([llm.user("find")], tools=[{"name": "lookup", "parameters": {"type": "object"}}])
     _, contents = _gemini_items(result["raw_output"] + [tool_result(result["tool_calls"][0]["call_id"], {"ok": True})])
     assert contents[-1]["parts"][0]["functionResponse"]["name"] == "lookup"
+
+
+def test_lambdatest_gateway_uses_basic_auth(monkeypatch):
+    import base64
+    from incident_scribe import llm
+
+    for name in ("LLM_TIMEOUT", "LT_MODEL"):
+        monkeypatch.delenv(name, raising=False)
+    monkeypatch.setenv("LLM_PROVIDER", "lambdatest")
+    monkeypatch.setenv("GATEWAY_URL", "https://gateway.example.com")
+    monkeypatch.setenv("LT_USERNAME", "alice")
+    monkeypatch.setenv("LT_ACCESS_KEY", "s3cret")
+    provider, endpoint, key, model = _config()
+    assert (provider, endpoint, model) == ("lambdatest", "https://gateway.example.com/v1/chat/completions", "auto")
+    assert base64.b64decode(key).decode() == "alice:s3cret"
+
+    seen = {}
+
+    def fake_request(url, body, headers):
+        seen.update(url=url, body=body, headers=headers)
+        return {"choices": [{"message": {"content": "ok"}, "finish_reason": "stop"}], "usage": {}}
+
+    monkeypatch.setattr(llm, "_request", fake_request)
+    assert llm.call([llm.user("hi")])["text"] == "ok"
+    assert seen["headers"]["Authorization"] == f"Basic {key}"
+    assert seen["body"]["model"] == "auto" and "stream" not in seen["body"]
+
+
+def test_lambdatest_gateway_needs_all_three_settings(monkeypatch):
+    import pytest
+    from incident_scribe.llm import ModelError
+
+    monkeypatch.setenv("LLM_PROVIDER", "lt")
+    monkeypatch.setenv("GATEWAY_URL", "https://gateway.example.com")
+    monkeypatch.setenv("LT_USERNAME", "alice")
+    monkeypatch.delenv("LT_ACCESS_KEY", raising=False)
+    with pytest.raises(ModelError, match="LT_ACCESS_KEY"):
+        _config()
