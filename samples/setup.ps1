@@ -73,6 +73,8 @@ function Setup-IncidentScribe {
             Ok "SCRIBE_API_TOKEN already set"
         }
 
+        & $python scripts\prompt_credentials.py .env
+
         if (-not $NoSemantic) {
             Info "installing embeddings (downloads a model, a few minutes)..."
             npm install --no-audit --no-fund *> $null
@@ -89,6 +91,7 @@ function Setup-IncidentScribe {
             0 {
                 & powershell -NoProfile -ExecutionPolicy Bypass -File scripts\preflight.ps1
                 if ($LASTEXITCODE -ne 0) { $script:failed += 'incident-scribe' }
+                else { Info "next: cd incident-scribe; . .\scripts\env.ps1    (loads .env, including SCRIBE_API_TOKEN, into your session)" }
             }
             1 {
                 Info "next: complete the provider settings named above in incident-scribe\.env, then re-run setup.ps1 incident-scribe"

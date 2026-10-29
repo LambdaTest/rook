@@ -231,7 +231,16 @@ export SCRIBE_API_TOKEN=choose-any-secret-string        # macOS / Linux / WSL
 $env:SCRIBE_API_TOKEN = "choose-any-secret-string"      # Windows PowerShell
 ```
 
-Use the same value in both places.
+Use the same value in both places. Or load all of `.env` into the shell in one
+step (source it, do not run it):
+
+```bash
+. scripts/env.sh          # macOS / Linux / WSL
+```
+
+```powershell
+. .\scripts\env.ps1       # Windows PowerShell
+```
 
 ### Running it
 
@@ -293,6 +302,10 @@ scripts/
   preflight.sh             pre-run checks (macOS / Linux / WSL)
   preflight.ps1            pre-run checks (Windows PowerShell)
   build-index.mjs          enables semantic search (rebuilds the index)
+  check_llm.py             keys present, endpoint up, credentials accepted
+  ensure_token.py          fills SCRIBE_API_TOKEN in .env when it is empty
+  prompt_credentials.py    asks for LT_USERNAME and LT_ACCESS_KEY when .env has none
+  env.sh / env.ps1         source them to load .env into your shell
 docs/
   invoking.md              the CLI contract
   incident-policy.pdf      the incident policy (authoritative)

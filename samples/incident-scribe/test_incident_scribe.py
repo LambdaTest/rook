@@ -450,3 +450,33 @@ def test_gateway_health_probes_under_the_gateway_path_and_tolerates_a_missing_pr
     monkeypatch.setattr(check.urllib.request, "urlopen", missing)
     assert check.gateway_health() is True
     assert seen == ["https://proxy.example.com/llm-gateway/healthz"]
+
+
+def test_prompt_credentials_fills_only_what_is_missing(tmp_path, monkeypatch):
+    prompt = _script("prompt_credentials")
+    template = "LLM_PROVIDER=lambdatest\nLT_USERNAME=\nLT_ACCESS_KEY=\nLT_MODEL=auto\n"
+
+    filled = prompt.set_value(prompt.set_value(template, "LT_USERNAME", "me"), "LT_ACCESS_KEY", "s3cret")
+    assert filled == "LLM_PROVIDER=lambdatest\nLT_USERNAME=me\nLT_ACCESS_KEY=s3cret\nLT_MODEL=auto\n"
+    assert prompt.set_value("A=1", "LT_USERNAME", "me") == "A=1\nLT_USERNAME=me\n"
+    assert prompt.set_value("LT_USERNAME=\r\nA=1\r\n", "LT_USERNAME", "me") == "LT_USERNAME=me\r\nA=1\r\n"
+
+    env_file = tmp_path / ".env"
+    env_file.write_text(template)
+    monkeypatch.delenv("LLM_PROVIDER", raising=False)
+    monkeypatch.setattr(prompt.sys.stdin, "isatty", lambda: False)
+    monkeypatch.setattr(prompt.sys, "argv", ["prompt_credentials.py", str(env_file)])
+    assert prompt.main() == 0
+    assert env_file.read_text() == template
+
+    monkeypatch.setattr(prompt.sys.stdin, "isatty", lambda: True)
+    monkeypatch.setattr(prompt, "ask", lambda key, hidden: {"LT_USERNAME": "me", "LT_ACCESS_KEY": "s3cret"}[key])
+    monkeypatch.setenv("LT_USERNAME", "from-the-shell")
+    assert prompt.main() == 0
+    assert env_file.read_text() == "LLM_PROVIDER=lambdatest\nLT_USERNAME=\nLT_ACCESS_KEY=s3cret\nLT_MODEL=auto\n"
+
+    glm = tmp_path / "glm.env"
+    glm.write_text("LLM_PROVIDER=glm\n")
+    monkeypatch.setattr(prompt.sys, "argv", ["prompt_credentials.py", str(glm)])
+    assert prompt.main() == 0
+    assert glm.read_text() == "LLM_PROVIDER=glm\n"

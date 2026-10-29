@@ -88,6 +88,8 @@ setup_incident_scribe() {
     green "SCRIBE_API_TOKEN already set"
   fi
 
+  "$PY" scripts/prompt_credentials.py .env
+
   if [ "$SEMANTIC" = 1 ]; then
     info "installing embeddings (downloads a model, a few minutes)..."
     if npm install --no-audit --no-fund >/dev/null && node scripts/build-index.mjs >/dev/null; then
@@ -103,7 +105,12 @@ setup_incident_scribe() {
   local status=0
   "$PY" scripts/check_llm.py || status=$?
   case "$status" in
-    0) PY="$PY" bash scripts/preflight.sh || FAILED="$FAILED incident-scribe" ;;
+    0)
+      if PY="$PY" bash scripts/preflight.sh; then
+        info "next: cd incident-scribe && . scripts/env.sh    (loads .env, including SCRIBE_API_TOKEN, into your shell)"
+      else
+        FAILED="$FAILED incident-scribe"
+      fi ;;
     1)
       info "next: complete the provider settings named above in incident-scribe/.env, then re-run ./setup.sh incident-scribe"
       info "      (the LambdaTest template needs LT_USERNAME and LT_ACCESS_KEY; an older .env keeps its own LLM_PROVIDER)." ;;
