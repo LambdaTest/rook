@@ -91,30 +91,25 @@ setup_incident_scribe() {
   "$PY" scripts/prompt_credentials.py .env
 
   if [ "$SEMANTIC" = 1 ]; then
-    info "installing embeddings (downloads a model, a few minutes)..."
     if npm install --no-audit --no-fund >/dev/null && node scripts/build-index.mjs >/dev/null; then
       green "semantic search armed"
     else
       red "embedding install failed — search_incidents will fall back to lexical mode"
     fi
-  else
-    info "search_incidents will run in lexical mode (--no-semantic was given; re-run without it for embeddings)"
   fi
 
   # keys present -> endpoint up -> credentials accepted (exit 1 / 3 / 2 when not)
-  local status=0
-  "$PY" scripts/check_llm.py || status=$?
+  local status=0 out
+  out="$("$PY" scripts/check_llm.py 2>&1)" || status=$?
   case "$status" in
     0)
-      if PY="$PY" bash scripts/preflight.sh; then
-        info "next: cd incident-scribe && . scripts/env.sh    (loads .env, including SCRIBE_API_TOKEN, into your shell)"
+      if out="$(PY="$PY" bash scripts/preflight.sh 2>&1)"; then
+        green "model provider and preflight passed"
       else
-        FAILED="$FAILED incident-scribe"
+        printf '%s\n' "$out"; FAILED="$FAILED incident-scribe"
       fi ;;
-    1)
-      info "next: complete the provider settings named above in incident-scribe/.env, then re-run ./setup.sh incident-scribe"
-      info "      (the LambdaTest template needs LT_USERNAME and LT_ACCESS_KEY; an older .env keeps its own LLM_PROVIDER)." ;;
-    *) red "the model provider is configured but did not pass — fix .env and re-run"; FAILED="$FAILED incident-scribe" ;;
+    1) printf '%s\n' "$out" ;;
+    *) printf '%s\n' "$out"; red "the model provider is configured but did not pass — fix .env and re-run"; FAILED="$FAILED incident-scribe" ;;
   esac
   cd ..
 }
@@ -129,9 +124,7 @@ setup_industry_agents() {
   else
     red "npm install failed"; FAILED="$FAILED industry-agents"; cd ..; return
   fi
-  if npm run setup --silent | while IFS= read -r line; do info "$line"; done; then
-    info "next: add MODEL_API_KEY to the demo .env you want to run (demos/*/.env)"
-  else
+  if ! npm run setup --silent | while IFS= read -r line; do info "$line"; done; then
     red "npm run setup failed"; FAILED="$FAILED industry-agents"
   fi
   cd ..

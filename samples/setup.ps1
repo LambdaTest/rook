@@ -76,28 +76,22 @@ function Setup-IncidentScribe {
         & $python scripts\prompt_credentials.py .env
 
         if (-not $NoSemantic) {
-            Info "installing embeddings (downloads a model, a few minutes)..."
             npm install --no-audit --no-fund *> $null
             $installed = ($LASTEXITCODE -eq 0)
             if ($installed) { node scripts/build-index.mjs *> $null; $installed = ($LASTEXITCODE -eq 0) }
             if ($installed) { Ok "semantic search armed" } else { Bad "embedding install failed - search_incidents will fall back to lexical mode" }
-        } else {
-            Info "search_incidents will run in lexical mode (-NoSemantic was given; re-run without it for embeddings)"
         }
 
         # keys present -> endpoint up -> credentials accepted (exit 1 / 3 / 2 when not)
-        & $python scripts\check_llm.py
+        $out = & $python scripts\check_llm.py 2>&1
         switch ($LASTEXITCODE) {
             0 {
-                & powershell -NoProfile -ExecutionPolicy Bypass -File scripts\preflight.ps1
-                if ($LASTEXITCODE -ne 0) { $script:failed += 'incident-scribe' }
-                else { Info "next: cd incident-scribe; . .\scripts\env.ps1    (loads .env, including SCRIBE_API_TOKEN, into your session)" }
+                $out = & powershell -NoProfile -ExecutionPolicy Bypass -File scripts\preflight.ps1 2>&1
+                if ($LASTEXITCODE -ne 0) { $out | Write-Host; $script:failed += 'incident-scribe' }
+                else { Ok "model provider and preflight passed" }
             }
-            1 {
-                Info "next: complete the provider settings named above in incident-scribe\.env, then re-run setup.ps1 incident-scribe"
-                Info "      (the LambdaTest template needs LT_USERNAME and LT_ACCESS_KEY; an older .env keeps its own LLM_PROVIDER)."
-            }
-            default { Bad "the model provider is configured but did not pass - fix .env and re-run"; $script:failed += 'incident-scribe' }
+            1 { $out | Write-Host }
+            default { $out | Write-Host; Bad "the model provider is configured but did not pass - fix .env and re-run"; $script:failed += 'incident-scribe' }
         }
     } finally {
         Pop-Location
@@ -114,7 +108,6 @@ function Setup-IndustryAgents {
         Ok "dependencies installed"
         npm run setup --silent | ForEach-Object { Info $_ }
         if ($LASTEXITCODE -ne 0) { Bad "npm run setup failed"; $script:failed += 'industry-agents'; return }
-        Info "next: add MODEL_API_KEY to the demo .env you want to run (demos\*\.env)"
     } finally {
         Pop-Location
     }
