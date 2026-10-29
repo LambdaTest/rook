@@ -11,6 +11,7 @@ An incident-intake agent to test with `rook`.
 
 ```bash
 cp .env.example .env            # add a token and one model provider's key
+python3 scripts/check_llm.py    # keys present? endpoint up? credentials accepted? (Windows: python)
 ./scripts/preflight.sh          # Windows: powershell -File scripts\preflight.ps1
 rook                            # explore the agent and generate a suite
 ```
@@ -230,7 +231,16 @@ export SCRIBE_API_TOKEN=choose-any-secret-string        # macOS / Linux / WSL
 $env:SCRIBE_API_TOKEN = "choose-any-secret-string"      # Windows PowerShell
 ```
 
-Use the same value in both places.
+Use the same value in both places. Or load all of `.env` into the shell in one
+step (source it, do not run it):
+
+```bash
+. scripts/env.sh          # macOS / Linux / WSL
+```
+
+```powershell
+. .\scripts\env.ps1       # Windows PowerShell
+```
 
 ### Running it
 
@@ -260,7 +270,7 @@ variables win over `.env`.
 | variable | role |
 | --- | --- |
 | `SCRIBE_API_TOKEN` | **required**: the credential checked on every command |
-| `LLM_PROVIDER` | `anthropic`/`glm` · `gemini` · `responses` · `openai`/`chat`. If unset, auto-detected in that order from the variables present |
+| `LLM_PROVIDER` | `anthropic`/`glm` · `gemini` · `responses` · `lambdatest`/`lt` · `openai`/`chat`. If unset, auto-detected in that order from the variables present |
 | `SCRIBE_STATE_DIR` | session storage root (default `.scribe-sessions/`) |
 | `OPS_LEARNED_FILE` | learned-incidents file (default `services/incidents.learned.json`) |
 | `MCP_TIMEOUT` | per-call timeout to ops-directory, seconds (default 30) |
@@ -273,6 +283,7 @@ Per provider:
 | `anthropic` / `glm` | `ANTHROPIC_BASE_URL` (default `https://api.z.ai/api/anthropic`); key from `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_API_KEY`, `GLM_API_KEY` or `ZAI_API_KEY`; model from `ANTHROPIC_MODEL`, `GLM_MODEL` or `ANTHROPIC_DEFAULT_{SONNET,OPUS,HAIKU}_MODEL` (a `[1m]` suffix is stripped) |
 | `gemini` | `GEMINI_API_KEY`, `GEMINI_MODEL`; optional `GEMINI_ENDPOINT` |
 | `responses` | `OPENAI_ENDPOINT`, `OPENAI_INDIA_API_KEY`, `OPENAI_MODEL` |
+| `lambdatest` / `lt` | `GATEWAY_URL`, `LT_USERNAME`, `LT_ACCESS_KEY` (sent as HTTP Basic auth to `<GATEWAY_URL>/v1/chat/completions`); optional `LT_MODEL` (default `auto`) |
 | `openai` / `chat` | `OPENAI_API_KEY` (or `OPENAI_INDIA_API_KEY`), `OPENAI_CHAT_MODEL` (or `OPENAI_MODEL`); optional `OPENAI_CHAT_ENDPOINT` / `OPENAI_BASE_URL` |
 
 ### Project layout
@@ -291,6 +302,10 @@ scripts/
   preflight.sh             pre-run checks (macOS / Linux / WSL)
   preflight.ps1            pre-run checks (Windows PowerShell)
   build-index.mjs          enables semantic search (rebuilds the index)
+  check_llm.py             keys present, endpoint up, credentials accepted
+  ensure_token.py          fills SCRIBE_API_TOKEN in .env when it is empty
+  prompt_credentials.py    asks for LT_USERNAME and LT_ACCESS_KEY when .env has none
+  env.sh / env.ps1         source them to load .env into your shell
 docs/
   invoking.md              the CLI contract
   incident-policy.pdf      the incident policy (authoritative)

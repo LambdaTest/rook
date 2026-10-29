@@ -15,6 +15,13 @@ The first is the declared case, and it is the minority. A survey of ~20 real
 repositories found **zero** agent manifests, which is why the folder is the
 input and every declaration is a bonus.
 
+Set everything up with one command (installs dependencies, creates `.env` files, generates the incident-scribe token, installs embeddings, and checks the model key):
+
+```bash
+./samples/setup.sh                                              # macOS / Linux / WSL
+powershell -ExecutionPolicy Bypass -File samples\setup.ps1      # Windows
+```
+
 ```bash
 cd samples/refund-desk && rook          # command-line agent
 cd samples/triage-service && npm start  # then, in another terminal:

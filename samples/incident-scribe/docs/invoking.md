@@ -41,6 +41,19 @@ python -m incident_scribe logs    --token $env:SCRIBE_API_TOKEN --session-id S-1
 `.env` expands to an empty `--token`, which is refused as `unauthorized`. For a
 multi-line report, pipe a file: `Get-Content report.txt -Raw | python -m …`.
 
+**Load `.env` into the shell first.** `./setup.sh` (or `setup.ps1`) creates
+`.env` with a generated token, but a script cannot set variables in your shell,
+so source the loader once per terminal. Variables already set in the shell win
+over the file.
+
+```bash
+. scripts/env.sh          # macOS / Linux / WSL
+```
+
+```powershell
+. .\scripts\env.ps1       # Windows PowerShell (note the leading dot)
+```
+
 **There is no login step.** The token is issued out of band and lives in
 `SCRIBE_API_TOKEN`. Every one of the four commands takes `--token`, and it is
 checked before anything else happens — `logs` and `close` exactly as much as
@@ -62,7 +75,8 @@ continues the same session.
 | --- | --- |
 | `SCRIBE_API_TOKEN` | the session credential, presented on every command |
 
-The default provider remains the existing Responses API. To use GLM through
+Pick a provider with `LLM_PROVIDER`; the `.env.example` template uses the
+LambdaTest gateway. To use GLM through
 Z.AI's Anthropic-compatible endpoint, set `LLM_PROVIDER=glm`,
 `ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic`, `GLM_API_KEY`, and
 `GLM_MODEL` (for example `glm-5.3`). The adapter also accepts the names from
@@ -79,10 +93,17 @@ Other supported providers use the same multi-turn agent loop:
 | `glm` / `anthropic` | `ANTHROPIC_BASE_URL`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_MODEL` |
 | `openai` / `chat` | `OPENAI_API_KEY`, `OPENAI_CHAT_MODEL`; optional `OPENAI_CHAT_ENDPOINT` |
 | `gemini` | `GEMINI_API_KEY`, `GEMINI_MODEL`; optional `GEMINI_ENDPOINT` |
+| `lambdatest` / `lt` | `GATEWAY_URL`, `LT_USERNAME`, `LT_ACCESS_KEY`; optional `LT_MODEL` (default `auto`) |
+
+`GATEWAY_URL` must start with `https://`, because the access key is sent with
+every call. `./setup.sh` asks
+for `LT_USERNAME` and `LT_ACCESS_KEY` when they are empty, with the key typed
+hidden, and writes them to `.env`.
 
 If `LLM_PROVIDER` is omitted, the adapter selects Anthropic/GLM, Gemini,
-Responses, or Chat Completions from the variables that are present, in that
-order.
+Responses, LambdaTest (when `GATEWAY_URL`, `LT_USERNAME` and `LT_ACCESS_KEY` are
+all set and no `OPENAI_API_KEY` is), or Chat Completions from the variables that
+are present, in that order.
 
 **That is the whole list.** The desk's model endpoint, key and deployment are
 its OWN configuration — it reads them from its `.env` and they are nobody

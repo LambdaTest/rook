@@ -2,22 +2,29 @@
 
 from __future__ import annotations
 
+import base64
 import json
 import os
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from typing import Any
 
 
 class ModelError(RuntimeError):
-    """The model could not be reached, or refused."""
+    """The model could not be reached, or refused. `status` is the HTTP status when an endpoint answered."""
+
+    def __init__(self, message: str, status: int | None = None) -> None:
+        super().__init__(message)
+        self.status = status
 
 
 ANTHROPIC = {"anthropic", "glm", "zai"}
 RESPONSES = {"responses", "azure", "azure_responses", "openai_responses"}
 CHAT = {"chat", "chat_completions", "openai", "openai_chat"}
 GEMINI = {"gemini", "google", "google_gemini"}
+LAMBDATEST = {"lambdatest", "lt", "gateway"}
 
 
 def _config() -> tuple[str, str, str, str]:
@@ -29,6 +36,10 @@ def _config() -> tuple[str, str, str, str]:
             requested = "gemini"
         elif os.environ.get("OPENAI_ENDPOINT", "").strip():
             requested = "responses"
+        elif all(os.environ.get(name, "").strip() for name in ("GATEWAY_URL", "LT_USERNAME", "LT_ACCESS_KEY")) and not any(
+            os.environ.get(name, "").strip() for name in ("OPENAI_API_KEY", "OPENAI_INDIA_API_KEY")
+        ):
+            requested = "lambdatest"
         else:
             requested = "chat"
 
@@ -53,6 +64,21 @@ def _config() -> tuple[str, str, str, str]:
         if not key or not model:
             raise ModelError("the Gemini model needs GEMINI_API_KEY and GEMINI_MODEL")
         return "gemini", endpoint.rstrip("/"), key, model
+
+    if requested in LAMBDATEST:
+        endpoint = os.environ.get("GATEWAY_URL", "").strip()
+        username = os.environ.get("LT_USERNAME", "").strip()
+        access_key = os.environ.get("LT_ACCESS_KEY", "").strip()
+        model = os.environ.get("LT_MODEL", "").strip() or "auto"
+        missing = [name for name, value in (
+            ("GATEWAY_URL", endpoint), ("LT_USERNAME", username), ("LT_ACCESS_KEY", access_key)
+        ) if not value]
+        if missing:
+            raise ModelError("the LambdaTest gateway is not configured: " + ", ".join(missing))
+        parts = urllib.parse.urlsplit(endpoint)
+        if parts.scheme != "https" and not (parts.scheme == "http" and parts.hostname in ("localhost", "127.0.0.1", "::1")):
+            raise ModelError("GATEWAY_URL must start with https:// (the account access key is sent with every call)")
+        return "lambdatest", _chat_url(endpoint), base64.b64encode(f"{username}:{access_key}".encode()).decode(), model
 
     if requested in CHAT:
         endpoint = os.environ.get("OPENAI_CHAT_ENDPOINT", "").strip()
@@ -242,11 +268,11 @@ def _request(url: str, body: dict[str, Any], headers: dict[str, str]) -> dict[st
             with urllib.request.urlopen(req, timeout=_timeout_seconds()) as response:
                 data = json.load(response)
             if data.get("error"):
-                raise ModelError(f"model returned an error: {data['error']}")
+                raise ModelError(f"model returned an error: {data['error']}", status=response.status)
             return data
         except urllib.error.HTTPError as error:
             detail = error.read()[:400].decode("utf-8", "replace")
-            raise ModelError(f"model answered {error.code}: {detail}") from None
+            raise ModelError(f"model answered {error.code}: {detail}", status=error.code) from None
         except (urllib.error.URLError, TimeoutError, OSError) as error:
             if attempt >= retries:
                 raise ModelError(f"could not reach the model: {error}") from None
@@ -271,11 +297,11 @@ def _call_anthropic(items: list[dict[str, Any]], tools: list[dict[str, Any]] | N
     return {"text": "\n".join(block.get("text", "") for block in blocks if block.get("type") == "text").strip(), "tool_calls": calls, "raw_output": [{"role": "assistant", "content": blocks}], "stop_reason": data.get("stop_reason"), "usage": {"input_tokens": usage.get("input_tokens", 0), "output_tokens": usage.get("output_tokens", 0)}}
 
 
-def _call_chat(items: list[dict[str, Any]], tools: list[dict[str, Any]] | None, endpoint: str, key: str, model: str, max_tokens: int) -> dict[str, Any]:
+def _call_chat(items: list[dict[str, Any]], tools: list[dict[str, Any]] | None, endpoint: str, key: str, model: str, max_tokens: int, scheme: str = "Bearer") -> dict[str, Any]:
     body: dict[str, Any] = {"model": model, "messages": _chat_items(items), "max_tokens": max_tokens}
     if tools:
         body["tools"] = _chat_tools(tools)
-    data = _request(endpoint, body, {"content-type": "application/json", "Authorization": f"Bearer {key}"})
+    data = _request(endpoint, body, {"content-type": "application/json", "Authorization": f"{scheme} {key}"})
     message = (data.get("choices") or [{}])[0].get("message") or {}
     calls = []
     for call in message.get("tool_calls") or []:
@@ -314,6 +340,8 @@ def call(items: list[dict[str, Any]], tools: list[dict[str, Any]] | None = None,
         return _call_anthropic(items, tools, endpoint, key, model, max_output_tokens)
     if provider == "chat":
         return _call_chat(items, tools, endpoint, key, model, max_output_tokens)
+    if provider == "lambdatest":
+        return _call_chat(items, tools, endpoint, key, model, max_output_tokens, scheme="Basic")
     if provider == "gemini":
         return _call_gemini(items, tools, endpoint, key, model, max_output_tokens)
 
