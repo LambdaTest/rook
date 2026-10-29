@@ -58,8 +58,10 @@ for candidate in python3 python; do
 done
 
 NODE_MAJOR=""
+NODE_MINOR=""
 if command -v node >/dev/null 2>&1; then
   NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]')"
+  NODE_MINOR="$(node -p 'process.versions.node.split(".")[1]')"
 fi
 
 head_ "sample agents — setup"
@@ -74,21 +76,13 @@ setup_incident_scribe() {
 
   cd incident-scribe
   if [ ! -f .env ]; then
-    cp .env.example .env
+    (umask 077; cp .env.example .env)
     green "created .env from .env.example"
   else
     green "kept existing .env"
   fi
 
-  if grep -Eq '^SCRIBE_API_TOKEN=[[:space:]]*$' .env; then
-    local token
-    token="$($PY -c 'import secrets; print(secrets.token_urlsafe(24))')"
-    "$PY" - .env "$token" <<'EOF'
-import re, sys
-path, token = sys.argv[1:3]
-text = open(path).read()
-open(path, "w").write(re.sub(r"(?m)^SCRIBE_API_TOKEN=[ \t]*$", "SCRIBE_API_TOKEN=" + token, text, count=1))
-EOF
+  if [ "$("$PY" scripts/ensure_token.py .env)" = generated ]; then
     green "generated SCRIBE_API_TOKEN in .env"
   else
     green "SCRIBE_API_TOKEN already set"
@@ -109,11 +103,10 @@ EOF
   local status=0
   "$PY" scripts/check_llm.py || status=$?
   case "$status" in
-    0) bash scripts/preflight.sh || FAILED="$FAILED incident-scribe" ;;
+    0) PY="$PY" bash scripts/preflight.sh || FAILED="$FAILED incident-scribe" ;;
     1)
-      info "next: open incident-scribe/.env and fill in LT_USERNAME and LT_ACCESS_KEY"
-      info "      (GATEWAY_URL is already https://rook-samples.lambdatest.com; to use GLM or Gemini instead, swap the provider block)."
-      info "      then re-run ./setup.sh incident-scribe" ;;
+      info "next: complete the provider settings named above in incident-scribe/.env, then re-run ./setup.sh incident-scribe"
+      info "      (the LambdaTest template needs LT_USERNAME and LT_ACCESS_KEY; an older .env keeps its own LLM_PROVIDER)." ;;
     *) red "the model provider is configured but did not pass — fix .env and re-run"; FAILED="$FAILED incident-scribe" ;;
   esac
   cd ..
@@ -129,14 +122,24 @@ setup_industry_agents() {
   else
     red "npm install failed"; FAILED="$FAILED industry-agents"; cd ..; return
   fi
-  npm run setup --silent | while IFS= read -r line; do info "$line"; done
-  info "next: add MODEL_API_KEY to the demo .env you want to run (demos/*/.env)"
+  if npm run setup --silent | while IFS= read -r line; do info "$line"; done; then
+    info "next: add MODEL_API_KEY to the demo .env you want to run (demos/*/.env)"
+  else
+    red "npm run setup failed"; FAILED="$FAILED industry-agents"
+  fi
   cd ..
 }
 
 # --- node-only samples -----------------------------------------------------
+# knowledge-vault and trip-weather-station import node:sqlite, unflagged from Node 22.13.
 setup_node_only() {
   head_ "$1"
+  case "$1" in
+    knowledge-vault|trip-weather-station)
+      if [ "$NODE_MAJOR" -lt 22 ] || { [ "$NODE_MAJOR" -eq 22 ] && [ "$NODE_MINOR" -lt 13 ]; }; then
+        red "needs Node 22.13+ for node:sqlite, found $(node --version)"; FAILED="$FAILED $1"; return
+      fi ;;
+  esac
   green "nothing to install"
 }
 

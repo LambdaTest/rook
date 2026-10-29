@@ -7,12 +7,17 @@ import json
 import os
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from typing import Any
 
 
 class ModelError(RuntimeError):
-    """The model could not be reached, or refused."""
+    """The model could not be reached, or refused. `status` is the HTTP status when an endpoint answered."""
+
+    def __init__(self, message: str, status: int | None = None) -> None:
+        super().__init__(message)
+        self.status = status
 
 
 ANTHROPIC = {"anthropic", "glm", "zai"}
@@ -31,7 +36,9 @@ def _config() -> tuple[str, str, str, str]:
             requested = "gemini"
         elif os.environ.get("OPENAI_ENDPOINT", "").strip():
             requested = "responses"
-        elif all(os.environ.get(name, "").strip() for name in ("GATEWAY_URL", "LT_USERNAME", "LT_ACCESS_KEY")):
+        elif all(os.environ.get(name, "").strip() for name in ("GATEWAY_URL", "LT_USERNAME", "LT_ACCESS_KEY")) and not any(
+            os.environ.get(name, "").strip() for name in ("OPENAI_API_KEY", "OPENAI_INDIA_API_KEY")
+        ):
             requested = "lambdatest"
         else:
             requested = "chat"
@@ -68,6 +75,9 @@ def _config() -> tuple[str, str, str, str]:
         ) if not value]
         if missing:
             raise ModelError("the LambdaTest gateway is not configured: " + ", ".join(missing))
+        parts = urllib.parse.urlsplit(endpoint)
+        if parts.scheme != "https" and not (parts.scheme == "http" and parts.hostname in ("localhost", "127.0.0.1", "::1")):
+            raise ModelError("GATEWAY_URL must start with https:// (the account access key is sent with every call)")
         return "lambdatest", _chat_url(endpoint), base64.b64encode(f"{username}:{access_key}".encode()).decode(), model
 
     if requested in CHAT:
@@ -258,11 +268,11 @@ def _request(url: str, body: dict[str, Any], headers: dict[str, str]) -> dict[st
             with urllib.request.urlopen(req, timeout=_timeout_seconds()) as response:
                 data = json.load(response)
             if data.get("error"):
-                raise ModelError(f"model returned an error: {data['error']}")
+                raise ModelError(f"model returned an error: {data['error']}", status=response.status)
             return data
         except urllib.error.HTTPError as error:
             detail = error.read()[:400].decode("utf-8", "replace")
-            raise ModelError(f"model answered {error.code}: {detail}") from None
+            raise ModelError(f"model answered {error.code}: {detail}", status=error.code) from None
         except (urllib.error.URLError, TimeoutError, OSError) as error:
             if attempt >= retries:
                 raise ModelError(f"could not reach the model: {error}") from None

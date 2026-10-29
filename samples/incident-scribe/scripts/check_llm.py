@@ -12,11 +12,9 @@ Secrets are never printed: only the NAMES of the variables that are set.
 from __future__ import annotations
 
 import os
-import re
 import sys
 import time
 import urllib.error
-import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -53,15 +51,20 @@ def info(message: str) -> None:
     print(f"  {message}")
 
 
-def gateway_health(endpoint: str) -> bool:
-    """GET <gateway origin>/healthz — unauthenticated, so it isolates "is it up" from "are my keys good"."""
-    parts = urllib.parse.urlsplit(endpoint)
-    url = f"{parts.scheme}://{parts.netloc}/healthz"
+def gateway_health() -> bool:
+    """GET <GATEWAY_URL>/healthz — unauthenticated, so it isolates "is it up" from "are my keys good".
+
+    A gateway with no such route (404) is not a failure; the credential check below still decides.
+    """
+    url = os.environ["GATEWAY_URL"].strip().rstrip("/") + "/healthz"
     try:
         with urllib.request.urlopen(url, timeout=15) as response:
             ok(f"health: {url} answered {response.status}")
             return True
     except urllib.error.HTTPError as error:
+        if error.code == 404:
+            info(f"health: {url} has no health route, relying on the credential check")
+            return True
         bad(f"health: {url} answered {error.code}")
     except (urllib.error.URLError, TimeoutError, OSError) as error:
         bad(f"health: {url} unreachable — {error}")
@@ -86,7 +89,7 @@ def main() -> int:
     # 2. health. The gateway has a dedicated probe; other providers are judged
     # by the request below, since a 401 from them already proves they are up.
     probed = provider == "lambdatest"
-    if probed and not gateway_health(endpoint):
+    if probed and not gateway_health():
         return 3
 
     # 3. one tiny real request. Any HTTP answer, even a refusal, proves the
@@ -97,18 +100,18 @@ def main() -> int:
         llm.call([llm.user("Reply with the single word: ok")], max_output_tokens=64)
     except llm.ModelError as error:
         message = str(error)
-        answered = re.search(r"model answered (\d{3})", message)
-        if answered and answered.group(1) in {"401", "403"}:
-            if not probed:
-                ok(f"health: endpoint is up ({answered.group(1)} answered)")
+        if error.status is None:
+            bad(f"health: endpoint unreachable — {message[:300]}")
+            return 3
+        if not probed:
+            ok(f"health: endpoint is up ({error.status} answered)")
+        if error.status in (401, 403):
             bad(f"auth: credentials were refused — check the key/username in .env ({message[:200]})")
             return 2
-        if answered:
-            if not probed:
-                ok(f"health: endpoint is up ({answered.group(1)} answered)")
-            bad(f"auth: could not be confirmed, the request was rejected — {message[:300]}")
-            return 3
-        bad(f"health: endpoint unreachable — {message[:300]}")
+        bad(f"auth: could not be confirmed, the request was rejected — {message[:300]}")
+        return 3
+    except Exception as error:  # an unexpected answer must never read as "not configured" (exit 1)
+        bad(f"the endpoint answered something unexpected — {type(error).__name__}: {str(error)[:300]}")
         return 3
     seconds = time.monotonic() - started
     if not probed:

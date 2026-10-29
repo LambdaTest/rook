@@ -14,6 +14,7 @@
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
+PY="${PY:-python3}"
 
 green() { printf '  \033[32m%s\033[0m %s\n' "ok" "$1"; }
 red()   { printf '  \033[31m%s\033[0m %s\n' "!!" "$1"; }
@@ -31,7 +32,7 @@ fi
 green "the token is configured"
 
 # --- 2. the model configuration ------------------------------------------
-if python3 -c "from incident_scribe.__main__ import _load_dotenv; _load_dotenv(); from incident_scribe.llm import _config; _config()" 2>/dev/null; then
+if "$PY" -c "from incident_scribe.__main__ import _load_dotenv; _load_dotenv(); from incident_scribe.llm import _config; _config()" 2>/dev/null; then
   green "the model provider is configured"
 else
   red "the model provider is not configured"
@@ -42,7 +43,7 @@ fi
 #
 # Checked rather than assumed: the token gate is the one behaviour a demo
 # cannot show going wrong on purpose, so it is worth knowing it is on.
-REFUSED=$(python3 -m incident_scribe logs --session-id _preflight --token wrong-token 2>/dev/null || true)
+REFUSED=$("$PY" -m incident_scribe logs --session-id _preflight --token wrong-token 2>/dev/null || true)
 if printf '%s' "$REFUSED" | grep -q '"unauthorized"'; then
   green "the token gate is on (a wrong token is refused)"
 else
@@ -78,7 +79,7 @@ else
 fi
 
 # --- 6. the desk can actually reach it ------------------------------------
-if python3 -c "
+if "$PY" -c "
 from incident_scribe.mcp import directory
 r = directory().call('lookup_service', {'name': 'checkout-api'})
 raise SystemExit(0 if r.get('owning_team') == 'payments' else 1)

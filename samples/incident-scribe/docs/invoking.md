@@ -82,8 +82,9 @@ Other supported providers use the same multi-turn agent loop:
 | `lambdatest` / `lt` | `GATEWAY_URL`, `LT_USERNAME`, `LT_ACCESS_KEY`; optional `LT_MODEL` (default `auto`) |
 
 If `LLM_PROVIDER` is omitted, the adapter selects Anthropic/GLM, Gemini,
-Responses, or Chat Completions from the variables that are present, in that
-order.
+Responses, LambdaTest (when `GATEWAY_URL`, `LT_USERNAME` and `LT_ACCESS_KEY` are
+all set and no `OPENAI_API_KEY` is), or Chat Completions from the variables that
+are present, in that order.
 
 **That is the whole list.** The desk's model endpoint, key and deployment are
 its OWN configuration — it reads them from its `.env` and they are nobody

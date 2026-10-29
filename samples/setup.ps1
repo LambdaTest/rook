@@ -50,6 +50,7 @@ Head "sample agents - setup"
 
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) { Bad "node is not on PATH (https://nodejs.org)"; exit 1 }
 $nodeMajor = [int](node -p "process.versions.node.split('.')[0]")
+$nodeMinor = [int](node -p "process.versions.node.split('.')[1]")
 Ok "node $(node --version)"
 
 function Setup-IncidentScribe {
@@ -66,12 +67,7 @@ function Setup-IncidentScribe {
             Ok "kept existing .env"
         }
 
-        $envText = Get-Content .env -Raw
-        if ($envText -match '(?m)^SCRIBE_API_TOKEN=[ \t]*\r?$') {
-            $token = (& $python -c "import secrets; print(secrets.token_urlsafe(24))").Trim()
-            $envText = [regex]::Replace($envText, '(?m)^SCRIBE_API_TOKEN=[ \t]*(?=\r?$)', "SCRIBE_API_TOKEN=$token", 1)
-            # no BOM: the Python reader would otherwise see it as part of the first key
-            [System.IO.File]::WriteAllText((Join-Path (Get-Location) '.env'), $envText, (New-Object System.Text.UTF8Encoding($false)))
+        if ((& $python scripts\ensure_token.py .env) -eq 'generated') {
             Ok "generated SCRIBE_API_TOKEN in .env"
         } else {
             Ok "SCRIBE_API_TOKEN already set"
@@ -95,9 +91,8 @@ function Setup-IncidentScribe {
                 if ($LASTEXITCODE -ne 0) { $script:failed += 'incident-scribe' }
             }
             1 {
-                Info "next: open incident-scribe\.env and fill in LT_USERNAME and LT_ACCESS_KEY"
-                Info "      (GATEWAY_URL is already https://rook-samples.lambdatest.com; to use GLM or Gemini instead, swap the provider block)."
-                Info "      then re-run setup.ps1 incident-scribe"
+                Info "next: complete the provider settings named above in incident-scribe\.env, then re-run setup.ps1 incident-scribe"
+                Info "      (the LambdaTest template needs LT_USERNAME and LT_ACCESS_KEY; an older .env keeps its own LLM_PROVIDER)."
             }
             default { Bad "the model provider is configured but did not pass - fix .env and re-run"; $script:failed += 'incident-scribe' }
         }
@@ -115,6 +110,7 @@ function Setup-IndustryAgents {
         if ($LASTEXITCODE -ne 0) { Bad "npm install failed"; $script:failed += 'industry-agents'; return }
         Ok "dependencies installed"
         npm run setup --silent | ForEach-Object { Info $_ }
+        if ($LASTEXITCODE -ne 0) { Bad "npm run setup failed"; $script:failed += 'industry-agents'; return }
         Info "next: add MODEL_API_KEY to the demo .env you want to run (demos\*\.env)"
     } finally {
         Pop-Location
@@ -125,7 +121,16 @@ foreach ($sample in $Samples) {
     switch ($sample) {
         'incident-scribe' { Setup-IncidentScribe }
         'industry-agents' { Setup-IndustryAgents }
-        default           { Head $sample; Ok "nothing to install" }
+        default {
+            Head $sample
+            # knowledge-vault and trip-weather-station import node:sqlite, unflagged from Node 22.13
+            $needsSqlite = $sample -in 'knowledge-vault', 'trip-weather-station'
+            if ($needsSqlite -and ($nodeMajor -lt 22 -or ($nodeMajor -eq 22 -and $nodeMinor -lt 13))) {
+                Bad "needs Node 22.13+ for node:sqlite, found $(node --version)"; $failed += $sample
+            } else {
+                Ok "nothing to install"
+            }
+        }
     }
 }
 

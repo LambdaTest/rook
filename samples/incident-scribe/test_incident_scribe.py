@@ -363,6 +363,8 @@ def test_model_error_carries_the_http_status(monkeypatch):
         raise AssertionError("expected ModelError")
 
     class Answer(io.BytesIO):
+        status = 200
+
         def __enter__(self):
             return self
 
@@ -407,7 +409,7 @@ def test_check_llm_never_reports_a_crash_as_not_configured(monkeypatch):
     import json
     check = _script("check_llm")
     monkeypatch.setattr(check.llm, "_config", lambda: ("lambdatest", "https://gateway.example.com/v1/chat/completions", "k", "auto"))
-    monkeypatch.setattr(check, "gateway_health", lambda endpoint: True)
+    monkeypatch.setattr(check, "gateway_health", lambda: True)
 
     def html_answer(*args, **kwargs):
         raise json.JSONDecodeError("Expecting value", "<html>", 0)
@@ -419,7 +421,7 @@ def test_check_llm_never_reports_a_crash_as_not_configured(monkeypatch):
 def test_check_llm_classifies_by_status_not_by_message(monkeypatch):
     check = _script("check_llm")
     monkeypatch.setattr(check.llm, "_config", lambda: ("lambdatest", "https://gateway.example.com/v1/chat/completions", "k", "auto"))
-    monkeypatch.setattr(check, "gateway_health", lambda endpoint: True)
+    monkeypatch.setattr(check, "gateway_health", lambda: True)
 
     def answering(status):
         def call(*args, **kwargs):
