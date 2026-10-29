@@ -301,3 +301,150 @@ def test_lambdatest_gateway_needs_all_three_settings(monkeypatch):
     monkeypatch.delenv("LT_ACCESS_KEY", raising=False)
     with pytest.raises(ModelError, match="LT_ACCESS_KEY"):
         _config()
+
+
+_PROVIDER_VARS = (
+    "LLM_PROVIDER", "ANTHROPIC_BASE_URL", "GLM_API_KEY", "ZAI_API_KEY", "GEMINI_API_KEY", "OPENAI_ENDPOINT",
+    "OPENAI_API_KEY", "OPENAI_INDIA_API_KEY", "OPENAI_CHAT_MODEL", "OPENAI_MODEL", "OPENAI_CHAT_ENDPOINT",
+    "OPENAI_BASE_URL", "GATEWAY_URL", "LT_USERNAME", "LT_ACCESS_KEY", "LT_MODEL",
+)
+
+
+def _clean_provider_env(monkeypatch):
+    for name in _PROVIDER_VARS:
+        monkeypatch.delenv(name, raising=False)
+
+
+def test_lambdatest_is_autodetected_after_the_chat_keys(monkeypatch):
+    _clean_provider_env(monkeypatch)
+    monkeypatch.setenv("GATEWAY_URL", "https://gateway.example.com")
+    monkeypatch.setenv("LT_USERNAME", "alice")
+    monkeypatch.setenv("LT_ACCESS_KEY", "s3cret")
+    assert _config()[0] == "lambdatest"
+
+    monkeypatch.setenv("OPENAI_API_KEY", "sk-x")
+    monkeypatch.setenv("OPENAI_CHAT_MODEL", "gpt-x")
+    assert _config()[0] == "chat"
+
+
+def test_lambdatest_sends_credentials_only_over_https_or_loopback(monkeypatch):
+    import pytest
+    from incident_scribe.llm import ModelError
+
+    _clean_provider_env(monkeypatch)
+    monkeypatch.setenv("LLM_PROVIDER", "lambdatest")
+    monkeypatch.setenv("LT_USERNAME", "alice")
+    monkeypatch.setenv("LT_ACCESS_KEY", "s3cret")
+    for url in ("http://gateway.example.com", "gateway.example.com"):
+        monkeypatch.setenv("GATEWAY_URL", url)
+        with pytest.raises(ModelError, match="https"):
+            _config()
+    for url in ("http://127.0.0.1:8080", "http://localhost:8080", "https://gateway.example.com"):
+        monkeypatch.setenv("GATEWAY_URL", url)
+        assert _config()[0] == "lambdatest"
+
+
+def test_model_error_carries_the_http_status(monkeypatch):
+    import io
+    import urllib.error
+    from incident_scribe import llm
+
+    monkeypatch.setenv("LLM_RETRIES", "0")
+
+    def refused(req, timeout):
+        raise urllib.error.HTTPError(req.full_url, 401, "Unauthorized", {}, io.BytesIO(b"no"))
+
+    monkeypatch.setattr(llm.urllib.request, "urlopen", refused)
+    try:
+        llm._request("https://gateway.example.com", {}, {})
+    except llm.ModelError as error:
+        assert error.status == 401
+    else:
+        raise AssertionError("expected ModelError")
+
+    class Answer(io.BytesIO):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+    monkeypatch.setattr(llm.urllib.request, "urlopen", lambda req, timeout: Answer(b'{"error": "bad key"}'))
+    try:
+        llm._request("https://gateway.example.com", {}, {})
+    except llm.ModelError as error:
+        assert error.status == 200
+    else:
+        raise AssertionError("expected ModelError")
+
+
+def _script(name):
+    import importlib.util
+    from pathlib import Path
+
+    spec = importlib.util.spec_from_file_location(name, Path(__file__).parent / "scripts" / f"{name}.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_ensure_token_fills_every_way_a_token_can_be_missing():
+    ensure = _script("ensure_token").ensure
+    for text in ("SCRIBE_API_TOKEN=\n", 'SCRIBE_API_TOKEN=""\n', "# SCRIBE_API_TOKEN=\nLLM_PROVIDER=x\n", "LLM_PROVIDER=x\n", ""):
+        new, generated = ensure(text)
+        assert generated
+        value = [line for line in new.splitlines() if line.startswith("SCRIBE_API_TOKEN=")][0].split("=", 1)[1]
+        assert len(value) == 48 and not value.startswith("-")
+
+    kept, generated = ensure("A=1\nSCRIBE_API_TOKEN=abc\n")
+    assert (kept, generated) == ("A=1\nSCRIBE_API_TOKEN=abc\n", False)
+
+    crlf, _ = ensure("SCRIBE_API_TOKEN=\r\nA=1\r\n")
+    assert "\n" not in crlf.replace("\r\n", "") and crlf.endswith("A=1\r\n")
+
+
+def test_check_llm_never_reports_a_crash_as_not_configured(monkeypatch):
+    import json
+    check = _script("check_llm")
+    monkeypatch.setattr(check.llm, "_config", lambda: ("lambdatest", "https://gateway.example.com/v1/chat/completions", "k", "auto"))
+    monkeypatch.setattr(check, "gateway_health", lambda endpoint: True)
+
+    def html_answer(*args, **kwargs):
+        raise json.JSONDecodeError("Expecting value", "<html>", 0)
+
+    monkeypatch.setattr(check.llm, "call", html_answer)
+    assert check.main() == 3
+
+
+def test_check_llm_classifies_by_status_not_by_message(monkeypatch):
+    check = _script("check_llm")
+    monkeypatch.setattr(check.llm, "_config", lambda: ("lambdatest", "https://gateway.example.com/v1/chat/completions", "k", "auto"))
+    monkeypatch.setattr(check, "gateway_health", lambda endpoint: True)
+
+    def answering(status):
+        def call(*args, **kwargs):
+            error = check.llm.ModelError("model returned an error: bad key")
+            error.status = status
+            raise error
+        return call
+
+    monkeypatch.setattr(check.llm, "call", answering(401))
+    assert check.main() == 2
+    monkeypatch.setattr(check.llm, "call", answering(200))
+    assert check.main() == 3
+
+
+def test_gateway_health_probes_under_the_gateway_path_and_tolerates_a_missing_probe(monkeypatch):
+    import io
+    import urllib.error
+    check = _script("check_llm")
+    seen = []
+
+    def missing(url, timeout):
+        seen.append(url)
+        raise urllib.error.HTTPError(url, 404, "Not Found", {}, io.BytesIO(b""))
+
+    monkeypatch.setenv("GATEWAY_URL", "https://proxy.example.com/llm-gateway/")
+    monkeypatch.setattr(check.urllib.request, "urlopen", missing)
+    assert check.gateway_health() is True
+    assert seen == ["https://proxy.example.com/llm-gateway/healthz"]
