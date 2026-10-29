@@ -31,6 +31,7 @@ jobs:
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: 22
+          check-latest: true
       - name: Install the published Rook CLI
         run: npm install -g @testmuai/rook@latest
       - run: npm ci

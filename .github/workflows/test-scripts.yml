@@ -21,6 +21,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+          check-latest: true
 
       # Detect command drift against the current published CLI.
       - name: Install the current rook
@@ -59,4 +60,5 @@ jobs:
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: '22'
+          check-latest: true
       - run: bash scripts/test-skill-installer.sh

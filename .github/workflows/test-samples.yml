@@ -27,6 +27,7 @@ jobs:
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: "22"
+          check-latest: true
       # `node --test` discovers every test/*.test.mjs file, so a new test file
       # joins without editing package.json or this workflow.
       - run: npm test
@@ -45,6 +46,7 @@ jobs:
       - uses: actions/setup-node@v7.0.0
         with:
           node-version: "22"
+          check-latest: true
       - run: npm ci
       - run: npm run setup
       - run: npm test
