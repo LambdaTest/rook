@@ -1,3 +1,23 @@
+## [0.1.17] - 2026-10-30
+
+### Behavior changes
+- [run-concurrency-limit] A run executes at most as many scenarios at a time as your plan allows. When `--concurrency` asks for more, rook says so, for example "Running 2 at a time, not 6." A resumed run that the limit caps records the capped number in its `run.yaml`.
+- [run-failure-analysis] A run's page in the web app and `rook ui` shows its failure clusters in a collapsible **Failure analysis** section, and each failed or unverifiable result shows a "Why it failed" card in place of the old Summary box. A run made with `--rca` shows each cluster's cause, remedy and files; without `--rca`, the card says how to get them.
+
+### Added
+- Failure analysis on a run's page, and a "Why it failed" card on failed and unverifiable results, in the web app and `rook ui`.
+- Upgrade opens the plan checkout in place in the web app. If the checkout cannot open, a popup offers the billing page.
+
+### Changed
+- The CLI's bundled Node.js runtime is 24.22.1, from the October 2026 Node.js security release.
+
+### Fixed
+- `rook sync` no longer fails with "Service unavailable" when an agent's text contains a NUL byte or invalid Unicode.
+- After a trial starts, the CLI's credit balance updates before a project is chosen.
+- A TUI started signed out opens the onboarding page after `/login`.
+- The trial chip in the web app no longer shows one day more than the trial has left.
+- An organization with sub-organizations is no longer offered a trial; it sees the "ask your admin" notice.
+
 ## [0.1.16] - 2026-10-28
 
 ### Behavior changes
