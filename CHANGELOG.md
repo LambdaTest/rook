@@ -1,3 +1,21 @@
+## [0.1.18] - 2026-11-09
+
+### Added
+- The Projects page in the web app lists every project you can see, including projects with no agents yet. **Search Projects** finds a project by name, and the heading shows how many projects there are on every page.
+- An **Owners** filter on the Projects page, and each project shows its creator's initials. **Status** and **Profile** filters on the Agents page.
+
+### Changed
+- The Projects and Agents lists in the web app follow the Test Manager layout. An agent's row starts with a mark for its last run's outcome and ends with a bar of that run's results; hover over the bar for the counts. Tools and pass rate are no longer on the row.
+- The run page's failure analysis is headed **Failure clusters analysis** and lists clusters in order (CL-01, CL-02, ...), in the web app and `rook ui`.
+
+### Fixed
+- `rook sync` works for a project with scenarios you wrote yourself. The server used to refuse it, and the CLI said "Service unavailable".
+- When the server cannot store a value, `rook sync` reports it as invalid input, not "Service unavailable".
+- A passing result that an attack compromised shows its failure cluster and the attack's evidence, in a **Why it was compromised** card.
+- An unverifiable result that is in no failure cluster still shows why it could not be verified.
+- **See this cluster on the run page** opens that cluster, and a remedy's copy button copies only its code when it has code blocks.
+- In a TUI started signed out, the next-step suggestion moves on after `/login` instead of staying on `/login`.
+
 ## [0.1.17] - 2026-10-30
 
 ### Behavior changes
