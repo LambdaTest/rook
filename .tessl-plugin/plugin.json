@@ -1,8 +1,8 @@
 {
-  "name": "testmuai/rook-cli",
+  "name": "testmuai/rook",
   "description": "Rook CLI by TestMu AI (Formerly LambdaTest). Use rook to test, evaluate, red-team or regression-check an AI agent the user owns, or to interpret saved Rook results. Does not apply to ordinary unit tests, browser automation or web UI checks without an AI agent under test.",
   "private": false,
   "skills": [".agents/skills/rook"],
-  "version": "1.0.2",
+  "version": "0.1.14",
   "repository": "https://github.com/LambdaTest/rook"
 }

@@ -1,13 +1,15 @@
 name: Publish Tessl plugin
-# Publishes the rook skill to the Tessl registry (workspace testmuai).
-# Runs when .tessl-plugin/plugin.json changes on main (bump "version" there
-# to release), or on a manual run. Needs the TESSL_TOKEN secret.
+# Manual publish of the rook skill to the Tessl registry (workspace testmuai).
+# Skill releases already publish to Tessl from publish-skill.yml, right after
+# npm. Use this only to publish an existing skill version, for example the
+# first testmuai/rook release.
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.tessl-plugin/plugin.json'
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Skill version to publish, normally the current @testmuai/rook-skill version, for example 0.1.14'
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -28,10 +30,14 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
-      - uses: tesslio/setup-tessl@v2
+      - uses: tesslio/setup-tessl@25ec223fc0da33b41b8044ff5ab2b85235f4f91e # v2
         with:
           token: ${{ secrets.TESSL_TOKEN }}
-      - name: Lint the plugin
-        run: tessl plugin lint .
+          version: '0.119.0'
       - name: Publish to the Tessl registry
-        run: tessl plugin publish .
+        env:
+          SKILL_VERSION: ${{ inputs.version }}
+        run: |
+          jq --arg v "$SKILL_VERSION" '.version = $v' .tessl-plugin/plugin.json > p.json && mv p.json .tessl-plugin/plugin.json
+          tessl plugin lint .
+          tessl plugin publish .
