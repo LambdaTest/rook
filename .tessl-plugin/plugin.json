@@ -1,0 +1,8 @@
+{
+  "name": "testmuai/rook",
+  "description": "Rook by TestMu AI (Formerly LambdaTest): Agent Assurance from the terminal. End-to-end test, evaluate and red-team the AI agents you build across workflows, tools and actions, and catch failures and vulnerabilities before they ship.",
+  "private": false,
+  "skills": [".agents/skills/rook"],
+  "version": "0.1.14",
+  "repository": "https://github.com/LambdaTest/rook"
+}

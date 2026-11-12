@@ -19,6 +19,9 @@ jobs:
     if: github.repository == 'LambdaTest/rook' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v7.0.1
         with:
@@ -48,3 +51,14 @@ jobs:
         run: |
           test -n "$NODE_AUTH_TOKEN" || { echo 'NPM_TOKEN is required' >&2; exit 1; }
           npm publish "./testmuai-rook-skill-${SKILL_VERSION}.tgz" --access public --ignore-scripts --registry https://registry.npmjs.org
+      - uses: tesslio/setup-tessl@25ec223fc0da33b41b8044ff5ab2b85235f4f91e # v2
+        with:
+          token: ${{ secrets.TESSL_TOKEN }}
+          version: '0.119.0'
+      - name: Publish to the Tessl registry
+        env:
+          SKILL_VERSION: ${{ inputs.version }}
+        run: |
+          jq --arg v "$SKILL_VERSION" '.version = $v' .tessl-plugin/plugin.json > p.json && mv p.json .tessl-plugin/plugin.json
+          tessl plugin lint .
+          tessl plugin publish .
