@@ -1,3 +1,30 @@
+## [0.1.20] - 2026-11-13
+
+### Behavior changes
+- [run-rca-default] `rook run` explains its failed and compromised failure clusters by default, giving each a cause and a remedy. This spends credits on each cluster it explains, so a script or CI job that calls `rook run` without flags spends more when the run has failures. `--no-rca` skips the explanations and spends nothing on them. `--rca` still works and also explains Unable to Verify clusters, which the default leaves out.
+- [run-rca-passes] For a run made in passes (`rook run --run <id> --phases ...`), only a pass that runs `judge` explains failures. It follows the setting the run saved when it started: a run started with this version explains by default, a run started with `--rca` also explains Unable to Verify clusters, and `--no-rca` on a pass skips it. A pass that judges nothing keeps the explanations an earlier pass made. A run started with an earlier version without `--rca` saved RCA off, so its later passes explain nothing; `rook report <run id> --rca` explains it.
+- [run-test-summary-upload] `rook run --test` records a summary of the run in Rook cloud: its name, who ran it, the agent version and profile, the scenario count, and when it ends, its totals, pass rate, duration and credits. Scenario results, evidence and the report stay on your machine, and `rook runs sync` never sends them. Nothing is sent for an agent that has never been synced, or when your plan has no Rook cloud. Pass rates, trends, last run and run counts still leave test runs out.
+- [runs-test-runs-tab] The Runs page in the web app and `rook ui` lists test runs under a **Test runs** tab, apart from **Recorded runs**. In `rook ui`, test runs no longer appear in the default list, and the agents list takes its pass rate and last run from recorded runs only. Runs that an earlier version kept local because your plan has no Rook cloud are marked as test runs, so `rook ui` lists them under **Test runs** too. In the web app a test run's row does not open, because its detail stays on the machine that ran it; open it there with `rook ui`.
+- [hallucination-score-removed] Rook no longer asks the judge for a hallucination detection score, and no longer stores or prints one, because nothing checked that score against the reply or the scenario's data. The `quality over N judged:` line in `rook run`, the TUI and `rook report` leaves it out, and the `hallucination_detection` key is gone from `report.metrics.quality` in `rook run --json` and `report.yaml` and from new verdicts. Reports and verdicts written by earlier versions keep the key as stored; `rook report <run id> --rca` recomputes a report's quality scores without it.
+
+### Added
+- A **Test runs** tab on the Runs page, in the web app and `rook ui`, lists runs made with `rook run --test`.
+- `rook run --no-rca` skips the failure explanations a run now makes by default.
+
+### Changed
+- `rook run` explains failed and compromised clusters by default; `--rca` adds Unable to Verify clusters.
+- `rook run --test` sends a summary of the run to Rook cloud. Its scenario detail stays on your machine.
+- The hallucination detection score is gone from quality lines, `--json` output and new verdicts.
+- A cluster's confidence reads `high confidence` instead of `high` (and the same for medium and low), in the CLI, the web app and `rook ui`.
+- When a run's clusters are not explained, the hint after the run and the cluster's text on the `rook ui` run page name `rook report <run id> --rca`, which explains that run without running it again. They used to suggest `--rca` or `/run --rca`. The web app's run and result pages no longer show that hint, because `rook report` reads the run on your machine.
+
+### Fixed
+- Failure analysis answers for a cluster that reaches its step limit, from what it found so far, instead of ending with "used every turn it had" and no cause. The answer is marked "(answered at the step limit)" beside its confidence, in the CLI, the web app and `rook ui`. Such a cluster costs more credits than before, because it now pays for that answer.
+- When the service refuses a step for lack of credits, rook names the credits the step needed to start beside your balance, for example "Insufficient credits. A call needed about 47 credits to start; current balance: 38.41. Add credits to continue. Completed work has been saved." It no longer says the run is out of credits while your balance is above zero.
+- A hook's `execute` phase gets `ROOK_RUN_STATE_DIR`, the run's state directory, as every other phase already did. A hook that read it in `execute`, as hooks written by `rook profile add` can, failed there.
+- `rook generate` caps the output of each call that writes scenarios or attacks: 20,480 tokens for one scenario or attack pattern, 4,096 more for each further one, and 32,768 at most. A reply that runs away stops at its cap and keeps what it finished, instead of running to 65,536 tokens. One such call used to spend more than 250 credits.
+- `rook generate` no longer saves a "was called" check that names your agent's own entry point, such as `recommend` for an agent reached at `POST /v1/recommend`, unless `agent.yaml` declares that call. Hooks report the calls your agent makes, so such a check could only end Unable to Verify, and it made its whole scenario Unable to Verify. For each scenario it drops a check from, rook prints a warning with the fix: declare the call under `calls` in `agent.yaml`, then `rook scenarios delete <id>` and generate again.
+
 ## [0.1.18] - 2026-11-09
 
 ### Added
