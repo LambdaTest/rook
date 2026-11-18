@@ -10,7 +10,7 @@ criterion details, read `runs/<run-id>/scenarios/<scenario-id>/verdict.yaml`.
 | Scenario verdict | `scenario_id`, `status`, `criteria[]`, `unverifiable_reason`, `compromised`, `forbidden_hits[]` |
 | Criterion | `criterion_id`, `criterion`, `expected`, `achieved`, `status`, quoted `evidence`, `confidence` |
 | Report | `run_id`, `agent_id`, `agent_version_id?`, `generated`, `headline`, optional `narrative` and `next[]`, `totals`, `metrics`, `clusters[]`, `credits` |
-| Totals | `planned`, `executed`, `passed`, `failed`, `unverifiable`, `unjudged`, `not_run`, `unrunnable`, `decided`, `pass_rate`, `carried_forward` |
+| Totals | `planned`, `executed`, `passed`, `failed`, `unverifiable`, `unjudged`, `not_run`, `unrunnable`, `decided`, `pass_rate`, `assurance_gap`, `unverified_criteria`, `total_criteria`, `carried_forward` |
 | Cluster | `id`, `why`, `kind` (`failed`, `unverifiable`, `compromised`), `scenarios[]`; RCA may add `cause`, `remedy`, `confidence`, `fault`, `where`, `summary` |
 
 Statuses are **Pass**, **Fail**, and **Unable to Verify**. Unverifiable reasons:
@@ -28,15 +28,21 @@ still passes at once, and a regex asserting that text is absent still fails
 when the text appears. The judge call can add credits; if it fails, the
 criterion is Unable to Verify, not Fail.
 
-## Pass rate
+## Pass rate and assurance gap
 
-Since 0.1.6, `totals.pass_rate` is `Pass / (Pass + Fail + Unable to Verify)`.
-`totals.decided` still means `Pass + Fail`. Unable to Verify contributes to the
-pass-rate denominator as a recorded result, but remains a separate verdict;
-never describe it as Fail. If every recorded result is Unable to Verify,
-`pass_rate` is `0`; if there are no recorded Pass, Fail or Unable to Verify
-results, it is `null`, not zero.
-Unjudged, not-run and unrunnable work does not enter this denominator.
+Since 0.1.21, `totals.pass_rate` is `Pass / (Pass + Fail)`, shown as "Verified
+pass": Unable to Verify is left out of it, and `totals.decided` is its
+denominator. If nothing passed or failed, `pass_rate` is `null` ("unavailable"),
+never `0`. Reports written by 0.1.6 to 0.1.20 keep the rate they stored, which
+counted Unable to Verify in the denominator, so they read lower for the same
+verdicts. Unjudged, not-run and unrunnable work never enters the denominator.
+
+`totals.assurance_gap` is `unverified_criteria / total_criteria`: the share of
+the run's criteria the judge could not verify. It is `null` when the run has no
+criteria, and all three are `null` when a judged verdict carries no criteria
+counts (one written by an earlier CLI). Report the two together: a high pass
+rate with a large gap means everything checkable passed, but little could be
+checked. Unable to Verify remains a separate verdict; never describe it as Fail.
 
 ## Presenting results
 
