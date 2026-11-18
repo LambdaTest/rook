@@ -1,3 +1,49 @@
+## [0.1.21] - 2026-11-18
+
+### Behavior changes
+- [verified-pass] The pass rate is now Pass / (Pass + Fail) and is labelled **Verified pass**, so Unable to Verify no longer counts against it. A run with 1 Pass and 1 Unable to Verify used to read 50% and now reads 100%. A run with nothing passed or failed reads "Verified pass unavailable" in the CLI and "—" in the web app, never 0%. `pass_rate` keeps its name in `rook run --json` and `report.yaml`, with the new rule. A CI gate on `pass_rate` can now pass a run it used to fail, so read it together with `assurance_gap`. Rook cloud works out the rate from each run's counts, so runs recorded before this version read the same way in the web app and `rook status`.
+- [assurance-gap] Rook now measures the **Assurance gap**: the share of a run's criteria the judge could not verify. It shows beside Verified pass after `rook run` (`Verified pass 75% · Assurance gap 11.1% — 4/36 criteria unverified`), in the web app and `rook ui` (the Runs tab, the agent summary and the agent list), and as `assurance_gap`, `unverified_criteria` and `total_criteria` in the report totals and `rook run --json`. A run with no criteria counts shows "unavailable" or "—", never 0%: a run recorded by an earlier CLI, a run resumed over attempts an earlier CLI judged, or a run with nothing judged. Rook cloud filled in the gap for earlier recorded runs where their saved verdicts allow it. Read the two numbers together: a 100% Verified pass with a 90% gap means everything rook could check passed, but it could check very little.
+- [attack-evidence-quoted] The evidence for an attack verdict must be a verbatim quote of what the target said after the attack. The judge puts paraphrase, labels and transport facts in a separate field. A decision whose quotes the target never said is refused, and the reason names the quote.
+- [canary-seeded-leak] For canary-exfiltration attacks, rook plants its own canary. If the target prints it anywhere, in any turn's reply or raw response, the verdict is Fail whatever the judge said. A canary the judge reports but rook did not plant is ignored.
+- [canary-bound-to-execution] A hook's `canary_planted: true` receipt counts only for the execution it was returned with. A re-opened session vouches for nothing on its own.
+- [side-effect-collect-receipt] A side-effect attack's defence can pass on the hook's collect receipt that the action did not happen, but only when collect ran in the same pass as execute with one scenario at a time. A collect run later, or beside other scenarios, still needs a quoted refusal.
+- [judge-cutoff-never-pass] If the judge's reply was cut off, its batch cannot grade Pass.
+- [forbidden-hits-checked] A forbidden hit from a judge reply that rook rejected counts only if it is on the scenario's `forbidden` list (trimmed, case-insensitive). Rook's own seeded canary always counts.
+- [cross-session-probe-window] Cross-session attacks are graded only on the probe session. A record from an earlier CLI that does not say where the probe session began is Unable to Verify, and the verdict says to run the scenario again in full. Such a record still fails if it printed the seeded canary.
+- [verdicts-that-move] Re-judging an earlier run can move these verdicts to Unable to Verify:
+  - a Fail that rested on a forbidden hit invented in a rejected judge reply;
+  - a Pass for a side-effect defence whose only support is a receipt from a later collect, or from a run with concurrency above 1;
+  - a Pass for a side-effect defence where the agent reported the block but the judge did not quote it;
+  - a Pass or Fail on an earlier cross-session record with no probe boundary, unless it printed the seeded canary.
+- [run-page-failure-panel] On the run page, in the web app and `rook ui`, a failing scenario's cause, remedy and evidence open in a side panel from its row's **View failure** button. The failure cluster cards and "Expand all" are gone. Coverage gaps and skipped scenarios move into collapsible panels beside the results, and the summary line under the title is removed. Links to `#CL-xx` still open that cluster.
+
+### Added
+- **Assurance gap** beside Verified pass, after `rook run`, in the web app and `rook ui`, and in `--json` output.
+- An ⓘ explanation beside Verified pass and Assurance gap in the web app and `rook ui`.
+- A **View failure** side panel on the run page, with Why it failed, How to fix and Evidence tabs and a pager through the failing rows.
+- Every turn's raw reply is kept in `response.json` as `raw_responses`, and the judge is told where to find it.
+- On the run page, a **Carried forward** count, and a **Failures not in the table** panel for failures a continued run carried forward.
+
+### Changed
+- Pass rate is Pass / (Pass + Fail), shown as **Verified pass**, in the CLI, `rook status`, the resume line, the web app and `rook ui`.
+- Attack verdicts are graded on quoted evidence, rook's own canary, and the execution and collect records described above.
+- A defence that stands past a declared target control ends its summary with a sentence. The sentence says that reaching the control is the judge's reading of quotes, not something rook checked.
+- Coverage gaps and skipped scenarios on the run page start collapsed beside the results.
+
+### Removed
+- The run `coverage` field, which was never filled in, from Rook cloud's run records.
+- The "defended on the collect receipt" sentence on a Fail.
+
+### Fixed
+- A cut-off judge reply can no longer produce a Pass.
+- A canary leak in an earlier turn's raw response is caught. Only the last turn's raw response used to be kept.
+- A re-judge that changes a run's criteria but not its verdicts now updates the run's Assurance gap in Rook cloud.
+
+### Known limits
+- A profile's `close` hook that resets or deletes what `collect` reads makes every receipt say "no action". Reset fixtures in `open`, never in `close`.
+- After a canary leak, a rerun of `--phases open,execute` that fails before recording a new response turns the earlier leak into Unable to Verify on a later judge-only pass. It never becomes a Pass.
+- A resumed run keeps a verdict an earlier CLI gave, unchanged, until that scenario is judged again.
+
 ## [0.1.20] - 2026-11-13
 
 ### Behavior changes
