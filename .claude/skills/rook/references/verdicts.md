@@ -33,16 +33,16 @@ criterion is Unable to Verify, not Fail.
 Since 0.1.21, `totals.pass_rate` is `Pass / (Pass + Fail)`, shown as "Verified
 pass": Unable to Verify is left out of it, and `totals.decided` is its
 denominator. If nothing passed or failed, `pass_rate` is `null` ("unavailable"),
-never `0`. Reports written by 0.1.6 to 0.1.20 keep the rate they stored, which
-counted Unable to Verify in the denominator, so they read lower for the same
-verdicts. Unjudged, not-run and unrunnable work never enters the denominator.
+never `0`. From 0.1.6 to 0.1.20 the denominator also counted Unable to Verify;
+`rook report <run-id>` works out an older run's totals again under the current
+rule. Unjudged, not-run and unrunnable work never enters the denominator.
 
 `totals.assurance_gap` is `unverified_criteria / total_criteria`: the share of
 the run's criteria the judge could not verify. It is `null` when the run has no
-criteria, and all three are `null` when a judged verdict carries no criteria
-counts (one written by an earlier CLI). Report the two together: a high pass
-rate with a large gap means everything checkable passed, but little could be
-checked. Unable to Verify remains a separate verdict; never describe it as Fail.
+criteria, and all three are `null` when a verdict's criteria counts cannot be
+read. Report the two together: a high pass rate with a large gap means
+everything checkable passed, but little could be checked. Unable to Verify
+remains a separate verdict; never describe it as Fail.
 
 ## Presenting results
 
