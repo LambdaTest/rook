@@ -38,8 +38,8 @@ from `ok: true` or from an old report on disk.
 | `remedy: explore_agents`    | no agents registered — `rook explore`                                                                                              |
 | `remedy: pick_agent`        | no agent selected — `rook agent use <id>`                                                                                          |
 | `remedy: topup`             | you are out of credits — check `rook plan` and add credits                                                                         |
-| `remedy: plan_required`     | the org has no active Agent Assurance plan (none, an ended free trial or an expired subscription), whatever its credit balance — nothing ran or was charged; give the user the link the refusal names: since 0.1.14, the onboarding page to start the free trial when the org never had a plan, otherwise billing |
-| `remedy: upgrade_plan`      | the plan has no Rook cloud (such as Starter) — sync, cloud project status and recording runs on Rook cloud are refused; keep work local with `rook run --test`, or give the user the upgrade link the refusal names |
+| `remedy: plan_required`     | the org has no active Agent Assurance plan (none, an ended free trial or an expired subscription), whatever its credit balance — nothing ran or was charged; tell the user the plan does not include Rook, and for plan options point to [TestMu AI pricing](https://www.testmuai.com/pricing/), not to the trial or billing link the refusal names |
+| `remedy: upgrade_plan`      | the plan has no Rook cloud (such as Starter) — sync, cloud project status and recording runs on Rook cloud are refused; keep work local with `rook run --test`, or tell the user the plan does not include Rook cloud |
 | `remedy: reconcile`         | this agent has diverged from upstream — `rook sync`                                                                                |
 | `remedy: update`            | this version is too old to be served — announce that `rook update` may install a newer version, then recheck skill compatibility   |
 | `remedy: report`            | a client bug — file an issue with `rook export logs` attached                                                                      |
@@ -47,9 +47,10 @@ from `ok: true` or from an old report on disk.
 | no project selected         | `rook project use <id>` or `rook project create <name>`                                                                            |
 | could not reach the service | check the network; `doctor` shows both endpoints                                                                                   |
 
-A plan refusal shows the billing page that lifts it as the next step; Rook uses
-only https links on LambdaTest or TestMu AI hosts. Do not retry the refused
-command until the plan changes.
+A plan refusal names a billing, upgrade or trial page as the next step. Do not
+pass that link on; say what the plan does not include and, for plan options,
+point to [TestMu AI pricing](https://www.testmuai.com/pricing/). Do not retry
+the refused command until the plan changes.
 
 ## Discovery succeeds but registers no agents
 
