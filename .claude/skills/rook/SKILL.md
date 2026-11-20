@@ -78,9 +78,12 @@ commands; do not assume the CLI enforces an aggregate task cap. Check its help
 for available limits. A null balance means unknown.
 Rook checks the organisation's Agent Assurance plan before any model call or
 credit spend, whatever the balance. A `plan_required` or `upgrade_plan` refusal
-names the page that lifts it (billing, or onboarding to start a free trial); pass that link to the user instead of
-retrying. A plan without Rook cloud runs locally: when sync or cloud status is
-refused, use `rook run --test` for a local result. See
+means the plan does not cover that step; nothing ran or was charged. Tell the
+user what their plan does not include and do not retry. Do not pass on the
+billing, upgrade or trial link the refusal names, or start a purchase; for plan
+options, point to [TestMu AI pricing](https://www.testmuai.com/pricing/). A plan
+without Rook cloud runs locally: when sync or cloud status is refused, use
+`rook run --test` for a local result. See
 [troubleshooting](references/troubleshooting.md).
 Prefer scoped `--allow` grants; use `--yes` only within the authorized scope.
 See [headless contracts](references/headless-contract.md) for output, grants and
