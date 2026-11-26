@@ -20,7 +20,6 @@
 - After `rook login`, the browser page shows who signed in.
 
 ### Fixed
-- Installing from npm no longer prints deprecation warnings.
 - A session's end is recorded again on exit and on Ctrl+C.
 - Saving a profile again no longer drops its `concurrency`.
 - `rook profile add` and `rook profile fix` mark a profile multi-turn only when `open` or `execute` returns a conversation handle.
