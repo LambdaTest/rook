@@ -42,6 +42,13 @@ reply.
 `profile fix [id] --what "<what is wrong>"` diagnoses and repairs; without
 `--what` it runs the profile and finds out.
 
+A reset between scenarios belongs in the `open` hook. Rook also calls `open`
+before a fresh-session probe, with `ROOK_OPEN_REASON=fresh_session_probe`; the
+reset must skip then, or it erases what the probe looks for. A profile with a
+top-level `reset:` is refused. A profile's `concurrency` applies when the run
+has no `--concurrency` (at most 8); a profile whose `open` resets shared state
+should declare `concurrency: 1`.
+
 ## Secrets
 
 ```bash
