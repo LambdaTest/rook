@@ -1,0 +1,43 @@
+name: Publish Tessl plugin
+# Manual publish of the rook skill to the Tessl registry (workspace testmuai).
+# Skill releases already publish to Tessl from publish-skill.yml, right after
+# npm. Use this only to publish an existing skill version, for example the
+# first testmuai/rook release.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Skill version to publish, normally the current @testmuai/rook-skill version, for example 0.1.14'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-tessl-plugin
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'LambdaTest/rook' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: tesslio/setup-tessl@25ec223fc0da33b41b8044ff5ab2b85235f4f91e # v2
+        with:
+          token: ${{ secrets.TESSL_TOKEN }}
+          version: '0.119.0'
+      - name: Publish to the Tessl registry
+        env:
+          SKILL_VERSION: ${{ inputs.version }}
+        run: |
+          jq --arg v "$SKILL_VERSION" '.version = $v' .tessl-plugin/plugin.json > p.json && mv p.json .tessl-plugin/plugin.json
+          tessl plugin lint .
+          tessl plugin publish .
