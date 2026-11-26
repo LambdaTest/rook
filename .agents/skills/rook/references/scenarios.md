@@ -81,6 +81,17 @@ and the skip reason names it: an `open` hook that seeds the fixture in
 `$ROOK_STATE_DIR/attack-fixture.json`, a `collect` hook that reports the
 observed control and outcome, or `open` and `close` hooks for a fresh session.
 
+An adversarial row in `rook scenarios list --json` carries `metadata_version`:
+`2` when rook's attack writer stamped it, `null` otherwise. `null` means the
+attack was written before rook 0.1.11, by hand, or with metadata the writer
+rejected. A generated attack with `null` that still runs is graded with no
+control-reach check: a Pass shows the agent held, not that the attack reached
+the control it was aimed at. When any is in scope, `rook run` names them
+before it spends, with the two commands that replace them (on stderr under
+`--json`), and `scenarios list` returns the same lines under `notice`. Relay
+the notice to the user. The delete is permanent and the regenerate spends
+credits, so run neither unless the user asks.
+
 ## Scoping a run
 
 ```bash
