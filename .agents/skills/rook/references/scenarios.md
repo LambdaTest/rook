@@ -3,7 +3,10 @@
 ## Classes and categories
 
 `--class` takes `functional`, `non_functional`, `adversarial` (comma-separated;
-`generate` defaults to `functional,adversarial`).
+`generate` defaults to `functional,adversarial`). Since 0.1.22 `non_functional`
+and its categories are coming soon: rook neither writes nor runs them, a run
+lists such scenarios as skipped, and asking for only them exits 0 and does
+nothing.
 
 `--category` takes, comma-separated:
 
@@ -29,7 +32,8 @@ rook generate --category prompt_injection,jailbreak --json
 rook generate -- focus on the refund limits and the identity check
 ```
 
-`generate` derives scenarios per feature and pins them; a second `generate`
+`--total N` adds at most N new scenarios; extras the writer returns are named
+and not saved. `generate` derives scenarios per feature and pins them; a second `generate`
 only refreshes features whose pins are stale. `--force` re-derives everything.
 It may emit text despite `--json`; check the exit code, then read
 `rook scenarios list --json`. An unknown `--class` or `--category` makes it exit
@@ -80,6 +84,19 @@ Some attack patterns are skipped until the profile has the hook they need,
 and the skip reason names it: an `open` hook that seeds the fixture in
 `$ROOK_STATE_DIR/attack-fixture.json`, a `collect` hook that reports the
 observed control and outcome, or `open` and `close` hooks for a fresh session.
+
+An adversarial row in `rook scenarios list --json` carries `metadata_version`:
+`2` when rook's attack writer stamped it, `null` otherwise. `null` means the
+attack was written before rook 0.1.11, by hand, or with metadata the writer
+rejected. A generated attack with `null` that still runs is graded with no
+control-reach check: a Pass shows the agent held, not that the attack reached
+the control it was aimed at. When any is in scope, `rook run` names each one
+with its file before it spends (on stderr under `--json`). If rook wrote them,
+the notice says to remove those files and run the `rook generate --force`
+command it prints; against a profile that does not thread turns it holds that
+back. With a profile selected, `scenarios list` returns the same lines under
+`notice`. Relay the notice to the user. Removing a file loses that scenario and
+the regenerate spends credits, so do neither unless the user asks.
 
 ## Scoping a run
 

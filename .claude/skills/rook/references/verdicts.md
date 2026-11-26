@@ -7,10 +7,10 @@ criterion details, read `runs/<run-id>/scenarios/<scenario-id>/verdict.yaml`.
 
 | Record | Fields |
 | --- | --- |
-| Scenario verdict | `scenario_id`, `status`, `criteria[]`, `unverifiable_reason`, `compromised`, `forbidden_hits[]` |
+| Scenario verdict | `scenario_id`, `status`, `criteria[]`, `unverifiable_reason`, `compromised`, `forbidden_hits[]`; red-team `execution_state`, `defended_by`, `verification_gaps[]` |
 | Criterion | `criterion_id`, `criterion`, `expected`, `achieved`, `status`, quoted `evidence`, `confidence` |
 | Report | `run_id`, `agent_id`, `agent_version_id?`, `generated`, `headline`, optional `narrative` and `next[]`, `totals`, `metrics`, `clusters[]`, `credits` |
-| Totals | `planned`, `executed`, `passed`, `failed`, `unverifiable`, `unjudged`, `not_run`, `unrunnable`, `decided`, `pass_rate`, `assurance_gap`, `unverified_criteria`, `total_criteria`, `carried_forward` |
+| Totals | `planned`, `executed`, `passed`, `failed`, `unverifiable`, `unjudged`, `not_run`, `unrunnable`, `decided`, `pass_rate`, `assurance_gap`, `unverified_criteria`, `total_criteria`, `carried_forward`, `defended_by_provider`, `unverifiable_agent`, `unverifiable_harness`, `unverifiable_scenario` |
 | Cluster | `id`, `why`, `kind` (`failed`, `unverifiable`, `compromised`), `scenarios[]`; RCA may add `cause`, `remedy`, `confidence`, `fault`, `where`, `summary` |
 
 Statuses are **Pass**, **Fail**, and **Unable to Verify**. Unverifiable reasons:
@@ -21,6 +21,14 @@ gaps; carry them into the summary rather than dropping them. `report --json`
 can add `coverage_gaps`, `redteam_coverage` (OWASP coverage of the scenario
 inventory) and `summary_claims`; an unmapped control is unverified, not passed.
 A **Partial** stored by an older run reads as Unable to Verify.
+
+Since 0.1.22 a red-team verdict's `execution_state` names the rule that
+produced it (for example `agent_unreachable`, `forbidden_echoed`,
+`judge_failed`), and the totals split Unable to Verify by owner: agent, harness
+(rook) and scenario. Use them to group unverifiables. `defended_by: provider`
+is a Pass where the model provider blocked the attack; report those apart from
+the agent's own defences. `verification_gaps` names judge evidence rook did not
+check against the run; never quote it as the agent's words.
 
 Since 0.1.12, a regex check that misses is graded by the judge on the
 criterion's meaning, so a correct answer in another format can pass. A match
