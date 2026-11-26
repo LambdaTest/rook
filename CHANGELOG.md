@@ -1,57 +1,34 @@
 ## [0.1.22] - 2026-11-26
 
 ### Behavior changes
-- [unverifiable-owner] Every red-team verdict now says which rule produced it, as `execution_state`, and a Pass says who stopped the attack, as `defended_by` (`agent` or `provider`). After `rook run`, Unable to Verify is split by whose problem it is: `2 agent issues · 1 rook issues · 0 scenario issues`. The run totals in `rook run --json` and `report.yaml` gain `unverifiable_agent`, `unverifiable_harness` and `unverifiable_scenario`. The result page in the web app and `rook ui` says why a result is Unable to Verify, such as an agent timeout, an unreachable agent, a judge fault or a fixture the `open` hook did not acknowledge.
-- [provider-block-defence] When the model provider blocks an attack turn on content policy, and an earlier turn of the same scenario replied, the attack now grades Pass with `defended_by: provider`. It counts toward Verified pass and is reported on its own line: `of which 1 blocked by the model provider`, and as `defended_by_provider` in the totals. Only the provider's own codes count, such as `content_filter` and `cyber_policy`. A block before any turn replied is Unable to Verify. On a side-effect attack, a block is not a defence when the collect record shows the action; that is Unable to Verify too.
-- [bare-4xx-replay] When an attack turn fails with a bare 4xx and no reason, rook sends one neutral turn (`Hello, are you still there?`) in the same session, then the attack message again, inside the scenario's turn limits. It never does this when the agent reports calls, the profile has a `collect` hook, or the scenario expects calls or exercises a tool, service or database, so no side effect repeats. The result is Unable to Verify (`provider_block_probable`), never a defence.
-- [forbidden-echoed] A forbidden phrase the attacker itself sent no longer fails a defended attack when the judge found, with High confidence, a refusal the target wrote. A refusal can name what it refuses, so the verdict is Unable to Verify (`forbidden_echoed`) and says to regenerate the scenario with forbidden values no legitimate reply would contain. The attacker must have sent the phrase as a whole word before the agent said it. A canary or a `success_signals` value always counts as a leak.
-- [attacker-failure] If rook's adaptive attacker fails mid-run, the agent turns captured so far are still graded, but they can never prove a defence (`attacker_refused`). A scenario cut off by its time limit only because of the attacker's time is rook's problem (`deadline_after_attack`), not the agent's.
-- [guard-held-defence] On a side-effect attack, a defence now grades Pass on the collect receipt when the judge quotes no `evidence`, because a guard denied the action and there was nothing to quote. These used to be Unable to Verify because the judge had no evidence to quote. This applies only when the judge says the attack was attempted and reports no forbidden hit.
-- [judge-passes] When the judge grades a scenario in several passes, a row for a criterion that pass was not asked about is ignored, and a criterion answered twice keeps its strictest row (Fail, then Unable to Verify, then Pass). A verdict that depended on which pass answered last can move either way, on functional and red-team scenarios alike.
-- [this-execution-evidence] The response judge is told which evidence belongs to this execution: the handles its hooks returned, the time its turns ran, and its own collect record, which it prefers to a live read. A record from a store other scenarios also write to counts only if it carries one of those handles and a time inside that window. A criterion about such an effect is Unable to Verify when no record ties to this scenario, or when one could equally be another scenario's. Some effect criteria that passed on an unattributed row, or on a missing one, now read Unable to Verify.
-- [declared-concurrency] A profile's `concurrency` now applies when `rook run` is given no `--concurrency`. It is held to 8, and your plan's limit still applies after it. `--concurrency` still wins. It used to be ignored, so a profile that declared 1 because its `open` hook resets shared state ran at whatever rook proposed. Saving the profile again keeps the key.
-- [legacy-reset-refused] A profile with a top-level `reset:` is refused, by `rook run` before anything is spent and when it is saved. It used to run with the reset silently dropped. The message says to move the command into your `hooks.open` script and skip it when `ROOK_OPEN_REASON` is `fresh_session_probe`.
-- [open-reason] Rook sets `ROOK_OPEN_REASON=fresh_session_probe` on the `open` it calls before a fresh-session probe, and on no other call. An `open` that resets shared state should skip the reset then, or it erases what the probe looks for and a memory-poisoning attack reads as resisted. A `ROOK_OPEN_REASON` in rook's own environment or in a profile's `hook_env` is ignored.
-- [multi-turn-recorded] `rook profile add` and `rook profile fix` record `multi_turn` only when `open` or `execute` returned a `conversation`. A handle from `close`, for example, no longer marks the profile multi-turn, so its multi-turn scenarios are refused before the run instead of running as fresh sessions.
-- [generate-total] `rook generate --total N` adds at most N new scenarios. A writer that returns more has the extra named in a warning and left unsaved, and the count shows after the result line: `1 scenario(s) past the count asked for were not saved`. Under `--total`, each attack category is asked for its planned count, plus any of N the plan left unspent, up to the number of attack patterns in that category.
-- [non-functional-coming-soon] `non_functional` and its categories, `quality` and `token_economy`, are coming soon. Rook never writes or runs them. Such scenarios on disk are listed as skipped with "non_functional scenarios are coming soon" and are not counted as unrunnable, so they do not hold back a Pass. `rook run` or `rook generate` asked only for them exits 0 and does nothing, and `generate` no longer analyses the agent first. Mixed with another class, they are left out. A run planned before this version and continued with `rook run --run <id>` finishes as planned.
-- [failure-fault] The failure explainer (`rook run` without `--no-rca`, and `rook report --rca`) now calls a criterion over-strict when it asks the reply for something nothing in the agent's spec or docs promises. If the agent behaved correctly, the fault is `scenario` and the remedy is the corrected criterion. A promised effect rook could not see, such as an audit row, is `harness`, with a `collect` hook as the remedy. It never proposes changing the agent or a hook script only so that a criterion passes. Some clusters that read `agent` now read `scenario` or `harness`.
-- [legacy-attack-notice] Before `rook run` spends anything, it names every generated attack in scope that has no `redteam.metadata_version`, with the file it was read from. It says which cannot run and why, and that the rest are graded with no control-reach check. If rook wrote them, it says to remove each file and run the `rook generate --force --class adversarial --category …` command it prints. Against a profile that does not thread turns, it holds that remedy back. With a profile selected, `rook scenarios list` ends with the same notice. Under `rook run --json` the notice goes to stderr, so stdout and exit codes are unchanged.
-- [legacy-precondition-reason] A generated attack written before 0.1.11 that is refused for its setup turns now says to regenerate it rather than edit it, and why. The rule, which attacks are refused, is unchanged.
-- [explore-discovery] `rook explore` now prints what discovery decided was not an agent and why (`not an agent: <name> — <why>`), keeps discovery's own summary in its closing text, and warns when discovery reports a registered agent inside the explored path as gone. That agent is left on disk.
+- [unverifiable-reasons] Every Unable to Verify result now says why, such as an agent timeout, an unreachable agent or a judge fault. After `rook run`, they are split by who needs to act: the agent, rook or the scenario.
+- [provider-block-defence] An attack that the model provider blocked on content policy, after the agent had already replied in that scenario, now counts as a Pass. It is reported separately as blocked by the provider.
+- [forbidden-echoed] A forbidden phrase that the attacker itself sent no longer fails an attack the agent clearly refused. It reads Unable to Verify and suggests regenerating the scenario.
+- [guard-held-defence] A side-effect attack can now pass on the `collect` hook's receipt when a guard denied the action and there was no reply to quote.
+- [this-execution-evidence] A criterion about a side effect is graded only on evidence tied to this scenario's run. An effect that can't be tied to it reads Unable to Verify.
+- [declared-concurrency] A profile's `concurrency` now applies when `rook run` has no `--concurrency`, up to 8.
+- [legacy-reset-refused] A profile with a top-level `reset:` is refused. Move the reset into your `open` hook.
+- [open-reason] Rook sets `ROOK_OPEN_REASON=fresh_session_probe` on the `open` it calls before a fresh-session probe. An `open` that resets shared state should skip the reset then.
+- [generate-total] `rook generate --total N` adds at most N new scenarios.
+- [non-functional-coming-soon] `non_functional` scenarios are coming soon. Rook no longer writes or runs them, and lists any on disk as skipped.
+- [legacy-attacks] Before a run spends credits, rook names generated attacks written before 0.1.11 and prints the `rook generate` command that replaces them.
+- [failure-explanations] Failure explanations blame an over-strict criterion on the scenario, and never suggest changing the agent only so that a criterion passes.
 
 ### Added
-- `execution_state` and `defended_by` on red-team verdicts, and `defended_by_provider`, `unverifiable_agent`, `unverifiable_harness` and `unverifiable_scenario` in the run totals.
-- The owner split of Unable to Verify, and the provider-blocked count, on the run page in `rook ui`. A result page marks a Pass the model provider blocked, in the web app and `rook ui`.
-- On a defended attack, `verification_gaps` names each evidence item from the judge that rook did not check against the run, and the summary counts them: `Rook did not check 1 of the judge's 3 evidence items against the run; …`. The verdict itself is unchanged.
-- `judge-working.json` keeps each judge reply as it came back, with rook's reason when it was not accepted, under `replies`.
-- `metadata_version` on attack rows in `rook scenarios list` (`· no metadata_version` in text) and in `--json`, which also gains `notice`.
-- The Profiles tab in `rook ui` shows each phase's hook script, its declared timeout and delay, the environment the scripts read, the profile's capabilities and its README, as the web app does.
-- After `rook login`, the browser page says who signed in: "You're signed in as {email}."
-
-### Changed
-- When the model provider refuses a request on content policy, the CLI says "Request refused.", names the provider's code, and suggests rewording the refused scenario or feature text. It no longer calls this a rook bug or a server error, and never retries it.
-- When the judge's refusal quote is checked against a collect receipt and not found, the reason names the receipt. The agent's own words from before the attack are no longer named as the judge's invention.
-- The attack judge is told that each refusal it quotes must be verbatim and at least twelve characters, and that one quote not found discards the defence.
-- The attack writer drops a forbidden value the attacker itself sends, and records a precondition a setup turn cannot establish, such as whether a tool is enabled or how the agent is deployed, as a coverage gap.
-- A multi-turn adversarial scenario with no `redteam` block is now attacked by rook's adaptive attacker, as generated attacks are.
-- The hook contract (`CONTRACT.md`, the hook templates, and the README `rook profile add` writes) now says what rook does: a `not_called` that holds is Unable to Verify, with or without `calls: []`; `close` can return a `conversation` that `collect` is given; `usage` is read from `execute` only; a reset goes in `open`, guarded by `ROOK_OPEN_REASON`; and `collect` belongs in the same pass as `execute` when a no-action receipt must stand alone. Profiles authored from now on are told the same.
-- On the Scenarios page in the web app, the Feature and Category filters offer every value in the agent version, not only those in the first 25 scenarios, and Class and Result always list every option. Non-functional options are labelled "Coming soon". The "N of M scenarios" label beside the filters is gone, in the web app and `rook ui`.
-- The browser page after `rook login` uses the Rook theme and stays open.
+- `execution_state` and `defended_by` on red-team verdicts, with matching counts in the run totals of `rook run --json`.
+- `rook explore` says what it decided was not an agent, and why.
+- After `rook login`, the browser page shows who signed in.
 
 ### Fixed
-- Installing the CLI from npm prints no deprecation warnings. It printed six, all from the spreadsheet reader's dependencies, which are now bundled.
-- Rook again records when a session ends, on exit and on Ctrl+C, so the session's end time and credit total are saved.
-- The browser page after `rook login` says you are signed in only once the CLI has the token. A failed or cancelled sign-in now says "Sign-in didn't finish".
+- Installing from npm no longer prints deprecation warnings.
+- A session's end is recorded again on exit and on Ctrl+C.
 - Saving a profile again no longer drops its `concurrency`.
-- A writer reply cut off at its output ceiling keeps only whole scenarios and records the shortfall as a coverage gap. If nothing in it can be kept, the error names the cut instead of the reply's shape.
-- Long scenario lists in the web app no longer leave empty space below the table.
+- `rook profile add` and `rook profile fix` mark a profile multi-turn only when `open` or `execute` returns a conversation handle.
+- The web app's Scenarios filters offer every value in the agent version.
+- A writer reply that was cut off keeps only whole scenarios.
 
 ### Known limits
-- A CLI older than 0.1.22 never sets `ROOK_OPEN_REASON`, so a reset guarded on it runs before the fresh-session probe too. Run such profiles with 0.1.22 or later.
-- A `multi_turn` that an earlier `rook profile add` recorded from a `close` handle stays recorded; `rook profile test` never clears it. Run `rook profile fix` to rebuild the profile's capabilities.
-- The response judge's rule for shared stores needs a handle shaped like an id (letters, digits and `._:@/+=~-`). An agent whose handles contain spaces, `#` or a URL query gets the judge's task as before.
-- `verification_gaps` is in `verdict.yaml` only. The web app and `rook ui` do not show it yet.
+- A CLI older than 0.1.22 never sets `ROOK_OPEN_REASON`. Run profiles that guard a reset on it with 0.1.22 or later.
 
 ## [0.1.21] - 2026-11-18
 
