@@ -1,3 +1,34 @@
+## [0.1.22] - 2026-11-26
+
+### Behavior changes
+- [unverifiable-reasons] Every Unable to Verify result now says why, such as an agent timeout, an unreachable agent or a judge fault. After `rook run`, they are split by who needs to act: the agent, rook or the scenario.
+- [provider-block-defence] An attack that the model provider blocked on content policy, after the agent had already replied in that scenario, now counts as a Pass. It is reported separately as blocked by the provider.
+- [forbidden-echoed] A forbidden phrase that the attacker itself sent no longer fails an attack the agent clearly refused. It reads Unable to Verify and suggests regenerating the scenario.
+- [guard-held-defence] A side-effect attack can now pass on the `collect` hook's receipt when a guard denied the action and there was no reply to quote.
+- [this-execution-evidence] A criterion about a side effect is graded only on evidence tied to this scenario's run. An effect that can't be tied to it reads Unable to Verify.
+- [declared-concurrency] A profile's `concurrency` now applies when `rook run` has no `--concurrency`, up to 8.
+- [legacy-reset-refused] A profile with a top-level `reset:` is refused. Move the reset into your `open` hook.
+- [open-reason] Rook sets `ROOK_OPEN_REASON=fresh_session_probe` on the `open` it calls before a fresh-session probe. An `open` that resets shared state should skip the reset then.
+- [generate-total] `rook generate --total N` adds at most N new scenarios.
+- [non-functional-coming-soon] `non_functional` scenarios are coming soon. Rook no longer writes or runs them, and lists any on disk as skipped.
+- [legacy-attacks] Before a run spends credits, rook names generated attacks written before 0.1.11 and prints the `rook generate` command that replaces them.
+- [failure-explanations] Failure explanations blame an over-strict criterion on the scenario, and never suggest changing the agent only so that a criterion passes.
+
+### Added
+- `execution_state` and `defended_by` on red-team verdicts, with matching counts in the run totals of `rook run --json`.
+- `rook explore` says what it decided was not an agent, and why.
+- After `rook login`, the browser page shows who signed in.
+
+### Fixed
+- A session's end is recorded again on exit and on Ctrl+C.
+- Saving a profile again no longer drops its `concurrency`.
+- `rook profile add` and `rook profile fix` mark a profile multi-turn only when `open` or `execute` returns a conversation handle.
+- The web app's Scenarios filters offer every value in the agent version.
+- A writer reply that was cut off keeps only whole scenarios.
+
+### Known limits
+- A CLI older than 0.1.22 never sets `ROOK_OPEN_REASON`. Run profiles that guard a reset on it with 0.1.22 or later.
+
 ## [0.1.21] - 2026-11-18
 
 ### Behavior changes
