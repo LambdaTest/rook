@@ -5,9 +5,15 @@
   <img src=".github/assets/rook-mascot-light.gif" alt="rook, the chess-piece mascot" width="200">
 </picture>
 
-# rook
+# Rook CLI by TestMu AI
 
-**Agent assurance from the terminal.**
+[![Official repository](https://img.shields.io/badge/official-repository-0969da?logo=github)](https://github.com/LambdaTest/rook)
+
+<sub>Official repository: <a href="https://github.com/LambdaTest/rook">github.com/LambdaTest/rook</a>, maintained by TestMu AI.</sub>
+
+**AI agent testing from the terminal.**
+
+Rook CLI is TestMu AI's CLI for testing AI agents. It is unrelated to CNCF Rook, the Kubernetes storage project.
 
 Perform End-to-End (E2E) testing of your AI agents to validate how they actually behave across workflows, tools and actions.<br>
 Catch failures and vulnerabilities before they ship.
